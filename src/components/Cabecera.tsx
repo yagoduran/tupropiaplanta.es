@@ -29,9 +29,9 @@ export function Cabecera({ monedas, nivel, xp, usuario }: Props) {
       <div className={styles.cabeceraCentro}>
         <div className={styles.cabeceraDato}>
           <Icono id="moneda" />
-          <span>{monedas.toLocaleString("es-ES")}</span>
+          <span>{monedas.toLocaleString("es-ES", { useGrouping: "always" })}</span>
         </div>
-        <div className={styles.cabeceraDato}>
+        <div className={`${styles.cabeceraDato} ${styles.datoNivel}`}>
           <Icono id="nivel" />
           <span>Nv. {nivel}</span>
           <div className={styles.xp} style={{ ...barra, background: barra.background }}>
@@ -50,7 +50,7 @@ export function Cabecera({ monedas, nivel, xp, usuario }: Props) {
           <span className={styles.avatar} style={panel}>
             <Icono id="cultivo" />
           </span>
-          <span>{usuario}</span>
+          <span className={styles.nombreUsuario}>{usuario}</span>
           <Icono id="menu" />
         </button>
         {menuAbierto && (

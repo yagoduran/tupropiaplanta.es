@@ -104,15 +104,38 @@ img,
   }
 }
 
-/* Pantalla pequeña (tablet y móvil): el diseño específico llega en el paso 8. */
+/* Tablet: una columna, o dos columnas en horizontal (ver juego.module.css). */
 @media (max-width: 1039px) {
   .juego {
+    --s: 6;
+    --f-stat: 14px;
+    --f-small: 12px;
+    --f-btn: 20px;
+    --tab-h: 66px;
+    --pad: 20px;
+    --gap: 12px;
+    --head-h: 60px;
+    --btn-h: 84px;
+    --banner-h: 62px;
+  }
+}
+
+/* Móvil. */
+@media (max-width: 599px) {
+  .juego {
     --s: 4;
-    --panel-w: 168px;
-    --gap: 10px;
-    --f-stat: 13px;
+    --pad: 12px;
+    --gap: 8px;
+    --f-head: 16px;
     --f-small: 11px;
-    --btn-h: 56px;
-    --row-gap: 6px;
+    --f-btn: 16px;
+    --btn-h: 64px;
+  }
+}
+
+/* Móvil estrecho. */
+@media (max-width: 389px) {
+  .juego {
+    --s: 3;
   }
 }

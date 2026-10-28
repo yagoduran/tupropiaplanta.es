@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { marco } from "@/lib/diseno";
+import { BannerMovil } from "./BannerMovil";
 import { Cabecera } from "./Cabecera";
 import { Pestanas } from "./Pestanas";
 import { Publicidad } from "./Publicidad";
@@ -7,12 +8,14 @@ import styles from "./juego.module.css";
 
 interface Props {
   panelEstado: ReactNode;
+  /** Estado en tarjetas, solo para tablet y móvil. */
+  estadoCompacto: ReactNode;
   escena: ReactNode;
   panelAcciones: ReactNode;
 }
 
 /** Estructura común del juego: cabecera, anuncios laterales, zona de juego y pestañas. */
-export function JuegoLayout({ panelEstado, escena, panelAcciones }: Props) {
+export function JuegoLayout({ panelEstado, estadoCompacto, escena, panelAcciones }: Props) {
   const marcoJuego = marco("panel_oscuro", "var(--u)");
   return (
     <div className={`juego ${styles.raiz}`}>
@@ -23,13 +26,16 @@ export function JuegoLayout({ panelEstado, escena, panelAcciones }: Props) {
         </div>
         <div className={styles.centro}>
           <div className={styles.juego} style={marcoJuego}>
-            <section className={styles.panelLateral} aria-label="Estado de la planta">
+            <section className={`${styles.panelLateral} ${styles.soloEscritorio}`} aria-label="Estado de la planta">
               {panelEstado}
             </section>
             <section className={styles.escena} aria-label="Cámara de cultivo">
               {escena}
             </section>
-            <section className={styles.panelLateral} aria-label="Acciones">
+            <section className={`${styles.soloMovil} ${styles.estadoMovil}`} aria-label="Estado de la planta">
+              {estadoCompacto}
+            </section>
+            <section className={`${styles.panelLateral} ${styles.acciones}`} aria-label="Acciones">
               {panelAcciones}
             </section>
           </div>
@@ -39,6 +45,7 @@ export function JuegoLayout({ panelEstado, escena, panelAcciones }: Props) {
           <Publicidad />
         </div>
       </main>
+      <BannerMovil />
     </div>
   );
 }

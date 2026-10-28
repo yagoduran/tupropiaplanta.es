@@ -39,6 +39,8 @@ const MARCOS = {
   bocadillo: { t: ["o"], l: ["o"], r: ["o"], b: ["o", "sd2"], f: "w" },
   pestana: { t: ["o", "b1"], l: ["o", "b1"], r: ["o", "d2"], b: ["o", "d2"], f: "b2" },
   pestana_activa: { t: ["o", "w"], l: ["o", "w"], r: ["o", "sd2"], b: ["o", "sd2"], f: "c" },
+  tarjeta: { t: ["o", "w"], l: ["o", "w"], r: ["o", "sd2"], b: ["o", "sd2"], f: "c" },
+  plano: { t: ["o"], l: ["o"], r: ["o"], b: ["o"], f: "s" },
   campo: { t: ["o", "sd2"], l: ["o", "sd2"], r: ["o", "w"], b: ["o", "w"], f: "w" },
 } satisfies Record<string, Marco>;
 

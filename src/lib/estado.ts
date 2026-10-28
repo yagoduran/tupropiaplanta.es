@@ -20,5 +20,7 @@ export interface Medidor {
   nombreCorto?: string;
   porcentaje: number;
   valor: string;
+  /** Valor abreviado para móvil. */
+  valorCorto?: string;
   tono: Tono;
 }

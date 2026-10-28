@@ -18,7 +18,11 @@ export function BotonAnuncio({ onClick }: { onClick?: () => void }) {
       onClick={onClick}
     >
       <Icono id="anuncio" k="var(--ik)" />
-      <span>Ver anuncio para ayuda extra</span>
+      <span className={styles.soloEscritorio}>Ver anuncio para ayuda extra</span>
+      <span className={`${styles.soloMovil} ${styles.botonAnuncioCorto}`}>
+        <strong>Ayuda</strong>
+        <span>Ver anuncio</span>
+      </span>
     </button>
   );
 }

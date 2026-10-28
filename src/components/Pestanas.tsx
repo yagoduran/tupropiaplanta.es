@@ -23,7 +23,7 @@ export function Pestanas({ activa }: { activa: IdIcono }) {
             key={p.id}
             type="button"
             aria-current={esActiva ? "page" : undefined}
-            className={styles.pestana}
+            className={`${styles.pestana} ${p.id === "ajustes" ? styles.soloEscritorio : ""}`}
             style={{ ...(esActiva ? seleccionada : normal), color: esActiva ? "#1c1626" : "#f6eed6" }}
           >
             <Icono id={p.id} />
