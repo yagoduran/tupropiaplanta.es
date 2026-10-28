@@ -29,7 +29,12 @@ img,
 /* Medidas del juego. Por defecto: pantalla mediana (1366x768). */
 .juego {
   --s: 6;
-  --u: 3px;
+  --un: 3;
+  --u: calc(var(--un) * 1px);
+  --pip: 9px;
+  --cola: url(/assets/ui/marcos/cola-bocadillo-3x.png);
+  --cola-w: 18px;
+  --cola-h: 15px;
   --panel-w: 176px;
   --gap: 12px;
   --ik: 2;
@@ -58,7 +63,11 @@ img,
 @media (min-width: 1700px) and (min-height: 900px) {
   .juego {
     --s: 8;
-    --u: 4px;
+    --un: 4;
+    --pip: 12px;
+    --cola: url(/assets/ui/marcos/cola-bocadillo-4x.png);
+    --cola-w: 24px;
+    --cola-h: 20px;
     --panel-w: 248px;
     --gap: 16px;
     --ik: 3;

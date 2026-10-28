@@ -212,3 +212,196 @@
   width: calc(64px * var(--s));
   height: calc(64px * var(--s));
 }
+
+.estado {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--row-gap);
+  padding: calc(var(--u) * 4 + 2px);
+  color: #1c1626;
+}
+
+.estadoTitulo {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-title);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.medidor {
+  display: grid;
+  grid-template-columns: calc(12px * var(--ik)) minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+}
+
+.medidorCuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.medidorFila {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+  line-height: 1;
+}
+
+.medidorNombre {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.barra {
+  position: relative;
+  height: calc(var(--u) * 6);
+}
+
+.barraRelleno {
+  position: absolute;
+  inset: 0 auto 0 0;
+}
+
+.separador {
+  flex: none;
+  height: var(--u);
+  margin-top: auto;
+  background: #a8845c;
+}
+
+.estadoPequeno {
+  font-size: var(--f-small);
+  color: #5f3c26;
+}
+
+.estadoValor {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.pips {
+  display: flex;
+  gap: 3px;
+}
+
+.pip {
+  width: var(--pip);
+  height: var(--pip);
+  border: 2px solid #1c1626;
+}
+
+.boton {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 calc(var(--u) * 2 + 2px);
+  text-align: left;
+  user-select: none;
+}
+
+.botonIcono {
+  position: relative;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(16px * var(--un));
+  height: calc(16px * var(--un));
+}
+
+.anillo {
+  position: absolute;
+  inset: 0;
+  background-image: url(/assets/ui/tpp-ui-anillo-1x.png);
+  background-size: calc(144px * var(--un)) calc(16px * var(--un));
+}
+
+.botonTextos {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.botonEtiqueta {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-btn);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.botonDetalle {
+  font-size: var(--f-small);
+  line-height: 1.15;
+}
+
+.botonAnuncio {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: calc(var(--u) * 2 + 4px);
+  color: #1c1626;
+  text-align: left;
+  font-size: var(--f-small);
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.bocadillo {
+  position: absolute;
+  left: min(calc(58px * var(--s)), calc(96px * var(--s) - max(200px, calc(34px * var(--s))) - 2 * var(--u)));
+  top: calc(9px * var(--s));
+  width: max(200px, calc(34px * var(--s)));
+}
+
+.bocadilloCaja {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: calc(var(--u) * 2.5);
+  color: #1c1626;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.bocadilloCola {
+  display: block;
+  margin-top: calc(var(--u) * -1);
+  margin-left: calc(var(--u) * 4);
+  width: var(--cola-w);
+  height: var(--cola-h);
+  background-image: var(--cola);
+  background-size: 100% 100%;
+}
+
+.nombreCorto {
+  display: inline;
+}
+
+.nombreLargo {
+  display: none;
+}
+
+@media (min-width: 1700px) and (min-height: 900px) {
+  .nombreCorto {
+    display: none;
+  }
+
+  .nombreLargo {
+    display: inline;
+  }
+}
