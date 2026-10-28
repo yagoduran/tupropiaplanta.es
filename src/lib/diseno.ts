@@ -51,20 +51,24 @@ export interface EstiloMarco {
   clipPath: string;
 }
 
-/** Marco pixel art hecho solo con CSS. `u` es el grosor de un píxel del marco. */
-export function marco(id: IdMarco, u: number): EstiloMarco {
+/**
+ * Marco pixel art hecho solo con CSS. `u` es el grosor de un píxel del marco:
+ * un número en px o una expresión CSS como "var(--u)".
+ */
+export function marco(id: IdMarco, u: number | string): EstiloMarco {
   const m: Marco = MARCOS[id];
+  const px = (k: number) => (typeof u === "number" ? `${k * u}px` : `calc(${k} * ${u})`);
   const sombras: string[] = [];
   const n = Math.max(m.t.length, m.l.length, m.r.length, m.b.length);
   for (let i = 1; i < n; i++) {
-    if (m.l[i]) sombras.push(`inset ${i * u}px 0 0 ${COLORES[m.l[i]]}`);
-    if (m.r[i]) sombras.push(`inset -${i * u}px 0 0 ${COLORES[m.r[i]]}`);
-    if (m.t[i]) sombras.push(`inset 0 ${i * u}px 0 ${COLORES[m.t[i]]}`);
-    if (m.b[i]) sombras.push(`inset 0 -${i * u}px 0 ${COLORES[m.b[i]]}`);
+    if (m.l[i]) sombras.push(`inset ${px(i)} 0 0 ${COLORES[m.l[i]]}`);
+    if (m.r[i]) sombras.push(`inset ${px(-i)} 0 0 ${COLORES[m.r[i]]}`);
+    if (m.t[i]) sombras.push(`inset 0 ${px(i)} 0 ${COLORES[m.t[i]]}`);
+    if (m.b[i]) sombras.push(`inset 0 ${px(-i)} 0 ${COLORES[m.b[i]]}`);
   }
-  const c = `${u}px`;
+  const c = px(1);
   return {
-    border: `${u}px solid ${COLORES[m.t[0]]}`,
+    border: `${c} solid ${COLORES[m.t[0]]}`,
     boxShadow: sombras.length ? sombras.join(",") : "none",
     background: COLORES[m.f],
     clipPath: `polygon(${c} 0, calc(100% - ${c}) 0, 100% ${c}, 100% calc(100% - ${c}), calc(100% - ${c}) 100%, ${c} 100%, 0 calc(100% - ${c}), 0 ${c})`,

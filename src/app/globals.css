@@ -25,3 +25,85 @@ img,
 .pixel {
   image-rendering: pixelated;
 }
+
+/* Medidas del juego. Por defecto: pantalla mediana (1366x768). */
+.juego {
+  --s: 6;
+  --u: 3px;
+  --panel-w: 176px;
+  --gap: 12px;
+  --ik: 2;
+  --head-h: 52px;
+  --pad: 8px;
+  --logo-w: 90px;
+  --logo-h: 32px;
+  --f-head: 17px;
+  --f-title: 21px;
+  --f-stat: 14px;
+  --f-small: 12px;
+  --f-btn: 19px;
+  --f-tab: 15px;
+  --tab-h: 48px;
+  --tab-gap: 6px;
+  --btn-h: 64px;
+  --btn-gap: 8px;
+  --row-gap: 8px;
+  --xp-w: 90px;
+  --avatar: 40px;
+  --anuncios: none;
+  --anuncio-w: 160px;
+}
+
+/* Pantalla grande (1920x1080). */
+@media (min-width: 1700px) and (min-height: 900px) {
+  .juego {
+    --s: 8;
+    --u: 4px;
+    --panel-w: 248px;
+    --gap: 16px;
+    --ik: 3;
+    --head-h: 72px;
+    --pad: 24px;
+    --logo-w: 180px;
+    --logo-h: 64px;
+    --f-head: 22px;
+    --f-title: 28px;
+    --f-stat: 17px;
+    --f-small: 14px;
+    --f-btn: 24px;
+    --f-tab: 20px;
+    --tab-h: 64px;
+    --tab-gap: 8px;
+    --btn-h: 86px;
+    --btn-gap: 12px;
+    --row-gap: 14px;
+    --xp-w: 120px;
+    --avatar: 52px;
+  }
+}
+
+/* Los anuncios laterales solo si caben a cada lado del juego. */
+@media (min-width: 1360px) {
+  .juego {
+    --anuncios: flex;
+  }
+}
+
+@media (min-width: 1700px) and (min-height: 900px) {
+  .juego {
+    --anuncios: flex;
+  }
+}
+
+/* Pantalla pequeña (tablet y móvil): el diseño específico llega en el paso 8. */
+@media (max-width: 1039px) {
+  .juego {
+    --s: 4;
+    --panel-w: 168px;
+    --gap: 10px;
+    --f-stat: 13px;
+    --f-small: 11px;
+    --btn-h: 56px;
+    --row-gap: 6px;
+  }
+}

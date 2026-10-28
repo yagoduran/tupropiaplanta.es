@@ -1,3 +1,5 @@
+import { JuegoLayout } from "@/components/JuegoLayout";
+
 export default function Home() {
-  return <main>Tu Propia Planta</main>;
+  return <JuegoLayout panelEstado={null} escena={null} panelAcciones={null} />;
 }
