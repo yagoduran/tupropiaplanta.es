@@ -1,0 +1,1354 @@
+{
+ "tamano_celda": {
+  "plantas_macetas_luces_efectos": 64,
+  "plagas_mascota": 32
+ },
+ "escalas_png": [
+  1,
+  4,
+  8
+ ],
+ "nota": "Fotogramas en horizontal desde la columna indicada. fila/columna en celdas.",
+ "hojas": {
+  "variedad-clasica": {
+   "archivo": "tpp-variedad-clasica",
+   "ancho": 384,
+   "alto": 512,
+   "celda": 64,
+   "columnas": 6,
+   "filas": 8,
+   "variedad": "Verde Clásica",
+   "rareza": "comun",
+   "sprites": [
+    {
+     "nombre": "clasica_semilla_sana",
+     "fila": 0,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "clasica_brote_sana",
+     "fila": 1,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "clasica_plantula_sana",
+     "fila": 2,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "clasica_plantula_sedienta",
+     "fila": 2,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "clasica_plantula_muerta",
+     "fila": 2,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "clasica_vegetativo_joven_sana",
+     "fila": 3,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "clasica_vegetativo_joven_sedienta",
+     "fila": 3,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "clasica_vegetativo_joven_muerta",
+     "fila": 3,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "clasica_vegetativo_adulto_sana",
+     "fila": 4,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "clasica_vegetativo_adulto_sedienta",
+     "fila": 4,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "clasica_vegetativo_adulto_muerta",
+     "fila": 4,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "clasica_prefloracion_sana",
+     "fila": 5,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "clasica_prefloracion_sedienta",
+     "fila": 5,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "clasica_prefloracion_muerta",
+     "fila": 5,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "clasica_floracion_sana",
+     "fila": 6,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "clasica_floracion_sedienta",
+     "fila": 6,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "clasica_floracion_muerta",
+     "fila": 6,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "clasica_cosecha_sana",
+     "fila": 7,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "clasica_cosecha_sedienta",
+     "fila": 7,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "clasica_cosecha_muerta",
+     "fila": 7,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    }
+   ]
+  },
+  "variedad-hoja-azul": {
+   "archivo": "tpp-variedad-hoja-azul",
+   "ancho": 384,
+   "alto": 512,
+   "celda": 64,
+   "columnas": 6,
+   "filas": 8,
+   "variedad": "Hoja Azul",
+   "rareza": "poco_comun",
+   "sprites": [
+    {
+     "nombre": "hoja_azul_semilla_sana",
+     "fila": 0,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "hoja_azul_brote_sana",
+     "fila": 1,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "hoja_azul_plantula_sana",
+     "fila": 2,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "hoja_azul_plantula_sedienta",
+     "fila": 2,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "hoja_azul_plantula_muerta",
+     "fila": 2,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "hoja_azul_vegetativo_joven_sana",
+     "fila": 3,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "hoja_azul_vegetativo_joven_sedienta",
+     "fila": 3,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "hoja_azul_vegetativo_joven_muerta",
+     "fila": 3,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "hoja_azul_vegetativo_adulto_sana",
+     "fila": 4,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "hoja_azul_vegetativo_adulto_sedienta",
+     "fila": 4,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "hoja_azul_vegetativo_adulto_muerta",
+     "fila": 4,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "hoja_azul_prefloracion_sana",
+     "fila": 5,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "hoja_azul_prefloracion_sedienta",
+     "fila": 5,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "hoja_azul_prefloracion_muerta",
+     "fila": 5,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "hoja_azul_floracion_sana",
+     "fila": 6,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "hoja_azul_floracion_sedienta",
+     "fila": 6,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "hoja_azul_floracion_muerta",
+     "fila": 6,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "hoja_azul_cosecha_sana",
+     "fila": 7,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "hoja_azul_cosecha_sedienta",
+     "fila": 7,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "hoja_azul_cosecha_muerta",
+     "fila": 7,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    }
+   ]
+  },
+  "variedad-dorada": {
+   "archivo": "tpp-variedad-dorada",
+   "ancho": 384,
+   "alto": 512,
+   "celda": 64,
+   "columnas": 6,
+   "filas": 8,
+   "variedad": "Dorada del Sur",
+   "rareza": "rara",
+   "sprites": [
+    {
+     "nombre": "dorada_semilla_sana",
+     "fila": 0,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "dorada_brote_sana",
+     "fila": 1,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "dorada_plantula_sana",
+     "fila": 2,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "dorada_plantula_sedienta",
+     "fila": 2,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "dorada_plantula_muerta",
+     "fila": 2,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "dorada_vegetativo_joven_sana",
+     "fila": 3,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "dorada_vegetativo_joven_sedienta",
+     "fila": 3,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "dorada_vegetativo_joven_muerta",
+     "fila": 3,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "dorada_vegetativo_adulto_sana",
+     "fila": 4,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "dorada_vegetativo_adulto_sedienta",
+     "fila": 4,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "dorada_vegetativo_adulto_muerta",
+     "fila": 4,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "dorada_prefloracion_sana",
+     "fila": 5,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "dorada_prefloracion_sedienta",
+     "fila": 5,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "dorada_prefloracion_muerta",
+     "fila": 5,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "dorada_floracion_sana",
+     "fila": 6,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "dorada_floracion_sedienta",
+     "fila": 6,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "dorada_floracion_muerta",
+     "fila": 6,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "dorada_cosecha_sana",
+     "fila": 7,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "dorada_cosecha_sedienta",
+     "fila": 7,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "dorada_cosecha_muerta",
+     "fila": 7,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    }
+   ]
+  },
+  "variedad-noche": {
+   "archivo": "tpp-variedad-noche",
+   "ancho": 384,
+   "alto": 512,
+   "celda": 64,
+   "columnas": 6,
+   "filas": 8,
+   "variedad": "Noche Púrpura",
+   "rareza": "epica",
+   "sprites": [
+    {
+     "nombre": "noche_semilla_sana",
+     "fila": 0,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "noche_brote_sana",
+     "fila": 1,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "noche_plantula_sana",
+     "fila": 2,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "noche_plantula_sedienta",
+     "fila": 2,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "noche_plantula_muerta",
+     "fila": 2,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "noche_vegetativo_joven_sana",
+     "fila": 3,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "noche_vegetativo_joven_sedienta",
+     "fila": 3,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "noche_vegetativo_joven_muerta",
+     "fila": 3,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "noche_vegetativo_adulto_sana",
+     "fila": 4,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "noche_vegetativo_adulto_sedienta",
+     "fila": 4,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "noche_vegetativo_adulto_muerta",
+     "fila": 4,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "noche_prefloracion_sana",
+     "fila": 5,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "noche_prefloracion_sedienta",
+     "fila": 5,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "noche_prefloracion_muerta",
+     "fila": 5,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "noche_floracion_sana",
+     "fila": 6,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "noche_floracion_sedienta",
+     "fila": 6,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "noche_floracion_muerta",
+     "fila": 6,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "noche_cosecha_sana",
+     "fila": 7,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "noche_cosecha_sedienta",
+     "fila": 7,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "noche_cosecha_muerta",
+     "fila": 7,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    }
+   ]
+  },
+  "variedad-cristal": {
+   "archivo": "tpp-variedad-cristal",
+   "ancho": 384,
+   "alto": 512,
+   "celda": 64,
+   "columnas": 6,
+   "filas": 8,
+   "variedad": "Cristal Helado",
+   "rareza": "legendaria",
+   "sprites": [
+    {
+     "nombre": "cristal_semilla_sana",
+     "fila": 0,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "cristal_brote_sana",
+     "fila": 1,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "cristal_plantula_sana",
+     "fila": 2,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "cristal_plantula_sedienta",
+     "fila": 2,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "cristal_plantula_muerta",
+     "fila": 2,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "cristal_vegetativo_joven_sana",
+     "fila": 3,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "cristal_vegetativo_joven_sedienta",
+     "fila": 3,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "cristal_vegetativo_joven_muerta",
+     "fila": 3,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "cristal_vegetativo_adulto_sana",
+     "fila": 4,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "cristal_vegetativo_adulto_sedienta",
+     "fila": 4,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "cristal_vegetativo_adulto_muerta",
+     "fila": 4,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "cristal_prefloracion_sana",
+     "fila": 5,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "cristal_prefloracion_sedienta",
+     "fila": 5,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "cristal_prefloracion_muerta",
+     "fila": 5,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "cristal_floracion_sana",
+     "fila": 6,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "cristal_floracion_sedienta",
+     "fila": 6,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "cristal_floracion_muerta",
+     "fila": 6,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "cristal_cosecha_sana",
+     "fila": 7,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "cristal_cosecha_sedienta",
+     "fila": 7,
+     "columna": 4,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "cristal_cosecha_muerta",
+     "fila": 7,
+     "columna": 5,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    }
+   ]
+  },
+  "plagas": {
+   "archivo": "tpp-plagas",
+   "ancho": 128,
+   "alto": 384,
+   "celda": 32,
+   "columnas": 4,
+   "filas": 12,
+   "sprites": [
+    {
+     "nombre": "pulgon_aparece",
+     "fila": 0,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "pulgon_infestacion_grave",
+     "fila": 1,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "arana_aparece",
+     "fila": 2,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "arana_infestacion_grave",
+     "fila": 3,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "mosca_aparece",
+     "fila": 4,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "mosca_infestacion_grave",
+     "fila": 5,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "caracol_aparece",
+     "fila": 6,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "caracol_infestacion_grave",
+     "fila": 7,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "oruga_aparece",
+     "fila": 8,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "oruga_infestacion_grave",
+     "fila": 9,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "moho_aparece",
+     "fila": 10,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "moho_infestacion_grave",
+     "fila": 11,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    }
+   ]
+  },
+  "macetas": {
+   "archivo": "tpp-macetas",
+   "ancho": 256,
+   "alto": 64,
+   "celda": 64,
+   "columnas": 4,
+   "filas": 1,
+   "sprites": [
+    {
+     "nombre": "maceta_plastico",
+     "fila": 0,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "maceta_terracota",
+     "fila": 0,
+     "columna": 1,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "maceta_tela",
+     "fila": 0,
+     "columna": 2,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "maceta_ceramica",
+     "fila": 0,
+     "columna": 3,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    }
+   ]
+  },
+  "luces": {
+   "archivo": "tpp-luces",
+   "ancho": 320,
+   "alto": 256,
+   "celda": 64,
+   "columnas": 5,
+   "filas": 4,
+   "sprites": [
+    {
+     "nombre": "luz_bombilla_apagada",
+     "fila": 0,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "luz_bombilla_encendida",
+     "fila": 0,
+     "columna": 1,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "luz_fluorescente_apagada",
+     "fila": 1,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "luz_fluorescente_encendida",
+     "fila": 1,
+     "columna": 1,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "luz_led_apagada",
+     "fila": 2,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "luz_led_encendida",
+     "fila": 2,
+     "columna": 1,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "luz_led_pro_apagada",
+     "fila": 3,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "luz_led_pro_encendida",
+     "fila": 3,
+     "columna": 1,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4
+    }
+   ]
+  },
+  "efectos": {
+   "archivo": "tpp-efectos",
+   "ancho": 256,
+   "alto": 576,
+   "celda": 64,
+   "columnas": 4,
+   "filas": 9,
+   "sprites": [
+    {
+     "nombre": "efecto_subida_nivel",
+     "fila": 0,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4,
+     "bucle": true
+    },
+    {
+     "nombre": "efecto_monedas",
+     "fila": 1,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4,
+     "bucle": true
+    },
+    {
+     "nombre": "efecto_destello_logro",
+     "fila": 2,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4,
+     "bucle": true
+    },
+    {
+     "nombre": "efecto_cofre",
+     "fila": 3,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4,
+     "bucle": true
+    },
+    {
+     "nombre": "efecto_lluvia",
+     "fila": 4,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4,
+     "bucle": true
+    },
+    {
+     "nombre": "efecto_luciernagas",
+     "fila": 5,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4,
+     "bucle": true
+    },
+    {
+     "nombre": "efecto_polvo_luz",
+     "fila": 6,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4,
+     "bucle": true
+    },
+    {
+     "nombre": "efecto_aviso_peligro",
+     "fila": 7,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4,
+     "bucle": true
+    },
+    {
+     "nombre": "efecto_confeti",
+     "fila": 8,
+     "columna": 0,
+     "ancho": 64,
+     "alto": 64,
+     "fotogramas": 4,
+     "bucle": true
+    }
+   ]
+  },
+  "mascota": {
+   "archivo": "tpp-mascota",
+   "ancho": 128,
+   "alto": 192,
+   "celda": 32,
+   "columnas": 4,
+   "filas": 6,
+   "sprites": [
+    {
+     "nombre": "gato_dormido",
+     "fila": 0,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "gato_respirando",
+     "fila": 1,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "gato_estirandose",
+     "fila": 2,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "gato_pestaneando",
+     "fila": 3,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "gato_ronroneo",
+     "fila": 4,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "gato_huyendo",
+     "fila": 5,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    }
+   ]
+  },
+  "guia": {
+   "archivo": "tpp-guia",
+   "ancho": 128,
+   "alto": 160,
+   "celda": 32,
+   "columnas": 4,
+   "filas": 5,
+   "nota": "La flecha apunta hacia abajo; gírala 90°, 180° o 270° para otras direcciones. Señalar mira a la derecha; refléjalo con scaleX(-1).",
+   "sprites": [
+    {
+     "nombre": "guia_hablar",
+     "fila": 0,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "guia_saludar",
+     "fila": 1,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "guia_senalar",
+     "fila": 2,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "guia_celebrar",
+     "fila": 3,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    },
+    {
+     "nombre": "flecha_tutorial",
+     "fila": 4,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 4
+    }
+   ]
+  }
+ },
+ "paleta_ampliacion_2": {
+  "v3": {
+   "hex": "#4e2f86",
+   "nombre": "Violeta oscuro"
+  },
+  "t1": {
+   "hex": "#1b4f5c",
+   "nombre": "Azulado oscuro"
+  },
+  "t2": {
+   "hex": "#2a7f8c",
+   "nombre": "Azulado"
+  },
+  "t3": {
+   "hex": "#5bb8b4",
+   "nombre": "Azulado luz"
+  },
+  "n1": {
+   "hex": "#0f3a24",
+   "nombre": "Verde noche"
+  },
+  "m1": {
+   "hex": "#3f9f7a",
+   "nombre": "Menta oscura"
+  },
+  "m2": {
+   "hex": "#8ad9b0",
+   "nombre": "Menta"
+  },
+  "m3": {
+   "hex": "#d2f5e2",
+   "nombre": "Menta luz"
+  },
+  "r1": {
+   "hex": "#e04a3a",
+   "nombre": "Rojo"
+  },
+  "r2": {
+   "hex": "#a02a32",
+   "nombre": "Rojo oscuro"
+  },
+  "q1": {
+   "hex": "#7d7889",
+   "nombre": "Gris oscuro"
+  },
+  "q2": {
+   "hex": "#b4b0bc",
+   "nombre": "Gris"
+  },
+  "q3": {
+   "hex": "#dedbe2",
+   "nombre": "Gris luz"
+  }
+ },
+ "violeta_epica": {
+  "v1": "#b48ee0",
+  "v2": "#7a52b8"
+ }
+}

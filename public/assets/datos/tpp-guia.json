@@ -1,0 +1,756 @@
+{
+ "nombre": "Tu Propia Planta · guía de interfaz",
+ "paleta_base": {
+  "contorno": "#1c1626",
+  "sombra": "#4b3a5e",
+  "hoja_oscura": "#1d6630",
+  "hoja": "#36a33b",
+  "hoja_luz": "#74cf45",
+  "nervio": "#c9f26b",
+  "tallo": "#2b7d33",
+  "barro_sombra": "#6a2616",
+  "barro_oscuro": "#7c2e1b",
+  "barro": "#b9512a",
+  "barro_luz": "#e07b3f",
+  "barro_brillo": "#f7b072",
+  "tierra_oscura": "#3a2418",
+  "tierra": "#5f3c26",
+  "crema": "#f6eed6"
+ },
+ "paleta_ampliacion": {
+  "amarillo_claro": "#f2ec9a",
+  "amarillo": "#d9c94a",
+  "amarillo_verdoso": "#9fa93a",
+  "marron_seco_claro": "#c49a5a",
+  "marron_seco": "#8a5a2e",
+  "dorado_claro": "#f4d36a",
+  "dorado": "#d9a43a",
+  "tierra_seca": "#8c6a48",
+  "tierra_seca_luz": "#a8845c",
+  "blanco": "#ffffff",
+  "agua_luz": "#bfe6f7",
+  "agua": "#5fb6e8",
+  "agua_oscura": "#2f6fb0",
+  "violeta_claro": "#b48ee0",
+  "violeta": "#7a52b8"
+ },
+ "web": {
+  "fondo_pagina": "#1c1626",
+  "cabecera": "#4b3a5e",
+  "anuncio_relleno": "#444141",
+  "anuncio_borde": "#7d7979",
+  "anuncio_etiqueta": "#a8845c"
+ },
+ "tonos_barra": {
+  "bien": {
+   "relleno": "#36a33b",
+   "luz": "#74cf45",
+   "sombra": "#1d6630"
+  },
+  "aviso": {
+   "relleno": "#d9a43a",
+   "luz": "#f4d36a",
+   "sombra": "#8a5a2e"
+  },
+  "peligro": {
+   "relleno": "#b9512a",
+   "luz": "#e07b3f",
+   "sombra": "#7c2e1b"
+  },
+  "umbrales": {
+   "peligro": "< 35",
+   "aviso": "35–59",
+   "bien": ">= 60"
+  }
+ },
+ "tipografia": {
+  "titulos": {
+   "familia": "Pixelify Sans",
+   "pesos": [
+    600,
+    700
+   ],
+   "uso": "títulos, botones, pestañas, valores"
+  },
+  "texto": {
+   "familia": "Archivo",
+   "pesos": [
+    400,
+    600,
+    700
+   ],
+   "uso": "texto largo, ayudas, formularios"
+  },
+  "tamanos_px": {
+   "1366": {
+    "cabecera": 17,
+    "titulo": 21,
+    "valor": 14,
+    "boton": 19,
+    "pestana": 15,
+    "pequeno": 12
+   },
+   "1920": {
+    "cabecera": 22,
+    "titulo": 28,
+    "valor": 17,
+    "boton": 24,
+    "pestana": 20,
+    "pequeno": 14
+   }
+  }
+ },
+ "escena": {
+  "rejilla_nativa": [
+   96,
+   80
+  ],
+  "capas_en_orden": [
+   "pared",
+   "ventana",
+   "suelo",
+   "estantes",
+   "lampara"
+  ],
+  "horas": [
+   "amanecer",
+   "dia",
+   "atardecer",
+   "noche"
+  ],
+  "planta": {
+   "sprite": 64,
+   "ancla_xy": [
+    16,
+    8
+   ]
+  },
+  "lampara_xy": [
+   48,
+   7
+  ],
+  "ventana": {
+   "x0": 5,
+   "y0": 7,
+   "x1": 22,
+   "y1": 27
+  },
+  "estantes": [
+   {
+    "x0": 74,
+    "y0": 14,
+    "x1": 94,
+    "y1": 27
+   },
+   {
+    "x0": 74,
+    "y0": 29,
+    "x1": 94,
+    "y1": 43
+   },
+   {
+    "x0": 2,
+    "y0": 32,
+    "x1": 18,
+    "y1": 43
+   }
+  ],
+  "hueco_libre": {
+   "x0": 66,
+   "y0": 62,
+   "x1": 94,
+   "y1": 78
+  },
+  "archivos": "escena/png/capa-{capa}-{hora}-{1x|4x|8x}.png"
+ },
+ "layout": {
+  "1920x1080": {
+   "escala_escena": 8,
+   "escala_ui": 4,
+   "cabecera_alto": 72,
+   "logo": "2x (180×64)",
+   "anuncio": [
+    160,
+    600
+   ],
+   "columna_estado": 248,
+   "columna_acciones": 248,
+   "escena": [
+    768,
+    640
+   ],
+   "separacion": 16,
+   "boton_accion_alto": 86,
+   "pestanas_alto": 64,
+   "ancho_juego": 1360
+  },
+  "1366x768": {
+   "escala_escena": 6,
+   "escala_ui": 3,
+   "cabecera_alto": 52,
+   "logo": "1x (90×32)",
+   "anuncio": [
+    160,
+    600
+   ],
+   "columna_estado": 176,
+   "columna_acciones": 176,
+   "escena": [
+    576,
+    480
+   ],
+   "separacion": 12,
+   "boton_accion_alto": 64,
+   "pestanas_alto": 48,
+   "ancho_juego": 1000
+  },
+  "estrecho": {
+   "regla": "si el ancho no cabe juego + 2 anuncios, se ocultan los anuncios; por debajo de 1040 px la escena pasa a 4x"
+  }
+ },
+ "botones": {
+  "estados": [
+   "normal",
+   "hover",
+   "pulsado",
+   "desactivado",
+   "espera"
+  ],
+  "pulsado": "baja 1 px de UI y pierde 1 px de sombra inferior",
+  "espera": "anillo de 8 pasos (tpp-ui-anillo) alrededor del icono + cuenta atrás",
+  "marcos": "ui/marcos/marco-{id}-{3x|4x}.png (9-slice)"
+ },
+ "marcos_9slice": {
+  "panel": {
+   "slice_nativo": 4,
+   "tamano_nativo": 10
+  },
+  "panel_oscuro": {
+   "slice_nativo": 4,
+   "tamano_nativo": 10
+  },
+  "boton": {
+   "slice_nativo": 3,
+   "tamano_nativo": 8
+  },
+  "boton_hover": {
+   "slice_nativo": 3,
+   "tamano_nativo": 8
+  },
+  "boton_pulsado": {
+   "slice_nativo": 2,
+   "tamano_nativo": 6
+  },
+  "boton_desactivado": {
+   "slice_nativo": 3,
+   "tamano_nativo": 8
+  },
+  "boton_espera": {
+   "slice_nativo": 3,
+   "tamano_nativo": 8
+  },
+  "boton_secundario": {
+   "slice_nativo": 3,
+   "tamano_nativo": 8
+  },
+  "boton_secundario_hover": {
+   "slice_nativo": 3,
+   "tamano_nativo": 8
+  },
+  "barra": {
+   "slice_nativo": 2,
+   "tamano_nativo": 6
+  },
+  "bocadillo": {
+   "slice_nativo": 2,
+   "tamano_nativo": 6
+  },
+  "pestana": {
+   "slice_nativo": 2,
+   "tamano_nativo": 6
+  },
+  "pestana_activa": {
+   "slice_nativo": 2,
+   "tamano_nativo": 6
+  },
+  "campo": {
+   "slice_nativo": 2,
+   "tamano_nativo": 6
+  }
+ },
+ "iconos": {
+  "celda": 12,
+  "orden": [
+   "agua",
+   "nutrientes",
+   "luz",
+   "temperatura",
+   "ph",
+   "salud",
+   "tiempo",
+   "fase",
+   "regar",
+   "abonar",
+   "podar",
+   "ajustar_luz",
+   "cosechar",
+   "anuncio",
+   "cultivo",
+   "tienda",
+   "semillas",
+   "logros",
+   "ranking",
+   "ajustes",
+   "moneda",
+   "nivel",
+   "menu",
+   "cerrar",
+   "aviso",
+   "email",
+   "candado"
+  ],
+  "hoja": "ui/png/tpp-ui-iconos-{1x|3x|4x|8x}.png"
+ },
+ "hoja_ui": {
+  "nombre": "tpp-ui",
+  "celdas": [
+   {
+    "nombre": "icono_agua",
+    "tipo": "icono",
+    "x": 0,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_nutrientes",
+    "tipo": "icono",
+    "x": 12,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_luz",
+    "tipo": "icono",
+    "x": 24,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_temperatura",
+    "tipo": "icono",
+    "x": 36,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_ph",
+    "tipo": "icono",
+    "x": 48,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_salud",
+    "tipo": "icono",
+    "x": 60,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_tiempo",
+    "tipo": "icono",
+    "x": 72,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_fase",
+    "tipo": "icono",
+    "x": 84,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_regar",
+    "tipo": "icono",
+    "x": 96,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_abonar",
+    "tipo": "icono",
+    "x": 108,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_podar",
+    "tipo": "icono",
+    "x": 120,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_ajustar_luz",
+    "tipo": "icono",
+    "x": 132,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_cosechar",
+    "tipo": "icono",
+    "x": 144,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_anuncio",
+    "tipo": "icono",
+    "x": 156,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_cultivo",
+    "tipo": "icono",
+    "x": 168,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_tienda",
+    "tipo": "icono",
+    "x": 180,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_semillas",
+    "tipo": "icono",
+    "x": 192,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_logros",
+    "tipo": "icono",
+    "x": 204,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_ranking",
+    "tipo": "icono",
+    "x": 216,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_ajustes",
+    "tipo": "icono",
+    "x": 228,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_moneda",
+    "tipo": "icono",
+    "x": 240,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_nivel",
+    "tipo": "icono",
+    "x": 252,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_menu",
+    "tipo": "icono",
+    "x": 264,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_cerrar",
+    "tipo": "icono",
+    "x": 276,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_aviso",
+    "tipo": "icono",
+    "x": 288,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_email",
+    "tipo": "icono",
+    "x": 300,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "icono_candado",
+    "tipo": "icono",
+    "x": 312,
+    "y": 0,
+    "w": 12,
+    "h": 12
+   },
+   {
+    "nombre": "anillo_espera_0de8",
+    "tipo": "anillo",
+    "x": 0,
+    "y": 14,
+    "w": 16,
+    "h": 16
+   },
+   {
+    "nombre": "anillo_espera_1de8",
+    "tipo": "anillo",
+    "x": 16,
+    "y": 14,
+    "w": 16,
+    "h": 16
+   },
+   {
+    "nombre": "anillo_espera_2de8",
+    "tipo": "anillo",
+    "x": 32,
+    "y": 14,
+    "w": 16,
+    "h": 16
+   },
+   {
+    "nombre": "anillo_espera_3de8",
+    "tipo": "anillo",
+    "x": 48,
+    "y": 14,
+    "w": 16,
+    "h": 16
+   },
+   {
+    "nombre": "anillo_espera_4de8",
+    "tipo": "anillo",
+    "x": 64,
+    "y": 14,
+    "w": 16,
+    "h": 16
+   },
+   {
+    "nombre": "anillo_espera_5de8",
+    "tipo": "anillo",
+    "x": 80,
+    "y": 14,
+    "w": 16,
+    "h": 16
+   },
+   {
+    "nombre": "anillo_espera_6de8",
+    "tipo": "anillo",
+    "x": 96,
+    "y": 14,
+    "w": 16,
+    "h": 16
+   },
+   {
+    "nombre": "anillo_espera_7de8",
+    "tipo": "anillo",
+    "x": 112,
+    "y": 14,
+    "w": 16,
+    "h": 16
+   },
+   {
+    "nombre": "anillo_espera_8de8",
+    "tipo": "anillo",
+    "x": 128,
+    "y": 14,
+    "w": 16,
+    "h": 16
+   },
+   {
+    "nombre": "marco_panel",
+    "tipo": "marco_9slice",
+    "x": 0,
+    "y": 32,
+    "w": 10,
+    "h": 10,
+    "slice": 4
+   },
+   {
+    "nombre": "marco_panel_oscuro",
+    "tipo": "marco_9slice",
+    "x": 12,
+    "y": 32,
+    "w": 10,
+    "h": 10,
+    "slice": 4
+   },
+   {
+    "nombre": "marco_boton",
+    "tipo": "marco_9slice",
+    "x": 24,
+    "y": 32,
+    "w": 8,
+    "h": 8,
+    "slice": 3
+   },
+   {
+    "nombre": "marco_boton_hover",
+    "tipo": "marco_9slice",
+    "x": 36,
+    "y": 32,
+    "w": 8,
+    "h": 8,
+    "slice": 3
+   },
+   {
+    "nombre": "marco_boton_pulsado",
+    "tipo": "marco_9slice",
+    "x": 48,
+    "y": 32,
+    "w": 6,
+    "h": 6,
+    "slice": 2
+   },
+   {
+    "nombre": "marco_boton_desactivado",
+    "tipo": "marco_9slice",
+    "x": 60,
+    "y": 32,
+    "w": 8,
+    "h": 8,
+    "slice": 3
+   },
+   {
+    "nombre": "marco_boton_espera",
+    "tipo": "marco_9slice",
+    "x": 72,
+    "y": 32,
+    "w": 8,
+    "h": 8,
+    "slice": 3
+   },
+   {
+    "nombre": "marco_boton_secundario",
+    "tipo": "marco_9slice",
+    "x": 84,
+    "y": 32,
+    "w": 8,
+    "h": 8,
+    "slice": 3
+   },
+   {
+    "nombre": "marco_boton_secundario_hover",
+    "tipo": "marco_9slice",
+    "x": 96,
+    "y": 32,
+    "w": 8,
+    "h": 8,
+    "slice": 3
+   },
+   {
+    "nombre": "marco_barra",
+    "tipo": "marco_9slice",
+    "x": 108,
+    "y": 32,
+    "w": 6,
+    "h": 6,
+    "slice": 2
+   },
+   {
+    "nombre": "marco_bocadillo",
+    "tipo": "marco_9slice",
+    "x": 120,
+    "y": 32,
+    "w": 6,
+    "h": 6,
+    "slice": 2
+   },
+   {
+    "nombre": "marco_pestana",
+    "tipo": "marco_9slice",
+    "x": 132,
+    "y": 32,
+    "w": 6,
+    "h": 6,
+    "slice": 2
+   },
+   {
+    "nombre": "marco_pestana_activa",
+    "tipo": "marco_9slice",
+    "x": 144,
+    "y": 32,
+    "w": 6,
+    "h": 6,
+    "slice": 2
+   },
+   {
+    "nombre": "marco_campo",
+    "tipo": "marco_9slice",
+    "x": 156,
+    "y": 32,
+    "w": 6,
+    "h": 6,
+    "slice": 2
+   },
+   {
+    "nombre": "cola_bocadillo",
+    "tipo": "pieza",
+    "x": 0,
+    "y": 44,
+    "w": 6,
+    "h": 5
+   }
+  ]
+ },
+ "paleta_ampliacion_2": {
+  "violeta_oscuro": "#4e2f86",
+  "azulado_oscuro": "#1b4f5c",
+  "azulado": "#2a7f8c",
+  "azulado_luz": "#5bb8b4",
+  "verde_noche": "#0f3a24",
+  "menta_oscura": "#3f9f7a",
+  "menta": "#8ad9b0",
+  "menta_luz": "#d2f5e2",
+  "rojo": "#e04a3a",
+  "rojo_oscuro": "#a02a32",
+  "gris_oscuro": "#7d7889",
+  "gris": "#b4b0bc",
+  "gris_luz": "#dedbe2"
+ }
+}

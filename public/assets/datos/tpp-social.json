@@ -1,0 +1,528 @@
+{
+ "proyecto": "Tu Propia Planta",
+ "hojas": {
+  "iconos_16": {
+   "archivo": "tpp-social-16",
+   "celda": 16,
+   "columnas": 8,
+   "filas": 3,
+   "ancho": 128,
+   "alto": 48,
+   "sprites": [
+    {
+     "nombre": "mision",
+     "grupo": "iconos",
+     "fila": 0,
+     "columna": 0,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "reloj",
+     "grupo": "iconos",
+     "fila": 0,
+     "columna": 1,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "pase",
+     "grupo": "iconos",
+     "fila": 0,
+     "columna": 2,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "regalo",
+     "grupo": "iconos",
+     "fila": 0,
+     "columna": 3,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "amigo",
+     "grupo": "iconos",
+     "fila": 0,
+     "columna": 4,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "campana",
+     "grupo": "iconos",
+     "fila": 0,
+     "columna": 5,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "mercado",
+     "grupo": "iconos",
+     "fila": 0,
+     "columna": 6,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "saludo",
+     "grupo": "iconos",
+     "fila": 0,
+     "columna": 7,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "corazon",
+     "grupo": "iconos",
+     "fila": 1,
+     "columna": 0,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "copa",
+     "grupo": "iconos",
+     "fila": 1,
+     "columna": 1,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "estrella_temporada",
+     "grupo": "iconos",
+     "fila": 1,
+     "columna": 2,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "flor_primavera",
+     "grupo": "iconos",
+     "fila": 1,
+     "columna": 3,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "sol_verano",
+     "grupo": "iconos",
+     "fila": 1,
+     "columna": 4,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "hoja_otono",
+     "grupo": "iconos",
+     "fila": 1,
+     "columna": 5,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "copo_nieve",
+     "grupo": "iconos",
+     "fila": 1,
+     "columna": 6,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "emoji_sonrisa",
+     "grupo": "emojis",
+     "fila": 1,
+     "columna": 7,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "emoji_corazon",
+     "grupo": "emojis",
+     "fila": 2,
+     "columna": 0,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "emoji_gracias",
+     "grupo": "emojis",
+     "fila": 2,
+     "columna": 1,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "emoji_animo",
+     "grupo": "emojis",
+     "fila": 2,
+     "columna": 2,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "emoji_sorpresa",
+     "grupo": "emojis",
+     "fila": 2,
+     "columna": 3,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "emoji_risa",
+     "grupo": "emojis",
+     "fila": 2,
+     "columna": 4,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "emoji_pulgar",
+     "grupo": "emojis",
+     "fila": 2,
+     "columna": 5,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "emoji_planta",
+     "grupo": "emojis",
+     "fila": 2,
+     "columna": 6,
+     "ancho": 16,
+     "alto": 16,
+     "fotogramas": 1
+    }
+   ]
+  },
+  "iconos_32": {
+   "archivo": "tpp-social-32",
+   "celda": 32,
+   "columnas": 8,
+   "filas": 3,
+   "ancho": 256,
+   "alto": 96,
+   "sprites": [
+    {
+     "nombre": "mision",
+     "grupo": "iconos",
+     "fila": 0,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "reloj",
+     "grupo": "iconos",
+     "fila": 0,
+     "columna": 1,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "pase",
+     "grupo": "iconos",
+     "fila": 0,
+     "columna": 2,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "regalo",
+     "grupo": "iconos",
+     "fila": 0,
+     "columna": 3,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "amigo",
+     "grupo": "iconos",
+     "fila": 0,
+     "columna": 4,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "campana",
+     "grupo": "iconos",
+     "fila": 0,
+     "columna": 5,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "mercado",
+     "grupo": "iconos",
+     "fila": 0,
+     "columna": 6,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "saludo",
+     "grupo": "iconos",
+     "fila": 0,
+     "columna": 7,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "corazon",
+     "grupo": "iconos",
+     "fila": 1,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "copa",
+     "grupo": "iconos",
+     "fila": 1,
+     "columna": 1,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "estrella_temporada",
+     "grupo": "iconos",
+     "fila": 1,
+     "columna": 2,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "flor_primavera",
+     "grupo": "iconos",
+     "fila": 1,
+     "columna": 3,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "sol_verano",
+     "grupo": "iconos",
+     "fila": 1,
+     "columna": 4,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "hoja_otono",
+     "grupo": "iconos",
+     "fila": 1,
+     "columna": 5,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "copo_nieve",
+     "grupo": "iconos",
+     "fila": 1,
+     "columna": 6,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "emoji_sonrisa",
+     "grupo": "emojis",
+     "fila": 1,
+     "columna": 7,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "emoji_corazon",
+     "grupo": "emojis",
+     "fila": 2,
+     "columna": 0,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "emoji_gracias",
+     "grupo": "emojis",
+     "fila": 2,
+     "columna": 1,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "emoji_animo",
+     "grupo": "emojis",
+     "fila": 2,
+     "columna": 2,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "emoji_sorpresa",
+     "grupo": "emojis",
+     "fila": 2,
+     "columna": 3,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "emoji_risa",
+     "grupo": "emojis",
+     "fila": 2,
+     "columna": 4,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "emoji_pulgar",
+     "grupo": "emojis",
+     "fila": 2,
+     "columna": 5,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    },
+    {
+     "nombre": "emoji_planta",
+     "grupo": "emojis",
+     "fila": 2,
+     "columna": 6,
+     "ancho": 32,
+     "alto": 32,
+     "fotogramas": 1
+    }
+   ]
+  }
+ },
+ "temporadas": {
+  "orden_capas": "escena base (pared, ventana, suelo, estantes, lámpara) → capa-ventana → capa-decoracion → capa-luz",
+  "capas": [
+   {
+    "nombre": "capa-ventana-primavera",
+    "temporada": "primavera",
+    "capa": "ventana",
+    "ancho": 96,
+    "alto": 80
+   },
+   {
+    "nombre": "capa-decoracion-primavera",
+    "temporada": "primavera",
+    "capa": "decoracion",
+    "ancho": 96,
+    "alto": 80
+   },
+   {
+    "nombre": "capa-luz-primavera",
+    "temporada": "primavera",
+    "capa": "luz",
+    "ancho": 96,
+    "alto": 80
+   },
+   {
+    "nombre": "capa-ventana-verano",
+    "temporada": "verano",
+    "capa": "ventana",
+    "ancho": 96,
+    "alto": 80
+   },
+   {
+    "nombre": "capa-decoracion-verano",
+    "temporada": "verano",
+    "capa": "decoracion",
+    "ancho": 96,
+    "alto": 80
+   },
+   {
+    "nombre": "capa-luz-verano",
+    "temporada": "verano",
+    "capa": "luz",
+    "ancho": 96,
+    "alto": 80
+   },
+   {
+    "nombre": "capa-ventana-otono",
+    "temporada": "otono",
+    "capa": "ventana",
+    "ancho": 96,
+    "alto": 80
+   },
+   {
+    "nombre": "capa-decoracion-otono",
+    "temporada": "otono",
+    "capa": "decoracion",
+    "ancho": 96,
+    "alto": 80
+   },
+   {
+    "nombre": "capa-luz-otono",
+    "temporada": "otono",
+    "capa": "luz",
+    "ancho": 96,
+    "alto": 80
+   },
+   {
+    "nombre": "capa-ventana-invierno",
+    "temporada": "invierno",
+    "capa": "ventana",
+    "ancho": 96,
+    "alto": 80
+   },
+   {
+    "nombre": "capa-decoracion-invierno",
+    "temporada": "invierno",
+    "capa": "decoracion",
+    "ancho": 96,
+    "alto": 80
+   },
+   {
+    "nombre": "capa-luz-invierno",
+    "temporada": "invierno",
+    "capa": "luz",
+    "ancho": 96,
+    "alto": 80
+   }
+  ]
+ }
+}

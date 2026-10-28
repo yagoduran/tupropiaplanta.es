@@ -1,0 +1,134 @@
+{
+  "hoja": "tpp-progresion",
+  "celdas": [
+    16,
+    32
+  ],
+  "columnas": 6,
+  "filas": 3,
+  "fondo": "transparente",
+  "archivos": {
+    "png": [
+      "png/tpp-progresion-16-1x.png",
+      "png/tpp-progresion-32-1x.png",
+      "png/tpp-progresion-16-4x.png",
+      "png/tpp-progresion-32-4x.png",
+      "png/tpp-progresion-16-8x.png",
+      "png/tpp-progresion-32-8x.png"
+    ],
+    "svg": [
+      "svg/tpp-progresion-16.svg",
+      "svg/tpp-progresion-32.svg"
+    ]
+  },
+  "iconos": [
+    {
+      "id": "probeta",
+      "nombre": "Probeta",
+      "fila": 0,
+      "columna": 0
+    },
+    {
+      "id": "adn",
+      "nombre": "ADN",
+      "fila": 0,
+      "columna": 1
+    },
+    {
+      "id": "capullo",
+      "nombre": "Capullo",
+      "fila": 0,
+      "columna": 2
+    },
+    {
+      "id": "arbol_mejoras",
+      "nombre": "Árbol de mejoras",
+      "fila": 0,
+      "columna": 3
+    },
+    {
+      "id": "ventilador",
+      "nombre": "Ventilador",
+      "fila": 0,
+      "columna": 4
+    },
+    {
+      "id": "riego_auto",
+      "nombre": "Riego automático",
+      "fila": 0,
+      "columna": 5
+    },
+    {
+      "id": "sensor",
+      "nombre": "Sensor",
+      "fila": 1,
+      "columna": 0
+    },
+    {
+      "id": "habitacion",
+      "nombre": "Habitación",
+      "fila": 1,
+      "columna": 1
+    },
+    {
+      "id": "llave",
+      "nombre": "Llave",
+      "fila": 1,
+      "columna": 2
+    },
+    {
+      "id": "corona_prestigio",
+      "nombre": "Corona de prestigio",
+      "fila": 1,
+      "columna": 3
+    },
+    {
+      "id": "infinito",
+      "nombre": "Infinito",
+      "fila": 1,
+      "columna": 4
+    },
+    {
+      "id": "medalla_oro",
+      "nombre": "Medalla de oro",
+      "fila": 1,
+      "columna": 5
+    },
+    {
+      "id": "medalla_plata",
+      "nombre": "Medalla de plata",
+      "fila": 2,
+      "columna": 0
+    },
+    {
+      "id": "medalla_bronce",
+      "nombre": "Medalla de bronce",
+      "fila": 2,
+      "columna": 1
+    },
+    {
+      "id": "grafica",
+      "nombre": "Gráfica",
+      "fila": 2,
+      "columna": 2
+    },
+    {
+      "id": "desafio",
+      "nombre": "Desafío",
+      "fila": 2,
+      "columna": 3
+    },
+    {
+      "id": "escudo",
+      "nombre": "Escudo",
+      "fila": 2,
+      "columna": 4
+    },
+    {
+      "id": "marco_avatar",
+      "nombre": "Marco de avatar",
+      "fila": 2,
+      "columna": 5
+    }
+  ]
+}

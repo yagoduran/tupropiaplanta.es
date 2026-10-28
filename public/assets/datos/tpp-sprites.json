@@ -1,0 +1,1165 @@
+{
+ "tamano_celda": 64,
+ "escalas_png": [
+  1,
+  4,
+  8
+ ],
+ "hojas": {
+  "fase1-semilla": {
+   "archivo": "tpp-fase1-semilla",
+   "columnas": 1,
+   "filas": 1
+  },
+  "fase2-brote": {
+   "archivo": "tpp-fase2-brote",
+   "columnas": 1,
+   "filas": 1
+  },
+  "fase3-plantula": {
+   "archivo": "tpp-fase3-plantula",
+   "columnas": 8,
+   "filas": 1
+  },
+  "fase4-vegetativo-joven": {
+   "archivo": "tpp-fase4-vegetativo-joven",
+   "columnas": 8,
+   "filas": 1
+  },
+  "fase5-vegetativo-adulto": {
+   "archivo": "tpp-fase5-vegetativo-adulto",
+   "columnas": 8,
+   "filas": 1
+  },
+  "fase6-prefloracion": {
+   "archivo": "tpp-fase6-prefloracion",
+   "columnas": 8,
+   "filas": 1
+  },
+  "fase7-floracion": {
+   "archivo": "tpp-fase7-floracion",
+   "columnas": 8,
+   "filas": 1
+  },
+  "fase8-cosecha": {
+   "archivo": "tpp-fase8-cosecha",
+   "columnas": 8,
+   "filas": 1
+  },
+  "completa": {
+   "archivo": "tpp-plantas",
+   "columnas": 8,
+   "filas": 8
+  },
+  "animaciones": {
+   "archivo": "tpp-animaciones",
+   "columnas": 4,
+   "filas": 11
+  }
+ },
+ "sprites": [
+  {
+   "nombre": "semilla_sana",
+   "fase": 1,
+   "estado": "sana",
+   "hoja_fase": "tpp-fase1-semilla",
+   "fila_fase": 0,
+   "columna_fase": 0,
+   "hoja_completa": "tpp-plantas",
+   "fila": 0,
+   "columna": 0,
+   "x": 0,
+   "y": 0,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "brote_sana",
+   "fase": 2,
+   "estado": "sana",
+   "hoja_fase": "tpp-fase2-brote",
+   "fila_fase": 0,
+   "columna_fase": 0,
+   "hoja_completa": "tpp-plantas",
+   "fila": 1,
+   "columna": 0,
+   "x": 0,
+   "y": 64,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "plantula_sana",
+   "fase": 3,
+   "estado": "sana",
+   "hoja_fase": "tpp-fase3-plantula",
+   "fila_fase": 0,
+   "columna_fase": 0,
+   "hoja_completa": "tpp-plantas",
+   "fila": 2,
+   "columna": 0,
+   "x": 0,
+   "y": 128,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "plantula_sedienta",
+   "fase": 3,
+   "estado": "sedienta",
+   "hoja_fase": "tpp-fase3-plantula",
+   "fila_fase": 0,
+   "columna_fase": 1,
+   "hoja_completa": "tpp-plantas",
+   "fila": 2,
+   "columna": 1,
+   "x": 64,
+   "y": 128,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "plantula_exceso_agua",
+   "fase": 3,
+   "estado": "exceso_agua",
+   "hoja_fase": "tpp-fase3-plantula",
+   "fila_fase": 0,
+   "columna_fase": 2,
+   "hoja_completa": "tpp-plantas",
+   "fila": 2,
+   "columna": 2,
+   "x": 128,
+   "y": 128,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "plantula_falta_nutrientes",
+   "fase": 3,
+   "estado": "falta_nutrientes",
+   "hoja_fase": "tpp-fase3-plantula",
+   "fila_fase": 0,
+   "columna_fase": 3,
+   "hoja_completa": "tpp-plantas",
+   "fila": 2,
+   "columna": 3,
+   "x": 192,
+   "y": 128,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "plantula_plaga",
+   "fase": 3,
+   "estado": "plaga",
+   "hoja_fase": "tpp-fase3-plantula",
+   "fila_fase": 0,
+   "columna_fase": 4,
+   "hoja_completa": "tpp-plantas",
+   "fila": 2,
+   "columna": 4,
+   "x": 256,
+   "y": 128,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "plantula_hongo",
+   "fase": 3,
+   "estado": "hongo",
+   "hoja_fase": "tpp-fase3-plantula",
+   "fila_fase": 0,
+   "columna_fase": 5,
+   "hoja_completa": "tpp-plantas",
+   "fila": 2,
+   "columna": 5,
+   "x": 320,
+   "y": 128,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "plantula_muriendo",
+   "fase": 3,
+   "estado": "muriendo",
+   "hoja_fase": "tpp-fase3-plantula",
+   "fila_fase": 0,
+   "columna_fase": 6,
+   "hoja_completa": "tpp-plantas",
+   "fila": 2,
+   "columna": 6,
+   "x": 384,
+   "y": 128,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "plantula_muerta",
+   "fase": 3,
+   "estado": "muerta",
+   "hoja_fase": "tpp-fase3-plantula",
+   "fila_fase": 0,
+   "columna_fase": 7,
+   "hoja_completa": "tpp-plantas",
+   "fila": 2,
+   "columna": 7,
+   "x": 448,
+   "y": 128,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "vegetativo_joven_sana",
+   "fase": 4,
+   "estado": "sana",
+   "hoja_fase": "tpp-fase4-vegetativo-joven",
+   "fila_fase": 0,
+   "columna_fase": 0,
+   "hoja_completa": "tpp-plantas",
+   "fila": 3,
+   "columna": 0,
+   "x": 0,
+   "y": 192,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "vegetativo_joven_sedienta",
+   "fase": 4,
+   "estado": "sedienta",
+   "hoja_fase": "tpp-fase4-vegetativo-joven",
+   "fila_fase": 0,
+   "columna_fase": 1,
+   "hoja_completa": "tpp-plantas",
+   "fila": 3,
+   "columna": 1,
+   "x": 64,
+   "y": 192,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "vegetativo_joven_exceso_agua",
+   "fase": 4,
+   "estado": "exceso_agua",
+   "hoja_fase": "tpp-fase4-vegetativo-joven",
+   "fila_fase": 0,
+   "columna_fase": 2,
+   "hoja_completa": "tpp-plantas",
+   "fila": 3,
+   "columna": 2,
+   "x": 128,
+   "y": 192,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "vegetativo_joven_falta_nutrientes",
+   "fase": 4,
+   "estado": "falta_nutrientes",
+   "hoja_fase": "tpp-fase4-vegetativo-joven",
+   "fila_fase": 0,
+   "columna_fase": 3,
+   "hoja_completa": "tpp-plantas",
+   "fila": 3,
+   "columna": 3,
+   "x": 192,
+   "y": 192,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "vegetativo_joven_plaga",
+   "fase": 4,
+   "estado": "plaga",
+   "hoja_fase": "tpp-fase4-vegetativo-joven",
+   "fila_fase": 0,
+   "columna_fase": 4,
+   "hoja_completa": "tpp-plantas",
+   "fila": 3,
+   "columna": 4,
+   "x": 256,
+   "y": 192,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "vegetativo_joven_hongo",
+   "fase": 4,
+   "estado": "hongo",
+   "hoja_fase": "tpp-fase4-vegetativo-joven",
+   "fila_fase": 0,
+   "columna_fase": 5,
+   "hoja_completa": "tpp-plantas",
+   "fila": 3,
+   "columna": 5,
+   "x": 320,
+   "y": 192,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "vegetativo_joven_muriendo",
+   "fase": 4,
+   "estado": "muriendo",
+   "hoja_fase": "tpp-fase4-vegetativo-joven",
+   "fila_fase": 0,
+   "columna_fase": 6,
+   "hoja_completa": "tpp-plantas",
+   "fila": 3,
+   "columna": 6,
+   "x": 384,
+   "y": 192,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "vegetativo_joven_muerta",
+   "fase": 4,
+   "estado": "muerta",
+   "hoja_fase": "tpp-fase4-vegetativo-joven",
+   "fila_fase": 0,
+   "columna_fase": 7,
+   "hoja_completa": "tpp-plantas",
+   "fila": 3,
+   "columna": 7,
+   "x": 448,
+   "y": 192,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "vegetativo_adulto_sana",
+   "fase": 5,
+   "estado": "sana",
+   "hoja_fase": "tpp-fase5-vegetativo-adulto",
+   "fila_fase": 0,
+   "columna_fase": 0,
+   "hoja_completa": "tpp-plantas",
+   "fila": 4,
+   "columna": 0,
+   "x": 0,
+   "y": 256,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "vegetativo_adulto_sedienta",
+   "fase": 5,
+   "estado": "sedienta",
+   "hoja_fase": "tpp-fase5-vegetativo-adulto",
+   "fila_fase": 0,
+   "columna_fase": 1,
+   "hoja_completa": "tpp-plantas",
+   "fila": 4,
+   "columna": 1,
+   "x": 64,
+   "y": 256,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "vegetativo_adulto_exceso_agua",
+   "fase": 5,
+   "estado": "exceso_agua",
+   "hoja_fase": "tpp-fase5-vegetativo-adulto",
+   "fila_fase": 0,
+   "columna_fase": 2,
+   "hoja_completa": "tpp-plantas",
+   "fila": 4,
+   "columna": 2,
+   "x": 128,
+   "y": 256,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "vegetativo_adulto_falta_nutrientes",
+   "fase": 5,
+   "estado": "falta_nutrientes",
+   "hoja_fase": "tpp-fase5-vegetativo-adulto",
+   "fila_fase": 0,
+   "columna_fase": 3,
+   "hoja_completa": "tpp-plantas",
+   "fila": 4,
+   "columna": 3,
+   "x": 192,
+   "y": 256,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "vegetativo_adulto_plaga",
+   "fase": 5,
+   "estado": "plaga",
+   "hoja_fase": "tpp-fase5-vegetativo-adulto",
+   "fila_fase": 0,
+   "columna_fase": 4,
+   "hoja_completa": "tpp-plantas",
+   "fila": 4,
+   "columna": 4,
+   "x": 256,
+   "y": 256,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "vegetativo_adulto_hongo",
+   "fase": 5,
+   "estado": "hongo",
+   "hoja_fase": "tpp-fase5-vegetativo-adulto",
+   "fila_fase": 0,
+   "columna_fase": 5,
+   "hoja_completa": "tpp-plantas",
+   "fila": 4,
+   "columna": 5,
+   "x": 320,
+   "y": 256,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "vegetativo_adulto_muriendo",
+   "fase": 5,
+   "estado": "muriendo",
+   "hoja_fase": "tpp-fase5-vegetativo-adulto",
+   "fila_fase": 0,
+   "columna_fase": 6,
+   "hoja_completa": "tpp-plantas",
+   "fila": 4,
+   "columna": 6,
+   "x": 384,
+   "y": 256,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "vegetativo_adulto_muerta",
+   "fase": 5,
+   "estado": "muerta",
+   "hoja_fase": "tpp-fase5-vegetativo-adulto",
+   "fila_fase": 0,
+   "columna_fase": 7,
+   "hoja_completa": "tpp-plantas",
+   "fila": 4,
+   "columna": 7,
+   "x": 448,
+   "y": 256,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "prefloracion_sana",
+   "fase": 6,
+   "estado": "sana",
+   "hoja_fase": "tpp-fase6-prefloracion",
+   "fila_fase": 0,
+   "columna_fase": 0,
+   "hoja_completa": "tpp-plantas",
+   "fila": 5,
+   "columna": 0,
+   "x": 0,
+   "y": 320,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "prefloracion_sedienta",
+   "fase": 6,
+   "estado": "sedienta",
+   "hoja_fase": "tpp-fase6-prefloracion",
+   "fila_fase": 0,
+   "columna_fase": 1,
+   "hoja_completa": "tpp-plantas",
+   "fila": 5,
+   "columna": 1,
+   "x": 64,
+   "y": 320,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "prefloracion_exceso_agua",
+   "fase": 6,
+   "estado": "exceso_agua",
+   "hoja_fase": "tpp-fase6-prefloracion",
+   "fila_fase": 0,
+   "columna_fase": 2,
+   "hoja_completa": "tpp-plantas",
+   "fila": 5,
+   "columna": 2,
+   "x": 128,
+   "y": 320,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "prefloracion_falta_nutrientes",
+   "fase": 6,
+   "estado": "falta_nutrientes",
+   "hoja_fase": "tpp-fase6-prefloracion",
+   "fila_fase": 0,
+   "columna_fase": 3,
+   "hoja_completa": "tpp-plantas",
+   "fila": 5,
+   "columna": 3,
+   "x": 192,
+   "y": 320,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "prefloracion_plaga",
+   "fase": 6,
+   "estado": "plaga",
+   "hoja_fase": "tpp-fase6-prefloracion",
+   "fila_fase": 0,
+   "columna_fase": 4,
+   "hoja_completa": "tpp-plantas",
+   "fila": 5,
+   "columna": 4,
+   "x": 256,
+   "y": 320,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "prefloracion_hongo",
+   "fase": 6,
+   "estado": "hongo",
+   "hoja_fase": "tpp-fase6-prefloracion",
+   "fila_fase": 0,
+   "columna_fase": 5,
+   "hoja_completa": "tpp-plantas",
+   "fila": 5,
+   "columna": 5,
+   "x": 320,
+   "y": 320,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "prefloracion_muriendo",
+   "fase": 6,
+   "estado": "muriendo",
+   "hoja_fase": "tpp-fase6-prefloracion",
+   "fila_fase": 0,
+   "columna_fase": 6,
+   "hoja_completa": "tpp-plantas",
+   "fila": 5,
+   "columna": 6,
+   "x": 384,
+   "y": 320,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "prefloracion_muerta",
+   "fase": 6,
+   "estado": "muerta",
+   "hoja_fase": "tpp-fase6-prefloracion",
+   "fila_fase": 0,
+   "columna_fase": 7,
+   "hoja_completa": "tpp-plantas",
+   "fila": 5,
+   "columna": 7,
+   "x": 448,
+   "y": 320,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "floracion_sana",
+   "fase": 7,
+   "estado": "sana",
+   "hoja_fase": "tpp-fase7-floracion",
+   "fila_fase": 0,
+   "columna_fase": 0,
+   "hoja_completa": "tpp-plantas",
+   "fila": 6,
+   "columna": 0,
+   "x": 0,
+   "y": 384,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "floracion_sedienta",
+   "fase": 7,
+   "estado": "sedienta",
+   "hoja_fase": "tpp-fase7-floracion",
+   "fila_fase": 0,
+   "columna_fase": 1,
+   "hoja_completa": "tpp-plantas",
+   "fila": 6,
+   "columna": 1,
+   "x": 64,
+   "y": 384,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "floracion_exceso_agua",
+   "fase": 7,
+   "estado": "exceso_agua",
+   "hoja_fase": "tpp-fase7-floracion",
+   "fila_fase": 0,
+   "columna_fase": 2,
+   "hoja_completa": "tpp-plantas",
+   "fila": 6,
+   "columna": 2,
+   "x": 128,
+   "y": 384,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "floracion_falta_nutrientes",
+   "fase": 7,
+   "estado": "falta_nutrientes",
+   "hoja_fase": "tpp-fase7-floracion",
+   "fila_fase": 0,
+   "columna_fase": 3,
+   "hoja_completa": "tpp-plantas",
+   "fila": 6,
+   "columna": 3,
+   "x": 192,
+   "y": 384,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "floracion_plaga",
+   "fase": 7,
+   "estado": "plaga",
+   "hoja_fase": "tpp-fase7-floracion",
+   "fila_fase": 0,
+   "columna_fase": 4,
+   "hoja_completa": "tpp-plantas",
+   "fila": 6,
+   "columna": 4,
+   "x": 256,
+   "y": 384,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "floracion_hongo",
+   "fase": 7,
+   "estado": "hongo",
+   "hoja_fase": "tpp-fase7-floracion",
+   "fila_fase": 0,
+   "columna_fase": 5,
+   "hoja_completa": "tpp-plantas",
+   "fila": 6,
+   "columna": 5,
+   "x": 320,
+   "y": 384,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "floracion_muriendo",
+   "fase": 7,
+   "estado": "muriendo",
+   "hoja_fase": "tpp-fase7-floracion",
+   "fila_fase": 0,
+   "columna_fase": 6,
+   "hoja_completa": "tpp-plantas",
+   "fila": 6,
+   "columna": 6,
+   "x": 384,
+   "y": 384,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "floracion_muerta",
+   "fase": 7,
+   "estado": "muerta",
+   "hoja_fase": "tpp-fase7-floracion",
+   "fila_fase": 0,
+   "columna_fase": 7,
+   "hoja_completa": "tpp-plantas",
+   "fila": 6,
+   "columna": 7,
+   "x": 448,
+   "y": 384,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "cosecha_sana",
+   "fase": 8,
+   "estado": "sana",
+   "hoja_fase": "tpp-fase8-cosecha",
+   "fila_fase": 0,
+   "columna_fase": 0,
+   "hoja_completa": "tpp-plantas",
+   "fila": 7,
+   "columna": 0,
+   "x": 0,
+   "y": 448,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "cosecha_sedienta",
+   "fase": 8,
+   "estado": "sedienta",
+   "hoja_fase": "tpp-fase8-cosecha",
+   "fila_fase": 0,
+   "columna_fase": 1,
+   "hoja_completa": "tpp-plantas",
+   "fila": 7,
+   "columna": 1,
+   "x": 64,
+   "y": 448,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "cosecha_exceso_agua",
+   "fase": 8,
+   "estado": "exceso_agua",
+   "hoja_fase": "tpp-fase8-cosecha",
+   "fila_fase": 0,
+   "columna_fase": 2,
+   "hoja_completa": "tpp-plantas",
+   "fila": 7,
+   "columna": 2,
+   "x": 128,
+   "y": 448,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "cosecha_falta_nutrientes",
+   "fase": 8,
+   "estado": "falta_nutrientes",
+   "hoja_fase": "tpp-fase8-cosecha",
+   "fila_fase": 0,
+   "columna_fase": 3,
+   "hoja_completa": "tpp-plantas",
+   "fila": 7,
+   "columna": 3,
+   "x": 192,
+   "y": 448,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "cosecha_plaga",
+   "fase": 8,
+   "estado": "plaga",
+   "hoja_fase": "tpp-fase8-cosecha",
+   "fila_fase": 0,
+   "columna_fase": 4,
+   "hoja_completa": "tpp-plantas",
+   "fila": 7,
+   "columna": 4,
+   "x": 256,
+   "y": 448,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "cosecha_hongo",
+   "fase": 8,
+   "estado": "hongo",
+   "hoja_fase": "tpp-fase8-cosecha",
+   "fila_fase": 0,
+   "columna_fase": 5,
+   "hoja_completa": "tpp-plantas",
+   "fila": 7,
+   "columna": 5,
+   "x": 320,
+   "y": 448,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "cosecha_muriendo",
+   "fase": 8,
+   "estado": "muriendo",
+   "hoja_fase": "tpp-fase8-cosecha",
+   "fila_fase": 0,
+   "columna_fase": 6,
+   "hoja_completa": "tpp-plantas",
+   "fila": 7,
+   "columna": 6,
+   "x": 384,
+   "y": 448,
+   "w": 64,
+   "h": 64
+  },
+  {
+   "nombre": "cosecha_muerta",
+   "fase": 8,
+   "estado": "muerta",
+   "hoja_fase": "tpp-fase8-cosecha",
+   "fila_fase": 0,
+   "columna_fase": 7,
+   "hoja_completa": "tpp-plantas",
+   "fila": 7,
+   "columna": 7,
+   "x": 448,
+   "y": 448,
+   "w": 64,
+   "h": 64
+  }
+ ],
+ "animaciones": [
+  {
+   "nombre": "reposo_2",
+   "hoja": "tpp-animaciones",
+   "fila": 0,
+   "fotogramas": [
+    {
+     "columna": 0,
+     "x": 0,
+     "y": 0
+    },
+    {
+     "columna": 1,
+     "x": 64,
+     "y": 0
+    },
+    {
+     "columna": 2,
+     "x": 128,
+     "y": 0
+    },
+    {
+     "columna": 3,
+     "x": 192,
+     "y": 0
+    }
+   ],
+   "fps": 6,
+   "bucle": true
+  },
+  {
+   "nombre": "reposo_3",
+   "hoja": "tpp-animaciones",
+   "fila": 1,
+   "fotogramas": [
+    {
+     "columna": 0,
+     "x": 0,
+     "y": 64
+    },
+    {
+     "columna": 1,
+     "x": 64,
+     "y": 64
+    },
+    {
+     "columna": 2,
+     "x": 128,
+     "y": 64
+    },
+    {
+     "columna": 3,
+     "x": 192,
+     "y": 64
+    }
+   ],
+   "fps": 6,
+   "bucle": true
+  },
+  {
+   "nombre": "reposo_4",
+   "hoja": "tpp-animaciones",
+   "fila": 2,
+   "fotogramas": [
+    {
+     "columna": 0,
+     "x": 0,
+     "y": 128
+    },
+    {
+     "columna": 1,
+     "x": 64,
+     "y": 128
+    },
+    {
+     "columna": 2,
+     "x": 128,
+     "y": 128
+    },
+    {
+     "columna": 3,
+     "x": 192,
+     "y": 128
+    }
+   ],
+   "fps": 6,
+   "bucle": true
+  },
+  {
+   "nombre": "reposo_5",
+   "hoja": "tpp-animaciones",
+   "fila": 3,
+   "fotogramas": [
+    {
+     "columna": 0,
+     "x": 0,
+     "y": 192
+    },
+    {
+     "columna": 1,
+     "x": 64,
+     "y": 192
+    },
+    {
+     "columna": 2,
+     "x": 128,
+     "y": 192
+    },
+    {
+     "columna": 3,
+     "x": 192,
+     "y": 192
+    }
+   ],
+   "fps": 6,
+   "bucle": true
+  },
+  {
+   "nombre": "reposo_6",
+   "hoja": "tpp-animaciones",
+   "fila": 4,
+   "fotogramas": [
+    {
+     "columna": 0,
+     "x": 0,
+     "y": 256
+    },
+    {
+     "columna": 1,
+     "x": 64,
+     "y": 256
+    },
+    {
+     "columna": 2,
+     "x": 128,
+     "y": 256
+    },
+    {
+     "columna": 3,
+     "x": 192,
+     "y": 256
+    }
+   ],
+   "fps": 6,
+   "bucle": true
+  },
+  {
+   "nombre": "reposo_7",
+   "hoja": "tpp-animaciones",
+   "fila": 5,
+   "fotogramas": [
+    {
+     "columna": 0,
+     "x": 0,
+     "y": 320
+    },
+    {
+     "columna": 1,
+     "x": 64,
+     "y": 320
+    },
+    {
+     "columna": 2,
+     "x": 128,
+     "y": 320
+    },
+    {
+     "columna": 3,
+     "x": 192,
+     "y": 320
+    }
+   ],
+   "fps": 6,
+   "bucle": true
+  },
+  {
+   "nombre": "reposo_8",
+   "hoja": "tpp-animaciones",
+   "fila": 6,
+   "fotogramas": [
+    {
+     "columna": 0,
+     "x": 0,
+     "y": 384
+    },
+    {
+     "columna": 1,
+     "x": 64,
+     "y": 384
+    },
+    {
+     "columna": 2,
+     "x": 128,
+     "y": 384
+    },
+    {
+     "columna": 3,
+     "x": 192,
+     "y": 384
+    }
+   ],
+   "fps": 6,
+   "bucle": true
+  },
+  {
+   "nombre": "regar",
+   "hoja": "tpp-animaciones",
+   "fila": 7,
+   "fotogramas": [
+    {
+     "columna": 0,
+     "x": 0,
+     "y": 448
+    },
+    {
+     "columna": 1,
+     "x": 64,
+     "y": 448
+    },
+    {
+     "columna": 2,
+     "x": 128,
+     "y": 448
+    },
+    {
+     "columna": 3,
+     "x": 192,
+     "y": 448
+    }
+   ],
+   "fps": 6,
+   "bucle": true
+  },
+  {
+   "nombre": "podar",
+   "hoja": "tpp-animaciones",
+   "fila": 8,
+   "fotogramas": [
+    {
+     "columna": 0,
+     "x": 0,
+     "y": 512
+    },
+    {
+     "columna": 1,
+     "x": 64,
+     "y": 512
+    },
+    {
+     "columna": 2,
+     "x": 128,
+     "y": 512
+    },
+    {
+     "columna": 3,
+     "x": 192,
+     "y": 512
+    }
+   ],
+   "fps": 6,
+   "bucle": true
+  },
+  {
+   "nombre": "cosecha",
+   "hoja": "tpp-animaciones",
+   "fila": 9,
+   "fotogramas": [
+    {
+     "columna": 0,
+     "x": 0,
+     "y": 576
+    },
+    {
+     "columna": 1,
+     "x": 64,
+     "y": 576
+    },
+    {
+     "columna": 2,
+     "x": 128,
+     "y": 576
+    },
+    {
+     "columna": 3,
+     "x": 192,
+     "y": 576
+    }
+   ],
+   "fps": 6,
+   "bucle": true
+  },
+  {
+   "nombre": "crecimiento",
+   "hoja": "tpp-animaciones",
+   "fila": 10,
+   "fotogramas": [
+    {
+     "columna": 0,
+     "x": 0,
+     "y": 640
+    },
+    {
+     "columna": 1,
+     "x": 64,
+     "y": 640
+    },
+    {
+     "columna": 2,
+     "x": 128,
+     "y": 640
+    },
+    {
+     "columna": 3,
+     "x": 192,
+     "y": 640
+    }
+   ],
+   "fps": 6,
+   "bucle": true
+  }
+ ],
+ "paleta": {
+  "o": "#1c1626",
+  "s": "#4b3a5e",
+  "l1": "#1d6630",
+  "l2": "#36a33b",
+  "l3": "#74cf45",
+  "l4": "#c9f26b",
+  "st": "#2b7d33",
+  "pb": "#6a2616",
+  "p1": "#7c2e1b",
+  "p2": "#b9512a",
+  "p3": "#e07b3f",
+  "p4": "#f7b072",
+  "d1": "#3a2418",
+  "d2": "#5f3c26",
+  "c": "#f6eed6"
+ },
+ "paleta_ampliacion": {
+  "y1": "#f2ec9a",
+  "y2": "#d9c94a",
+  "y3": "#9fa93a",
+  "b1": "#c49a5a",
+  "b2": "#8a5a2e",
+  "g1": "#f4d36a",
+  "g2": "#d9a43a",
+  "sd": "#8c6a48",
+  "sd2": "#a8845c",
+  "w": "#ffffff",
+  "a1": "#bfe6f7",
+  "a2": "#5fb6e8",
+  "a3": "#2f6fb0"
+ }
+}

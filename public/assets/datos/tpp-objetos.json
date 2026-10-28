@@ -1,0 +1,417 @@
+{
+ "hojas": {
+  "16": {
+   "archivo": "tpp-objetos-16",
+   "celda": 16,
+   "columnas": 9,
+   "filas": 7
+  },
+  "32": {
+   "archivo": "tpp-objetos-32",
+   "celda": 32,
+   "columnas": 9,
+   "filas": 7
+  }
+ },
+ "categorias": [
+  "macetas",
+  "luces",
+  "fertilizantes",
+  "herramientas",
+  "decoracion",
+  "varios",
+  "avatares"
+ ],
+ "iconos": [
+  {
+   "nombre": "maceta_plastico",
+   "categoria": "macetas",
+   "fila": 0,
+   "columna": 0,
+   "x32": 0,
+   "y32": 0,
+   "x16": 0,
+   "y16": 0
+  },
+  {
+   "nombre": "maceta_terracota",
+   "categoria": "macetas",
+   "fila": 0,
+   "columna": 1,
+   "x32": 32,
+   "y32": 0,
+   "x16": 16,
+   "y16": 0
+  },
+  {
+   "nombre": "maceta_tela",
+   "categoria": "macetas",
+   "fila": 0,
+   "columna": 2,
+   "x32": 64,
+   "y32": 0,
+   "x16": 32,
+   "y16": 0
+  },
+  {
+   "nombre": "maceta_ceramica",
+   "categoria": "macetas",
+   "fila": 0,
+   "columna": 3,
+   "x32": 96,
+   "y32": 0,
+   "x16": 48,
+   "y16": 0
+  },
+  {
+   "nombre": "bombilla",
+   "categoria": "luces",
+   "fila": 1,
+   "columna": 0,
+   "x32": 0,
+   "y32": 32,
+   "x16": 0,
+   "y16": 16
+  },
+  {
+   "nombre": "fluorescente",
+   "categoria": "luces",
+   "fila": 1,
+   "columna": 1,
+   "x32": 32,
+   "y32": 32,
+   "x16": 16,
+   "y16": 16
+  },
+  {
+   "nombre": "led",
+   "categoria": "luces",
+   "fila": 1,
+   "columna": 2,
+   "x32": 64,
+   "y32": 32,
+   "x16": 32,
+   "y16": 16
+  },
+  {
+   "nombre": "led_pro",
+   "categoria": "luces",
+   "fila": 1,
+   "columna": 3,
+   "x32": 96,
+   "y32": 32,
+   "x16": 48,
+   "y16": 16
+  },
+  {
+   "nombre": "fert_generico",
+   "categoria": "fertilizantes",
+   "fila": 2,
+   "columna": 0,
+   "x32": 0,
+   "y32": 64,
+   "x16": 0,
+   "y16": 32
+  },
+  {
+   "nombre": "fert_crecimiento",
+   "categoria": "fertilizantes",
+   "fila": 2,
+   "columna": 1,
+   "x32": 32,
+   "y32": 64,
+   "x16": 16,
+   "y16": 32
+  },
+  {
+   "nombre": "fert_floracion",
+   "categoria": "fertilizantes",
+   "fila": 2,
+   "columna": 2,
+   "x32": 64,
+   "y32": 64,
+   "x16": 32,
+   "y16": 32
+  },
+  {
+   "nombre": "fert_mejorador",
+   "categoria": "fertilizantes",
+   "fila": 2,
+   "columna": 3,
+   "x32": 96,
+   "y32": 64,
+   "x16": 48,
+   "y16": 32
+  },
+  {
+   "nombre": "regadera",
+   "categoria": "herramientas",
+   "fila": 3,
+   "columna": 0,
+   "x32": 0,
+   "y32": 96,
+   "x16": 0,
+   "y16": 48
+  },
+  {
+   "nombre": "tijeras",
+   "categoria": "herramientas",
+   "fila": 3,
+   "columna": 1,
+   "x32": 32,
+   "y32": 96,
+   "x16": 16,
+   "y16": 48
+  },
+  {
+   "nombre": "medidor_ph",
+   "categoria": "herramientas",
+   "fila": 3,
+   "columna": 2,
+   "x32": 64,
+   "y32": 96,
+   "x16": 32,
+   "y16": 48
+  },
+  {
+   "nombre": "termometro",
+   "categoria": "herramientas",
+   "fila": 3,
+   "columna": 3,
+   "x32": 96,
+   "y32": 96,
+   "x16": 48,
+   "y16": 48
+  },
+  {
+   "nombre": "pulverizador_plagas",
+   "categoria": "herramientas",
+   "fila": 3,
+   "columna": 4,
+   "x32": 128,
+   "y32": 96,
+   "x16": 64,
+   "y16": 48
+  },
+  {
+   "nombre": "fungicida",
+   "categoria": "herramientas",
+   "fila": 3,
+   "columna": 5,
+   "x32": 160,
+   "y32": 96,
+   "x16": 80,
+   "y16": 48
+  },
+  {
+   "nombre": "poster",
+   "categoria": "decoracion",
+   "fila": 4,
+   "columna": 0,
+   "x32": 0,
+   "y32": 128,
+   "x16": 0,
+   "y16": 64
+  },
+  {
+   "nombre": "planta_adorno",
+   "categoria": "decoracion",
+   "fila": 4,
+   "columna": 1,
+   "x32": 32,
+   "y32": 128,
+   "x16": 16,
+   "y16": 64
+  },
+  {
+   "nombre": "radio",
+   "categoria": "decoracion",
+   "fila": 4,
+   "columna": 2,
+   "x32": 64,
+   "y32": 128,
+   "x16": 32,
+   "y16": 64
+  },
+  {
+   "nombre": "gato",
+   "categoria": "decoracion",
+   "fila": 4,
+   "columna": 3,
+   "x32": 96,
+   "y32": 128,
+   "x16": 48,
+   "y16": 64
+  },
+  {
+   "nombre": "moneda",
+   "categoria": "varios",
+   "fila": 5,
+   "columna": 0,
+   "x32": 0,
+   "y32": 160,
+   "x16": 0,
+   "y16": 80
+  },
+  {
+   "nombre": "experiencia",
+   "categoria": "varios",
+   "fila": 5,
+   "columna": 1,
+   "x32": 32,
+   "y32": 160,
+   "x16": 16,
+   "y16": 80
+  },
+  {
+   "nombre": "cofre_cerrado",
+   "categoria": "varios",
+   "fila": 5,
+   "columna": 2,
+   "x32": 64,
+   "y32": 160,
+   "x16": 32,
+   "y16": 80
+  },
+  {
+   "nombre": "cofre_abierto",
+   "categoria": "varios",
+   "fila": 5,
+   "columna": 3,
+   "x32": 96,
+   "y32": 160,
+   "x16": 48,
+   "y16": 80
+  },
+  {
+   "nombre": "candado",
+   "categoria": "varios",
+   "fila": 5,
+   "columna": 4,
+   "x32": 128,
+   "y32": 160,
+   "x16": 64,
+   "y16": 80
+  },
+  {
+   "nombre": "estrella",
+   "categoria": "varios",
+   "fila": 5,
+   "columna": 5,
+   "x32": 160,
+   "y32": 160,
+   "x16": 80,
+   "y16": 80
+  },
+  {
+   "nombre": "corona",
+   "categoria": "varios",
+   "fila": 5,
+   "columna": 6,
+   "x32": 192,
+   "y32": 160,
+   "x16": 96,
+   "y16": 80
+  },
+  {
+   "nombre": "medalla",
+   "categoria": "varios",
+   "fila": 5,
+   "columna": 7,
+   "x32": 224,
+   "y32": 160,
+   "x16": 112,
+   "y16": 80
+  },
+  {
+   "nombre": "llama",
+   "categoria": "varios",
+   "fila": 5,
+   "columna": 8,
+   "x32": 256,
+   "y32": 160,
+   "x16": 128,
+   "y16": 80
+  },
+  {
+   "nombre": "avatar_gorra",
+   "categoria": "avatares",
+   "fila": 6,
+   "columna": 0,
+   "x32": 0,
+   "y32": 192,
+   "x16": 0,
+   "y16": 96
+  },
+  {
+   "nombre": "avatar_sombrero",
+   "categoria": "avatares",
+   "fila": 6,
+   "columna": 1,
+   "x32": 32,
+   "y32": 192,
+   "x16": 16,
+   "y16": 96
+  },
+  {
+   "nombre": "avatar_gorro",
+   "categoria": "avatares",
+   "fila": 6,
+   "columna": 2,
+   "x32": 64,
+   "y32": 192,
+   "x16": 32,
+   "y16": 96
+  },
+  {
+   "nombre": "avatar_bandana",
+   "categoria": "avatares",
+   "fila": 6,
+   "columna": 3,
+   "x32": 96,
+   "y32": 192,
+   "x16": 48,
+   "y16": 96
+  },
+  {
+   "nombre": "avatar_rizos",
+   "categoria": "avatares",
+   "fila": 6,
+   "columna": 4,
+   "x32": 128,
+   "y32": 192,
+   "x16": 64,
+   "y16": 96
+  },
+  {
+   "nombre": "avatar_gafas",
+   "categoria": "avatares",
+   "fila": 6,
+   "columna": 5,
+   "x32": 160,
+   "y32": 192,
+   "x16": 80,
+   "y16": 96
+  },
+  {
+   "nombre": "avatar_cascos",
+   "categoria": "avatares",
+   "fila": 6,
+   "columna": 6,
+   "x32": 192,
+   "y32": 192,
+   "x16": 96,
+   "y16": 96
+  },
+  {
+   "nombre": "avatar_brote",
+   "categoria": "avatares",
+   "fila": 6,
+   "columna": 7,
+   "x32": 224,
+   "y32": 192,
+   "x16": 112,
+   "y16": 96
+  }
+ ]
+}

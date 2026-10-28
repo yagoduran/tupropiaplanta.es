@@ -1,0 +1,427 @@
+{
+ "nombre": "tpp-ui",
+ "celdas": [
+  {
+   "nombre": "icono_agua",
+   "tipo": "icono",
+   "x": 0,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_nutrientes",
+   "tipo": "icono",
+   "x": 12,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_luz",
+   "tipo": "icono",
+   "x": 24,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_temperatura",
+   "tipo": "icono",
+   "x": 36,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_ph",
+   "tipo": "icono",
+   "x": 48,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_salud",
+   "tipo": "icono",
+   "x": 60,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_tiempo",
+   "tipo": "icono",
+   "x": 72,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_fase",
+   "tipo": "icono",
+   "x": 84,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_regar",
+   "tipo": "icono",
+   "x": 96,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_abonar",
+   "tipo": "icono",
+   "x": 108,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_podar",
+   "tipo": "icono",
+   "x": 120,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_ajustar_luz",
+   "tipo": "icono",
+   "x": 132,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_cosechar",
+   "tipo": "icono",
+   "x": 144,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_anuncio",
+   "tipo": "icono",
+   "x": 156,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_cultivo",
+   "tipo": "icono",
+   "x": 168,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_tienda",
+   "tipo": "icono",
+   "x": 180,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_semillas",
+   "tipo": "icono",
+   "x": 192,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_logros",
+   "tipo": "icono",
+   "x": 204,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_ranking",
+   "tipo": "icono",
+   "x": 216,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_ajustes",
+   "tipo": "icono",
+   "x": 228,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_moneda",
+   "tipo": "icono",
+   "x": 240,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_nivel",
+   "tipo": "icono",
+   "x": 252,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_menu",
+   "tipo": "icono",
+   "x": 264,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_cerrar",
+   "tipo": "icono",
+   "x": 276,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_aviso",
+   "tipo": "icono",
+   "x": 288,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_email",
+   "tipo": "icono",
+   "x": 300,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "icono_candado",
+   "tipo": "icono",
+   "x": 312,
+   "y": 0,
+   "w": 12,
+   "h": 12
+  },
+  {
+   "nombre": "anillo_espera_0de8",
+   "tipo": "anillo",
+   "x": 0,
+   "y": 14,
+   "w": 16,
+   "h": 16
+  },
+  {
+   "nombre": "anillo_espera_1de8",
+   "tipo": "anillo",
+   "x": 16,
+   "y": 14,
+   "w": 16,
+   "h": 16
+  },
+  {
+   "nombre": "anillo_espera_2de8",
+   "tipo": "anillo",
+   "x": 32,
+   "y": 14,
+   "w": 16,
+   "h": 16
+  },
+  {
+   "nombre": "anillo_espera_3de8",
+   "tipo": "anillo",
+   "x": 48,
+   "y": 14,
+   "w": 16,
+   "h": 16
+  },
+  {
+   "nombre": "anillo_espera_4de8",
+   "tipo": "anillo",
+   "x": 64,
+   "y": 14,
+   "w": 16,
+   "h": 16
+  },
+  {
+   "nombre": "anillo_espera_5de8",
+   "tipo": "anillo",
+   "x": 80,
+   "y": 14,
+   "w": 16,
+   "h": 16
+  },
+  {
+   "nombre": "anillo_espera_6de8",
+   "tipo": "anillo",
+   "x": 96,
+   "y": 14,
+   "w": 16,
+   "h": 16
+  },
+  {
+   "nombre": "anillo_espera_7de8",
+   "tipo": "anillo",
+   "x": 112,
+   "y": 14,
+   "w": 16,
+   "h": 16
+  },
+  {
+   "nombre": "anillo_espera_8de8",
+   "tipo": "anillo",
+   "x": 128,
+   "y": 14,
+   "w": 16,
+   "h": 16
+  },
+  {
+   "nombre": "marco_panel",
+   "tipo": "marco_9slice",
+   "x": 0,
+   "y": 32,
+   "w": 10,
+   "h": 10,
+   "slice": 4
+  },
+  {
+   "nombre": "marco_panel_oscuro",
+   "tipo": "marco_9slice",
+   "x": 12,
+   "y": 32,
+   "w": 10,
+   "h": 10,
+   "slice": 4
+  },
+  {
+   "nombre": "marco_boton",
+   "tipo": "marco_9slice",
+   "x": 24,
+   "y": 32,
+   "w": 8,
+   "h": 8,
+   "slice": 3
+  },
+  {
+   "nombre": "marco_boton_hover",
+   "tipo": "marco_9slice",
+   "x": 36,
+   "y": 32,
+   "w": 8,
+   "h": 8,
+   "slice": 3
+  },
+  {
+   "nombre": "marco_boton_pulsado",
+   "tipo": "marco_9slice",
+   "x": 48,
+   "y": 32,
+   "w": 6,
+   "h": 6,
+   "slice": 2
+  },
+  {
+   "nombre": "marco_boton_desactivado",
+   "tipo": "marco_9slice",
+   "x": 60,
+   "y": 32,
+   "w": 8,
+   "h": 8,
+   "slice": 3
+  },
+  {
+   "nombre": "marco_boton_espera",
+   "tipo": "marco_9slice",
+   "x": 72,
+   "y": 32,
+   "w": 8,
+   "h": 8,
+   "slice": 3
+  },
+  {
+   "nombre": "marco_boton_secundario",
+   "tipo": "marco_9slice",
+   "x": 84,
+   "y": 32,
+   "w": 8,
+   "h": 8,
+   "slice": 3
+  },
+  {
+   "nombre": "marco_boton_secundario_hover",
+   "tipo": "marco_9slice",
+   "x": 96,
+   "y": 32,
+   "w": 8,
+   "h": 8,
+   "slice": 3
+  },
+  {
+   "nombre": "marco_barra",
+   "tipo": "marco_9slice",
+   "x": 108,
+   "y": 32,
+   "w": 6,
+   "h": 6,
+   "slice": 2
+  },
+  {
+   "nombre": "marco_bocadillo",
+   "tipo": "marco_9slice",
+   "x": 120,
+   "y": 32,
+   "w": 6,
+   "h": 6,
+   "slice": 2
+  },
+  {
+   "nombre": "marco_pestana",
+   "tipo": "marco_9slice",
+   "x": 132,
+   "y": 32,
+   "w": 6,
+   "h": 6,
+   "slice": 2
+  },
+  {
+   "nombre": "marco_pestana_activa",
+   "tipo": "marco_9slice",
+   "x": 144,
+   "y": 32,
+   "w": 6,
+   "h": 6,
+   "slice": 2
+  },
+  {
+   "nombre": "marco_campo",
+   "tipo": "marco_9slice",
+   "x": 156,
+   "y": 32,
+   "w": 6,
+   "h": 6,
+   "slice": 2
+  },
+  {
+   "nombre": "cola_bocadillo",
+   "tipo": "pieza",
+   "x": 0,
+   "y": 44,
+   "w": 6,
+   "h": 5
+  }
+ ]
+}
