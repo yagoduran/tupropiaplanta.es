@@ -196,3 +196,11 @@
   font-size: var(--f-tab);
   font-weight: 600;
 }
+
+.capa {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
