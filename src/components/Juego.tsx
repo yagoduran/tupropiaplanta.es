@@ -1,7 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useState, useTransition } from "react";
-import { hacerAccion, obtenerEstado, plantarSemilla } from "@/app/juego/acciones";
+import {
+  borrarDatosDelJuego,
+  guardarAjustes,
+  hacerAccion,
+  obtenerEstado,
+  plantarSemilla,
+} from "@/app/juego/acciones";
 import { marco, type IdIcono } from "@/lib/diseno";
 import { fijarVolumenEfectos, sonar } from "@/lib/sonido";
 import {
@@ -9,9 +15,11 @@ import {
   formatoVida,
   medidoresDe,
   type Accion,
+  type AjustesJuego,
   type EstadoJuego,
   type RespuestaAccion,
 } from "@/lib/juego";
+import { Ajustes } from "./Ajustes";
 import { Bocadillo } from "./Bocadillo";
 import { Escena } from "./Escena";
 import { EstadoCompacto } from "./EstadoCompacto";
@@ -35,6 +43,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [ahora, setAhora] = useState(() => Date.now());
   const [aviso, setAviso] = useState<Aviso | null>(null);
   const [enCurso, iniciar] = useTransition();
+  const [pantalla, setPantalla] = useState<IdIcono>("cultivo");
 
   const aplicar = useCallback((nuevo: EstadoJuego) => {
     setEstado({ perfil: nuevo.perfil, planta: nuevo.planta });
@@ -88,6 +97,31 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     fijarVolumenEfectos(estado.perfil.ajustes.volumen_efectos);
   }, [estado.perfil.ajustes.volumen_efectos]);
 
+  const cambiarAjustes = (cambios: Partial<AjustesJuego>) => {
+    setEstado((e) => ({ ...e, perfil: { ...e.perfil, ajustes: { ...e.perfil.ajustes, ...cambios } } }));
+    guardarAjustes(cambios).then((r) => {
+      if (!r.ok) setAviso({ texto: MENSAJES_ERROR[r.error ?? "red"] ?? MENSAJES_ERROR.red, icono: "aviso" });
+    });
+  };
+
+  const borrarDatos = async () => {
+    const { ok } = await borrarDatosDelJuego();
+    if (!ok) {
+      setAviso({ texto: MENSAJES_ERROR.red, icono: "aviso" });
+      return;
+    }
+    const nuevo = await obtenerEstado();
+    if (nuevo) aplicar(nuevo);
+    setPantalla("cultivo");
+  };
+
+  const elegirPantalla = (id: IdIcono) => {
+    if (id === "cultivo" || id === "ajustes") {
+      sonar("pestana");
+      setPantalla(id);
+    }
+  };
+
   const accionar = (accion: Accion) => {
     iniciar(async () => {
       const r = await hacerAccion(accion);
@@ -131,6 +165,18 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   return (
     <JuegoLayout
       perfil={perfil}
+      pantalla={pantalla}
+      alElegirPantalla={elegirPantalla}
+      secundaria={
+        pantalla === "ajustes" ? (
+          <Ajustes
+            ajustes={perfil.ajustes}
+            alCambiar={cambiarAjustes}
+            alVerTutorial={() => setPantalla("cultivo")}
+            alBorrar={borrarDatos}
+          />
+        ) : undefined
+      }
       panelEstado={<PanelEstado medidores={medidores} tiempoDeVida={formatoVida(vida)} fase={planta?.fase ?? 1} />}
       estadoCompacto={<EstadoCompacto medidores={medidores} />}
       escena={

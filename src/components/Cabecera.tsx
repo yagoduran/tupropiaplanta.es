@@ -6,16 +6,17 @@ import { marco } from "@/lib/diseno";
 import { Icono } from "./Icono";
 import styles from "./juego.module.css";
 
-const OPCIONES_MENU = ["Mi perfil", "Mis plantas", "Ajustes de cuenta"];
+const OPCIONES_MENU = ["Mi perfil", "Mis plantas"];
 
 interface Props {
   monedas: number;
   nivel: number;
   xp: number;
   usuario: string;
+  alAbrirAjustes: () => void;
 }
 
-export function Cabecera({ monedas, nivel, xp, usuario }: Props) {
+export function Cabecera({ monedas, nivel, xp, usuario, alAbrirAjustes }: Props) {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const panel = marco("panel", "var(--u)");
   const barra = marco("barra", "var(--u)");
@@ -63,6 +64,18 @@ export function Cabecera({ monedas, nivel, xp, usuario }: Props) {
                 </button>
               </li>
             ))}
+            <li>
+              <button
+                type="button"
+                className={styles.menuOpcion}
+                onClick={() => {
+                  setMenuAbierto(false);
+                  alAbrirAjustes();
+                }}
+              >
+                Ajustes
+              </button>
+            </li>
             <li>
               <form action={cerrarSesion}>
                 <button type="submit" className={styles.menuOpcion}>

@@ -160,6 +160,12 @@
   padding: var(--gap);
 }
 
+.secundaria {
+  flex: none;
+  width: calc(96px * var(--s) + 2 * var(--panel-w) + 2 * var(--gap));
+  min-height: calc(80px * var(--s));
+}
+
 .panelLateral {
   width: var(--panel-w);
   flex: none;
@@ -502,6 +508,11 @@
 
   .escena {
     justify-self: center;
+  }
+
+  .secundaria {
+    width: 100%;
+    min-height: 0;
   }
 
   .estadoMovil {

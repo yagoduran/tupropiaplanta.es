@@ -11,7 +11,7 @@ const PESTANAS: { id: IdIcono; etiqueta: string }[] = [
   { id: "ajustes", etiqueta: "Ajustes" },
 ];
 
-export function Pestanas({ activa }: { activa: IdIcono }) {
+export function Pestanas({ activa, alElegir }: { activa: IdIcono; alElegir: (id: IdIcono) => void }) {
   const normal = marco("pestana", "var(--u)");
   const seleccionada = marco("pestana_activa", "var(--u)");
   return (
@@ -23,6 +23,7 @@ export function Pestanas({ activa }: { activa: IdIcono }) {
             key={p.id}
             type="button"
             aria-current={esActiva ? "page" : undefined}
+            onClick={() => alElegir(p.id)}
             className={`${styles.pestana} ${p.id === "ajustes" ? styles.soloEscritorio : ""}`}
             style={{ ...(esActiva ? seleccionada : normal), color: esActiva ? "#1c1626" : "#f6eed6" }}
           >
