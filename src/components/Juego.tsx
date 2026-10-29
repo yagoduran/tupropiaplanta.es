@@ -10,6 +10,7 @@ import {
   usarObjeto,
   hacerAccion,
   obtenerEstado,
+  obtenerRanking,
   plantarSemilla,
   reclamarDiaria,
 } from "@/app/juego/acciones";
@@ -21,6 +22,7 @@ import {
   medidoresDe,
   type Accion,
   type AjustesJuego,
+  type DatosRanking,
   type EstadoJuego,
   type RespuestaAccion,
 } from "@/lib/juego";
@@ -35,6 +37,7 @@ import { PanelEstado } from "./PanelEstado";
 import { Planta } from "./Planta";
 import { Decoracion } from "./Decoracion";
 import { Logros } from "./Logros";
+import { Ranking } from "./Ranking";
 import { Semillas } from "./Semillas";
 import { Tienda } from "./Tienda";
 import { Tutorial } from "./Tutorial";
@@ -57,6 +60,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [pantalla, setPantalla] = useState<IdIcono>("cultivo");
   const [tutorial, setTutorial] = useState(!inicial.perfil.tutorial_hecho);
   const [repeticion, setRepeticion] = useState(false);
+  const [ranking, setRanking] = useState<DatosRanking | null>(null);
 
   const aplicar = useCallback((nuevo: EstadoJuego) => {
     setEstado({ perfil: nuevo.perfil, planta: nuevo.planta });
@@ -172,9 +176,17 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   };
 
   const elegirPantalla = (id: IdIcono) => {
-    if (id === "cultivo" || id === "ajustes" || id === "tienda" || id === "semillas" || id === "logros") {
+    if (
+      id === "cultivo" ||
+      id === "ajustes" ||
+      id === "tienda" ||
+      id === "semillas" ||
+      id === "logros" ||
+      id === "ranking"
+    ) {
       sonar("pestana");
       setPantalla(id);
+      if (id === "ranking") obtenerRanking().then(setRanking);
     }
   };
 
@@ -291,6 +303,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           />
         ) : pantalla === "logros" ? (
           <Logros perfil={perfil} ocupado={enCurso} aviso={aviso} alReclamar={reclamar} />
+        ) : pantalla === "ranking" ? (
+          <Ranking datos={ranking} />
         ) : pantalla === "semillas" ? (
           <Semillas
             nivel={perfil.nivel}

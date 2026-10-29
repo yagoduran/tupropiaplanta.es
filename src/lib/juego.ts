@@ -7,6 +7,22 @@ export interface AjustesJuego {
   volumen_efectos: number;
   volumen_musica: number;
   avisos: boolean;
+  /** Si es true, el jugador no sale en el ranking. */
+  ranking_oculto?: boolean;
+}
+
+export interface FilaRanking {
+  pos: number;
+  usuario: string;
+  nivel: number;
+  yo: boolean;
+}
+
+export interface DatosRanking {
+  top: FilaRanking[];
+  /** Puesto del jugador; null si está oculto. */
+  mia: { pos: number; nivel: number } | null;
+  total: number;
 }
 
 export interface EquipoJuego {

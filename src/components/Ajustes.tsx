@@ -128,6 +128,25 @@ export function Ajustes({ ajustes, alCambiar, alVerTutorial, alBorrar }: Props) 
         </div>
 
         <hr className={styles.linea} />
+        <div className={styles.fila2}>
+          <div>
+            <span className={styles.etiqueta}>Salir en el ranking</span>
+            <p className={styles.ayuda}>Los demás verán tu nombre de usuario y tu nivel. Nunca tu correo.</p>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={!ajustes.ranking_oculto}
+            aria-label="Salir en el ranking"
+            className={styles.interruptor}
+            data-activo={!ajustes.ranking_oculto}
+            onClick={() => alCambiar({ ranking_oculto: !ajustes.ranking_oculto })}
+          >
+            <span />
+          </button>
+        </div>
+
+        <hr className={styles.linea} />
         <span className={styles.seccion}>Tutorial</span>
         <button type="button" className={styles.accion} style={secundario} onClick={alVerTutorial}>
           Ver el tutorial otra vez

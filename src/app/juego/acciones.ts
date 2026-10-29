@@ -1,7 +1,7 @@
 "use server";
 
 import { crearClienteServidor } from "@/lib/supabase/servidor";
-import type { Accion, AjustesJuego, EstadoJuego, RespuestaAccion } from "@/lib/juego";
+import type { Accion, AjustesJuego, DatosRanking, EstadoJuego, RespuestaAccion } from "@/lib/juego";
 
 const ACCIONES: Accion[] = ["regar", "abonar", "podar", "ajustar_luz", "cosechar"];
 
@@ -55,6 +55,14 @@ export async function borrarDatosDelJuego(): Promise<{ ok: boolean }> {
   const supabase = await crearClienteServidor();
   const { data, error } = await supabase.rpc("tpp_borrar_datos");
   return { ok: !error && !!data };
+}
+
+/** Clasificación de los mejores jugadores. Devuelve null si falla. */
+export async function obtenerRanking(): Promise<DatosRanking | null> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_ranking");
+  if (error || !data) return null;
+  return data as DatosRanking;
 }
 
 /** Recoge el regalo diario. */
