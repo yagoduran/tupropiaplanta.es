@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { cerrarSesion } from "@/app/acciones";
 import { marco } from "@/lib/diseno";
 import { Icono } from "./Icono";
 import styles from "./juego.module.css";
 
-const OPCIONES_MENU = ["Mi perfil", "Mis plantas", "Ajustes de cuenta", "Cerrar sesión"];
+const OPCIONES_MENU = ["Mi perfil", "Mis plantas", "Ajustes de cuenta"];
 
 interface Props {
   monedas: number;
@@ -62,6 +63,13 @@ export function Cabecera({ monedas, nivel, xp, usuario }: Props) {
                 </button>
               </li>
             ))}
+            <li>
+              <form action={cerrarSesion}>
+                <button type="submit" className={styles.menuOpcion}>
+                  Cerrar sesión
+                </button>
+              </form>
+            </li>
           </ul>
         )}
       </div>

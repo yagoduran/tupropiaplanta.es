@@ -1,33 +1,44 @@
 import type { IdIcono } from "@/lib/diseno";
+import { ESPERA_TOTAL, type Accion } from "@/lib/juego";
 import { BotonAccion } from "./BotonAccion";
 import { BotonAnuncio } from "./BotonAnuncio";
 
-const ACCIONES: { id: IdIcono; etiqueta: string; detalle: string }[] = [
+const ACCIONES: { id: Accion; etiqueta: string; detalle: string }[] = [
   { id: "regar", etiqueta: "Regar", detalle: "+50 de agua" },
   { id: "abonar", etiqueta: "Abonar", detalle: "+30 nutrientes" },
   { id: "podar", etiqueta: "Podar", detalle: "Mejora la salud" },
-  { id: "ajustar_luz", etiqueta: "Ajustar luz", detalle: "Ciclo 18/6" },
+  { id: "ajustar_luz", etiqueta: "Ajustar luz", detalle: "+40 de luz" },
   { id: "cosechar", etiqueta: "Cosechar", detalle: "En fase 8" },
 ];
 
 interface Props {
-  fase: number;
-  /** Segundos de espera por acción. */
-  esperas?: Partial<Record<IdIcono, number>>;
+  /** Segundos de espera que quedan por acción. */
+  esperas: Partial<Record<Accion, number>>;
+  /** Acciones no disponibles ahora (por fase, planta muerta o petición en curso). */
+  bloqueadas: Partial<Record<Accion, boolean>>;
+  alAccionar: (accion: Accion) => void;
 }
 
-export function PanelAcciones({ fase, esperas = {} }: Props) {
+export function PanelAcciones({ esperas, bloqueadas, alAccionar }: Props) {
   return (
     <>
-      {ACCIONES.map((a) => (
-        <BotonAccion
-          key={a.id}
-          {...a}
-          espera={esperas[a.id]}
-          pasoAnillo={4}
-          desactivado={a.id === "cosechar" && fase < 8}
-        />
-      ))}
+      {ACCIONES.map((a) => {
+        const resta = esperas[a.id] ?? 0;
+        const total = ESPERA_TOTAL[a.id];
+        const paso = resta > 0 && total > 0 ? Math.min(8, Math.max(0, Math.floor((1 - resta / total) * 8))) : 0;
+        return (
+          <BotonAccion
+            key={a.id}
+            id={a.id as IdIcono}
+            etiqueta={a.etiqueta}
+            detalle={a.detalle}
+            espera={resta}
+            pasoAnillo={paso}
+            desactivado={bloqueadas[a.id]}
+            onClick={() => alAccionar(a.id)}
+          />
+        );
+      })}
       <BotonAnuncio />
     </>
   );

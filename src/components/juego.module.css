@@ -645,3 +645,22 @@
     display: none;
   }
 }
+
+.plantar {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--u) * 4);
+  transform: translateX(-50%);
+  padding: calc(var(--u) * 2) calc(var(--u) * 5) calc(var(--u) * 3);
+  color: #1c1626;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-btn);
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.plantar:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
