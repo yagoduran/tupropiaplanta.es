@@ -3,12 +3,21 @@ import { tonoPorPorcentaje, type Medidor } from "./estado";
 
 export type Accion = "regar" | "abonar" | "podar" | "ajustar_luz" | "cosechar";
 
+export interface AjustesJuego {
+  volumen_efectos: number;
+  volumen_musica: number;
+  avisos: boolean;
+}
+
 export interface PerfilJuego {
   usuario: string;
   monedas: number;
   xp: number;
   nivel: number;
   xp_pct: number;
+  tutorial_hecho: boolean;
+  tutorial_paso: number;
+  ajustes: AjustesJuego;
 }
 
 export interface PlantaJuego {
