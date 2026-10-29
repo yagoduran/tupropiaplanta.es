@@ -10,19 +10,18 @@ Pantalla principal (estado, escena, acciones, modal), tienda, semillas, logros, 
 
 Interruptor de mantenimiento: en Vercel → Settings → Environment Variables, poner `MANTENIMIENTO=1` (y, si se quiere, `MANTENIMIENTO_HASTA=hoy a las 14:30`) y volver a desplegar; para quitarlo, borrar la variable y volver a desplegar.
 
+✅ También hechas: recuperar contraseña, verificar email, bienvenida «Hola de nuevo» y sesión caducada.
+
 Siguen pendientes:
 | Pantalla | Esfuerzo | Nota |
 |---|---|---|
-| Recuperar contraseña | 🟡 | Usa el correo de Supabase |
-| Verificar email | 🟡 | Hay que activar la confirmación en Supabase |
-| Bienvenida ("¡Hola de nuevo!") y Sesión caducada | 🟢 | |
 | Temporadas (primavera, verano, otoño, invierno) | 🟢 | Dibujos ya en `public/assets/temporadas`; pensados para eventos |
 
 ## Progresión (juego nuevo, necesitan base de datos)
+✅ Hechas: Inventario (huecos de cultivo y objetos) y Estadísticas (totales y gráficas; sin «horas jugadas», porque no se mide el tiempo de juego), ambas desde el menú de usuario.
+
 | Pantalla | Esfuerzo | Nota |
 |---|---|---|
-| Inventario | 🟡 | Ahora los objetos se ven dentro de la Tienda |
-| Estadísticas | 🟡 | Parte ya está en Mi perfil |
 | Colección y enciclopedia | 🟡 | Variedades descubiertas y datos |
 | Títulos y marcos | 🟡 | Cosméticos que se desbloquean |
 | Desafíos | 🟡 | Retos con recompensa |

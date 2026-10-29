@@ -37,3 +37,15 @@ export interface DatosPerfil {
     horas: number;
   }[];
 }
+
+export interface DatosEstadisticas {
+  dias_cuenta: number;
+  cosechas: number;
+  racha_max: number;
+  monedas_ganadas: number;
+  /** Primer día con monedas registradas; antes de eso no hay datos de monedas. */
+  desde: string | null;
+  semanas: { inicio: string; n: number }[];
+  dias: { dia: string; monedas: number }[];
+  variedades: { variedad: string; n: number }[];
+}

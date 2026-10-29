@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { cerrarSesion } from "@/app/acciones";
 import { marco } from "@/lib/diseno";
+import type { PantallaJuego } from "@/lib/juego";
 import { avatarDe } from "@/lib/perfil";
 import { Icono } from "./Icono";
 import { IconoObjeto } from "./IconoObjeto";
@@ -11,6 +12,8 @@ import styles from "./juego.module.css";
 const OPCIONES_MENU = [
   ["perfil", "Mi perfil"],
   ["plantas", "Mis plantas"],
+  ["inventario", "Inventario"],
+  ["estadisticas", "Estadísticas"],
 ] as const;
 
 interface Props {
@@ -19,7 +22,7 @@ interface Props {
   xp: number;
   usuario: string;
   avatar?: string;
-  alAbrir: (pantalla: "perfil" | "plantas" | "ajustes") => void;
+  alAbrir: (pantalla: PantallaJuego) => void;
 }
 
 export function Cabecera({ monedas, nivel, xp, usuario, avatar, alAbrir }: Props) {

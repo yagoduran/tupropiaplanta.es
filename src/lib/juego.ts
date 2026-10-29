@@ -4,8 +4,8 @@ import { tonoPorPorcentaje, type Medidor } from "./estado";
 
 export type Accion = "regar" | "abonar" | "podar" | "ajustar_luz" | "cosechar";
 
-/** Pantallas del juego: las pestañas y las dos del menú de usuario. */
-export type PantallaJuego = IdIcono | "perfil" | "plantas";
+/** Pantallas del juego: las pestañas y las del menú de usuario. */
+export type PantallaJuego = IdIcono | "perfil" | "plantas" | "inventario" | "estadisticas";
 
 export interface AjustesJuego {
   volumen_efectos: number;

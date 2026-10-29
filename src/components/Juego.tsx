@@ -11,6 +11,7 @@ import {
   usarObjeto,
   hacerAccion,
   obtenerEstado,
+  obtenerEstadisticas,
   obtenerMiPerfil,
   obtenerRanking,
   plantarSemilla,
@@ -38,7 +39,7 @@ import { tamanoPlanta } from "@/lib/crecimiento";
 import { LOGRO_POR_ID } from "@/lib/logros";
 import { PLAGAS, TRATAMIENTOS } from "@/lib/plagas";
 import type { Efecto } from "@/lib/sonido";
-import type { DatosPerfil } from "@/lib/perfil";
+import type { DatosEstadisticas, DatosPerfil } from "@/lib/perfil";
 import { calcularBienvenida, guardarVisita, leerVisita, type Bienvenida as DatosBienvenida } from "@/lib/visita";
 import { Ajustes } from "./Ajustes";
 import { Bienvenida } from "./Bienvenida";
@@ -55,6 +56,8 @@ import { Planta } from "./Planta";
 import { Plaga } from "./Plaga";
 import { Decoracion } from "./Decoracion";
 import { Logros } from "./Logros";
+import { Estadisticas } from "./Estadisticas";
+import { Inventario } from "./Inventario";
 import { MisPlantas } from "./MisPlantas";
 import { Perfil } from "./Perfil";
 import { Ranking } from "./Ranking";
@@ -95,6 +98,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [ampliando, setAmpliando] = useState(false);
   const [ranking, setRanking] = useState<DatosRanking | null>(null);
   const [datosPerfil, setDatosPerfil] = useState<DatosPerfil | null>(null);
+  const [estadisticas, setEstadisticas] = useState<DatosEstadisticas | null>(null);
   const [bienvenida, setBienvenida] = useState<DatosBienvenida | null>(null);
 
   const aplicar = useCallback((nuevo: EstadoJuego) => {
@@ -264,6 +268,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     if (
       id === "perfil" ||
       id === "plantas" ||
+      id === "inventario" ||
+      id === "estadisticas" ||
       id === "cultivo" ||
       id === "ajustes" ||
       id === "tienda" ||
@@ -273,7 +279,11 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     ) {
       sonar("pestana");
       setPantalla(id);
-      if (id === "perfil" || id === "plantas")
+      if (id === "estadisticas")
+        obtenerEstadisticas()
+          .then(setEstadisticas)
+          .catch(() => setEstadisticas(null));
+      if (id === "perfil" || id === "plantas" || id === "inventario")
         obtenerMiPerfil()
           .then(setDatosPerfil)
           .catch(() => setDatosPerfil(null));
@@ -466,6 +476,20 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           />
         ) : pantalla === "plantas" ? (
           <MisPlantas datos={datosPerfil} />
+        ) : pantalla === "inventario" ? (
+          <Inventario
+            perfil={perfil}
+            plantas={datosPerfil?.plantas ?? null}
+            ocupado={enCurso}
+            alIrAHueco={(hueco, destino) => {
+              elegirPantalla(destino);
+              cambiarHueco(hueco);
+            }}
+            alAmpliar={() => setAmpliando(true)}
+            alIrATienda={() => elegirPantalla("tienda")}
+          />
+        ) : pantalla === "estadisticas" ? (
+          <Estadisticas datos={estadisticas} />
         ) : pantalla === "semillas" ? (
           <Semillas
             nivel={perfil.nivel}
