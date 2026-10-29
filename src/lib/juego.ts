@@ -9,6 +9,12 @@ export interface AjustesJuego {
   avisos: boolean;
 }
 
+export interface EquipoJuego {
+  maceta: string;
+  luz: string;
+  decoracion: string[];
+}
+
 export interface PerfilJuego {
   usuario: string;
   monedas: number;
@@ -18,6 +24,9 @@ export interface PerfilJuego {
   tutorial_hecho: boolean;
   tutorial_paso: number;
   ajustes: AjustesJuego;
+  equipo: EquipoJuego;
+  /** Objetos que tiene el jugador y cuántos. Los gratuitos no aparecen. */
+  inventario: Record<string, number>;
 }
 
 export interface PlantaJuego {
@@ -47,6 +56,8 @@ export interface RespuestaAccion extends EstadoJuego {
   ok: boolean;
   error?: string;
   recompensa?: number;
+  /** Monedas ganadas por cuidar la planta. */
+  ganadas?: number;
 }
 
 /** Segundos de espera total de cada acción, para dibujar el anillo. */
@@ -64,6 +75,13 @@ export const MENSAJES_ERROR: Record<string, string> = {
   sin_planta: "No tienes ninguna planta. Planta una semilla.",
   planta_muerta: "Tu planta ha muerto. Planta una semilla nueva.",
   ya_hay_planta: "Ya tienes una planta viva.",
+  monedas_insuficientes: "No tienes monedas suficientes.",
+  nivel_insuficiente: "Todavía no tienes el nivel necesario.",
+  ya_lo_tienes: "Ya tienes ese objeto.",
+  no_lo_tienes: "Todavía no tienes ese objeto.",
+  sin_existencias: "No te quedan unidades. Compra más en la tienda.",
+  fase_incorrecta: "Ese abono no sirve en la fase actual de tu planta.",
+  ya_aplicado: "Tu planta ya tiene ese mejorador.",
   sesion: "Tu sesión ha caducado. Vuelve a entrar.",
   red: "No se ha podido conectar. Inténtalo de nuevo.",
 };

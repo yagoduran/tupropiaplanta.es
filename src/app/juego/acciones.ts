@@ -53,3 +53,22 @@ export async function borrarDatosDelJuego(): Promise<{ ok: boolean }> {
   const { data, error } = await supabase.rpc("tpp_borrar_datos");
   return { ok: !error && !!data };
 }
+
+async function conObjeto(rpc: "tpp_comprar" | "tpp_equipar" | "tpp_usar", id: string): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc(rpc, { p_objeto: id });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
+export async function comprarObjeto(id: string): Promise<Resultado> {
+  return conObjeto("tpp_comprar", id);
+}
+
+export async function equiparObjeto(id: string): Promise<Resultado> {
+  return conObjeto("tpp_equipar", id);
+}
+
+export async function usarObjeto(id: string): Promise<Resultado> {
+  return conObjeto("tpp_usar", id);
+}
