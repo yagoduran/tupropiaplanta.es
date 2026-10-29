@@ -44,6 +44,7 @@ export function JuegoLayout({
       <Cabecera
         monedas={perfil.monedas}
         nivel={perfil.nivel}
+        prestigio={perfil.prestigio.n}
         xp={perfil.xp_pct}
         usuario={perfil.usuario}
         avatar={perfil.ajustes.avatar}

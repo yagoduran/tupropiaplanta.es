@@ -34,7 +34,7 @@ export function Habitaciones({ perfil, ocupado, alComprar, alElegir }: Props) {
   } else if (mia) {
     texto = "Ir a esta habitación";
     accion = () => alElegir(h.id);
-  } else if (h.bloqueada) {
+  } else if (h.bloqueada && !perfil.prestigio.bonos.key) {
     texto = "Bloqueada";
     activo = false;
   } else if (!nivelOk) {
@@ -50,7 +50,7 @@ export function Habitaciones({ perfil, ocupado, alComprar, alElegir }: Props) {
     : [
         { ok: nivelOk, texto: `Nivel ${h.nivel} (tienes ${perfil.nivel})` },
         { ok: monedasOk, texto: `${miles(h.precio)} monedas (tienes ${miles(perfil.monedas)})` },
-        ...(h.bloqueada ? [{ ok: false, texto: h.bloqueada }] : []),
+        ...(h.bloqueada ? [{ ok: !!perfil.prestigio.bonos.key, texto: h.bloqueada }] : []),
       ];
 
   return (
@@ -67,7 +67,7 @@ export function Habitaciones({ perfil, ocupado, alComprar, alElegir }: Props) {
         <div className={styles.listaDesafios}>
           {HABITACIONES.map((r) => {
             const mio = habitaciones.includes(r.id);
-            const disponible = !mio && !r.bloqueada && perfil.nivel >= r.nivel;
+            const disponible = !mio && (!r.bloqueada || !!perfil.prestigio.bonos.key) && perfil.nivel >= r.nivel;
             return (
               <button
                 key={r.id}
@@ -103,7 +103,13 @@ export function Habitaciones({ perfil, ocupado, alComprar, alElegir }: Props) {
           <p className={styles.subtitulo}>
             {h.nombre}
             <span>
-              {mia ? (h.id === actual ? "Estás aquí" : "Desbloqueada") : h.bloqueada ? "Bloqueada" : "Disponible"}
+              {mia
+                ? h.id === actual
+                  ? "Estás aquí"
+                  : "Desbloqueada"
+                : h.bloqueada && !perfil.prestigio.bonos.key
+                  ? "Bloqueada"
+                  : "Disponible"}
             </span>
           </p>
           <span
@@ -112,7 +118,7 @@ export function Habitaciones({ perfil, ocupado, alComprar, alElegir }: Props) {
             aria-label={`Vista de ${h.nombre}`}
             style={{
               backgroundImage: `url(${h.escena ?? "/assets/escena/escena-dia-1x.png"})`,
-              opacity: mia || !h.bloqueada ? 1 : 0.5,
+              opacity: mia || !h.bloqueada || !!perfil.prestigio.bonos.key ? 1 : 0.5,
             }}
           />
           <p className={styles.pequeno}>{h.descripcion}</p>

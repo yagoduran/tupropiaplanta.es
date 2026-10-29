@@ -16,6 +16,9 @@ import {
   obtenerDesafios,
   obtenerMaestria,
   obtenerCruces,
+  obtenerPrestigio,
+  comprarBonoPrestigio,
+  renacer,
   iniciarCruce,
   acelerarCruce,
   abrirCruce,
@@ -57,6 +60,7 @@ import type { DatosProgresion } from "@/lib/progresion";
 import { registrarHibridas } from "@/lib/variedades";
 import { DESAFIO_POR_ID, type DatosDesafios } from "@/lib/desafios";
 import type { DatosMaestria } from "@/lib/maestria";
+import type { DatosPrestigio } from "@/lib/prestigio";
 import type { DatosCruces, RespuestaCruce } from "@/lib/cruces";
 import { calcularBienvenida, guardarVisita, leerVisita, type Bienvenida as DatosBienvenida } from "@/lib/visita";
 import { Ajustes } from "./Ajustes";
@@ -69,6 +73,7 @@ import { Armario } from "./Armario";
 import { Habitaciones } from "./Habitaciones";
 import { Laboratorio } from "./Laboratorio";
 import { Maestria } from "./Maestria";
+import { Prestigio } from "./Prestigio";
 import { AnuncioPrueba } from "./AnuncioPrueba";
 import { PanelAcciones } from "./PanelAcciones";
 import { SelectorHuecos } from "./SelectorHuecos";
@@ -125,6 +130,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [progresion, setProgresion] = useState<DatosProgresion | null>(null);
   const [desafios, setDesafios] = useState<DatosDesafios | null>(null);
   const [maestria, setMaestria] = useState<DatosMaestria | null>(null);
+  const [prestigio, setPrestigio] = useState<DatosPrestigio | null>(null);
   const [cruces, setCruces] = useState<DatosCruces | null>(null);
   const [crucesEn, setCrucesEn] = useState(() => Date.now());
   const [bienvenida, setBienvenida] = useState<DatosBienvenida | null>(null);
@@ -305,6 +311,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "habitaciones" ||
       id === "maestria" ||
       id === "laboratorio" ||
+      id === "prestigio" ||
       id === "cultivo" ||
       id === "ajustes" ||
       id === "tienda" ||
@@ -318,6 +325,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         obtenerEstadisticas()
           .then(setEstadisticas)
           .catch(() => setEstadisticas(null));
+      if (id === "prestigio")
+        obtenerPrestigio()
+          .then(setPrestigio)
+          .catch(() => setPrestigio(null));
       if (id === "laboratorio")
         obtenerCruces()
           .then((r) => recibirCruces(r))
@@ -472,6 +483,36 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         const nuevo = await obtenerEstado();
         if (nuevo) aplicar(nuevo);
       }
+    });
+  };
+
+  const comprarBono = (id: string) => {
+    ejecutar(async () => {
+      const r = await comprarBonoPrestigio(id);
+      sonar(r?.ok ? "comprar" : "compra-rechazada");
+      if (r) setPrestigio(r);
+      if (r && !r.ok && r.error) setAviso({ texto: MENSAJES_ERROR[r.error] ?? MENSAJES_ERROR.red, icono: "aviso" });
+      const nuevo = await obtenerEstado();
+      if (nuevo) aplicar(nuevo);
+    });
+  };
+
+  const renacerAhora = (confirmacion: string) => {
+    ejecutar(async () => {
+      const r = await renacer(confirmacion);
+      sonar(r?.ok ? "cofre" : "error");
+      if (!r?.ok) {
+        setAviso({ texto: MENSAJES_ERROR[r?.error ?? "red"] ?? MENSAJES_ERROR.red, icono: "aviso" });
+        return;
+      }
+      setPrestigio(r);
+      setDatosPerfil(null);
+      setProgresion(null);
+      setCruces(null);
+      const nuevo = await obtenerEstado();
+      if (nuevo) aplicar(nuevo);
+      setPantalla("cultivo");
+      setAviso({ texto: "¡Has renacido! Tus puntos de prestigio te esperan.", icono: "logros" });
     });
   };
 
@@ -658,6 +699,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           <Estadisticas datos={estadisticas} />
         ) : pantalla === "coleccion" ? (
           <Coleccion datos={progresion} ocupado={enCurso} alReclamar={reclamarPremioColeccion} />
+        ) : pantalla === "prestigio" ? (
+          <Prestigio datos={prestigio} ocupado={enCurso} alComprar={comprarBono} alRenacer={renacerAhora} />
         ) : pantalla === "laboratorio" ? (
           <Laboratorio
             datos={cruces}

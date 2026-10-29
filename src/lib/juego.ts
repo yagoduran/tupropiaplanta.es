@@ -19,7 +19,8 @@ export type PantallaJuego =
   | "armario"
   | "habitaciones"
   | "maestria"
-  | "laboratorio";
+  | "laboratorio"
+  | "prestigio";
 
 export interface AjustesJuego {
   volumen_efectos: number;
@@ -75,6 +76,8 @@ export interface PerfilJuego {
   huecos: HuecosJuego;
   /** Semillas híbridas que tiene el jugador y sus híbridos propios. */
   hibridas: { semillas: string[]; propias: HibridoPropio[] };
+  /** Veces que ha renacido y bonos de prestigio comprados. */
+  prestigio: { n: number; bonos: Record<string, boolean> };
   /** Habitación y mejoras del armario. */
   casa: DatosCasa;
 }
@@ -153,6 +156,10 @@ export const MENSAJES_ERROR: Record<string, string> = {
   tratamiento_incorrecto: "Ese producto no sirve para esta plaga.",
   huecos_maximos: "Ya tienes todos los huecos de cultivo.",
   hueco_bloqueado: "Ese hueco todavía no es tuyo.",
+  bono_comprado: "Ya tienes esa bonificación.",
+  bono_bloqueado: "Antes necesitas la bonificación anterior.",
+  puntos_insuficientes: "No tienes puntos de prestigio suficientes.",
+  confirmacion: "Escribe RENACER para confirmar.",
   sin_semilla: "Todavía no tienes la semilla de esa variedad.",
   cruce_en_curso: "Ya tienes un cruce en marcha.",
   cosecha_invalida: "Esas plantas no sirven para cruzar.",

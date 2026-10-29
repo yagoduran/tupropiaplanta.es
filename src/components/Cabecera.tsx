@@ -21,18 +21,20 @@ const OPCIONES_MENU = [
   ["habitaciones", "Habitaciones"],
   ["laboratorio", "Laboratorio de cruces"],
   ["maestria", "Maestría"],
+  ["prestigio", "Prestigio"],
 ] as const;
 
 interface Props {
   monedas: number;
   nivel: number;
+  prestigio?: number;
   xp: number;
   usuario: string;
   avatar?: string;
   alAbrir: (pantalla: PantallaJuego) => void;
 }
 
-export function Cabecera({ monedas, nivel, xp, usuario, avatar, alAbrir }: Props) {
+export function Cabecera({ monedas, nivel, prestigio = 0, xp, usuario, avatar, alAbrir }: Props) {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const panel = marco("panel", "var(--u)");
   const barra = marco("barra", "var(--u)");
@@ -51,7 +53,10 @@ export function Cabecera({ monedas, nivel, xp, usuario, avatar, alAbrir }: Props
         </div>
         <div className={`${styles.cabeceraDato} ${styles.datoNivel}`}>
           <Icono id="nivel" />
-          <span className="numero">Nv. {nivel}</span>
+          <span className="numero">
+            Nv. {nivel}
+            {prestigio > 0 ? ` · P${prestigio}` : ""}
+          </span>
           <div className={styles.xp} style={{ ...barra, background: barra.background }}>
             <div className={styles.xpRelleno} style={{ width: `${xp}%` }} />
           </div>

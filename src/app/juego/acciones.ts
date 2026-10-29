@@ -5,6 +5,7 @@ import type { DatosEstadisticas, DatosPerfil } from "@/lib/perfil";
 import type { DatosProgresion } from "@/lib/progresion";
 import type { DatosDesafios } from "@/lib/desafios";
 import type { DatosMaestria } from "@/lib/maestria";
+import type { DatosPrestigio } from "@/lib/prestigio";
 import type { RespuestaCruce } from "@/lib/cruces";
 import type { Accion, AjustesJuego, DatosRanking, EstadoJuego, RespuestaAccion } from "@/lib/juego";
 
@@ -225,4 +226,27 @@ export async function abrirCruce() {
 
 export async function guardarCruce(nombre: string) {
   return cruce("tpp_guardar_cruce", { p_nombre: nombre });
+}
+
+type RespuestaPrestigio = DatosPrestigio & { ok?: boolean; error?: string };
+
+async function prestigio(rpc: string, args?: Record<string, unknown>): Promise<RespuestaPrestigio | null> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc(rpc, args);
+  if (error || !data) return null;
+  return data as RespuestaPrestigio;
+}
+
+/** Datos del prestigio y sus bonificaciones. */
+export async function obtenerPrestigio() {
+  return prestigio("tpp_prestigio");
+}
+
+export async function comprarBonoPrestigio(id: string) {
+  return prestigio("tpp_comprar_bono_prestigio", { p_id: id });
+}
+
+/** Renace: reinicia el progreso. Hay que enviar la palabra RENACER. */
+export async function renacer(confirmacion: string) {
+  return prestigio("tpp_renacer", { p_confirmar: confirmacion });
 }
