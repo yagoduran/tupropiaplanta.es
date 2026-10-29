@@ -21,16 +21,19 @@ export async function hacerAccion(accion: Accion): Promise<RespuestaAccion | { o
   return data as RespuestaAccion;
 }
 
-export async function plantarSemilla(): Promise<RespuestaAccion | { ok: false; error: string }> {
+export async function plantarSemilla(variedad = "clasica"): Promise<RespuestaAccion | { ok: false; error: string }> {
   const supabase = await crearClienteServidor();
-  const { data, error } = await supabase.rpc("tpp_plantar");
+  const { data, error } = await supabase.rpc("tpp_plantar", { p_variedad: variedad });
   if (error || !data) return { ok: false, error: error?.message?.includes("no_autenticado") ? "sesion" : "red" };
   return data as RespuestaAccion;
 }
 
 type Resultado = RespuestaAccion | { ok: false; error: string };
 
-const fallo = (mensaje?: string): Resultado => ({ ok: false, error: mensaje?.includes("no_autenticado") ? "sesion" : "red" });
+const fallo = (mensaje?: string): Resultado => ({
+  ok: false,
+  error: mensaje?.includes("no_autenticado") ? "sesion" : "red",
+});
 
 /** Guarda el paso del tutorial. `paso` 0 lo salta; `terminar` da el regalo de bienvenida una sola vez. */
 export async function guardarTutorial(paso: number, terminar = false): Promise<Resultado> {

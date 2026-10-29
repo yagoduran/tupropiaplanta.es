@@ -32,6 +32,7 @@ import { PanelAcciones } from "./PanelAcciones";
 import { PanelEstado } from "./PanelEstado";
 import { Planta } from "./Planta";
 import { Decoracion } from "./Decoracion";
+import { Semillas } from "./Semillas";
 import { Tienda } from "./Tienda";
 import { Tutorial } from "./Tutorial";
 import styles from "./juego.module.css";
@@ -163,7 +164,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   };
 
   const elegirPantalla = (id: IdIcono) => {
-    if (id === "cultivo" || id === "ajustes" || id === "tienda") {
+    if (id === "cultivo" || id === "ajustes" || id === "tienda" || id === "semillas") {
       sonar("pestana");
       setPantalla(id);
     }
@@ -203,10 +204,11 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const equipar = (id: string) => gestionarObjeto(equiparObjeto, id, "Hecho", "clic");
   const usar = (id: string) => gestionarObjeto(usarObjeto, id, "¡Abono aplicado!", "clic");
 
-  const plantar = () => {
+  const plantar = (variedad: string) => {
     iniciar(async () => {
-      const r = await plantarSemilla();
+      const r = await plantarSemilla(variedad);
       tratar(r, { texto: "¡Semilla plantada!", icono: "cultivo" });
+      if (r.ok) setPantalla("cultivo");
     });
   };
 
@@ -269,6 +271,14 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             alEquipar={equipar}
             alUsar={usar}
           />
+        ) : pantalla === "semillas" ? (
+          <Semillas
+            nivel={perfil.nivel}
+            enUso={planta && viva ? planta.variedad : null}
+            ocupado={enCurso}
+            aviso={aviso}
+            alPlantar={plantar}
+          />
         ) : undefined
       }
       panelEstado={<PanelEstado medidores={medidores} tiempoDeVida={formatoVida(vida)} fase={planta?.fase ?? 1} />}
@@ -276,7 +286,14 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       escena={
         <Escena luz={perfil.equipo.luz}>
           <Decoracion puestos={perfil.equipo.decoracion} />
-          {planta && <Planta fase={planta.fase} estado={planta.estado} maceta={perfil.equipo.maceta} />}
+          {planta && (
+            <Planta
+              fase={planta.fase}
+              estado={planta.estado}
+              variedad={planta.variedad}
+              maceta={perfil.equipo.maceta}
+            />
+          )}
           {aviso ? (
             <Bocadillo texto={aviso.texto} icono={aviso.icono} />
           ) : sedienta ? (
@@ -285,8 +302,14 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             <Bocadillo texto="Tu planta ha muerto..." icono="aviso" />
           ) : null}
           {planta && !viva && (
-            <button type="button" className={styles.plantar} style={botonPlantar} disabled={enCurso} onClick={plantar}>
-              {planta.vida === "cosechada" ? "Plantar otra semilla" : "Empezar de nuevo"}
+            <button
+              type="button"
+              className={styles.plantar}
+              style={botonPlantar}
+              disabled={enCurso}
+              onClick={() => elegirPantalla("semillas")}
+            >
+              Elegir otra semilla
             </button>
           )}
         </Escena>

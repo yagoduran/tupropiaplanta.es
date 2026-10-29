@@ -1,0 +1,112 @@
+.contenedor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  width: 100%;
+}
+
+.cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+  min-height: calc(var(--f-title) * 1.6);
+}
+
+.titulo {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-title);
+  font-weight: 700;
+  line-height: 1;
+  color: #f6eed6;
+}
+
+.aviso {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  background: #f6eed6;
+  border: var(--u) solid #1c1626;
+  color: #1c1626;
+  font-size: calc(var(--f-stat) + 1px);
+  font-weight: 600;
+}
+
+.ayuda {
+  font-size: var(--f-small);
+  color: #f6eed6;
+  opacity: 0.85;
+}
+
+.rejilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--panel-w) * 0.9), 1fr));
+  gap: var(--gap);
+}
+
+.tarjeta {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--gap) * 0.5);
+  padding: calc(var(--u) * 4);
+  color: #1c1626;
+  text-align: center;
+}
+
+.rareza {
+  align-self: flex-end;
+  padding: 2px 6px;
+  font-size: var(--f-small);
+  font-weight: 700;
+}
+
+.imagen {
+  width: calc(64px * var(--ik));
+  height: calc(64px * var(--ik));
+  background-size: calc(384px * var(--ik)) calc(512px * var(--ik));
+  background-position: 0 calc(-448px * var(--ik));
+}
+
+.nombre {
+  font-family: var(--fuente-pixel);
+  font-size: calc(var(--f-stat) + 2px);
+  font-weight: 700;
+}
+
+.descripcion {
+  flex: 1;
+  font-size: var(--f-small);
+  line-height: 1.35;
+  color: #5f3c26;
+}
+
+.datos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  list-style: none;
+  font-size: var(--f-small);
+}
+
+.datos li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.boton {
+  width: 100%;
+  padding: calc(var(--u) * 2) calc(var(--u) * 3) calc(var(--u) * 3);
+  font-family: var(--fuente-pixel);
+  font-size: calc(var(--f-stat) + 1px);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.boton:disabled {
+  cursor: not-allowed;
+}

@@ -5,7 +5,7 @@
 - **Lámpara de la escena apagada de noche** (opcional): la hoja de luces trae el sprite apagado, pero ahora la lámpara se dibuja siempre encendida.
 
 ## Funciones por hacer
-- Fase 4b: semillas y variedades, huecos de cultivo.
+- Huecos de cultivo múltiples (varias plantas a la vez): pendiente de decidir.
 - Fase 5: plagas, logros, ranking, recompensa diaria.
 - Fase 6: anuncios, música, ajustes finales.
 - Objetos de la tienda sin efecto todavía (no se venden): medidor de pH, termómetro, pulverizador, fungicida, radio, gato.

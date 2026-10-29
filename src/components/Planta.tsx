@@ -23,14 +23,17 @@ const COLUMNA_MACETA: Record<string, number> = {
 interface Props {
   fase: number;
   estado: Estado;
+  /** Variedad de la planta. La clásica usa las hojas generales; el resto tiene su propia hoja. */
+  variedad?: string;
   /** Maceta equipada. Si no es la de terracota se dibuja encima. */
   maceta?: string;
 }
 
 /** Sprite de la planta. Animada en reposo cuando está sana; fija en cualquier otro estado. */
-export function Planta({ fase, estado, maceta = "maceta_terracota" }: Props) {
+export function Planta({ fase, estado, variedad = "clasica", maceta = "maceta_terracota" }: Props) {
   const [fotograma, setFotograma] = useState(0);
-  const animada = estado === "sana" && fase >= 2;
+  const propia = variedad !== "clasica";
+  const animada = estado === "sana" && (propia || fase >= 2);
 
   useEffect(() => {
     if (!animada) return;
@@ -38,10 +41,23 @@ export function Planta({ fase, estado, maceta = "maceta_terracota" }: Props) {
     return () => clearInterval(id);
   }, [animada]);
 
-  const hoja = animada ? HOJA_ANIMADA : HOJA_ESTADOS;
-  const columna = animada ? fotograma : fase < 3 ? 0 : Math.max(0, ESTADOS.indexOf(estado));
-  const fila = animada ? fase - 2 : fase - 1;
-
+  // Las variedades propias traen 4 fotogramas por fase y, desde la fase 3, sedienta (columna 4) y muerta (columna 5).
+  const hoja = propia
+    ? { src: `/assets/sprites/tpp-variedad-${variedad}-1x.png`, columnas: 6, filas: 8 }
+    : animada
+      ? HOJA_ANIMADA
+      : HOJA_ESTADOS;
+  const columnaPropia = animada
+    ? fotograma
+    : fase < 3
+      ? 0
+      : estado === "muerta"
+        ? 5
+        : estado === "sedienta" || estado === "muriendo"
+          ? 4
+          : 0;
+  const columna = propia ? columnaPropia : animada ? fotograma : fase < 3 ? 0 : Math.max(0, ESTADOS.indexOf(estado));
+  const fila = propia ? fase - 1 : animada ? fase - 2 : fase - 1;
   const columnaMaceta = COLUMNA_MACETA[maceta] ?? 1;
 
   return (

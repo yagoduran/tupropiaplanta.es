@@ -75,6 +75,8 @@ export const MENSAJES_ERROR: Record<string, string> = {
   sin_planta: "No tienes ninguna planta. Planta una semilla.",
   planta_muerta: "Tu planta ha muerto. Planta una semilla nueva.",
   ya_hay_planta: "Ya tienes una planta viva.",
+  variedad_bloqueada: "Todavía no tienes el nivel para esa semilla.",
+  variedad_desconocida: "Esa semilla no existe.",
   monedas_insuficientes: "No tienes monedas suficientes.",
   nivel_insuficiente: "Todavía no tienes el nivel necesario.",
   ya_lo_tienes: "Ya tienes ese objeto.",
