@@ -13,6 +13,16 @@ export const COLORES = {
   w: "#ffffff",
   sd: "#8c6a48",
   sd2: "#a8845c",
+  y1: "#f2ec9a",
+  g1: "#f4d36a",
+  g2: "#d9a43a",
+  a1: "#bfe6f7",
+  a2: "#5fb6e8",
+  a3: "#2f6fb0",
+  v1: "#b48ee0",
+  v2: "#7a52b8",
+  p1: "#7c2e1b",
+  p4: "#f7b072",
 } as const;
 
 type Color = keyof typeof COLORES;
@@ -54,6 +64,16 @@ const MARCOS = {
   tarjeta: { t: ["o", "w"], l: ["o", "w"], r: ["o", "sd2"], b: ["o", "sd2"], f: "c" },
   plano: { t: ["o"], l: ["o"], r: ["o"], b: ["o"], f: "s" },
   campo: { t: ["o", "sd2"], l: ["o", "sd2"], r: ["o", "w"], b: ["o", "w"], f: "w" },
+  apagado: { t: ["s", "sd2"], l: ["s", "sd2"], r: ["s", "sd"], b: ["s", "sd", "sd"], f: "b1" },
+  dorado: { t: ["o", "y1"], l: ["o", "y1"], r: ["o", "g2"], b: ["o", "g2", "g2"], f: "g1" },
+  // Marcos de avatar y de rareza: borde de dos tonos y fondo crema.
+  marco_madera: { t: ["o", "b1", "b2"], l: ["o", "b1", "b2"], r: ["o", "b2", "b1"], b: ["o", "b2", "b1"], f: "c" },
+  marco_hojas: { t: ["o", "l3", "l1"], l: ["o", "l3", "l1"], r: ["o", "l1", "l3"], b: ["o", "l1", "l3"], f: "c" },
+  marco_botanico: { t: ["o", "a1", "a3"], l: ["o", "a1", "a3"], r: ["o", "a3", "a1"], b: ["o", "a3", "a1"], f: "c" },
+  marco_dorado: { t: ["o", "y1", "g2"], l: ["o", "y1", "g2"], r: ["o", "g2", "y1"], b: ["o", "g2", "y1"], f: "c" },
+  marco_otono: { t: ["o", "p4", "p1"], l: ["o", "p4", "p1"], r: ["o", "p1", "p4"], b: ["o", "p1", "p4"], f: "c" },
+  marco_escarcha: { t: ["o", "w", "a2"], l: ["o", "w", "a2"], r: ["o", "a2", "a1"], b: ["o", "a2", "a1"], f: "c" },
+  marco_prestigio: { t: ["o", "v1", "v2"], l: ["o", "v1", "v2"], r: ["o", "v2", "v1"], b: ["o", "v2", "v1"], f: "c" },
 } satisfies Record<string, Marco>;
 
 export type IdMarco = keyof typeof MARCOS;

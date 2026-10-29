@@ -280,7 +280,168 @@ button.hueco {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .totales {
+  .titulosRejilla,
+  .arbol {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .totales,
+  .hitos {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+/* Colección */
+.rellenoVerde {
+  height: 100%;
+  background: #36a33b;
+}
+
+.hitos {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--gap);
+}
+
+.hito {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: calc(var(--u) * 3);
+  text-align: center;
+  font-size: var(--f-small);
+}
+
+.hitoIcono {
+  display: flex;
+}
+
+.hitoEstado {
+  font-weight: 700;
+}
+
+.fichas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--gap);
+}
+
+.ficha {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: calc(var(--u) * 3);
+  color: #1c1626;
+}
+
+.fichaCabeza {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--f-small);
+  font-weight: 700;
+}
+
+.etiqueta {
+  padding: 1px 6px;
+  font-size: 11px;
+}
+
+/* Títulos y marcos */
+.titulosRejilla {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: var(--gap);
+  align-items: start;
+}
+
+.vista {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+}
+
+.vistaAvatar {
+  display: inline-flex;
+  flex: none;
+  padding: calc(var(--u) * 2);
+}
+
+.vistaNombre {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-btn);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.vistaTitulo {
+  font-size: var(--f-stat);
+  font-weight: 700;
+  color: #b9512a;
+}
+
+.marcos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: var(--gap);
+}
+
+.marcoOpcion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: calc(var(--u) * 2);
+  background: #fff;
+  border: calc(var(--u) * 0.7) solid #a8845c;
+  color: #1c1626;
+  font: inherit;
+  font-size: var(--f-small);
+  text-align: center;
+  cursor: pointer;
+}
+
+.marcoOpcion:disabled {
+  cursor: default;
+}
+
+.marcoPuesto {
+  background: #f2ec9a;
+  border-color: #1d6630;
+}
+
+.arbol {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gap);
+}
+
+.rama {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.ramaNombre {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+  color: #5f3c26;
+}
+
+.nodo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: calc(var(--u) * 3);
+  font: inherit;
+  font-size: var(--f-small);
+  text-align: left;
+  color: #1c1626;
+  cursor: pointer;
+}
+
+.nodo:disabled {
+  cursor: default;
 }

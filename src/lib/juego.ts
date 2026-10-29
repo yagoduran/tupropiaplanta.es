@@ -5,7 +5,7 @@ import { tonoPorPorcentaje, type Medidor } from "./estado";
 export type Accion = "regar" | "abonar" | "podar" | "ajustar_luz" | "cosechar";
 
 /** Pantallas del juego: las pestañas y las del menú de usuario. */
-export type PantallaJuego = IdIcono | "perfil" | "plantas" | "inventario" | "estadisticas";
+export type PantallaJuego = IdIcono | "perfil" | "plantas" | "inventario" | "estadisticas" | "coleccion" | "titulos";
 
 export interface AjustesJuego {
   volumen_efectos: number;
@@ -13,6 +13,9 @@ export interface AjustesJuego {
   avisos: boolean;
   /** Avatar elegido (ver `AVATARES`). */
   avatar?: string;
+  /** Título y marco de perfil equipados (ver `src/lib/progresion.ts`). */
+  titulo?: string;
+  marco?: string;
   /** Si es true, el jugador no sale en el ranking. */
   ranking_oculto?: boolean;
 }

@@ -2,6 +2,7 @@
 
 import { marco } from "@/lib/diseno";
 import { AVATARES, avatarDe, type DatosPerfil } from "@/lib/perfil";
+import { MARCO_POR_ID, TITULO_POR_ID } from "@/lib/progresion";
 import { Icono } from "./Icono";
 import { IconoObjeto } from "./IconoObjeto";
 import styles from "./perfil.module.css";
@@ -12,6 +13,8 @@ interface Props {
   xp: number;
   xpPct: number;
   avatar?: string;
+  titulo?: string;
+  marco?: string;
   datos: DatosPerfil | null;
   alElegirAvatar: (id: string) => void;
 }
@@ -19,7 +22,7 @@ interface Props {
 const numero = (n: number) => n.toLocaleString("es-ES", { useGrouping: "always" });
 
 /** Mi perfil: avatar, nivel y estadísticas del jugador. */
-export function Perfil({ usuario, nivel, xp, xpPct, avatar, datos, alElegirAvatar }: Props) {
+export function Perfil({ usuario, nivel, xp, xpPct, avatar, titulo, marco: idMarco, datos, alElegirAvatar }: Props) {
   const tarjeta = marco("tarjeta", "var(--u)");
   const actual = avatarDe(avatar);
   const e = datos?.estadisticas;
@@ -44,9 +47,18 @@ export function Perfil({ usuario, nivel, xp, xpPct, avatar, datos, alElegirAvata
       <div className={styles.rejilla}>
         <section className={styles.tarjeta} style={tarjeta} aria-label="Jugador">
           <div className={styles.cabeza}>
-            <IconoObjeto celda={avatarDe(avatar).celda} k={3} />
+            <span
+              style={{
+                ...marco(MARCO_POR_ID[idMarco ?? "madera"]?.estilo ?? "marco_madera", "var(--u)"),
+                padding: "calc(var(--u) * 2)",
+                display: "inline-flex",
+              }}
+            >
+              <IconoObjeto celda={avatarDe(avatar).celda} k={3} />
+            </span>
             <div>
               <p className={styles.nombre}>{usuario}</p>
+              {titulo && TITULO_POR_ID[titulo] && <p className={styles.pequeno}>{TITULO_POR_ID[titulo].nombre}</p>}
               {desde && <p className={styles.pequeno}>Cultivando desde {desde}</p>}
             </div>
           </div>

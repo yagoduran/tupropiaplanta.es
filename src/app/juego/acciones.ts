@@ -2,6 +2,7 @@
 
 import { crearClienteServidor } from "@/lib/supabase/servidor";
 import type { DatosEstadisticas, DatosPerfil } from "@/lib/perfil";
+import type { DatosProgresion } from "@/lib/progresion";
 import type { Accion, AjustesJuego, DatosRanking, EstadoJuego, RespuestaAccion } from "@/lib/juego";
 
 const ACCIONES: Accion[] = ["regar", "abonar", "podar", "ajustar_luz", "cosechar"];
@@ -80,6 +81,22 @@ export async function obtenerEstadisticas(): Promise<DatosEstadisticas | null> {
   const { data, error } = await supabase.rpc("tpp_mis_estadisticas");
   if (error || !data) return null;
   return data as DatosEstadisticas;
+}
+
+/** Colección, títulos y marcos. Devuelve null si falla. */
+export async function obtenerProgresion(): Promise<DatosProgresion | null> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_progresion");
+  if (error || !data) return null;
+  return data as DatosProgresion;
+}
+
+/** Reclama el premio de un hito de la colección. */
+export async function reclamarHito(pct: number): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_reclamar_hito", { p_pct: pct });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
 }
 
 /** Recoge el regalo diario. */

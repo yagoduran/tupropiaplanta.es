@@ -14,6 +14,8 @@ const OPCIONES_MENU = [
   ["plantas", "Mis plantas"],
   ["inventario", "Inventario"],
   ["estadisticas", "Estadísticas"],
+  ["coleccion", "Colección"],
+  ["titulos", "Títulos y marcos"],
 ] as const;
 
 interface Props {

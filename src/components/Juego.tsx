@@ -12,6 +12,8 @@ import {
   hacerAccion,
   obtenerEstado,
   obtenerEstadisticas,
+  obtenerProgresion,
+  reclamarHito,
   obtenerMiPerfil,
   obtenerRanking,
   plantarSemilla,
@@ -40,6 +42,7 @@ import { LOGRO_POR_ID } from "@/lib/logros";
 import { PLAGAS, TRATAMIENTOS } from "@/lib/plagas";
 import type { Efecto } from "@/lib/sonido";
 import type { DatosEstadisticas, DatosPerfil } from "@/lib/perfil";
+import type { DatosProgresion } from "@/lib/progresion";
 import { calcularBienvenida, guardarVisita, leerVisita, type Bienvenida as DatosBienvenida } from "@/lib/visita";
 import { Ajustes } from "./Ajustes";
 import { Bienvenida } from "./Bienvenida";
@@ -56,6 +59,7 @@ import { Planta } from "./Planta";
 import { Plaga } from "./Plaga";
 import { Decoracion } from "./Decoracion";
 import { Logros } from "./Logros";
+import { Coleccion } from "./Coleccion";
 import { Estadisticas } from "./Estadisticas";
 import { Inventario } from "./Inventario";
 import { MisPlantas } from "./MisPlantas";
@@ -63,6 +67,7 @@ import { Perfil } from "./Perfil";
 import { Ranking } from "./Ranking";
 import { Semillas } from "./Semillas";
 import { Tienda } from "./Tienda";
+import { Titulos } from "./Titulos";
 import { Tutorial } from "./Tutorial";
 import styles from "./juego.module.css";
 
@@ -99,6 +104,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [ranking, setRanking] = useState<DatosRanking | null>(null);
   const [datosPerfil, setDatosPerfil] = useState<DatosPerfil | null>(null);
   const [estadisticas, setEstadisticas] = useState<DatosEstadisticas | null>(null);
+  const [progresion, setProgresion] = useState<DatosProgresion | null>(null);
   const [bienvenida, setBienvenida] = useState<DatosBienvenida | null>(null);
 
   const aplicar = useCallback((nuevo: EstadoJuego) => {
@@ -270,6 +276,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "plantas" ||
       id === "inventario" ||
       id === "estadisticas" ||
+      id === "coleccion" ||
+      id === "titulos" ||
       id === "cultivo" ||
       id === "ajustes" ||
       id === "tienda" ||
@@ -283,6 +291,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         obtenerEstadisticas()
           .then(setEstadisticas)
           .catch(() => setEstadisticas(null));
+      if (id === "coleccion" || id === "titulos" || id === "perfil")
+        obtenerProgresion()
+          .then(setProgresion)
+          .catch(() => setProgresion(null));
       if (id === "perfil" || id === "plantas" || id === "inventario")
         obtenerMiPerfil()
           .then(setDatosPerfil)
@@ -336,6 +348,20 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       const recompensa = "recompensa" in r ? r.recompensa : 0;
       tratar(r, { texto: `¡Regalo diario! +${recompensa} monedas`, icono: "moneda" });
     });
+  };
+
+  const reclamarPremioColeccion = (pct: number) => {
+    ejecutar(async () => {
+      const r = await reclamarHito(pct);
+      sonar(r.ok ? "cofre" : "error");
+      tratar(r, { texto: "¡Premio de la colección reclamado!", icono: "logros" });
+      setProgresion(await obtenerProgresion());
+    });
+  };
+
+  const equiparPerfil = (cambio: { titulo?: string; marco?: string }) => {
+    cambiarAjustes(cambio);
+    setProgresion((p) => (p ? { ...p, ...cambio } : p));
   };
 
   const cambiarHueco = (hueco: number) => {
@@ -471,6 +497,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             xp={perfil.xp}
             xpPct={perfil.xp_pct}
             avatar={perfil.ajustes.avatar}
+            titulo={perfil.ajustes.titulo}
+            marco={perfil.ajustes.marco}
             datos={datosPerfil}
             alElegirAvatar={(avatar) => cambiarAjustes({ avatar })}
           />
@@ -490,6 +518,17 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           />
         ) : pantalla === "estadisticas" ? (
           <Estadisticas datos={estadisticas} />
+        ) : pantalla === "coleccion" ? (
+          <Coleccion datos={progresion} ocupado={enCurso} alReclamar={reclamarPremioColeccion} />
+        ) : pantalla === "titulos" ? (
+          <Titulos
+            datos={progresion}
+            usuario={perfil.usuario}
+            nivel={perfil.nivel}
+            avatar={perfil.ajustes.avatar}
+            ocupado={enCurso}
+            alElegir={equiparPerfil}
+          />
         ) : pantalla === "semillas" ? (
           <Semillas
             nivel={perfil.nivel}
