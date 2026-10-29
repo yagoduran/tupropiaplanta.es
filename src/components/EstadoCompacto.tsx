@@ -14,7 +14,7 @@ export function EstadoCompacto({ medidores }: { medidores: Medidor[] }) {
           <div key={m.id} className={styles.tarjeta} style={tarjeta}>
             <Icono id={m.id} />
             <span className={styles.tarjetaNombre}>{m.nombreCorto ?? m.nombre}</span>
-            <span className={styles.tarjetaValor} style={{ color: t.texto }}>
+            <span className={`${styles.tarjetaValor} numero`} style={{ color: t.texto }}>
               {m.valorCorto ?? m.valor}
             </span>
             <span className={styles.miniBarra}>

@@ -139,3 +139,11 @@ img,
     --s: 3;
   }
 }
+
+/* Cifras con la fuente de texto: en la pixelada el 2 se confunde con el 8. */
+.numero,
+.juego .numero {
+  font-family: var(--fuente-texto);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}

@@ -42,7 +42,7 @@ function Tarjeta({ objeto, perfil, ocupado, alComprar, alEquipar, alUsar }: Prop
           : false;
 
   let etiqueta: { texto: string; fondo: string } | null = null;
-  let principal: { texto: string; estilo: "boton" | "secundario" | "apagado"; accion?: () => void };
+  let principal: { texto: string; numero?: string; estilo: "boton" | "secundario" | "apagado"; accion?: () => void };
 
   if (!consumible && lo_tiene) {
     if (objeto.tipo === "herramienta") {
@@ -66,7 +66,7 @@ function Tarjeta({ objeto, perfil, ocupado, alComprar, alEquipar, alUsar }: Prop
     principal = { texto: `Nivel ${objeto.nivel}`, estilo: "apagado" };
   } else if (falta > 0) {
     etiqueta = { texto: "Monedas insuficientes", fondo: "#b9512a" };
-    principal = { texto: `Faltan ${miles(falta)}`, estilo: "apagado" };
+    principal = { texto: "Faltan", numero: miles(falta), estilo: "apagado" };
   } else {
     principal = { texto: "Comprar", estilo: "boton", accion: () => alComprar(objeto.id) };
   }
@@ -88,7 +88,7 @@ function Tarjeta({ objeto, perfil, ocupado, alComprar, alEquipar, alUsar }: Prop
       <p className={styles.efecto}>{objeto.efecto}</p>
       <div className={styles.precio} style={{ color: falta > 0 && !lo_tiene && !bloqueado ? "#b9512a" : undefined }}>
         <Icono id="moneda" k={1.5} />
-        <span>{gratis ? "Gratis" : miles(objeto.precio)}</span>
+        <span className={gratis ? undefined : "numero"}>{gratis ? "Gratis" : miles(objeto.precio)}</span>
         {consumible && cantidad > 0 && <span className={styles.cantidad}>Tienes {cantidad}</span>}
       </div>
       <div className={styles.botones}>
@@ -100,6 +100,7 @@ function Tarjeta({ objeto, perfil, ocupado, alComprar, alEquipar, alUsar }: Prop
           onClick={principal.accion}
         >
           {principal.texto}
+          {principal.numero && <span className="numero"> {principal.numero}</span>}
         </button>
         {consumible && cantidad > 0 && (
           <button

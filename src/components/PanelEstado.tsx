@@ -34,7 +34,7 @@ export function PanelEstado({ medidores, tiempoDeVida, fase }: Props) {
                     m.nombre
                   )}
                 </span>
-                <span style={{ color: t.texto, fontWeight: 700 }}>{m.valor}</span>
+                <span className="numero" style={{ color: t.texto }}>{m.valor}</span>
               </div>
               <div className={styles.barra} style={barra}>
                 <div
@@ -57,7 +57,7 @@ export function PanelEstado({ medidores, tiempoDeVida, fase }: Props) {
         <Icono id="tiempo" />
         <div className={styles.medidorCuerpo}>
           <span className={styles.estadoPequeno}>Tiempo de vida</span>
-          <span className={styles.estadoValor}>{tiempoDeVida}</span>
+          <span className={`${styles.estadoValor} numero`}>{tiempoDeVida}</span>
         </div>
       </div>
 
