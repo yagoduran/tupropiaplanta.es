@@ -8,6 +8,8 @@ export type Efecto =
   | "pestana"
   | "error"
   | "moneda"
+  | "comprar"
+  | "compra-rechazada"
   | "notificacion"
   | "abrir-modal"
   | "cerrar-modal";

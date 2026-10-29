@@ -5,6 +5,9 @@ import {
   borrarDatosDelJuego,
   guardarAjustes,
   guardarTutorial,
+  comprarObjeto,
+  equiparObjeto,
+  usarObjeto,
   hacerAccion,
   obtenerEstado,
   plantarSemilla,
@@ -28,6 +31,8 @@ import { JuegoLayout } from "./JuegoLayout";
 import { PanelAcciones } from "./PanelAcciones";
 import { PanelEstado } from "./PanelEstado";
 import { Planta } from "./Planta";
+import { Decoracion } from "./Decoracion";
+import { Tienda } from "./Tienda";
 import { Tutorial } from "./Tutorial";
 import styles from "./juego.module.css";
 
@@ -158,7 +163,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   };
 
   const elegirPantalla = (id: IdIcono) => {
-    if (id === "cultivo" || id === "ajustes") {
+    if (id === "cultivo" || id === "ajustes" || id === "tienda") {
       sonar("pestana");
       setPantalla(id);
     }
@@ -169,9 +174,34 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       const r = await hacerAccion(accion);
       sonar(r.ok ? (accion === "ajustar_luz" ? "ajustar-luz" : accion) : "error");
       const recompensa = "recompensa" in r ? r.recompensa : undefined;
-      tratar(r, accion === "cosechar" ? { texto: `¡Cosecha! +${recompensa ?? 0} monedas`, icono: "moneda" } : undefined);
+      const ganadas = "ganadas" in r ? r.ganadas : undefined;
+      tratar(
+        r,
+        accion === "cosechar"
+          ? { texto: `¡Cosecha! +${recompensa ?? 0} monedas`, icono: "moneda" }
+          : ganadas
+            ? { texto: `+${ganadas} ${ganadas === 1 ? "moneda" : "monedas"}`, icono: "moneda" }
+            : undefined,
+      );
     });
   };
+
+  const gestionarObjeto = (
+    llamar: (id: string) => ReturnType<typeof comprarObjeto>,
+    id: string,
+    exito: string,
+    sonido: "comprar" | "clic",
+  ) => {
+    iniciar(async () => {
+      const r = await llamar(id);
+      sonar(r.ok ? sonido : "compra-rechazada");
+      tratar(r, { texto: exito, icono: "tienda" });
+    });
+  };
+
+  const comprar = (id: string) => gestionarObjeto(comprarObjeto, id, "¡Compra hecha!", "comprar");
+  const equipar = (id: string) => gestionarObjeto(equiparObjeto, id, "Hecho", "clic");
+  const usar = (id: string) => gestionarObjeto(usarObjeto, id, "¡Abono aplicado!", "clic");
 
   const plantar = () => {
     iniciar(async () => {
@@ -230,12 +260,22 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             alVerTutorial={verTutorial}
             alBorrar={borrarDatos}
           />
+        ) : pantalla === "tienda" ? (
+          <Tienda
+            perfil={perfil}
+            ocupado={enCurso}
+            aviso={aviso}
+            alComprar={comprar}
+            alEquipar={equipar}
+            alUsar={usar}
+          />
         ) : undefined
       }
       panelEstado={<PanelEstado medidores={medidores} tiempoDeVida={formatoVida(vida)} fase={planta?.fase ?? 1} />}
       estadoCompacto={<EstadoCompacto medidores={medidores} />}
       escena={
         <Escena>
+          <Decoracion puestos={perfil.equipo.decoracion} />
           {planta && <Planta fase={planta.fase} estado={planta.estado} />}
           {aviso ? (
             <Bocadillo texto={aviso.texto} icono={aviso.icono} />

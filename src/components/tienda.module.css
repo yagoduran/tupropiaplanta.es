@@ -1,0 +1,124 @@
+.contenedor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  width: 100%;
+}
+
+.titulo {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-title);
+  font-weight: 700;
+  line-height: 1;
+  color: #f6eed6;
+}
+
+.categorias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--tab-gap);
+}
+
+.categoria {
+  height: calc(var(--tab-h) * 0.8);
+  padding: 0 calc(var(--u) * 5);
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-tab);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.rejilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--panel-w) * 1.25), 1fr));
+  gap: var(--gap);
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 0.5);
+  padding: calc(var(--u) * 4);
+  color: #1c1626;
+}
+
+.cabecera {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.etiqueta {
+  padding: 2px 6px;
+  color: #f6eed6;
+  font-size: var(--f-small);
+  font-weight: 700;
+  text-align: right;
+}
+
+.nombre {
+  font-family: var(--fuente-pixel);
+  font-size: calc(var(--f-stat) + 2px);
+  font-weight: 700;
+}
+
+.efecto {
+  flex: 1;
+  font-size: var(--f-small);
+  line-height: 1.35;
+  color: #5f3c26;
+}
+
+.precio {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--fuente-pixel);
+  font-weight: 700;
+}
+
+.cantidad {
+  margin-left: auto;
+  font-family: var(--fuente-texto);
+  font-size: var(--f-small);
+  color: #5f3c26;
+}
+
+.botones {
+  display: flex;
+  gap: 6px;
+}
+
+.boton {
+  flex: 1;
+  padding: calc(var(--u) * 2) calc(var(--u) * 3) calc(var(--u) * 3);
+  font-family: var(--fuente-pixel);
+  font-size: calc(var(--f-stat) + 1px);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.boton:disabled {
+  cursor: not-allowed;
+}
+
+.cabeceraPagina {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+  min-height: calc(var(--f-title) * 1.6);
+}
+
+.aviso {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  background: #f6eed6;
+  border: var(--u) solid #1c1626;
+  color: #1c1626;
+  font-size: calc(var(--f-stat) + 1px);
+  font-weight: 600;
+}
