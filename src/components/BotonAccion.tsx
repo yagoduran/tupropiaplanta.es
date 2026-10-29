@@ -33,6 +33,7 @@ export function BotonAccion({ id, etiqueta, detalle, espera = 0, pasoAnillo = 0,
     <button
       type="button"
       className={styles.boton}
+      data-tut={id}
       disabled={bloqueado}
       aria-disabled={bloqueado}
       onMouseEnter={() => setEncima(true)}

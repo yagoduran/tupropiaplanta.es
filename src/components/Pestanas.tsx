@@ -22,6 +22,7 @@ export function Pestanas({ activa, alElegir }: { activa: IdIcono; alElegir: (id:
           <button
             key={p.id}
             type="button"
+            data-tut={`pestana-${p.id}`}
             aria-current={esActiva ? "page" : undefined}
             onClick={() => alElegir(p.id)}
             className={`${styles.pestana} ${p.id === "ajustes" ? styles.soloEscritorio : ""}`}

@@ -29,7 +29,7 @@ export function Cabecera({ monedas, nivel, xp, usuario, alAbrirAjustes }: Props)
       </div>
 
       <div className={styles.cabeceraCentro}>
-        <div className={styles.cabeceraDato}>
+        <div className={styles.cabeceraDato} data-tut="monedas">
           <Icono id="moneda" />
           <span>{monedas.toLocaleString("es-ES", { useGrouping: "always" })}</span>
         </div>

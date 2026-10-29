@@ -19,6 +19,8 @@ interface Props {
   alElegirPantalla: (id: IdIcono) => void;
   /** Contenido de las pantallas que no son el cultivo. */
   secundaria?: ReactNode;
+  /** Capas por encima de todo el juego, como el tutorial. */
+  superposicion?: ReactNode;
 }
 
 /** Estructura común del juego: cabecera, anuncios laterales, zona de juego y pestañas. */
@@ -31,6 +33,7 @@ export function JuegoLayout({
   pantalla,
   alElegirPantalla,
   secundaria,
+  superposicion,
 }: Props) {
   const marcoJuego = marco("panel_oscuro", "var(--u)");
   return (
@@ -50,13 +53,21 @@ export function JuegoLayout({
           <div className={styles.juego} style={marcoJuego}>
             {pantalla === "cultivo" || !secundaria ? (
               <>
-                <section className={`${styles.panelLateral} ${styles.soloEscritorio}`} aria-label="Estado de la planta">
+                <section
+                  className={`${styles.panelLateral} ${styles.soloEscritorio}`}
+                  data-tut="estado"
+                  aria-label="Estado de la planta"
+                >
                   {panelEstado}
                 </section>
-                <section className={styles.escena} aria-label="Cámara de cultivo">
+                <section className={styles.escena} data-tut="escena" aria-label="Cámara de cultivo">
                   {escena}
                 </section>
-                <section className={`${styles.soloMovil} ${styles.estadoMovil}`} aria-label="Estado de la planta">
+                <section
+                  className={`${styles.soloMovil} ${styles.estadoMovil}`}
+                  data-tut="estado"
+                  aria-label="Estado de la planta"
+                >
                   {estadoCompacto}
                 </section>
                 <section className={`${styles.panelLateral} ${styles.acciones}`} aria-label="Acciones">
@@ -76,6 +87,7 @@ export function JuegoLayout({
         </div>
       </main>
       <BannerMovil />
+      {superposicion}
     </div>
   );
 }

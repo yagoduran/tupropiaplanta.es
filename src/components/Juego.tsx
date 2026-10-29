@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState, useTransition } from "react";
 import {
   borrarDatosDelJuego,
   guardarAjustes,
+  guardarTutorial,
   hacerAccion,
   obtenerEstado,
   plantarSemilla,
@@ -27,6 +28,7 @@ import { JuegoLayout } from "./JuegoLayout";
 import { PanelAcciones } from "./PanelAcciones";
 import { PanelEstado } from "./PanelEstado";
 import { Planta } from "./Planta";
+import { Tutorial } from "./Tutorial";
 import styles from "./juego.module.css";
 
 const REVISION_MS = 60_000;
@@ -44,6 +46,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [aviso, setAviso] = useState<Aviso | null>(null);
   const [enCurso, iniciar] = useTransition();
   const [pantalla, setPantalla] = useState<IdIcono>("cultivo");
+  const [tutorial, setTutorial] = useState(!inicial.perfil.tutorial_hecho);
+  const [repeticion, setRepeticion] = useState(false);
 
   const aplicar = useCallback((nuevo: EstadoJuego) => {
     setEstado({ perfil: nuevo.perfil, planta: nuevo.planta });
@@ -115,6 +119,44 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     setPantalla("cultivo");
   };
 
+  const verTutorial = () => {
+    setRepeticion(true);
+    setTutorial(true);
+    setPantalla("cultivo");
+  };
+
+  const cambiarPasoTutorial = (paso: number) => {
+    if (!repeticion) guardarTutorial(paso);
+  };
+
+  const saltarTutorial = () => {
+    setTutorial(false);
+    if (!repeticion) {
+      guardarTutorial(0);
+      setAviso({ texto: "Tutorial saltado. Puedes verlo otra vez en Ajustes.", icono: "aviso" });
+    }
+  };
+
+  const terminarTutorial = () => {
+    setTutorial(false);
+    if (repeticion) return;
+    iniciar(async () => {
+      const r = await guardarTutorial(8, true);
+      tratar(r);
+      if (r.ok && "recompensa" in r && r.recompensa) {
+        sonar("moneda");
+        setAviso({ texto: `¡Regalo de bienvenida! +${r.recompensa} monedas`, icono: "moneda" });
+      }
+    });
+  };
+
+  const activarAvisos = async () => {
+    if (typeof Notification === "undefined") return false;
+    const permiso = Notification.permission === "granted" ? "granted" : await Notification.requestPermission();
+    if (permiso === "granted") cambiarAjustes({ avisos: true });
+    return permiso === "granted";
+  };
+
   const elegirPantalla = (id: IdIcono) => {
     if (id === "cultivo" || id === "ajustes") {
       sonar("pestana");
@@ -166,13 +208,26 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     <JuegoLayout
       perfil={perfil}
       pantalla={pantalla}
+      superposicion={
+        tutorial && pantalla === "cultivo" && planta ? (
+          <Tutorial
+            key={repeticion ? "repeticion" : "inicial"}
+            pasoInicial={repeticion ? 1 : inicial.perfil.tutorial_paso}
+            agua={planta.agua}
+            alCambiarPaso={cambiarPasoTutorial}
+            alSaltar={saltarTutorial}
+            alTerminar={terminarTutorial}
+            alActivarAvisos={activarAvisos}
+          />
+        ) : undefined
+      }
       alElegirPantalla={elegirPantalla}
       secundaria={
         pantalla === "ajustes" ? (
           <Ajustes
             ajustes={perfil.ajustes}
             alCambiar={cambiarAjustes}
-            alVerTutorial={() => setPantalla("cultivo")}
+            alVerTutorial={verTutorial}
             alBorrar={borrarDatos}
           />
         ) : undefined
