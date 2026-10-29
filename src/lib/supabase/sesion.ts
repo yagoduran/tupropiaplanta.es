@@ -1,9 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-const RUTAS_PUBLICAS = ["/login", "/registro", "/auth", "/cookies", "/aviso-legal", "/privacidad", "/condiciones", "/anuncio"];
-
-/** Renueva la sesión en cada petición y manda a /login a quien no la tenga. */
+/** Renueva la sesión en cada petición y manda al juego a quien ya la tiene y entra en /login o /registro. */
 export async function actualizarSesion(peticion: NextRequest) {
   let respuesta = NextResponse.next({ request: peticion });
 
@@ -25,14 +23,6 @@ export async function actualizarSesion(peticion: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const conSesion = !!data?.claims;
   const ruta = peticion.nextUrl.pathname;
-  const esPublica = RUTAS_PUBLICAS.some((r) => ruta === r || ruta.startsWith(`${r}/`));
-
-  if (!conSesion && !esPublica) {
-    const destino = peticion.nextUrl.clone();
-    destino.pathname = "/login";
-    destino.search = "";
-    return NextResponse.redirect(destino);
-  }
   if (conSesion && (ruta === "/login" || ruta === "/registro")) {
     const destino = peticion.nextUrl.clone();
     destino.pathname = "/";
