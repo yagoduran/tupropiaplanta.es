@@ -25,7 +25,7 @@ export function Escena({ hora, luz, children }: { hora?: Hora; luz?: string; chi
 
   return (
     <>
-      {CAPAS.filter((capa) => !(luz && capa === "lampara")).map((capa) => (
+      {CAPAS.map((capa) => (
         // eslint-disable-next-line @next/next/no-img-element
         <img key={capa} className={styles.capa} src={`/assets/escena/capa-${capa}-${momento}-1x.png`} alt="" />
       ))}

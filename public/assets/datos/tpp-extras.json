@@ -180,7 +180,12 @@
      "alto": 64,
      "fotogramas": 1
     }
-   ]
+   ],
+   "sin_maceta": true,
+   "anclaje": {
+    "x": 32,
+    "y": 64
+   }
   },
   "variedad-hoja-azul": {
    "archivo": "tpp-variedad-hoja-azul",
@@ -352,7 +357,12 @@
      "alto": 64,
      "fotogramas": 1
     }
-   ]
+   ],
+   "sin_maceta": true,
+   "anclaje": {
+    "x": 32,
+    "y": 64
+   }
   },
   "variedad-dorada": {
    "archivo": "tpp-variedad-dorada",
@@ -524,7 +534,12 @@
      "alto": 64,
      "fotogramas": 1
     }
-   ]
+   ],
+   "sin_maceta": true,
+   "anclaje": {
+    "x": 32,
+    "y": 64
+   }
   },
   "variedad-noche": {
    "archivo": "tpp-variedad-noche",
@@ -696,7 +711,12 @@
      "alto": 64,
      "fotogramas": 1
     }
-   ]
+   ],
+   "sin_maceta": true,
+   "anclaje": {
+    "x": 32,
+    "y": 64
+   }
   },
   "variedad-cristal": {
    "archivo": "tpp-variedad-cristal",
@@ -868,7 +888,12 @@
      "alto": 64,
      "fotogramas": 1
     }
-   ]
+   ],
+   "sin_maceta": true,
+   "anclaje": {
+    "x": 32,
+    "y": 64
+   }
   },
   "plagas": {
    "archivo": "tpp-plagas",
@@ -1040,7 +1065,9 @@
      "columna": 1,
      "ancho": 64,
      "alto": 64,
-     "fotogramas": 4
+     "fotogramas": 4,
+     "fps": 8,
+     "bucle": true
     },
     {
      "nombre": "luz_fluorescente_apagada",
@@ -1056,7 +1083,9 @@
      "columna": 1,
      "ancho": 64,
      "alto": 64,
-     "fotogramas": 4
+     "fotogramas": 4,
+     "fps": 8,
+     "bucle": true
     },
     {
      "nombre": "luz_led_apagada",
@@ -1072,7 +1101,9 @@
      "columna": 1,
      "ancho": 64,
      "alto": 64,
-     "fotogramas": 4
+     "fotogramas": 4,
+     "fps": 8,
+     "bucle": true
     },
     {
      "nombre": "luz_led_pro_apagada",
@@ -1088,9 +1119,12 @@
      "columna": 1,
      "ancho": 64,
      "alto": 64,
-     "fotogramas": 4
+     "fotogramas": 4,
+     "fps": 8,
+     "bucle": true
     }
-   ]
+   ],
+   "nota": "Columna 0 apagada; columnas 1-4 encendida (4 fotogramas, parpadeo suave, 8 fps en bucle). Halo de píxeles sólidos sin tramado. Potencia: bombilla < fluorescente < led < led_pro."
   },
   "efectos": {
    "archivo": "tpp-efectos",
@@ -1350,5 +1384,10 @@
  "violeta_epica": {
   "v1": "#b48ee0",
   "v2": "#7a52b8"
+ },
+ "anclaje_plantas": {
+  "x": 32,
+  "y": 64,
+  "nota": "Sin maceta ni borde exterior. La tierra termina plana en la fila inferior de la celda (y=63). Ancla = centro del borde inferior (x=32, y=64). Para ponerla en una maceta de la hoja macetas, dibuja la planta 17 px más arriba que la maceta (su borde inferior sobre y=47 de la celda de la maceta) y la maceta encima."
  }
 }

@@ -1161,5 +1161,11 @@
   "a1": "#bfe6f7",
   "a2": "#5fb6e8",
   "a3": "#2f6fb0"
- }
+ },
+ "anclaje": {
+  "x": 32,
+  "y": 64,
+  "nota": "Sin maceta ni borde exterior. La tierra termina plana en la fila inferior de la celda (y=63). Ancla = centro del borde inferior (x=32, y=64). Para ponerla en una maceta de la hoja macetas, dibuja la planta 17 px más arriba que la maceta (su borde inferior sobre y=47 de la celda de la maceta) y la maceta encima."
+ },
+ "sin_maceta": true
 }
