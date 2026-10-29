@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import {
   borrarDatosDelJuego,
@@ -63,7 +64,18 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [recibidoEn, setRecibidoEn] = useState(() => Date.now());
   const [ahora, setAhora] = useState(() => Date.now());
   const [aviso, setAviso] = useState<Aviso | null>(null);
+  const router = useRouter();
   const [enCurso, iniciar] = useTransition();
+
+  /** Como `iniciar`, pero si no hay conexión avisa al jugador en lugar de romper la pantalla. */
+  const ejecutar = (tarea: () => Promise<void>) =>
+    iniciar(async () => {
+      try {
+        await tarea();
+      } catch {
+        setAviso({ texto: MENSAJES_ERROR.red, icono: "aviso" });
+      }
+    });
   const [pantalla, setPantalla] = useState<IdIcono>("cultivo");
   const [tutorial, setTutorial] = useState(!inicial.perfil.tutorial_hecho);
   const [repeticion, setRepeticion] = useState(false);
@@ -88,8 +100,12 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   // Vuelve a pedir el estado real cada minuto y al volver a la pestaña.
   useEffect(() => {
     const revisar = async () => {
-      const nuevo = await obtenerEstado();
-      if (nuevo) aplicar(nuevo);
+      try {
+        const nuevo = await obtenerEstado();
+        if (nuevo) aplicar(nuevo);
+      } catch {
+        // Sin conexión: se vuelve a intentar en la siguiente revisión.
+      }
     };
     const id = setInterval(revisar, REVISION_MS);
     const alVolver = () => {
@@ -119,10 +135,11 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       } else if (r.ok) {
         if (exito) setAviso(exito);
       } else {
+        if (r.error === "sesion") router.replace("/login");
         setAviso({ texto: MENSAJES_ERROR[r.error ?? "red"] ?? MENSAJES_ERROR.red, icono: "aviso" });
       }
     },
-    [aplicar],
+    [aplicar, router],
   );
 
   useEffect(() => {
@@ -152,20 +169,23 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
 
   const cambiarAjustes = (cambios: Partial<AjustesJuego>) => {
     setEstado((e) => ({ ...e, perfil: { ...e.perfil, ajustes: { ...e.perfil.ajustes, ...cambios } } }));
-    guardarAjustes(cambios).then((r) => {
-      if (!r.ok) setAviso({ texto: MENSAJES_ERROR[r.error ?? "red"] ?? MENSAJES_ERROR.red, icono: "aviso" });
-    });
+    guardarAjustes(cambios)
+      .then((r) => {
+        if (!r.ok) setAviso({ texto: MENSAJES_ERROR[r.error ?? "red"] ?? MENSAJES_ERROR.red, icono: "aviso" });
+      })
+      .catch(() => setAviso({ texto: MENSAJES_ERROR.red, icono: "aviso" }));
   };
 
   const borrarDatos = async () => {
-    const { ok } = await borrarDatosDelJuego();
-    if (!ok) {
+    try {
+      const { ok } = await borrarDatosDelJuego();
+      if (!ok) throw new Error("borrar");
+      const nuevo = await obtenerEstado();
+      if (nuevo) aplicar(nuevo);
+      setPantalla("cultivo");
+    } catch {
       setAviso({ texto: MENSAJES_ERROR.red, icono: "aviso" });
-      return;
     }
-    const nuevo = await obtenerEstado();
-    if (nuevo) aplicar(nuevo);
-    setPantalla("cultivo");
   };
 
   const verTutorial = () => {
@@ -175,13 +195,13 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   };
 
   const cambiarPasoTutorial = (paso: number) => {
-    if (!repeticion) guardarTutorial(paso);
+    if (!repeticion) guardarTutorial(paso).catch(() => {});
   };
 
   const saltarTutorial = () => {
     setTutorial(false);
     if (!repeticion) {
-      guardarTutorial(0);
+      guardarTutorial(0).catch(() => {});
       setAviso({ texto: "Tutorial saltado. Puedes verlo otra vez en Ajustes.", icono: "aviso" });
     }
   };
@@ -189,7 +209,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const terminarTutorial = () => {
     setTutorial(false);
     if (repeticion) return;
-    iniciar(async () => {
+    ejecutar(async () => {
       const r = await guardarTutorial(8, true);
       tratar(r);
       if (r.ok && "recompensa" in r && r.recompensa) {
@@ -217,12 +237,15 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     ) {
       sonar("pestana");
       setPantalla(id);
-      if (id === "ranking") obtenerRanking().then(setRanking);
+      if (id === "ranking")
+        obtenerRanking()
+          .then(setRanking)
+          .catch(() => setRanking(null));
     }
   };
 
   const accionar = (accion: Accion) => {
-    iniciar(async () => {
+    ejecutar(async () => {
       const r = await hacerAccion(accion);
       sonar(r.ok ? (accion === "ajustar_luz" ? "ajustar-luz" : accion) : "error");
       const recompensa = "recompensa" in r ? r.recompensa : undefined;
@@ -244,7 +267,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     exito: string,
     sonido: Efecto,
   ) => {
-    iniciar(async () => {
+    ejecutar(async () => {
       const r = await llamar(id);
       sonar(r.ok ? sonido : "compra-rechazada");
       tratar(r, { texto: exito, icono: "tienda" });
@@ -257,7 +280,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const tratarPlaga = (id: string) => gestionarObjeto(usarObjeto, id, "¡Plaga eliminada!", "plaga-eliminada");
 
   const reclamar = () => {
-    iniciar(async () => {
+    ejecutar(async () => {
       const r = await reclamarDiaria();
       sonar(r.ok ? "cofre" : "error");
       const recompensa = "recompensa" in r ? r.recompensa : 0;
@@ -266,7 +289,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   };
 
   const recogerAyuda = () => {
-    iniciar(async () => {
+    ejecutar(async () => {
       const r = await verAnuncio();
       sonar(r.ok ? "cofre" : "error");
       setAnuncioAbierto(false);
@@ -276,7 +299,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   };
 
   const plantar = (variedad: string) => {
-    iniciar(async () => {
+    ejecutar(async () => {
       const r = await plantarSemilla(variedad);
       tratar(r, { texto: "¡Semilla plantada!", icono: "cultivo" });
       if (r.ok) setPantalla("cultivo");

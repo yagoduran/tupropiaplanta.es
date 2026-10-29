@@ -7,7 +7,7 @@
 ## Funciones por hacer
 - Huecos de cultivo múltiples (varias plantas a la vez): pendiente de decidir.
 - Fase 5: ✅ logros y recompensa diaria (5a). ✅ ranking (5b). ✅ plagas (5c).
-- Fase 6: ✅ anuncios de prueba + cookies (6a). ✅ música de fondo (6b). Pendiente: pulido final (6c).
+- Fase 6: ✅ anuncios de prueba + cookies (6a). ✅ música de fondo (6b). ✅ pulido final (6c): rendimiento, accesibilidad, errores de conexión. Pendiente de 6c: textos legales.
 - Objetos de la tienda sin efecto todavía (no se venden): medidor de pH, termómetro, radio, gato.
 
 ## Infraestructura
@@ -21,6 +21,9 @@
 - Usar `leerEleccionCookies()` (`src/lib/cookies.ts`) para pedir anuncios personalizados solo si el jugador aceptó.
 - Revisar el texto de `/cookies` con los nombres reales de las cookies de la red.
 - El control de 3 ayudas al día se reinicia si el jugador usa "Borrar datos" (se borra su perfil).
+
+## Textos legales (pendiente de decidir)
+- Páginas de Aviso legal, Privacidad y Condiciones, enlazadas desde login y juego. Hacen falta los datos del titular (nombre o razón social, NIF/CIF, dirección, email de contacto), que serían públicos.
 
 ## Música
 - Ahora suena solo el ambiente (pájaros de día, habitación al atardecer, grillos de noche). Para añadir canciones: copiar los mp3 a `public/assets/musica/` y poner sus nombres en `CANCIONES` (`src/lib/musica.ts`); pasan a sonar una detrás de otra en lugar del ambiente.
