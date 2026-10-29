@@ -276,7 +276,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       escena={
         <Escena>
           <Decoracion puestos={perfil.equipo.decoracion} />
-          {planta && <Planta fase={planta.fase} estado={planta.estado} />}
+          {planta && <Planta fase={planta.fase} estado={planta.estado} maceta={perfil.equipo.maceta} />}
           {aviso ? (
             <Bocadillo texto={aviso.texto} icono={aviso.icono} />
           ) : sedienta ? (

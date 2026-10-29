@@ -12,13 +12,23 @@ const FOTOGRAMA_MS = 330;
 const HOJA_ANIMADA = { src: "/assets/sprites/tpp-animaciones-1x.png", columnas: 4, filas: 11 };
 const HOJA_ESTADOS = { src: "/assets/sprites/tpp-plantas-1x.png", columnas: 8, filas: 8 };
 
+// Columna de cada maceta en la hoja de macetas. La de terracota ya va dibujada en los sprites de la planta.
+const COLUMNA_MACETA: Record<string, number> = {
+  maceta_plastico: 0,
+  maceta_terracota: 1,
+  maceta_tela: 2,
+  maceta_ceramica: 3,
+};
+
 interface Props {
   fase: number;
   estado: Estado;
+  /** Maceta equipada. Si no es la de terracota se dibuja encima. */
+  maceta?: string;
 }
 
 /** Sprite de la planta. Animada en reposo cuando está sana; fija en cualquier otro estado. */
-export function Planta({ fase, estado }: Props) {
+export function Planta({ fase, estado, maceta = "maceta_terracota" }: Props) {
   const [fotograma, setFotograma] = useState(0);
   const animada = estado === "sana" && fase >= 2;
 
@@ -32,16 +42,31 @@ export function Planta({ fase, estado }: Props) {
   const columna = animada ? fotograma : fase < 3 ? 0 : Math.max(0, ESTADOS.indexOf(estado));
   const fila = animada ? fase - 2 : fase - 1;
 
+  const columnaMaceta = COLUMNA_MACETA[maceta] ?? 1;
+
   return (
-    <div
-      className={`pixel ${styles.planta}`}
-      role="img"
-      aria-label={`Planta en fase ${fase}, estado ${estado.replace("_", " ")}`}
-      style={{
-        backgroundImage: `url(${hoja.src})`,
-        backgroundSize: `calc(${hoja.columnas * CELDA}px * var(--s)) calc(${hoja.filas * CELDA}px * var(--s))`,
-        backgroundPosition: `calc(${-columna * CELDA}px * var(--s)) calc(${-fila * CELDA}px * var(--s))`,
-      }}
-    />
+    <>
+      <div
+        className={`pixel ${styles.planta}`}
+        role="img"
+        aria-label={`Planta en fase ${fase}, estado ${estado.replace("_", " ")}`}
+        style={{
+          backgroundImage: `url(${hoja.src})`,
+          backgroundSize: `calc(${hoja.columnas * CELDA}px * var(--s)) calc(${hoja.filas * CELDA}px * var(--s))`,
+          backgroundPosition: `calc(${-columna * CELDA}px * var(--s)) calc(${-fila * CELDA}px * var(--s))`,
+        }}
+      />
+      {columnaMaceta !== 1 && (
+        <div
+          className={`pixel ${styles.planta}`}
+          aria-hidden
+          style={{
+            backgroundImage: "url(/assets/sprites/tpp-macetas-1x.png)",
+            backgroundSize: `calc(${4 * CELDA}px * var(--s)) calc(${CELDA}px * var(--s))`,
+            backgroundPosition: `calc(${-columnaMaceta * CELDA}px * var(--s)) 0`,
+          }}
+        />
+      )}
+    </>
   );
 }
