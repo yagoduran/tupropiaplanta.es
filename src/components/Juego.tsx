@@ -15,6 +15,8 @@ import {
   plantarSemilla,
   reclamarDiaria,
   verAnuncio,
+  elegirHueco,
+  comprarHueco,
 } from "@/app/juego/acciones";
 import { marco, type IdIcono } from "@/lib/diseno";
 import { horaDelDia } from "@/lib/hora";
@@ -38,8 +40,10 @@ import { Bocadillo } from "./Bocadillo";
 import { Escena } from "./Escena";
 import { EstadoCompacto } from "./EstadoCompacto";
 import { JuegoLayout } from "./JuegoLayout";
+import { AmpliarHueco } from "./AmpliarHueco";
 import { AnuncioPrueba } from "./AnuncioPrueba";
 import { PanelAcciones } from "./PanelAcciones";
+import { SelectorHuecos } from "./SelectorHuecos";
 import { PanelEstado } from "./PanelEstado";
 import { Planta } from "./Planta";
 import { Plaga } from "./Plaga";
@@ -80,6 +84,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [tutorial, setTutorial] = useState(!inicial.perfil.tutorial_hecho);
   const [repeticion, setRepeticion] = useState(false);
   const [anuncioAbierto, setAnuncioAbierto] = useState(false);
+  const [ampliando, setAmpliando] = useState(false);
   const [ranking, setRanking] = useState<DatosRanking | null>(null);
 
   const aplicar = useCallback((nuevo: EstadoJuego) => {
@@ -288,6 +293,24 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     });
   };
 
+  const cambiarHueco = (hueco: number) => {
+    if (hueco === estado.perfil.huecos.activo) return;
+    ejecutar(async () => {
+      const r = await elegirHueco(hueco);
+      sonar(r.ok ? "pestana" : "error");
+      tratar(r);
+    });
+  };
+
+  const ampliar = () => {
+    ejecutar(async () => {
+      const r = await comprarHueco();
+      sonar(r.ok ? "comprar" : "compra-rechazada");
+      if (r.ok) setAmpliando(false);
+      tratar(r, { texto: "¡Nuevo hueco de cultivo!", icono: "cultivo" });
+    });
+  };
+
   const recogerAyuda = () => {
     ejecutar(async () => {
       const r = await verAnuncio();
@@ -356,6 +379,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             alTerminar={terminarTutorial}
             alActivarAvisos={activarAvisos}
           />
+        ) : ampliando ? (
+          <AmpliarHueco perfil={perfil} ocupado={enCurso} alComprar={ampliar} alCerrar={() => setAmpliando(false)} />
         ) : anuncioAbierto ? (
           <AnuncioPrueba
             monedas={perfil.anuncios.monedas}
@@ -402,6 +427,12 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       escena={
         <Escena luz={perfil.equipo.luz}>
           <Decoracion puestos={perfil.equipo.decoracion} />
+          <SelectorHuecos
+            huecos={perfil.huecos}
+            ocupado={enCurso}
+            alElegir={cambiarHueco}
+            alAmpliar={() => setAmpliando(true)}
+          />
           {planta && (
             <Planta
               fase={planta.fase}
@@ -420,6 +451,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             />
           ) : sedienta ? (
             <Bocadillo texto="¡Tu planta necesita agua!" />
+          ) : !planta ? (
+            <Bocadillo texto="Este hueco está vacío. ¡Planta una semilla!" />
           ) : planta?.vida === "muerta" ? (
             <Bocadillo texto="Tu planta ha muerto..." icono="aviso" />
           ) : null}
@@ -434,6 +467,17 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
               {tieneProducto
                 ? `Tratar con ${TRATAMIENTOS[producto].toLowerCase()}`
                 : `Comprar ${TRATAMIENTOS[producto].toLowerCase()}`}
+            </button>
+          )}
+          {!planta && (
+            <button
+              type="button"
+              className={styles.plantar}
+              style={botonPlantar}
+              disabled={enCurso}
+              onClick={() => elegirPantalla("semillas")}
+            >
+              Plantar una semilla
             </button>
           )}
           {planta && !viva && (

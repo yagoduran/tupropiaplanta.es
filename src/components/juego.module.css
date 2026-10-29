@@ -704,3 +704,39 @@
   background-image: url(/assets/sprites/tpp-plagas-1x.png);
   pointer-events: none;
 }
+
+.huecos {
+  position: absolute;
+  left: calc(var(--u) * 4);
+  top: calc(var(--u) * 4);
+  z-index: 3;
+  display: flex;
+  gap: calc(var(--u) * 2);
+}
+
+.hueco {
+  position: relative;
+  min-width: calc(var(--u) * 20);
+  padding: calc(var(--u) * 2) calc(var(--u) * 4) calc(var(--u) * 3);
+  color: #1c1626;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-btn);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.hueco:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.huecoAviso {
+  position: absolute;
+  top: calc(var(--u) * -2);
+  right: calc(var(--u) * -2);
+  width: calc(var(--u) * 3);
+  height: calc(var(--u) * 3);
+  background: #e0453a;
+  border: 1px solid #1c1626;
+  border-radius: 50%;
+}

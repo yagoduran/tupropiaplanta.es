@@ -50,6 +50,15 @@ export interface PerfilJuego {
   diaria: { racha: number; disponible: boolean; premios: number[] };
   /** Ayudas por ver anuncio que quedan hoy y monedas que da cada una. */
   anuncios: { restantes: number; monedas: number };
+  huecos: HuecosJuego;
+}
+
+export interface HuecosJuego {
+  activo: number;
+  desbloqueados: number;
+  /** Precio y nivel del siguiente hueco por comprar; null si ya están todos. */
+  siguiente: { precio: number; nivel: number } | null;
+  lista: { hueco: number; vida: "viva" | "muerta" | "cosechada" | "vacio"; plaga: boolean }[];
 }
 
 export interface PlantaJuego {
@@ -107,6 +116,8 @@ export const MENSAJES_ERROR: Record<string, string> = {
   ya_lo_tienes: "Ya tienes ese objeto.",
   sin_plaga: "Tu planta no tiene ninguna plaga.",
   tratamiento_incorrecto: "Ese producto no sirve para esta plaga.",
+  huecos_maximos: "Ya tienes todos los huecos de cultivo.",
+  hueco_bloqueado: "Ese hueco todavía no es tuyo.",
   anuncios_agotados: "Hoy ya no quedan más ayudas. Vuelve mañana.",
   diaria_ya_reclamada: "Hoy ya has recogido tu regalo. Vuelve mañana.",
   no_lo_tienes: "Todavía no tienes ese objeto.",

@@ -5,7 +5,7 @@
 - **Lámpara de la escena apagada de noche** (opcional): la hoja de luces trae el sprite apagado, pero ahora la lámpara se dibuja siempre encendida.
 
 ## Funciones por hacer
-- Huecos de cultivo múltiples (varias plantas a la vez): pendiente de decidir.
+- Huecos de cultivo múltiples ✅ (fase 7): hasta 3; hueco 2 = 2.500 monedas y nivel 8, hueco 3 = 10.000 y nivel 15 (tabla en `tpp.hueco_coste`). Mejoras posibles: dibujo propio de cada hueco, aviso del navegador por planta, logro por tener todos los huecos.
 - Fase 5: ✅ logros y recompensa diaria (5a). ✅ ranking (5b). ✅ plagas (5c).
 - Fase 6: ✅ anuncios de prueba + cookies (6a). ✅ música de fondo (6b). ✅ pulido final (6c): rendimiento, accesibilidad, errores de conexión. Pendiente de 6c: textos legales.
 - Objetos de la tienda sin efecto todavía (no se venden): medidor de pH, termómetro, radio, gato.

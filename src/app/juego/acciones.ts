@@ -81,6 +81,22 @@ export async function verAnuncio(): Promise<Resultado> {
   return data as RespuestaAccion;
 }
 
+/** Cambia la planta con la que se juega. */
+export async function elegirHueco(hueco: number): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_elegir_hueco", { p_hueco: hueco });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
+/** Compra el siguiente hueco de cultivo. */
+export async function comprarHueco(): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_comprar_hueco");
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
 async function conObjeto(rpc: "tpp_comprar" | "tpp_equipar" | "tpp_usar", id: string): Promise<Resultado> {
   const supabase = await crearClienteServidor();
   const { data, error } = await supabase.rpc(rpc, { p_objeto: id });
