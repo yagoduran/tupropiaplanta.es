@@ -16,10 +16,10 @@
 - Cuando exista `main`, cambiarlo como rama de producción en Vercel.
 - Registrar todo en Notion cuando el conector funcione.
 
-## Anuncios reales (cuando haya cuenta de anuncios)
-- Cambiar `AnuncioPrueba` por el anuncio con recompensa de la red elegida y rellenar los huecos de `Publicidad` y `BannerMovil`.
-- Usar `leerEleccionCookies()` (`src/lib/cookies.ts`) para pedir anuncios personalizados solo si el jugador aceptó.
-- Revisar el texto de `/cookies` con los nombres reales de las cookies de la red.
+## Anuncios reales
+- ✅ Banners de Adsterra puestos (160x600 lateral y 320x50 móvil, claves en `src/lib/anuncios.ts`). Solo se cargan si el jugador acepta las cookies; van en un marco aislado.
+- Pendiente: el botón de ayuda extra sigue con el anuncio de prueba (Adsterra no ofrece anuncio con recompensa). Opciones: dejarlo así o poner un banner 300x250 dentro de la ventana.
+- Pendiente: vigilar qué anuncios salen (desactivar anuncios para adultos en Adsterra) y que no tapen el juego en PCs de colegio.
 - El control de 3 ayudas al día se reinicia si el jugador usa "Borrar datos" (se borra su perfil).
 
 ## Textos legales

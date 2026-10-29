@@ -145,6 +145,23 @@
   height: 600px;
   background: #444141;
   border: 2px solid #7d7979;
+  overflow: hidden;
+}
+
+.anuncioMarco {
+  display: block;
+  border: 0;
+}
+
+.anuncioApagado {
+  padding: 8px;
+  font-size: 12px;
+  line-height: 1.3;
+  color: #c9c3c3;
+}
+
+.anuncioApagado a {
+  color: #f4d36a;
 }
 
 .centro {

@@ -19,13 +19,14 @@ export default function Cookies() {
 
       <h2>Los anuncios</h2>
       <p>
-        El juego muestra anuncios para poder seguir siendo gratis. Por ahora los huecos de anuncio están vacíos y el
-        anuncio de ayuda extra es solo de prueba. Cuando se activen los anuncios reales:
+        El juego muestra anuncios para poder seguir siendo gratis. Los pone un tercero (la red publicitaria Adsterra),
+        que puede guardar sus propias cookies en tu navegador.
       </p>
       <ul>
-        <li>Si aceptas, los anuncios podrán adaptarse a tus intereses.</li>
-        <li>Si rechazas, verás anuncios generales y no se usarán tus datos para personalizarlos.</li>
+        <li>Si aceptas, verás los anuncios, y la red podrá usar sus cookies.</li>
+        <li>Si rechazas, no se carga ningún anuncio de terceros y el juego funciona igual.</li>
       </ul>
+      <p>El anuncio de ayuda extra del botón del juego es de prueba y no usa cookies de terceros.</p>
 
       <h2>Tu elección</h2>
       <CambiarCookies />
