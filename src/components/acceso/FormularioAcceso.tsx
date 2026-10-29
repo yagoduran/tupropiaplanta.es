@@ -6,6 +6,7 @@ import { entrar, registrar } from "@/app/login/acciones";
 import type { EstadoAcceso } from "@/lib/acceso";
 import { crearClienteNavegador } from "@/lib/supabase/cliente";
 import styles from "./acceso.module.css";
+import { VerificarEmail } from "./VerificarEmail";
 
 const INICIAL: EstadoAcceso = {};
 
@@ -14,6 +15,7 @@ export function FormularioAcceso({ modo, errorInicial }: { modo: "entrar" | "reg
   const [estado, accion, enviando] = useActionState(esRegistro ? registrar : entrar, INICIAL);
   const [mayor, setMayor] = useState(false);
   const [errorGoogle, setErrorGoogle] = useState<string>();
+  const [ocultoPara, setOcultoPara] = useState<EstadoAcceso>();
 
   const puedeEnviar = !enviando && (!esRegistro || mayor);
   const error = estado.error ?? errorGoogle ?? errorInicial;
@@ -26,6 +28,10 @@ export function FormularioAcceso({ modo, errorInicial }: { modo: "entrar" | "reg
       options: { redirectTo: `${window.location.origin}/auth/callback` },
     });
     if (error) setErrorGoogle("No se ha podido iniciar sesión con Google. Inténtalo de nuevo.");
+  }
+
+  if (estado.verificar && ocultoPara !== estado) {
+    return <VerificarEmail email={estado.verificar} alCambiar={() => setOcultoPara(estado)} />;
   }
 
   return (
@@ -43,7 +49,14 @@ export function FormularioAcceso({ modo, errorInicial }: { modo: "entrar" | "reg
         {esRegistro && (
           <label className={styles.campo}>
             Nombre de usuario
-            <input name="usuario" type="text" autoComplete="username" placeholder="plantita_23" maxLength={20} required />
+            <input
+              name="usuario"
+              type="text"
+              autoComplete="username"
+              placeholder="plantita_23"
+              maxLength={20}
+              required
+            />
           </label>
         )}
         <label className={styles.campo}>
@@ -60,6 +73,12 @@ export function FormularioAcceso({ modo, errorInicial }: { modo: "entrar" | "reg
             required
           />
         </label>
+
+        {!esRegistro && (
+          <Link href="/recuperar" className={styles.olvido}>
+            ¿Has olvidado tu contraseña?
+          </Link>
+        )}
 
         {esRegistro && (
           <label className={styles.edad}>
@@ -102,7 +121,9 @@ export function FormularioAcceso({ modo, errorInicial }: { modo: "entrar" | "reg
 
       <div className={styles.aviso18}>
         <span className={styles.sello}>+18</span>
-        <span>Juego solo para mayores de 18 años. Es un simulador de cultivo: no vende ni promociona ningún producto.</span>
+        <span>
+          Juego solo para mayores de 18 años. Es un simulador de cultivo: no vende ni promociona ningún producto.
+        </span>
       </div>
     </div>
   );

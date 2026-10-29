@@ -2,6 +2,8 @@
 export interface EstadoAcceso {
   error?: string;
   aviso?: string;
+  /** Email al que se ha mandado el enlace de verificación (enseña la pantalla «Verifica tu email»). */
+  verificar?: string;
 }
 
 /** Traduce los errores de Supabase Auth a mensajes claros. */

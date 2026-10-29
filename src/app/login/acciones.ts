@@ -52,8 +52,63 @@ export async function registrar(_anterior: EstadoAcceso, datos: FormData): Promi
   if (error) return { error: mensajeDeError(error.code, error.message) };
 
   // Con la confirmación por correo activa no hay sesión hasta que pulsa el enlace.
-  if (!data.session) {
-    return { aviso: "Te hemos enviado un correo. Pulsa el enlace para activar tu cuenta." };
-  }
+  if (!data.session) return { verificar: email };
   redirect("/");
+}
+
+async function origenActual() {
+  const cabeceras = await headers();
+  return cabeceras.get("origin") ?? `https://${cabeceras.get("host")}`;
+}
+
+/** Manda el enlace para crear una contraseña nueva. Responde igual exista o no el email. */
+export async function pedirRecuperacion(_anterior: EstadoAcceso, datos: FormData): Promise<EstadoAcceso> {
+  const email = texto(datos, "email");
+  if (!EMAIL.test(email)) return { error: "Escribe un email válido." };
+
+  const supabase = await crearClienteServidor();
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${await origenActual()}/auth/callback?next=/nueva-contrasena`,
+  });
+  if (error && (error.code === "over_email_send_rate_limit" || error.code === "over_request_rate_limit")) {
+    return { error: mensajeDeError(error.code, error.message) };
+  }
+  return { aviso: "Enlace enviado. Revisa tu bandeja de entrada y la carpeta de spam." };
+}
+
+/** Guarda la contraseña nueva (hay que venir del enlace del correo). */
+export async function cambiarPassword(_anterior: EstadoAcceso, datos: FormData): Promise<EstadoAcceso> {
+  const password = String(datos.get("password") ?? "");
+  const repetida = String(datos.get("repetida") ?? "");
+  if (password.length < 8) return { error: "La contraseña debe tener al menos 8 caracteres." };
+  if (password !== repetida) return { error: "Las dos contraseñas no coinciden." };
+
+  const supabase = await crearClienteServidor();
+  const { data } = await supabase.auth.getUser();
+  if (!data.user) return { error: "El enlace ha caducado. Pide uno nuevo." };
+
+  const { error } = await supabase.auth.updateUser({ password });
+  if (error) return { error: mensajeDeError(error.code, error.message) };
+  redirect("/");
+}
+
+/** Vuelve a mandar el correo de verificación. */
+export async function reenviarVerificacion(email: string): Promise<EstadoAcceso> {
+  if (!EMAIL.test(email)) return { error: "Escribe un email válido." };
+  const supabase = await crearClienteServidor();
+  const { error } = await supabase.auth.resend({
+    type: "signup",
+    email,
+    options: { emailRedirectTo: `${await origenActual()}/auth/callback` },
+  });
+  if (error) return { error: mensajeDeError(error.code, error.message) };
+  return { aviso: "Correo reenviado." };
+}
+
+/** «Ya lo he verificado»: si ya hay sesión entra al juego; si no, avisa. */
+export async function comprobarVerificacion(): Promise<EstadoAcceso> {
+  const supabase = await crearClienteServidor();
+  const { data } = await supabase.auth.getUser();
+  if (data.user) redirect("/");
+  return { error: "Todavía no vemos la verificación. Abre el enlace del correo y vuelve aquí." };
 }
