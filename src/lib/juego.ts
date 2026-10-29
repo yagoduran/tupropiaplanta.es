@@ -24,7 +24,8 @@ export type PantallaJuego =
   | "misiones"
   | "amigos"
   | "visita"
-  | "perfil_publico";
+  | "perfil_publico"
+  | "regalo";
 
 export interface AjustesJuego {
   volumen_efectos: number;
@@ -198,6 +199,11 @@ export const MENSAJES_ERROR: Record<string, string> = {
   visita_sin_planta: "Tu amigo no tiene ninguna planta viva ahora mismo.",
   saludo_ya_enviado: "Hoy ya has saludado a este amigo.",
   saludo_desconocido: "Ese saludo no existe.",
+  regalo_desconocido: "Ese regalo no existe.",
+  regalo_limite: "Hoy ya has enviado tus 3 regalos. Vuelve mañana.",
+  regalo_ya_enviado: "Hoy ya le has enviado un regalo a este amigo.",
+  regalo_monedas_limite: "Hoy no se pueden enviar más monedas a este amigo, o ya has regalado monedas hoy.",
+  regalo_sin_abono: "No tienes ningún abono normal para regalar.",
   mision_desconocida: "Esa misión no existe.",
   mision_reclamada: "Ya has reclamado esa misión.",
   mision_no_lista: "Todavía no has completado esa misión.",

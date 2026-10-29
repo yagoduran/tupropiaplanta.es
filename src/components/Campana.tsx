@@ -18,6 +18,7 @@ interface Props {
 function IconoAviso({ tipo }: { tipo: Notificacion["tipo"] }) {
   if (tipo === "mision") return <IconoSocial id="mision" k={1.5} />;
   if (tipo === "amigo" || tipo === "visita") return <IconoSocial id="amigo" k={1.5} />;
+  if (tipo === "regalo") return <IconoSocial id="regalo" k={1.5} />;
   if (tipo === "saludo") return <IconoSocial id="saludo" k={1.5} />;
   return (
     <Icono id={tipo === "sed" ? "agua" : tipo === "plaga" ? "aviso" : tipo === "nivel" ? "nivel" : "logros"} k={2} />

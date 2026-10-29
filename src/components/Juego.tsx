@@ -17,6 +17,8 @@ import {
   obtenerMaestria,
   obtenerMisiones,
   obtenerAmigos,
+  obtenerRegalos,
+  enviarRegalo,
   buscarJugadores,
   enviarSolicitud,
   responderSolicitud,
@@ -92,8 +94,16 @@ import { Maestria } from "./Maestria";
 import { Misiones } from "./Misiones";
 import { Amigos } from "./Amigos";
 import { Visita } from "./Visita";
+import { Regalo } from "./Regalo";
 import { PerfilPublico } from "./PerfilPublico";
-import type { DatosAmigos, DatosVisita, PerfilPublicoDatos, Resultado as ResultadoBusqueda } from "@/lib/amigos";
+import type {
+  DatosRegalos,
+  TipoRegalo,
+  DatosAmigos,
+  DatosVisita,
+  PerfilPublicoDatos,
+  Resultado as ResultadoBusqueda,
+} from "@/lib/amigos";
 import { Campana } from "./Campana";
 import { Prestigio } from "./Prestigio";
 import { AnuncioPrueba } from "./AnuncioPrueba";
@@ -154,6 +164,9 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [maestria, setMaestria] = useState<DatosMaestria | null>(null);
   const [amigos, setAmigos] = useState<DatosAmigos | null>(null);
   const [resultadosAmigos, setResultadosAmigos] = useState<ResultadoBusqueda[] | null>(null);
+  const [regalos, setRegalos] = useState<DatosRegalos | null>(null);
+  const [regaloEnviado, setRegaloEnviado] = useState<TipoRegalo | null>(null);
+  const [regaloError, setRegaloError] = useState<string | null>(null);
   const [vistaDe, setVistaDe] = useState("");
   const [visita, setVisita] = useState<DatosVisita | null>(null);
   const [perfilPublico, setPerfilPublico] = useState<PerfilPublicoDatos | null>(null);
@@ -531,6 +544,42 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       .catch(() => setVisita(null));
   };
 
+  const abrirRegalo = (usuario: string) => {
+    sonar("pestana");
+    setVistaDe(usuario);
+    setRegalos(null);
+    setRegaloEnviado(null);
+    setRegaloError(null);
+    setPantalla("regalo");
+    obtenerRegalos()
+      .then(setRegalos)
+      .catch(() => setRegalos(null));
+  };
+
+  const mandarRegalo = (tipo: TipoRegalo, saludo: string | null) => {
+    ejecutar(async () => {
+      const r = await enviarRegalo(vistaDe, tipo, saludo);
+      sonar(r.ok ? "cofre" : "error");
+      if (r.ok && "restantes" in r && r.restantes !== undefined) {
+        setRegalos({ restantes: r.restantes, abonos: r.abonos ?? 0, monedas_hoy: r.monedas_hoy ?? false });
+        setRegaloEnviado(tipo);
+        setRegaloError(null);
+        setAmigos((d) =>
+          d
+            ? {
+                ...d,
+                regalos_restantes: r.restantes ?? 0,
+                amigos: d.amigos.map((x) => (x.usuario === vistaDe ? { ...x, regalado: true } : x)),
+              }
+            : d,
+        );
+      } else {
+        setRegaloError(r.ok ? null : (r.error ?? "red"));
+      }
+      tratar(r);
+    });
+  };
+
   const regarAmigo = () => {
     ejecutar(async () => {
       const r = await regarVisita(vistaDe);
@@ -888,6 +937,18 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             alDesbloquear={(u) => gestionarAmistad(desbloquearJugador, u, "Jugador desbloqueado.")}
             alVisitar={abrirVisita}
             alPerfil={abrirPerfilPublico}
+            alRegalar={abrirRegalo}
+          />
+        ) : pantalla === "regalo" ? (
+          <Regalo
+            amigo={amigos?.amigos.find((x) => x.usuario === vistaDe) ?? null}
+            datos={regalos}
+            monedas={perfil.monedas}
+            enviado={regaloEnviado}
+            error={regaloError}
+            ocupado={enCurso}
+            alEnviar={mandarRegalo}
+            alVolver={() => elegirPantalla("amigos")}
           />
         ) : pantalla === "visita" ? (
           <Visita

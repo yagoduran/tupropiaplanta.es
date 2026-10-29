@@ -16,6 +16,8 @@ export interface Amigo extends Jugador {
   /** Hoy ya le has regado la planta / dejado un saludo. */
   regado: boolean;
   saludado: boolean;
+  /** Hoy ya le has enviado un regalo. */
+  regalado: boolean;
 }
 
 export type Relacion = "ninguna" | "enviada" | "recibida" | "amigos";
@@ -26,6 +28,8 @@ export interface Resultado extends Jugador {
 
 export interface DatosAmigos {
   max: number;
+  /** Regalos que puedes enviar todavía hoy (de 3). */
+  regalos_restantes: number;
   amigos: Amigo[];
   recibidas: Jugador[];
   enviadas: Jugador[];
@@ -85,3 +89,19 @@ export function conexion(hace: number | null): string {
   if (hace === null) return "Sin conexión reciente";
   return hace < 300 ? "Conectado" : `Última vez ${haceCuanto(hace)}`;
 }
+
+export interface DatosRegalos {
+  restantes: number;
+  /** Abonos normales que tienes para regalar. */
+  abonos: number;
+  /** Hoy ya has regalado monedas. */
+  monedas_hoy: boolean;
+}
+
+export type TipoRegalo = "monedas" | "agua" | "abono";
+
+export const REGALOS: { id: TipoRegalo; nombre: string; detalle: string }[] = [
+  { id: "monedas", nombre: "50 monedas", detalle: "De tu saldo (1 regalo de monedas al día)" },
+  { id: "agua", nombre: "Agua extra", detalle: "+30 de agua para su planta" },
+  { id: "abono", nombre: "Un abono", detalle: "Uno de los tuyos (Abono normal)" },
+];

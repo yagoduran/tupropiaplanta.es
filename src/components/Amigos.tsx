@@ -18,6 +18,7 @@ interface Props {
   alDesbloquear: (usuario: string) => void;
   alVisitar: (usuario: string) => void;
   alPerfil: (usuario: string) => void;
+  alRegalar: (usuario: string) => void;
 }
 
 /** Amigos: búsqueda por nombre, solicitudes y lista de amigos con visita y perfil. */
@@ -181,6 +182,7 @@ export function Amigos(p: Props) {
                 <Boton principal onClick={() => p.alVisitar(a.usuario)}>
                   Visitar
                 </Boton>
+                <Boton onClick={() => p.alRegalar(a.usuario)}>{a.regalado ? "Enviado" : "Regalar"}</Boton>
                 <Boton onClick={() => p.alPerfil(a.usuario)}>Perfil</Boton>
               </>
             }

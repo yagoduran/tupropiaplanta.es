@@ -7,7 +7,7 @@ import type { DatosDesafios } from "@/lib/desafios";
 import type { DatosMaestria } from "@/lib/maestria";
 import type { DatosPrestigio } from "@/lib/prestigio";
 import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
-import type { DatosAmigos, DatosVisita, PerfilPublicoDatos, Resultado as Jugadores } from "@/lib/amigos";
+import type { DatosAmigos, DatosRegalos, DatosVisita, PerfilPublicoDatos, Resultado as Jugadores } from "@/lib/amigos";
 import type { RespuestaCruce } from "@/lib/cruces";
 import type { Accion, AjustesJuego, DatosRanking, EstadoJuego, RespuestaAccion } from "@/lib/juego";
 
@@ -145,6 +145,25 @@ export const obtenerPerfilPublico = async (usuario: string) =>
 export const visitarAmigo = async (usuario: string) => llamar<DatosVisita>("tpp_visitar", { p_usuario: usuario });
 export const saludarAmigo = async (usuario: string, emoji: string) =>
   llamar<{ ok: boolean; error?: string; saludo?: string }>("tpp_saludar", { p_usuario: usuario, p_emoji: emoji });
+
+/** Regalos que quedan hoy. */
+export const obtenerRegalos = async () => llamar<DatosRegalos>("tpp_regalos");
+
+/** Envía un regalo a un amigo, con un saludo opcional. */
+export async function enviarRegalo(
+  usuario: string,
+  tipo: string,
+  saludo: string | null,
+): Promise<(RespuestaAccion & Partial<DatosRegalos>) | { ok: false; error: string }> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_enviar_regalo", {
+    p_usuario: usuario,
+    p_tipo: tipo,
+    p_saludo: saludo,
+  });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion & Partial<DatosRegalos>;
+}
 
 /** Riega la planta de un amigo. */
 export async function regarVisita(usuario: string): Promise<Resultado> {
