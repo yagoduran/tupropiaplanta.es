@@ -3,7 +3,7 @@ import type { Rareza } from "./variedades";
 
 /** Una ficha de la colección: las 5 primeras son variedades reales, el resto llegará con los cruces y los eventos. */
 export interface FichaColeccion {
-  /** Variedad del juego; null si todavía no se puede conseguir. */
+  /** Variedad del juego. */
   id: string | null;
   nombre: string;
   rareza: Rareza;
@@ -35,16 +35,23 @@ export const COLECCION: FichaColeccion[] = [
     pista: "Tienda de semillas",
   },
   {
-    id: null,
+    id: "verde-azulado",
     nombre: "Verde Azulado",
     rareza: "poco_comun",
     hoja: "hoja-azul",
     fila: 4,
     pista: "Verde Clásica × Hoja Azul",
   },
-  { id: null, nombre: "Brisa Dorada", rareza: "rara", hoja: "dorada", fila: 5, pista: "Hoja Azul × Dorada del Sur" },
   {
-    id: null,
+    id: "brisa-dorada",
+    nombre: "Brisa Dorada",
+    rareza: "rara",
+    hoja: "dorada",
+    fila: 5,
+    pista: "Hoja Azul × Dorada del Sur",
+  },
+  {
+    id: "menta-nocturna",
     nombre: "Menta Nocturna",
     rareza: "epica",
     hoja: "noche",
@@ -52,7 +59,7 @@ export const COLECCION: FichaColeccion[] = [
     pista: "Noche Púrpura × Verde Clásica",
   },
   {
-    id: null,
+    id: "sol-medianoche",
     nombre: "Sol de Medianoche",
     rareza: "epica",
     hoja: "noche",
@@ -60,7 +67,7 @@ export const COLECCION: FichaColeccion[] = [
     pista: "Cruza Dorada del Sur y Noche Púrpura",
   },
   {
-    id: null,
+    id: "escarcha-azul",
     nombre: "Escarcha Azul",
     rareza: "legendaria",
     hoja: "cristal",
@@ -68,20 +75,20 @@ export const COLECCION: FichaColeccion[] = [
     pista: "Cruza Cristal Helado y Hoja Azul",
   },
   {
-    id: null,
+    id: "ambar-antiguo",
     nombre: "Ámbar Antiguo",
     rareza: "rara",
     hoja: "dorada",
     fila: 4,
-    pista: "Medalla de oro en Dorada del Sur",
+    pista: "Maestría de oro en Dorada del Sur",
   },
   {
-    id: null,
+    id: "aurora",
     nombre: "Aurora",
     rareza: "legendaria",
     hoja: "cristal",
     fila: 7,
-    pista: "Completa el 75 % de la colección",
+    pista: "Reclama el premio del 75 % de la colección",
   },
 ];
 

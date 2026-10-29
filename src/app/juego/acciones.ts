@@ -5,6 +5,7 @@ import type { DatosEstadisticas, DatosPerfil } from "@/lib/perfil";
 import type { DatosProgresion } from "@/lib/progresion";
 import type { DatosDesafios } from "@/lib/desafios";
 import type { DatosMaestria } from "@/lib/maestria";
+import type { RespuestaCruce } from "@/lib/cruces";
 import type { Accion, AjustesJuego, DatosRanking, EstadoJuego, RespuestaAccion } from "@/lib/juego";
 
 const ACCIONES: Accion[] = ["regar", "abonar", "podar", "ajustar_luz", "cosechar"];
@@ -196,4 +197,32 @@ export async function equiparObjeto(id: string): Promise<Resultado> {
 
 export async function usarObjeto(id: string): Promise<Resultado> {
   return conObjeto("tpp_usar", id);
+}
+
+async function cruce(rpc: string, args?: Record<string, unknown>): Promise<RespuestaCruce | null> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc(rpc, args);
+  if (error || !data) return null;
+  return data as RespuestaCruce;
+}
+
+/** Cosechas disponibles y cruce en marcha. */
+export async function obtenerCruces() {
+  return cruce("tpp_cruces");
+}
+
+export async function iniciarCruce(a: string, b: string) {
+  return cruce("tpp_iniciar_cruce", { p_a: a, p_b: b });
+}
+
+export async function acelerarCruce() {
+  return cruce("tpp_acelerar_cruce");
+}
+
+export async function abrirCruce() {
+  return cruce("tpp_abrir_cruce");
+}
+
+export async function guardarCruce(nombre: string) {
+  return cruce("tpp_guardar_cruce", { p_nombre: nombre });
 }

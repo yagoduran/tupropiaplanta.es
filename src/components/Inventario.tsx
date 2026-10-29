@@ -4,7 +4,7 @@ import { FASES, marco } from "@/lib/diseno";
 import type { PantallaJuego, PerfilJuego } from "@/lib/juego";
 import type { DatosPerfil } from "@/lib/perfil";
 import { OBJETO_POR_ID } from "@/lib/tienda";
-import { VARIEDAD_POR_ID } from "@/lib/variedades";
+import { VARIEDAD_POR_ID, hojaDe } from "@/lib/variedades";
 import { Icono } from "./Icono";
 import { IconoObjeto } from "./IconoObjeto";
 import styles from "./progresion.module.css";
@@ -64,7 +64,7 @@ export function Inventario({ perfil, plantas, ocupado, alIrAHueco, alAmpliar, al
                           display: "block",
                           width: 128,
                           height: 128,
-                          backgroundImage: `url(/assets/sprites/tpp-variedad-${planta.variedad}-1x.png)`,
+                          backgroundImage: `url(/assets/sprites/tpp-variedad-${hojaDe(planta.variedad)}-1x.png)`,
                           backgroundSize: "768px 1024px",
                           backgroundPosition: `0 ${-(planta.fase - 1) * 128}px`,
                         }}

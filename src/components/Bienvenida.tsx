@@ -5,6 +5,7 @@ import { FASES, marco } from "@/lib/diseno";
 import { PLAGAS } from "@/lib/plagas";
 import type { Bienvenida as DatosBienvenida } from "@/lib/visita";
 import { Icono } from "./Icono";
+import { hojaDe } from "@/lib/variedades";
 import styles from "./anuncio.module.css";
 
 const ESTADOS: Record<string, string> = {
@@ -82,7 +83,7 @@ export function Bienvenida({ usuario, datos, alContinuar }: Props) {
                 display: "block",
                 width: 96,
                 height: 96,
-                backgroundImage: `url(/assets/sprites/tpp-variedad-${datos.variedad}-1x.png)`,
+                backgroundImage: `url(/assets/sprites/tpp-variedad-${hojaDe(datos.variedad)}-1x.png)`,
                 backgroundSize: "576px 768px",
                 backgroundPosition: `${-columna(datos.estado) * 96}px ${-(datos.fase - 1) * 96}px`,
               }}

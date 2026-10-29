@@ -1,4 +1,5 @@
 import type { DatosCasa } from "./casa";
+import type { HibridoPropio } from "./variedades";
 import type { Estado, IdIcono } from "./diseno";
 import type { PlagaJuego } from "./plagas";
 import { tonoPorPorcentaje, type Medidor } from "./estado";
@@ -17,7 +18,8 @@ export type PantallaJuego =
   | "desafios"
   | "armario"
   | "habitaciones"
-  | "maestria";
+  | "maestria"
+  | "laboratorio";
 
 export interface AjustesJuego {
   volumen_efectos: number;
@@ -71,6 +73,8 @@ export interface PerfilJuego {
   /** Ayudas por ver anuncio que quedan hoy y monedas que da cada una. */
   anuncios: { restantes: number; monedas: number };
   huecos: HuecosJuego;
+  /** Semillas híbridas que tiene el jugador y sus híbridos propios. */
+  hibridas: { semillas: string[]; propias: HibridoPropio[] };
   /** Habitación y mejoras del armario. */
   casa: DatosCasa;
 }
@@ -149,6 +153,12 @@ export const MENSAJES_ERROR: Record<string, string> = {
   tratamiento_incorrecto: "Ese producto no sirve para esta plaga.",
   huecos_maximos: "Ya tienes todos los huecos de cultivo.",
   hueco_bloqueado: "Ese hueco todavía no es tuyo.",
+  sin_semilla: "Todavía no tienes la semilla de esa variedad.",
+  cruce_en_curso: "Ya tienes un cruce en marcha.",
+  cosecha_invalida: "Esas plantas no sirven para cruzar.",
+  cruce_no_listo: "El cruce todavía no ha terminado.",
+  sin_cruce: "No hay ningún cruce en marcha.",
+  nombre_invalido: "El nombre solo puede tener letras y espacios (hasta 20).",
   huecos_automaticos: "Los huecos ahora llegan con las habitaciones y la mejora de capacidad.",
   mejora_comprada: "Ya tienes todos los niveles de esa mejora.",
   mejora_desconocida: "Esa mejora no existe.",

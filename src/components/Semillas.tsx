@@ -1,7 +1,7 @@
 "use client";
 
 import { marco } from "@/lib/diseno";
-import { RAREZAS, VARIEDADES, diasDeCiclo, type Variedad } from "@/lib/variedades";
+import { RAREZAS, VARIEDADES, VARIEDAD_POR_ID, diasDeCiclo, type Variedad } from "@/lib/variedades";
 import type { IdIcono } from "@/lib/diseno";
 import { Icono } from "./Icono";
 import styles from "./semillas.module.css";
@@ -12,6 +12,8 @@ interface Props {
   enUso: string | null;
   ocupado: boolean;
   alPlantar: (variedad: string) => void;
+  /** Semillas híbridas que tiene el jugador (de cruces y premios). */
+  hibridas?: string[];
   aviso?: { texto: string; icono: IdIcono } | null;
 }
 
@@ -37,7 +39,7 @@ function Tarjeta({ variedad, nivel, enUso, ocupado, alPlantar }: Omit<Props, "av
       <div
         className={`pixel ${styles.imagen}`}
         style={{
-          backgroundImage: `url(/assets/sprites/tpp-variedad-${variedad.id}-1x.png)`,
+          backgroundImage: `url(/assets/sprites/tpp-variedad-${variedad.hoja}-1x.png)`,
           filter: bloqueada ? "brightness(0)" : undefined,
           opacity: bloqueada ? 0.3 : 1,
         }}
@@ -75,7 +77,7 @@ function Tarjeta({ variedad, nivel, enUso, ocupado, alPlantar }: Omit<Props, "av
   );
 }
 
-export function Semillas({ nivel, enUso, ocupado, alPlantar, aviso }: Props) {
+export function Semillas({ nivel, enUso, ocupado, alPlantar, aviso, hibridas = [] }: Props) {
   return (
     <div className={styles.contenedor}>
       <div className={styles.cabecera}>
@@ -96,6 +98,19 @@ export function Semillas({ nivel, enUso, ocupado, alPlantar, aviso }: Props) {
           <Tarjeta key={v.id} variedad={v} nivel={nivel} enUso={enUso} ocupado={ocupado} alPlantar={alPlantar} />
         ))}
       </div>
+      {hibridas.length > 0 && (
+        <>
+          <p className={styles.ayuda}>Tus semillas híbridas, de cruces y premios.</p>
+          <div className={styles.rejilla}>
+            {hibridas
+              .map((id) => VARIEDAD_POR_ID[id])
+              .filter(Boolean)
+              .map((v) => (
+                <Tarjeta key={v.id} variedad={v} nivel={nivel} enUso={enUso} ocupado={ocupado} alPlantar={alPlantar} />
+              ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

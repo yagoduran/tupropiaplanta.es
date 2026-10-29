@@ -13,6 +13,12 @@ export interface Variedad {
   ciclo: number;
   /** Multiplicador del desgaste de agua, nutrientes y luz. */
   desgaste: number;
+  /** Sabor (0 a 100): da algo de XP al cosechar. Tiene que coincidir con `tpp.variedades()`. */
+  sabor: number;
+  /** Hoja de sprites con la que se dibuja la planta. */
+  hoja: string;
+  /** Variedad que sale de un cruce o de un premio: hace falta tener su semilla. */
+  hibrida?: boolean;
 }
 
 export const RAREZAS: Record<Rareza, { etiqueta: string; fondo: string; texto: string }> = {
@@ -33,6 +39,8 @@ export const VARIEDADES: Variedad[] = [
     recompensa: 1,
     ciclo: 1,
     desgaste: 1,
+    sabor: 50,
+    hoja: "clasica",
   },
   {
     id: "hoja-azul",
@@ -43,6 +51,8 @@ export const VARIEDADES: Variedad[] = [
     recompensa: 1.3,
     ciclo: 1,
     desgaste: 1,
+    sabor: 66,
+    hoja: "hoja-azul",
   },
   {
     id: "dorada",
@@ -53,6 +63,8 @@ export const VARIEDADES: Variedad[] = [
     recompensa: 1.7,
     ciclo: 1.15,
     desgaste: 1,
+    sabor: 80,
+    hoja: "dorada",
   },
   {
     id: "noche",
@@ -63,6 +75,8 @@ export const VARIEDADES: Variedad[] = [
     recompensa: 2.2,
     ciclo: 1.3,
     desgaste: 1.2,
+    sabor: 92,
+    hoja: "noche",
   },
   {
     id: "cristal",
@@ -73,10 +87,127 @@ export const VARIEDADES: Variedad[] = [
     recompensa: 3,
     ciclo: 1.5,
     desgaste: 1.3,
+    sabor: 95,
+    hoja: "cristal",
   },
 ];
 
-export const VARIEDAD_POR_ID = Object.fromEntries(VARIEDADES.map((v) => [v.id, v])) as Record<string, Variedad>;
+/** Variedades de la colección que salen de cruces o de premios. Tienen que coincidir con `tpp.variedades()`. */
+export const HIBRIDAS_FIJAS: Variedad[] = [
+  [
+    "verde-azulado",
+    "Verde Azulado",
+    "poco_comun",
+    "Verde Clásica × Hoja Azul. Fácil y con buen aroma.",
+    1.15,
+    0.95,
+    0.95,
+    62,
+    "hoja-azul",
+  ],
+  ["brisa-dorada", "Brisa Dorada", "rara", "Hoja Azul × Dorada del Sur. Suave y rentable.", 1.5, 1.05, 1, 76, "dorada"],
+  [
+    "menta-nocturna",
+    "Menta Nocturna",
+    "epica",
+    "Noche Púrpura × Verde Clásica. Fresca y exigente.",
+    1.6,
+    1.15,
+    1.1,
+    84,
+    "noche",
+  ],
+  [
+    "sol-medianoche",
+    "Sol de Medianoche",
+    "epica",
+    "Dorada del Sur × Noche Púrpura. Brilla de noche.",
+    2.4,
+    1.3,
+    1.15,
+    90,
+    "noche",
+  ],
+  [
+    "escarcha-azul",
+    "Escarcha Azul",
+    "legendaria",
+    "Cristal Helado × Hoja Azul. Fría y generosa.",
+    2.6,
+    1.35,
+    1.15,
+    92,
+    "cristal",
+  ],
+  [
+    "ambar-antiguo",
+    "Ámbar Antiguo",
+    "rara",
+    "Premio de la maestría de oro en Dorada del Sur.",
+    2,
+    1.2,
+    1,
+    88,
+    "dorada",
+  ],
+  ["aurora", "Aurora", "legendaria", "Premio por completar el 75 % de la colección.", 3.4, 1.55, 1.2, 98, "cristal"],
+].map(([id, nombre, rareza, descripcion, recompensa, ciclo, desgaste, sabor, hoja]) => ({
+  id: id as string,
+  nombre: nombre as string,
+  rareza: rareza as Rareza,
+  nivel: 1,
+  descripcion: descripcion as string,
+  recompensa: recompensa as number,
+  ciclo: ciclo as number,
+  desgaste: desgaste as number,
+  sabor: sabor as number,
+  hoja: hoja as string,
+  hibrida: true,
+}));
+
+export const VARIEDAD_POR_ID = Object.fromEntries([...VARIEDADES, ...HIBRIDAS_FIJAS].map((v) => [v.id, v])) as Record<
+  string,
+  Variedad
+>;
+
+/** Híbridos propios del jugador, tal como llegan del servidor. */
+export interface HibridoPropio {
+  id: string;
+  nombre: string;
+  rareza: Rareza;
+  hoja: string;
+  recompensa: number;
+  ciclo: number;
+  desgaste: number;
+  sabor: number;
+}
+
+/** Añade los híbridos del jugador a la lista de variedades para poder dibujarlos y nombrarlos. */
+export function registrarHibridas(propias: HibridoPropio[]) {
+  for (const h of propias) {
+    VARIEDAD_POR_ID[h.id] = { ...h, nivel: 1, descripcion: "Híbrido propio.", hibrida: true };
+  }
+}
+
+/** Hoja de sprites de una variedad (los híbridos usan la de su rareza). */
+export const hojaDe = (id: string) => VARIEDAD_POR_ID[id]?.hoja ?? id;
+
+export interface Rasgos {
+  rendimiento: number;
+  resistencia: number;
+  velocidad: number;
+  sabor: number;
+}
+
+const acotar = (n: number) => Math.max(0, Math.min(100, Math.round(n)));
+
+/** Los 4 rasgos (0 a 100) salen de los datos de la variedad. */
+export const rasgosDe = (v: Pick<Variedad, "recompensa" | "ciclo" | "desgaste" | "sabor">): Rasgos => ({
+  rendimiento: acotar(30 + (v.recompensa - 1) * 35),
+  resistencia: acotar(90 - (v.desgaste - 1) * 100),
+  velocidad: acotar(100 - (v.ciclo - 1) * 100),
+  sabor: acotar(v.sabor),
+});
 
 /** Días reales que tarda en llegar a la cosecha (293 horas por el multiplicador del ciclo). */
 export const diasDeCiclo = (v: Variedad) => Math.round((293 * v.ciclo) / 24);

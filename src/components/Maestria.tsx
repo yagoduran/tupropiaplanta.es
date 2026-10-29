@@ -10,7 +10,7 @@ import {
   xpDeNivel,
   type DatosMaestria,
 } from "@/lib/maestria";
-import { VARIEDADES } from "@/lib/variedades";
+import { VARIEDAD_POR_ID } from "@/lib/variedades";
 import { Medalla } from "./Medalla";
 import styles from "./progresion.module.css";
 
@@ -31,13 +31,16 @@ export function Maestria({ datos }: { datos: DatosMaestria | null }) {
     );
   }
 
-  const lista = VARIEDADES.filter((v) => datos.descubiertas.includes(v.id) || (datos.xp[v.id] ?? 0) > 0).map((v) => {
-    const xp = datos.xp[v.id] ?? 0;
-    const nivel = nivelDeMaestria(xp, v.rareza);
-    const base = xpDeNivel(nivel, v.rareza);
-    const sig = nivel >= NIVEL_MAXIMO ? base : xpDeNivel(nivel + 1, v.rareza);
-    return { v, xp, nivel, pct: nivel >= NIVEL_MAXIMO ? 100 : Math.round(((xp - base) / (sig - base)) * 100), sig };
-  });
+  const ids = new Set([...datos.descubiertas, ...Object.keys(datos.xp)]);
+  const lista = [...ids]
+    .flatMap((id) => (VARIEDAD_POR_ID[id] ? [VARIEDAD_POR_ID[id]] : []))
+    .map((v) => {
+      const xp = datos.xp[v.id] ?? 0;
+      const nivel = nivelDeMaestria(xp, v.rareza);
+      const base = xpDeNivel(nivel, v.rareza);
+      const sig = nivel >= NIVEL_MAXIMO ? base : xpDeNivel(nivel + 1, v.rareza);
+      return { v, xp, nivel, pct: nivel >= NIVEL_MAXIMO ? 100 : Math.round(((xp - base) / (sig - base)) * 100), sig };
+    });
 
   if (lista.length === 0) {
     return (
@@ -79,7 +82,7 @@ export function Maestria({ datos }: { datos: DatosMaestria | null }) {
                     flex: "none",
                     width: 64,
                     height: 64,
-                    backgroundImage: `url(/assets/sprites/tpp-variedad-${x.v.id}-1x.png)`,
+                    backgroundImage: `url(/assets/sprites/tpp-variedad-${x.v.hoja}-1x.png)`,
                     backgroundSize: "384px 512px",
                     backgroundPosition: "0 -320px",
                   }}
@@ -107,7 +110,7 @@ export function Maestria({ datos }: { datos: DatosMaestria | null }) {
                 flex: "none",
                 width: 128,
                 height: 128,
-                backgroundImage: `url(/assets/sprites/tpp-variedad-${sel.v.id}-1x.png)`,
+                backgroundImage: `url(/assets/sprites/tpp-variedad-${sel.v.hoja}-1x.png)`,
                 backgroundSize: "768px 1024px",
                 backgroundPosition: "0 -640px",
               }}

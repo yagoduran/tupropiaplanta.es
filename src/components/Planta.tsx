@@ -2,6 +2,7 @@
 
 import { useFotograma } from "@/lib/animacion";
 import { ESTADOS, type Estado } from "@/lib/diseno";
+import { hojaDe } from "@/lib/variedades";
 import styles from "./juego.module.css";
 
 const CELDA = 64;
@@ -33,7 +34,8 @@ interface Props {
 
 /** Sprite de la planta. Animada en reposo cuando está sana; fija en cualquier otro estado. */
 export function Planta({ fase, estado, tamano = 1, variedad = "clasica", maceta = "maceta_plastico" }: Props) {
-  const propia = variedad !== "clasica";
+  const hojaVariedad = hojaDe(variedad);
+  const propia = hojaVariedad !== "clasica";
   const animada = estado === "sana";
   const fotograma = useFotograma(FOTOGRAMAS, FOTOGRAMA_MS, animada);
 
@@ -41,7 +43,7 @@ export function Planta({ fase, estado, tamano = 1, variedad = "clasica", maceta 
   // La clásica, además, usa la hoja general cuando no está sana, porque trae todos los estados.
   const hoja =
     propia || animada
-      ? { src: `/assets/sprites/tpp-variedad-${variedad}-1x.png`, columnas: 6, filas: 8 }
+      ? { src: `/assets/sprites/tpp-variedad-${hojaVariedad}-1x.png`, columnas: 6, filas: 8 }
       : HOJA_ESTADOS;
   const columnaPropia = animada
     ? fotograma

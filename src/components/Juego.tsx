@@ -15,6 +15,11 @@ import {
   obtenerProgresion,
   obtenerDesafios,
   obtenerMaestria,
+  obtenerCruces,
+  iniciarCruce,
+  acelerarCruce,
+  abrirCruce,
+  guardarCruce,
   empezarDesafio,
   reclamarHito,
   obtenerMiPerfil,
@@ -49,8 +54,10 @@ import { PLAGAS, TRATAMIENTOS } from "@/lib/plagas";
 import type { Efecto } from "@/lib/sonido";
 import type { DatosEstadisticas, DatosPerfil } from "@/lib/perfil";
 import type { DatosProgresion } from "@/lib/progresion";
+import { registrarHibridas } from "@/lib/variedades";
 import { DESAFIO_POR_ID, type DatosDesafios } from "@/lib/desafios";
 import type { DatosMaestria } from "@/lib/maestria";
+import type { DatosCruces, RespuestaCruce } from "@/lib/cruces";
 import { calcularBienvenida, guardarVisita, leerVisita, type Bienvenida as DatosBienvenida } from "@/lib/visita";
 import { Ajustes } from "./Ajustes";
 import { Bienvenida } from "./Bienvenida";
@@ -60,6 +67,7 @@ import { EstadoCompacto } from "./EstadoCompacto";
 import { JuegoLayout } from "./JuegoLayout";
 import { Armario } from "./Armario";
 import { Habitaciones } from "./Habitaciones";
+import { Laboratorio } from "./Laboratorio";
 import { Maestria } from "./Maestria";
 import { AnuncioPrueba } from "./AnuncioPrueba";
 import { PanelAcciones } from "./PanelAcciones";
@@ -117,6 +125,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [progresion, setProgresion] = useState<DatosProgresion | null>(null);
   const [desafios, setDesafios] = useState<DatosDesafios | null>(null);
   const [maestria, setMaestria] = useState<DatosMaestria | null>(null);
+  const [cruces, setCruces] = useState<DatosCruces | null>(null);
+  const [crucesEn, setCrucesEn] = useState(() => Date.now());
   const [bienvenida, setBienvenida] = useState<DatosBienvenida | null>(null);
 
   const aplicar = useCallback((nuevo: EstadoJuego) => {
@@ -294,6 +304,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "armario" ||
       id === "habitaciones" ||
       id === "maestria" ||
+      id === "laboratorio" ||
       id === "cultivo" ||
       id === "ajustes" ||
       id === "tienda" ||
@@ -307,6 +318,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         obtenerEstadisticas()
           .then(setEstadisticas)
           .catch(() => setEstadisticas(null));
+      if (id === "laboratorio")
+        obtenerCruces()
+          .then((r) => recibirCruces(r))
+          .catch(() => setCruces(null));
       if (id === "maestria")
         obtenerMaestria()
           .then(setMaestria)
@@ -411,6 +426,55 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     });
   };
 
+  function recibirCruces(r: RespuestaCruce | null) {
+    if (!r) {
+      setAviso({ texto: MENSAJES_ERROR.red, icono: "aviso" });
+      return;
+    }
+    setCruces({ cosechas: r.cosechas, cruce: r.cruce });
+    setCrucesEn(Date.now());
+    if (!r.ok && r.error) setAviso({ texto: MENSAJES_ERROR[r.error] ?? MENSAJES_ERROR.red, icono: "aviso" });
+  }
+
+  const cruzar = (a: string, b: string) => {
+    ejecutar(async () => {
+      const r = await iniciarCruce(a, b);
+      sonar(r?.ok ? "cofre" : "error");
+      recibirCruces(r);
+    });
+  };
+
+  const acelerarElCruce = () => {
+    ejecutar(async () => {
+      const r = await acelerarCruce();
+      sonar(r?.ok ? "comprar" : "compra-rechazada");
+      recibirCruces(r);
+      const nuevo = await obtenerEstado();
+      if (nuevo) aplicar(nuevo);
+    });
+  };
+
+  const abrirElCapullo = () => {
+    ejecutar(async () => {
+      const r = await abrirCruce();
+      sonar(r?.ok ? "cofre" : "error");
+      recibirCruces(r);
+    });
+  };
+
+  const guardarLaSemilla = (nombre: string) => {
+    ejecutar(async () => {
+      const r = await guardarCruce(nombre);
+      sonar(r?.ok ? "cofre" : "error");
+      recibirCruces(r);
+      if (r?.ok) {
+        setAviso({ texto: "¡Semilla guardada en tus semillas!", icono: "cultivo" });
+        const nuevo = await obtenerEstado();
+        if (nuevo) aplicar(nuevo);
+      }
+    });
+  };
+
   const mejorar = (rama: string) => {
     ejecutar(async () => {
       const r = await comprarMejora(rama);
@@ -454,6 +518,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   };
 
   const { perfil, planta } = estado;
+  registrarHibridas(perfil.hibridas.propias);
   const formatoRestante = (segundos: number) => {
     const s = Math.max(0, Math.floor(segundos));
     const d = Math.floor(s / 86400);
@@ -593,6 +658,17 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           <Estadisticas datos={estadisticas} />
         ) : pantalla === "coleccion" ? (
           <Coleccion datos={progresion} ocupado={enCurso} alReclamar={reclamarPremioColeccion} />
+        ) : pantalla === "laboratorio" ? (
+          <Laboratorio
+            datos={cruces}
+            recibidoEn={crucesEn}
+            monedas={perfil.monedas}
+            ocupado={enCurso}
+            alIniciar={cruzar}
+            alAcelerar={acelerarElCruce}
+            alAbrir={abrirElCapullo}
+            alGuardar={guardarLaSemilla}
+          />
         ) : pantalla === "maestria" ? (
           <Maestria datos={maestria} />
         ) : pantalla === "armario" ? (
@@ -618,6 +694,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           />
         ) : pantalla === "semillas" ? (
           <Semillas
+            hibridas={perfil.hibridas.semillas}
             nivel={perfil.nivel}
             enUso={planta && viva ? planta.variedad : null}
             ocupado={enCurso}

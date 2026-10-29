@@ -19,6 +19,7 @@ const OPCIONES_MENU = [
   ["desafios", "Desafíos"],
   ["armario", "Mejoras del armario"],
   ["habitaciones", "Habitaciones"],
+  ["laboratorio", "Laboratorio de cruces"],
   ["maestria", "Maestría"],
 ] as const;
 

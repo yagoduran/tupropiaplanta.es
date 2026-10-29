@@ -636,3 +636,80 @@ button.hueco {
   border: 2px solid #a8845c;
   font-size: var(--f-small);
 }
+
+/* Laboratorio de cruces */
+.parejaCruce {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: var(--gap);
+  align-items: center;
+}
+
+.huecoCruce {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: calc(var(--u) * 3);
+  min-height: 180px;
+  justify-content: center;
+  text-align: center;
+  font-size: var(--f-small);
+  color: #1c1626;
+}
+
+.cosechas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: var(--gap);
+}
+
+.cosecha {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;
+  padding: calc(var(--u) * 2);
+  border: calc(var(--u) * 0.7) solid #a8845c;
+  font: inherit;
+  font-size: var(--f-small);
+  color: #1c1626;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cosecha:disabled {
+  cursor: default;
+}
+
+.capullo {
+  align-items: center;
+  text-align: center;
+  animation: latido 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes latido {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.03);
+  }
+}
+
+.campoNombre {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  margin-top: 4px;
+  padding: calc(var(--u) * 2);
+  font: inherit;
+  border: calc(var(--u) * 0.7) solid #1c1626;
+  background: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .capullo {
+    animation: none;
+  }
+}
