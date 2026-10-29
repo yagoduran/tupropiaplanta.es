@@ -3,6 +3,7 @@
 import { crearClienteServidor } from "@/lib/supabase/servidor";
 import type { DatosEstadisticas, DatosPerfil } from "@/lib/perfil";
 import type { DatosProgresion } from "@/lib/progresion";
+import type { DatosDesafios } from "@/lib/desafios";
 import type { Accion, AjustesJuego, DatosRanking, EstadoJuego, RespuestaAccion } from "@/lib/juego";
 
 const ACCIONES: Accion[] = ["regar", "abonar", "podar", "ajustar_luz", "cosechar"];
@@ -95,6 +96,22 @@ export async function obtenerProgresion(): Promise<DatosProgresion | null> {
 export async function reclamarHito(pct: number): Promise<Resultado> {
   const supabase = await crearClienteServidor();
   const { data, error } = await supabase.rpc("tpp_reclamar_hito", { p_pct: pct });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
+/** Desafíos de la semana. Devuelve null si falla. */
+export async function obtenerDesafios(): Promise<DatosDesafios | null> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_desafios");
+  if (error || !data) return null;
+  return data as DatosDesafios;
+}
+
+/** Empieza un desafío: crea su planta y pasa a jugarla. */
+export async function empezarDesafio(id: string): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_empezar_desafio", { p_id: id });
   if (error || !data) return fallo(error?.message);
   return data as RespuestaAccion;
 }

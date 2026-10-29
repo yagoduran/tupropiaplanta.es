@@ -13,6 +13,8 @@ import {
   obtenerEstado,
   obtenerEstadisticas,
   obtenerProgresion,
+  obtenerDesafios,
+  empezarDesafio,
   reclamarHito,
   obtenerMiPerfil,
   obtenerRanking,
@@ -43,6 +45,7 @@ import { PLAGAS, TRATAMIENTOS } from "@/lib/plagas";
 import type { Efecto } from "@/lib/sonido";
 import type { DatosEstadisticas, DatosPerfil } from "@/lib/perfil";
 import type { DatosProgresion } from "@/lib/progresion";
+import { DESAFIO_POR_ID, type DatosDesafios } from "@/lib/desafios";
 import { calcularBienvenida, guardarVisita, leerVisita, type Bienvenida as DatosBienvenida } from "@/lib/visita";
 import { Ajustes } from "./Ajustes";
 import { Bienvenida } from "./Bienvenida";
@@ -60,6 +63,7 @@ import { Plaga } from "./Plaga";
 import { Decoracion } from "./Decoracion";
 import { Logros } from "./Logros";
 import { Coleccion } from "./Coleccion";
+import { Desafios } from "./Desafios";
 import { Estadisticas } from "./Estadisticas";
 import { Inventario } from "./Inventario";
 import { MisPlantas } from "./MisPlantas";
@@ -105,6 +109,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [datosPerfil, setDatosPerfil] = useState<DatosPerfil | null>(null);
   const [estadisticas, setEstadisticas] = useState<DatosEstadisticas | null>(null);
   const [progresion, setProgresion] = useState<DatosProgresion | null>(null);
+  const [desafios, setDesafios] = useState<DatosDesafios | null>(null);
   const [bienvenida, setBienvenida] = useState<DatosBienvenida | null>(null);
 
   const aplicar = useCallback((nuevo: EstadoJuego) => {
@@ -278,6 +283,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "estadisticas" ||
       id === "coleccion" ||
       id === "titulos" ||
+      id === "desafios" ||
       id === "cultivo" ||
       id === "ajustes" ||
       id === "tienda" ||
@@ -291,6 +297,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         obtenerEstadisticas()
           .then(setEstadisticas)
           .catch(() => setEstadisticas(null));
+      if (id === "desafios")
+        obtenerDesafios()
+          .then(setDesafios)
+          .catch(() => setDesafios(null));
       if (id === "coleccion" || id === "titulos" || id === "perfil")
         obtenerProgresion()
           .then(setProgresion)
@@ -364,6 +374,20 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     setProgresion((p) => (p ? { ...p, ...cambio } : p));
   };
 
+  const empezar = (id: string) => {
+    ejecutar(async () => {
+      const r = await empezarDesafio(id);
+      sonar(r.ok ? "cofre" : "error");
+      tratar(r, { texto: "¡Desafío en marcha!", icono: "cultivo" });
+      if (r.ok) setPantalla("cultivo");
+    });
+  };
+
+  const seguirDesafio = () => {
+    cambiarHueco(4);
+    setPantalla("cultivo");
+  };
+
   const cambiarHueco = (hueco: number) => {
     if (hueco === estado.perfil.huecos.activo) return;
     ejecutar(async () => {
@@ -401,6 +425,13 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   };
 
   const { perfil, planta } = estado;
+  const formatoRestante = (segundos: number) => {
+    const s = Math.max(0, Math.floor(segundos));
+    const d = Math.floor(s / 86400);
+    const h = Math.floor((s % 86400) / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    return d > 0 ? `${d} d ${h} h` : h > 0 ? `${h} h ${m} min` : `${m} min`;
+  };
   const plaga = planta?.vida === "viva" ? (planta.plaga ?? null) : null;
 
   // Suena un aviso cuando aparece una plaga nueva mientras se juega.
@@ -520,6 +551,14 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           <Estadisticas datos={estadisticas} />
         ) : pantalla === "coleccion" ? (
           <Coleccion datos={progresion} ocupado={enCurso} alReclamar={reclamarPremioColeccion} />
+        ) : pantalla === "desafios" ? (
+          <Desafios
+            datos={desafios}
+            enCurso={perfil.huecos.desafio}
+            ocupado={enCurso}
+            alEmpezar={empezar}
+            alContinuar={seguirDesafio}
+          />
         ) : pantalla === "titulos" ? (
           <Titulos
             datos={progresion}
@@ -569,6 +608,13 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             />
           ) : sedienta ? (
             <Bocadillo texto="¡Tu planta necesita agua!" />
+          ) : planta?.desafio && planta.vida === "cosechada" ? (
+            <Bocadillo
+              texto={`¡Desafío completado! ${(planta.desafio.puntos ?? 0).toLocaleString("es-ES")} puntos`}
+              icono="moneda"
+            />
+          ) : planta?.desafio && planta.vida === "muerta" ? (
+            <Bocadillo texto="Desafío fallido. Puedes probar otro o volver a tu cultivo." icono="aviso" />
           ) : !planta ? (
             <Bocadillo texto="Este hueco está vacío. ¡Planta una semilla!" />
           ) : planta?.vida === "muerta" ? (
@@ -598,7 +644,24 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
               Plantar una semilla
             </button>
           )}
-          {planta && !viva && (
+          {planta && planta.desafio && viva && (
+            <p className={styles.desafioBanner} style={marco("barra", "var(--u)")}>
+              ★ {DESAFIO_POR_ID[planta.desafio.id]?.nombre ?? "Desafío"} · quedan{" "}
+              {formatoRestante(planta.desafio.restan - transcurrido)}
+            </p>
+          )}
+          {planta && !viva && planta.desafio && (
+            <button
+              type="button"
+              className={styles.plantar}
+              style={botonPlantar}
+              disabled={enCurso}
+              onClick={() => cambiarHueco(1)}
+            >
+              Volver a mi cultivo
+            </button>
+          )}
+          {planta && !viva && !planta.desafio && (
             <button
               type="button"
               className={styles.plantar}

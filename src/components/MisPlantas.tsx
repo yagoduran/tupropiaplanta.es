@@ -1,5 +1,6 @@
 "use client";
 
+import { DESAFIO_POR_ID } from "@/lib/desafios";
 import { FASES, marco } from "@/lib/diseno";
 import type { DatosPerfil } from "@/lib/perfil";
 import { RAREZAS, VARIEDAD_POR_ID } from "@/lib/variedades";
@@ -38,8 +39,9 @@ export function MisPlantas({ datos }: { datos: DatosPerfil | null }) {
                   <span className={styles.filaNombre}>
                     {v?.nombre ?? p.variedad}
                     <span className={styles.filaDetalle} style={{ display: "block" }}>
-                      {RAREZAS[v?.rareza ?? "comun"].etiqueta} · hueco {p.hueco} · plantada el{" "}
-                      {new Date(p.plantada).toLocaleDateString("es-ES")} · {tiempo(p.horas)} de vida
+                      {RAREZAS[v?.rareza ?? "comun"].etiqueta} ·{" "}
+                      {p.desafio ? `desafío ${DESAFIO_POR_ID[p.desafio]?.nombre ?? ""}`.trim() : `hueco ${p.hueco}`} ·
+                      plantada el {new Date(p.plantada).toLocaleDateString("es-ES")} · {tiempo(p.horas)} de vida
                       {p.vida === "viva" && ` · ${FASES[p.fase - 1]}`}
                     </span>
                   </span>

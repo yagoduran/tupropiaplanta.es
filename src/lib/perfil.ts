@@ -32,6 +32,8 @@ export interface DatosPerfil {
     variedad: string;
     vida: "viva" | "muerta" | "cosechada";
     hueco: number;
+    /** Desafío al que pertenece, si es una planta de desafío. */
+    desafio: string | null;
     fase: number;
     plantada: string;
     horas: number;

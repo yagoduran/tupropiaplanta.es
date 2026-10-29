@@ -9,7 +9,7 @@ interface Props {
   alAmpliar: () => void;
 }
 
-/** Botones 1 / 2 / 3 sobre la escena para cambiar de planta. El siguiente hueco por comprar sale como "+". */
+/** Botones 1 / 2 / 3 sobre la escena para cambiar de planta. El siguiente hueco por comprar sale como "+" y el desafío en curso como "★". */
 export function SelectorHuecos({ huecos, ocupado, alElegir, alAmpliar }: Props) {
   const activo = marco("boton", "var(--u)");
   const normal = marco("boton_secundario", "var(--u)");
@@ -34,6 +34,19 @@ export function SelectorHuecos({ huecos, ocupado, alElegir, alAmpliar }: Props) 
           </button>
         );
       })}
+      {(huecos.desafio || huecos.activo === 4) && (
+        <button
+          type="button"
+          className={styles.hueco}
+          style={huecos.activo === 4 ? activo : normal}
+          disabled={ocupado}
+          aria-current={huecos.activo === 4 ? "true" : undefined}
+          aria-label="Desafío en curso"
+          onClick={() => alElegir(4)}
+        >
+          ★
+        </button>
+      )}
       {huecos.siguiente && (
         <button
           type="button"

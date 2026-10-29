@@ -281,7 +281,12 @@ button.hueco {
   }
 
   .titulosRejilla,
+  .desafios,
   .arbol {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .reglas {
     grid-template-columns: minmax(0, 1fr);
   }
 
@@ -444,4 +449,116 @@ button.hueco {
 
 .nodo:disabled {
   cursor: default;
+}
+
+/* Desafíos */
+.desafios {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: var(--gap);
+  align-items: start;
+}
+
+.listaDesafios {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.desafio {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  padding: calc(var(--u) * 3);
+  font: inherit;
+  font-size: var(--f-small);
+  text-align: left;
+  color: #1c1626;
+  cursor: pointer;
+}
+
+.desafioTexto {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.desafioTexto strong {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+}
+
+.desafioPie {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+}
+
+.escudos {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.multiplicador {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+  font-weight: 700;
+  color: #b9512a;
+}
+
+.desafioCabeza {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pequeno {
+  font-size: var(--f-small);
+}
+
+.reglas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap);
+}
+
+.regla {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: calc(var(--u) * 3);
+  font-size: var(--f-small);
+}
+
+.premio {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  padding: calc(var(--u) * 3);
+  font-size: var(--f-small);
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--f-small);
+  text-align: left;
+}
+
+.tabla th,
+.tabla td {
+  padding: 4px 8px;
+  border: calc(var(--u) * 0.5) solid #a8845c;
+}
+
+.tabla tbody tr:nth-child(odd) {
+  background: #fff;
+}
+
+.tabla .mejorFila {
+  background: #f2ec9a;
+  font-weight: 700;
 }

@@ -773,3 +773,15 @@
   background-image: url(/assets/sprites/tpp-mascota-1x.png);
   cursor: pointer;
 }
+
+.desafioBanner {
+  position: absolute;
+  top: calc(var(--u) * 4);
+  right: calc(var(--u) * 4);
+  z-index: 3;
+  max-width: 55%;
+  padding: calc(var(--u) * 2) calc(var(--u) * 4);
+  font-size: var(--f-small);
+  font-weight: 700;
+  color: #f6eed6;
+}

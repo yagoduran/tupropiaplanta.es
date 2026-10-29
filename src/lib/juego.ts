@@ -5,7 +5,15 @@ import { tonoPorPorcentaje, type Medidor } from "./estado";
 export type Accion = "regar" | "abonar" | "podar" | "ajustar_luz" | "cosechar";
 
 /** Pantallas del juego: las pestañas y las del menú de usuario. */
-export type PantallaJuego = IdIcono | "perfil" | "plantas" | "inventario" | "estadisticas" | "coleccion" | "titulos";
+export type PantallaJuego =
+  | IdIcono
+  | "perfil"
+  | "plantas"
+  | "inventario"
+  | "estadisticas"
+  | "coleccion"
+  | "titulos"
+  | "desafios";
 
 export interface AjustesJuego {
   volumen_efectos: number;
@@ -63,6 +71,8 @@ export interface PerfilJuego {
 
 export interface HuecosJuego {
   activo: number;
+  /** Desafío en curso (hueco especial 4), si lo hay. */
+  desafio: string | null;
   desbloqueados: number;
   /** Precio y nivel del siguiente hueco por comprar; null si ya están todos. */
   siguiente: { precio: number; nivel: number } | null;
@@ -87,6 +97,8 @@ export interface PlantaJuego {
   esperas: Partial<Record<Accion, number>>;
   /** Plaga o hongo que sufre ahora, si lo hay. */
   plaga: PlagaJuego | null;
+  /** Si es la planta de un desafío: cuál, segundos que quedan y puntos conseguidos al cosechar. */
+  desafio: { id: string; restan: number; dias: number; puntos: number | null } | null;
 }
 
 export interface EstadoJuego {
@@ -126,6 +138,11 @@ export const MENSAJES_ERROR: Record<string, string> = {
   tratamiento_incorrecto: "Ese producto no sirve para esta plaga.",
   huecos_maximos: "Ya tienes todos los huecos de cultivo.",
   hueco_bloqueado: "Ese hueco todavía no es tuyo.",
+  desafio_riegos: "Sequía: hoy ya has usado tus 3 riegos.",
+  desafio_prohibido: "En este desafío no puedes usar ese abono.",
+  desafio_en_curso: "Ya tienes un desafío en curso.",
+  desafio_jugado: "Ya has jugado este desafío esta semana.",
+  hueco_desafio: "Vuelve a tu cultivo para plantar una semilla.",
   anuncios_agotados: "Hoy ya no quedan más ayudas. Vuelve mañana.",
   diaria_ya_reclamada: "Hoy ya has recogido tu regalo. Vuelve mañana.",
   no_lo_tienes: "Todavía no tienes ese objeto.",

@@ -20,11 +20,10 @@ Siguen pendientes:
 ## Progresión (juego nuevo, necesitan base de datos)
 ✅ Hechas: Inventario (huecos de cultivo y objetos) y Estadísticas (totales y gráficas; sin «horas jugadas», porque no se mide el tiempo de juego), ambas desde el menú de usuario.
 
+✅ También hechas: Colección (12 variedades; 7 salen como «Próximamente» hasta que existan los cruces y los eventos), Títulos y marcos (los de cruces, maestría, eventos y prestigio quedan bloqueados) y Desafíos semanales (4 desafíos con reglas propias: planta aparte que crece 3 veces más rápido, plazo de 5 a 7 días, una vez por semana y desafío, puntos y mejores marcas).
+
 | Pantalla | Esfuerzo | Nota |
 |---|---|---|
-| Colección y enciclopedia | 🟡 | Variedades descubiertas y datos |
-| Títulos y marcos | 🟡 | Cosméticos que se desbloquean |
-| Desafíos | 🟡 | Retos con recompensa |
 | Mejoras del armario | 🔴 | Mejoras permanentes de la cámara |
 | Habitaciones y expansión | 🔴 | Cambia lo de "ampliar casa" y los huecos |
 | Laboratorio de cruces + resultado | 🔴 | Cruzar variedades (hay animaciones hechas) |
