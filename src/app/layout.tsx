@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Archivo, Pixelify_Sans } from "next/font/google";
+import { AvisoCookies } from "@/components/AvisoCookies";
 import "./globals.css";
 
 const pixel = Pixelify_Sans({
@@ -27,7 +28,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="es" className={`${pixel.variable} ${texto.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <AvisoCookies />
+      </body>
     </html>
   );
 }
