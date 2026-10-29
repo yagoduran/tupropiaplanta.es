@@ -13,6 +13,7 @@ import {
   obtenerRanking,
   plantarSemilla,
   reclamarDiaria,
+  verAnuncio,
 } from "@/app/juego/acciones";
 import { marco, type IdIcono } from "@/lib/diseno";
 import { fijarVolumenEfectos, sonar } from "@/lib/sonido";
@@ -34,6 +35,7 @@ import { Bocadillo } from "./Bocadillo";
 import { Escena } from "./Escena";
 import { EstadoCompacto } from "./EstadoCompacto";
 import { JuegoLayout } from "./JuegoLayout";
+import { AnuncioPrueba } from "./AnuncioPrueba";
 import { PanelAcciones } from "./PanelAcciones";
 import { PanelEstado } from "./PanelEstado";
 import { Planta } from "./Planta";
@@ -63,6 +65,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [pantalla, setPantalla] = useState<IdIcono>("cultivo");
   const [tutorial, setTutorial] = useState(!inicial.perfil.tutorial_hecho);
   const [repeticion, setRepeticion] = useState(false);
+  const [anuncioAbierto, setAnuncioAbierto] = useState(false);
   const [ranking, setRanking] = useState<DatosRanking | null>(null);
 
   const aplicar = useCallback((nuevo: EstadoJuego) => {
@@ -237,6 +240,16 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     });
   };
 
+  const recogerAyuda = () => {
+    iniciar(async () => {
+      const r = await verAnuncio();
+      sonar(r.ok ? "cofre" : "error");
+      setAnuncioAbierto(false);
+      const recompensa = "recompensa" in r ? r.recompensa : 0;
+      tratar(r, { texto: `¡Ayuda extra! +${recompensa} monedas y sin esperas`, icono: "moneda" });
+    });
+  };
+
   const plantar = (variedad: string) => {
     iniciar(async () => {
       const r = await plantarSemilla(variedad);
@@ -294,6 +307,13 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             alSaltar={saltarTutorial}
             alTerminar={terminarTutorial}
             alActivarAvisos={activarAvisos}
+          />
+        ) : anuncioAbierto ? (
+          <AnuncioPrueba
+            monedas={perfil.anuncios.monedas}
+            ocupado={enCurso}
+            alRecoger={recogerAyuda}
+            alCerrar={() => setAnuncioAbierto(false)}
           />
         ) : undefined
       }
@@ -381,7 +401,15 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           )}
         </Escena>
       }
-      panelAcciones={<PanelAcciones esperas={esperas} bloqueadas={bloqueadas} alAccionar={accionar} />}
+      panelAcciones={
+        <PanelAcciones
+          esperas={esperas}
+          bloqueadas={bloqueadas}
+          alAccionar={accionar}
+          ayudasRestantes={perfil.anuncios.restantes}
+          alVerAnuncio={() => setAnuncioAbierto(true)}
+        />
+      }
     />
   );
 }

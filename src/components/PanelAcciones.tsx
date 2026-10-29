@@ -17,9 +17,12 @@ interface Props {
   /** Acciones no disponibles ahora (por fase, planta muerta o petición en curso). */
   bloqueadas: Partial<Record<Accion, boolean>>;
   alAccionar: (accion: Accion) => void;
+  /** Ayudas por anuncio que quedan hoy. */
+  ayudasRestantes: number;
+  alVerAnuncio: () => void;
 }
 
-export function PanelAcciones({ esperas, bloqueadas, alAccionar }: Props) {
+export function PanelAcciones({ esperas, bloqueadas, alAccionar, ayudasRestantes, alVerAnuncio }: Props) {
   return (
     <>
       {ACCIONES.map((a) => {
@@ -39,7 +42,7 @@ export function PanelAcciones({ esperas, bloqueadas, alAccionar }: Props) {
           />
         );
       })}
-      <BotonAnuncio />
+      <BotonAnuncio restantes={ayudasRestantes} onClick={alVerAnuncio} />
     </>
   );
 }
