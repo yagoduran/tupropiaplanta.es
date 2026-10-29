@@ -16,7 +16,8 @@ export type PantallaJuego =
   | "titulos"
   | "desafios"
   | "armario"
-  | "habitaciones";
+  | "habitaciones"
+  | "maestria";
 
 export interface AjustesJuego {
   volumen_efectos: number;

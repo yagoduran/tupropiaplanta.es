@@ -270,6 +270,7 @@ button.hueco {
 }
 
 .relleno {
+  display: block;
   height: 100%;
   background: #b9512a;
 }
@@ -615,4 +616,23 @@ button.hueco {
   aspect-ratio: 96 / 80;
   background-size: 100% 100%;
   border: calc(var(--u) * 0.7) solid #1c1626;
+}
+
+/* Maestría */
+.bonos {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  list-style: none;
+}
+
+.bono {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  padding: 2px 8px;
+  min-height: 34px;
+  border: 2px solid #a8845c;
+  font-size: var(--f-small);
 }

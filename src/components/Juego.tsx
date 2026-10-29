@@ -14,6 +14,7 @@ import {
   obtenerEstadisticas,
   obtenerProgresion,
   obtenerDesafios,
+  obtenerMaestria,
   empezarDesafio,
   reclamarHito,
   obtenerMiPerfil,
@@ -49,6 +50,7 @@ import type { Efecto } from "@/lib/sonido";
 import type { DatosEstadisticas, DatosPerfil } from "@/lib/perfil";
 import type { DatosProgresion } from "@/lib/progresion";
 import { DESAFIO_POR_ID, type DatosDesafios } from "@/lib/desafios";
+import type { DatosMaestria } from "@/lib/maestria";
 import { calcularBienvenida, guardarVisita, leerVisita, type Bienvenida as DatosBienvenida } from "@/lib/visita";
 import { Ajustes } from "./Ajustes";
 import { Bienvenida } from "./Bienvenida";
@@ -58,6 +60,7 @@ import { EstadoCompacto } from "./EstadoCompacto";
 import { JuegoLayout } from "./JuegoLayout";
 import { Armario } from "./Armario";
 import { Habitaciones } from "./Habitaciones";
+import { Maestria } from "./Maestria";
 import { AnuncioPrueba } from "./AnuncioPrueba";
 import { PanelAcciones } from "./PanelAcciones";
 import { SelectorHuecos } from "./SelectorHuecos";
@@ -113,6 +116,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [estadisticas, setEstadisticas] = useState<DatosEstadisticas | null>(null);
   const [progresion, setProgresion] = useState<DatosProgresion | null>(null);
   const [desafios, setDesafios] = useState<DatosDesafios | null>(null);
+  const [maestria, setMaestria] = useState<DatosMaestria | null>(null);
   const [bienvenida, setBienvenida] = useState<DatosBienvenida | null>(null);
 
   const aplicar = useCallback((nuevo: EstadoJuego) => {
@@ -289,6 +293,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "desafios" ||
       id === "armario" ||
       id === "habitaciones" ||
+      id === "maestria" ||
       id === "cultivo" ||
       id === "ajustes" ||
       id === "tienda" ||
@@ -302,6 +307,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         obtenerEstadisticas()
           .then(setEstadisticas)
           .catch(() => setEstadisticas(null));
+      if (id === "maestria")
+        obtenerMaestria()
+          .then(setMaestria)
+          .catch(() => setMaestria(null));
       if (id === "desafios")
         obtenerDesafios()
           .then(setDesafios)
@@ -584,6 +593,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           <Estadisticas datos={estadisticas} />
         ) : pantalla === "coleccion" ? (
           <Coleccion datos={progresion} ocupado={enCurso} alReclamar={reclamarPremioColeccion} />
+        ) : pantalla === "maestria" ? (
+          <Maestria datos={maestria} />
         ) : pantalla === "armario" ? (
           <Armario perfil={perfil} ocupado={enCurso} alComprar={mejorar} />
         ) : pantalla === "habitaciones" ? (

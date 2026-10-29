@@ -4,6 +4,7 @@ import { crearClienteServidor } from "@/lib/supabase/servidor";
 import type { DatosEstadisticas, DatosPerfil } from "@/lib/perfil";
 import type { DatosProgresion } from "@/lib/progresion";
 import type { DatosDesafios } from "@/lib/desafios";
+import type { DatosMaestria } from "@/lib/maestria";
 import type { Accion, AjustesJuego, DatosRanking, EstadoJuego, RespuestaAccion } from "@/lib/juego";
 
 const ACCIONES: Accion[] = ["regar", "abonar", "podar", "ajustar_luz", "cosechar"];
@@ -114,6 +115,14 @@ export async function empezarDesafio(id: string): Promise<Resultado> {
   const { data, error } = await supabase.rpc("tpp_empezar_desafio", { p_id: id });
   if (error || !data) return fallo(error?.message);
   return data as RespuestaAccion;
+}
+
+/** Maestría de cada variedad. Devuelve null si falla. */
+export async function obtenerMaestria(): Promise<DatosMaestria | null> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_mi_maestria");
+  if (error || !data) return null;
+  return data as DatosMaestria;
 }
 
 /** Compra el siguiente nivel de una rama de mejoras del armario. */
