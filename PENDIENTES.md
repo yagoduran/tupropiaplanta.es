@@ -6,7 +6,7 @@
 
 ## Funciones por hacer
 - Huecos de cultivo múltiples (varias plantas a la vez): pendiente de decidir.
-- Fase 5: plagas, logros, ranking, recompensa diaria.
+- Fase 5: ✅ logros y recompensa diaria (5a). Pendiente: ranking (5b: solo usuario y nivel, top 20, opción de ocultarse en Ajustes) y plagas (5c).
 - Fase 6: anuncios, música, ajustes finales.
 - Objetos de la tienda sin efecto todavía (no se venden): medidor de pH, termómetro, pulverizador, fungicida, radio, gato.
 
