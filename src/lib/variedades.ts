@@ -78,5 +78,5 @@ export const VARIEDADES: Variedad[] = [
 
 export const VARIEDAD_POR_ID = Object.fromEntries(VARIEDADES.map((v) => [v.id, v])) as Record<string, Variedad>;
 
-/** Días reales que tarda en llegar a la cosecha (318 horas por el multiplicador del ciclo). */
-export const diasDeCiclo = (v: Variedad) => Math.round((318 * v.ciclo) / 24);
+/** Días reales que tarda en llegar a la cosecha (293 horas por el multiplicador del ciclo). */
+export const diasDeCiclo = (v: Variedad) => Math.round((293 * v.ciclo) / 24);
