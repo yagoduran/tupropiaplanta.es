@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-const RUTAS_PUBLICAS = ["/login", "/registro", "/auth", "/cookies"];
+const RUTAS_PUBLICAS = ["/login", "/registro", "/auth", "/cookies", "/aviso-legal", "/privacidad", "/condiciones"];
 
 /** Renueva la sesión en cada petición y manda a /login a quien no la tenga. */
 export async function actualizarSesion(peticion: NextRequest) {

@@ -6,6 +6,7 @@ import { cerrarSesion } from "@/app/acciones";
 import { marco } from "@/lib/diseno";
 import type { AjustesJuego } from "@/lib/juego";
 import { sonar } from "@/lib/sonido";
+import { EnlacesLegales } from "./EnlacesLegales";
 import { Icono } from "./Icono";
 import styles from "./ajustes.module.css";
 
@@ -169,6 +170,7 @@ export function Ajustes({ ajustes, alCambiar, alVerTutorial, alBorrar }: Props) 
             Borrar datos del juego
           </button>
         </div>
+        <EnlacesLegales />
       </div>
 
       {confirmando &&

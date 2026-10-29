@@ -90,3 +90,17 @@
   font-weight: 700;
   cursor: pointer;
 }
+
+.enlaces {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 16px;
+  padding: 8px 0;
+  font-size: 13px;
+}
+
+.enlaces a {
+  color: inherit;
+  opacity: 0.85;
+}
