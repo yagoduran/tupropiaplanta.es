@@ -14,6 +14,11 @@ const texto = Archivo({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "http://localhost:3000",
+  ),
   title: "Tu Propia Planta",
   description: "Cuida tu planta las 24 horas, aunque no estés.",
   openGraph: { images: ["/og.png"] },
