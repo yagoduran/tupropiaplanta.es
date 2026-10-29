@@ -6,6 +6,7 @@ import type { DatosProgresion } from "@/lib/progresion";
 import type { DatosDesafios } from "@/lib/desafios";
 import type { DatosMaestria } from "@/lib/maestria";
 import type { DatosPrestigio } from "@/lib/prestigio";
+import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
 import type { RespuestaCruce } from "@/lib/cruces";
 import type { Accion, AjustesJuego, DatosRanking, EstadoJuego, RespuestaAccion } from "@/lib/juego";
 
@@ -117,6 +118,38 @@ export async function empezarDesafio(id: string): Promise<Resultado> {
   const { data, error } = await supabase.rpc("tpp_empezar_desafio", { p_id: id });
   if (error || !data) return fallo(error?.message);
   return data as RespuestaAccion;
+}
+
+/** Misiones del día y de la semana. Devuelve null si falla. */
+export async function obtenerMisiones(): Promise<DatosMisiones | null> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_misiones");
+  if (error || !data) return null;
+  return data as DatosMisiones;
+}
+
+/** Reclama el premio de una misión completada. */
+export async function reclamarMision(id: string): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_reclamar_mision", { p_id: id });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
+/** Avisos de la campana. Devuelve null si falla. */
+export async function obtenerNotificaciones(): Promise<DatosNotificaciones | null> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_notificaciones");
+  if (error || !data) return null;
+  return data as DatosNotificaciones;
+}
+
+/** Marca como leído un aviso, o todos si no se indica cuál. */
+export async function leerNotificaciones(id: number | null): Promise<DatosNotificaciones | null> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_leer_notificaciones", { p_id: id });
+  if (error || !data) return null;
+  return data as DatosNotificaciones;
 }
 
 /** Maestría de cada variedad. Devuelve null si falla. */

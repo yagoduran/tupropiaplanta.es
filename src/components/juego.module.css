@@ -785,3 +785,94 @@
   font-weight: 700;
   color: #f6eed6;
 }
+
+/* Campana de avisos */
+.campana {
+  position: relative;
+  display: flex;
+}
+
+.campanaBoton {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.campanaPunto {
+  position: absolute;
+  top: -2px;
+  right: -4px;
+  min-width: 18px;
+  padding: 0 4px;
+  text-align: center;
+  font-family: var(--fuente-pixel);
+  font-size: 14px;
+  line-height: 18px;
+  color: #f6eed6;
+  background: #b9512a;
+}
+
+.campanaPanel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 14px);
+  z-index: 20;
+  width: min(340px, calc(100vw - 24px));
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: calc(var(--u) * 4);
+  color: #1c1626;
+}
+
+.campanaCabeza {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-family: var(--fuente-pixel);
+  font-size: 18px;
+}
+
+.campanaLeer {
+  background: none;
+  border: 0;
+  color: #5f3c26;
+  font: inherit;
+  font-size: 14px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.aviso {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  padding: 8px;
+  margin-top: 6px;
+  text-align: left;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.avisoTexto {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+}
+
+.avisoTexto strong {
+  font-family: var(--fuente-pixel);
+  font-size: 16px;
+}
+
+.avisoCuando {
+  font-size: 12px;
+  opacity: 0.7;
+}

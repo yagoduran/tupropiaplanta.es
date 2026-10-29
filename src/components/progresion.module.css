@@ -726,3 +726,59 @@ button.hueco {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Misiones */
+.misiones {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gap);
+}
+
+.mision {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  padding: calc(var(--u) * 4);
+  color: #1c1626;
+  font-size: var(--f-small);
+}
+
+.misionCabeza {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+}
+
+.misionTexto {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.misionTexto strong {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+}
+
+.misionPie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-weight: 700;
+}
+
+.reloj {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--f-small);
+  color: #f6eed6;
+}
+
+@media (max-width: 899px) {
+  .misiones {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

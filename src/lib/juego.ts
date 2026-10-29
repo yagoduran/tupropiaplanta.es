@@ -20,7 +20,8 @@ export type PantallaJuego =
   | "habitaciones"
   | "maestria"
   | "laboratorio"
-  | "prestigio";
+  | "prestigio"
+  | "misiones";
 
 export interface AjustesJuego {
   volumen_efectos: number;
@@ -78,6 +79,9 @@ export interface PerfilJuego {
   hibridas: { semillas: string[]; propias: HibridoPropio[] };
   /** Veces que ha renacido y bonos de prestigio comprados. */
   prestigio: { n: number; bonos: Record<string, boolean> };
+  /** Avisos sin leer en la campana y misiones completadas por reclamar. */
+  avisos: number;
+  misiones_listas: number;
   /** Habitación y mejoras del armario. */
   casa: DatosCasa;
 }
@@ -177,6 +181,9 @@ export const MENSAJES_ERROR: Record<string, string> = {
   desafio_en_curso: "Ya tienes un desafío en curso.",
   desafio_jugado: "Ya has jugado este desafío esta semana.",
   hueco_desafio: "Vuelve a tu cultivo para plantar una semilla.",
+  mision_desconocida: "Esa misión no existe.",
+  mision_reclamada: "Ya has reclamado esa misión.",
+  mision_no_lista: "Todavía no has completado esa misión.",
   anuncios_agotados: "Hoy ya no quedan más ayudas. Vuelve mañana.",
   diaria_ya_reclamada: "Hoy ya has recogido tu regalo. Vuelve mañana.",
   no_lo_tienes: "Todavía no tienes ese objeto.",

@@ -15,6 +15,10 @@ import {
   obtenerProgresion,
   obtenerDesafios,
   obtenerMaestria,
+  obtenerMisiones,
+  reclamarMision,
+  obtenerNotificaciones,
+  leerNotificaciones,
   obtenerCruces,
   obtenerPrestigio,
   comprarBonoPrestigio,
@@ -60,6 +64,7 @@ import type { DatosProgresion } from "@/lib/progresion";
 import { registrarHibridas } from "@/lib/variedades";
 import { DESAFIO_POR_ID, type DatosDesafios } from "@/lib/desafios";
 import type { DatosMaestria } from "@/lib/maestria";
+import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
 import type { DatosPrestigio } from "@/lib/prestigio";
 import type { DatosCruces, RespuestaCruce } from "@/lib/cruces";
 import { calcularBienvenida, guardarVisita, leerVisita, type Bienvenida as DatosBienvenida } from "@/lib/visita";
@@ -73,6 +78,8 @@ import { Armario } from "./Armario";
 import { Habitaciones } from "./Habitaciones";
 import { Laboratorio } from "./Laboratorio";
 import { Maestria } from "./Maestria";
+import { Misiones } from "./Misiones";
+import { Campana } from "./Campana";
 import { Prestigio } from "./Prestigio";
 import { AnuncioPrueba } from "./AnuncioPrueba";
 import { PanelAcciones } from "./PanelAcciones";
@@ -130,6 +137,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [progresion, setProgresion] = useState<DatosProgresion | null>(null);
   const [desafios, setDesafios] = useState<DatosDesafios | null>(null);
   const [maestria, setMaestria] = useState<DatosMaestria | null>(null);
+  const [misiones, setMisiones] = useState<DatosMisiones | null>(null);
+  const [notificaciones, setNotificaciones] = useState<DatosNotificaciones | null>(null);
   const [prestigio, setPrestigio] = useState<DatosPrestigio | null>(null);
   const [cruces, setCruces] = useState<DatosCruces | null>(null);
   const [crucesEn, setCrucesEn] = useState(() => Date.now());
@@ -310,6 +319,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "armario" ||
       id === "habitaciones" ||
       id === "maestria" ||
+      id === "misiones" ||
       id === "laboratorio" ||
       id === "prestigio" ||
       id === "cultivo" ||
@@ -333,6 +343,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         obtenerCruces()
           .then((r) => recibirCruces(r))
           .catch(() => setCruces(null));
+      if (id === "misiones")
+        obtenerMisiones()
+          .then(setMisiones)
+          .catch(() => setMisiones(null));
       if (id === "maestria")
         obtenerMaestria()
           .then(setMaestria)
@@ -407,6 +421,30 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       tratar(r, { texto: "¡Premio de la colección reclamado!", icono: "logros" });
       setProgresion(await obtenerProgresion());
     });
+  };
+
+  const reclamarLaMision = (id: string) => {
+    ejecutar(async () => {
+      const r = await reclamarMision(id);
+      sonar(r.ok ? "cofre" : "error");
+      tratar(r, { texto: "¡Premio de la misión reclamado!", icono: "logros" });
+      setMisiones(await obtenerMisiones());
+    });
+  };
+
+  const abrirCampana = () => {
+    obtenerNotificaciones()
+      .then(setNotificaciones)
+      .catch(() => setNotificaciones(null));
+  };
+
+  const leerAvisos = (id: number | null) => {
+    leerNotificaciones(id)
+      .then((r) => {
+        setNotificaciones(r);
+        if (r) setEstado((e) => ({ ...e, perfil: { ...e.perfil, avisos: r.no_leidas } }));
+      })
+      .catch(() => {});
   };
 
   const equiparPerfil = (cambio: { titulo?: string; marco?: string }) => {
@@ -624,6 +662,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     <JuegoLayout
       perfil={perfil}
       pantalla={pantalla}
+      campana={<Campana avisos={perfil.avisos} datos={notificaciones} alAbrir={abrirCampana} alLeer={leerAvisos} />}
       marcada={perfil.diaria.disponible && !tutorial ? "logros" : undefined}
       superposicion={
         tutorial && pantalla === "cultivo" && planta ? (
@@ -712,6 +751,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             alAbrir={abrirElCapullo}
             alGuardar={guardarLaSemilla}
           />
+        ) : pantalla === "misiones" ? (
+          <Misiones datos={misiones} ocupado={enCurso} alReclamar={reclamarLaMision} />
         ) : pantalla === "maestria" ? (
           <Maestria datos={maestria} />
         ) : pantalla === "armario" ? (

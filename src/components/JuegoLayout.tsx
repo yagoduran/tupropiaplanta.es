@@ -23,6 +23,8 @@ interface Props {
   superposicion?: ReactNode;
   /** Pestaña con una novedad pendiente. */
   marcada?: IdIcono;
+  /** Campana de avisos de la cabecera. */
+  campana?: ReactNode;
 }
 
 /** Estructura común del juego: cabecera, anuncios laterales, zona de juego y pestañas. */
@@ -37,6 +39,7 @@ export function JuegoLayout({
   secundaria,
   superposicion,
   marcada,
+  campana,
 }: Props) {
   const marcoJuego = marco("panel_oscuro", "var(--u)");
   return (
@@ -48,6 +51,8 @@ export function JuegoLayout({
         xp={perfil.xp_pct}
         usuario={perfil.usuario}
         avatar={perfil.ajustes.avatar}
+        misionesListas={perfil.misiones_listas}
+        campana={campana}
         alAbrir={alElegirPantalla}
       />
       <main className={styles.principal}>

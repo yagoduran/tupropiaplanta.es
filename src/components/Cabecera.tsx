@@ -5,6 +5,7 @@ import { cerrarSesion } from "@/app/acciones";
 import { marco } from "@/lib/diseno";
 import type { PantallaJuego } from "@/lib/juego";
 import { avatarDe } from "@/lib/perfil";
+import type { ReactNode } from "react";
 import { Icono } from "./Icono";
 import { IconoObjeto } from "./IconoObjeto";
 import styles from "./juego.module.css";
@@ -16,6 +17,7 @@ const OPCIONES_MENU = [
   ["estadisticas", "Estadísticas"],
   ["coleccion", "Colección"],
   ["titulos", "Títulos y marcos"],
+  ["misiones", "Misiones"],
   ["desafios", "Desafíos"],
   ["armario", "Mejoras del armario"],
   ["habitaciones", "Habitaciones"],
@@ -31,10 +33,24 @@ interface Props {
   xp: number;
   usuario: string;
   avatar?: string;
+  /** Misiones completadas por reclamar. */
+  misionesListas?: number;
+  /** Campana de avisos. */
+  campana?: ReactNode;
   alAbrir: (pantalla: PantallaJuego) => void;
 }
 
-export function Cabecera({ monedas, nivel, prestigio = 0, xp, usuario, avatar, alAbrir }: Props) {
+export function Cabecera({
+  monedas,
+  nivel,
+  prestigio = 0,
+  xp,
+  usuario,
+  avatar,
+  misionesListas = 0,
+  campana,
+  alAbrir,
+}: Props) {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const panel = marco("panel", "var(--u)");
   const barra = marco("barra", "var(--u)");
@@ -64,6 +80,7 @@ export function Cabecera({ monedas, nivel, prestigio = 0, xp, usuario, avatar, a
       </div>
 
       <div className={styles.cabeceraUsuario}>
+        {campana}
         <button
           type="button"
           className={styles.usuarioBoton}
@@ -89,6 +106,7 @@ export function Cabecera({ monedas, nivel, prestigio = 0, xp, usuario, avatar, a
                   }}
                 >
                   {texto}
+                  {id === "misiones" && misionesListas > 0 ? ` (${misionesListas})` : ""}
                 </button>
               </li>
             ))}

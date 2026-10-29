@@ -26,7 +26,8 @@ Siguen pendientes:
 |---|---|---|
 
 ## Social (necesitan servidor y moderación)
-Amigos, perfil público, visitas a otros cultivos, regalos, mercado, misiones, eventos, pase de temporada, notificaciones. 🔴 Todo. Antes habría que decidir privacidad y moderación (hay menores en colegios).
+✅ Misiones (diarias y semanales) y notificaciones (campana): hechas.
+Pendiente: amigos, perfil público, visitas a otros cultivos, regalos, mercado, eventos, pase de temporada. 🔴 Todo. Antes habría que decidir privacidad y moderación (hay menores en colegios).
 Los dibujos de **temporadas** (primavera, verano, otoño, invierno: ventana, luz, decoración) ya están en `public/assets/temporadas` pero no se usan: 🟢 aplicarlos según la fecha.
 
 ## Arte
