@@ -23,6 +23,8 @@ const COLUMNA_MACETA: Record<string, number> = {
 interface Props {
   fase: number;
   estado: Estado;
+  /** Tamaño de la planta, de 0.82 a 1 según lo avanzada que va dentro de su fase. */
+  tamano?: number;
   /** Variedad de la planta. La clásica usa las hojas generales; el resto tiene su propia hoja. */
   variedad?: string;
   /** Maceta equipada, dibujada encima de la planta. */
@@ -30,7 +32,7 @@ interface Props {
 }
 
 /** Sprite de la planta. Animada en reposo cuando está sana; fija en cualquier otro estado. */
-export function Planta({ fase, estado, variedad = "clasica", maceta = "maceta_plastico" }: Props) {
+export function Planta({ fase, estado, tamano = 1, variedad = "clasica", maceta = "maceta_plastico" }: Props) {
   const propia = variedad !== "clasica";
   const animada = estado === "sana";
   const fotograma = useFotograma(FOTOGRAMAS, FOTOGRAMA_MS, animada);
@@ -65,7 +67,8 @@ export function Planta({ fase, estado, variedad = "clasica", maceta = "maceta_pl
           backgroundSize: `calc(${hoja.columnas * CELDA}px * var(--s)) calc(${hoja.filas * CELDA}px * var(--s))`,
           backgroundPosition: `calc(${-columna * CELDA}px * var(--s)) calc(${-fila * CELDA}px * var(--s))`,
           // La planta (sin maceta) se dibuja 17 px más arriba que la maceta, que va encima.
-          transform: `translateY(calc(${-SUBIDA}px * var(--s)))`,
+          transform: `translateY(calc(${-SUBIDA}px * var(--s))) scale(${tamano})`,
+          transformOrigin: "50% 100%",
         }}
       />
       <div

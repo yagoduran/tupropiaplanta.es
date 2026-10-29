@@ -34,6 +34,7 @@ import {
   type EstadoJuego,
   type RespuestaAccion,
 } from "@/lib/juego";
+import { tamanoPlanta } from "@/lib/crecimiento";
 import { LOGRO_POR_ID } from "@/lib/logros";
 import { PLAGAS, TRATAMIENTOS } from "@/lib/plagas";
 import type { Efecto } from "@/lib/sonido";
@@ -466,6 +467,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             <Planta
               fase={planta.fase}
               estado={planta.estado}
+              tamano={tamanoPlanta(planta.fase, vida, planta.variedad)}
               variedad={planta.variedad}
               maceta={perfil.equipo.maceta}
             />
