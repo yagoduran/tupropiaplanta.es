@@ -13,6 +13,7 @@ export type Efecto =
   | "plaga-aparece"
   | "plaga-eliminada"
   | "cofre"
+  | "gato-maullido"
   | "compra-rechazada"
   | "notificacion"
   | "abrir-modal"

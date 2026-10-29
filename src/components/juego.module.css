@@ -740,3 +740,17 @@
   border: 1px solid #1c1626;
   border-radius: 50%;
 }
+
+.gato {
+  position: absolute;
+  left: calc(1px * var(--s));
+  top: calc(47px * var(--s));
+  z-index: 2;
+  width: calc(32px * var(--s));
+  height: calc(32px * var(--s));
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  background-image: url(/assets/sprites/tpp-mascota-1x.png);
+  cursor: pointer;
+}

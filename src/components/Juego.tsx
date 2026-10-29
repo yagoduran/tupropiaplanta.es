@@ -355,7 +355,12 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       enCurso || !planta || !viva || (a === "cosechar" && planta.fase < 8) || (a === "podar" && planta.fase < 3);
   }
 
-  const medidores = planta ? medidoresDe(planta) : [];
+  const medidores = planta
+    ? medidoresDe(planta, {
+        termometro: (perfil.inventario.termometro ?? 0) > 0,
+        medidorPh: (perfil.inventario.medidor_ph ?? 0) > 0,
+      })
+    : [];
   const vida = planta ? planta.segundos_vida + (viva ? transcurrido : 0) : 0;
   const sedienta = !!planta && viva && planta.agua < 35;
 

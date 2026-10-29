@@ -137,7 +137,13 @@ export function formatoVida(segundos: number): string {
 
 const coma = (n: number) => String(n).replace(".", ",");
 
-export function medidoresDe(p: PlantaJuego): Medidor[] {
+/** Herramientas de medida del jugador: sin ellas, la temperatura y el pH se ven como "?". */
+export interface Medidas {
+  termometro: boolean;
+  medidorPh: boolean;
+}
+
+export function medidoresDe(p: PlantaJuego, medidas: Medidas = { termometro: true, medidorPh: true }): Medidor[] {
   const m = (id: IdIcono, nombre: string, valor: number, texto: string, extra: Partial<Medidor> = {}): Medidor => ({
     id,
     nombre,
@@ -150,11 +156,21 @@ export function medidoresDe(p: PlantaJuego): Medidor[] {
     m("agua", "Agua", p.agua, `${Math.round(p.agua)}%`),
     m("nutrientes", "Nutrientes", p.nutrientes, `${Math.round(p.nutrientes)}%`, { nombreCorto: "Nutr." }),
     m("luz", "Luz", p.luz, `${Math.round(p.luz)}%`),
-    m("temperatura", "Temperatura", 60, `${p.temperatura} °C`, {
-      nombreCorto: "Temp.",
-      valorCorto: `${p.temperatura}°`,
-    }),
-    m("ph", "pH", 55, coma(p.ph)),
+    medidas.termometro
+      ? m(
+          "temperatura",
+          "Temperatura",
+          p.temperatura >= 20 && p.temperatura <= 28 ? 100 : p.temperatura >= 18 && p.temperatura <= 30 ? 50 : 20,
+          `${p.temperatura} °C`,
+          {
+            nombreCorto: "Temp.",
+            valorCorto: `${p.temperatura}°`,
+          },
+        )
+      : m("temperatura", "Temperatura", 0, "?", { nombreCorto: "Temp.", tono: "aviso" }),
+    medidas.medidorPh
+      ? m("ph", "pH", p.ph >= 6 && p.ph <= 7 ? 100 : p.ph >= 5.8 && p.ph <= 7.4 ? 50 : 20, coma(p.ph))
+      : m("ph", "pH", 0, "?", { tono: "aviso" }),
     m("salud", "Salud", p.salud, `${Math.round(p.salud)}%`),
   ];
 }
