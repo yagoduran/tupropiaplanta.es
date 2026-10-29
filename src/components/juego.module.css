@@ -675,3 +675,13 @@
   opacity: 0.6;
   cursor: wait;
 }
+
+.lampara {
+  position: absolute;
+  left: calc(16px * var(--s));
+  top: 0;
+  width: calc(64px * var(--s));
+  height: calc(64px * var(--s));
+  background-image: url(/assets/sprites/tpp-luces-1x.png);
+  pointer-events: none;
+}

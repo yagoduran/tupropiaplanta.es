@@ -274,7 +274,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       panelEstado={<PanelEstado medidores={medidores} tiempoDeVida={formatoVida(vida)} fase={planta?.fase ?? 1} />}
       estadoCompacto={<EstadoCompacto medidores={medidores} />}
       escena={
-        <Escena>
+        <Escena luz={perfil.equipo.luz}>
           <Decoracion puestos={perfil.equipo.decoracion} />
           {planta && <Planta fase={planta.fase} estado={planta.estado} maceta={perfil.equipo.maceta} />}
           {aviso ? (
