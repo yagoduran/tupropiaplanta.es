@@ -79,7 +79,9 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
 
   // Reloj de la pantalla: cuenta atrás de esperas y tiempo de vida.
   useEffect(() => {
-    const id = setInterval(() => setAhora(Date.now()), 1000);
+    const id = setInterval(() => {
+      if (!document.hidden) setAhora(Date.now());
+    }, 1000);
     return () => clearInterval(id);
   }, []);
 

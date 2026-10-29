@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useFotograma } from "@/lib/animacion";
 import styles from "./juego.module.css";
 
 const CELDA = 64;
@@ -12,12 +12,7 @@ const FILA_LUZ: Record<string, number> = { bombilla: 0, fluorescente: 1, led: 2,
 
 /** Lámpara de la escena según la luz equipada, encendida y animada. */
 export function Lampara({ luz }: { luz: string }) {
-  const [fotograma, setFotograma] = useState(0);
-
-  useEffect(() => {
-    const id = setInterval(() => setFotograma((f) => (f + 1) % FOTOGRAMAS), FOTOGRAMA_MS);
-    return () => clearInterval(id);
-  }, []);
+  const fotograma = useFotograma(FOTOGRAMAS, FOTOGRAMA_MS);
 
   const fila = FILA_LUZ[luz] ?? 0;
   return (

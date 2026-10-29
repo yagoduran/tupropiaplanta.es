@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useFotograma } from "@/lib/animacion";
 import { PLAGAS, type PlagaJuego } from "@/lib/plagas";
 import styles from "./juego.module.css";
 
@@ -10,11 +10,7 @@ const FOTOGRAMA_MS = 250;
 
 /** Bichos o moho dibujados sobre la planta (hoja de plagas: 4 fotogramas, aparece y grave por cada tipo). */
 export function Plaga({ plaga }: { plaga: PlagaJuego }) {
-  const [fotograma, setFotograma] = useState(0);
-  useEffect(() => {
-    const id = setInterval(() => setFotograma((f) => (f + 1) % FOTOGRAMAS), FOTOGRAMA_MS);
-    return () => clearInterval(id);
-  }, []);
+  const fotograma = useFotograma(FOTOGRAMAS, FOTOGRAMA_MS);
   const fila = PLAGAS[plaga.tipo].fila + (plaga.grave ? 1 : 0);
   return (
     <div

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useFotograma } from "@/lib/animacion";
 import { ESTADOS, type Estado } from "@/lib/diseno";
 import styles from "./juego.module.css";
 
@@ -31,15 +31,9 @@ interface Props {
 
 /** Sprite de la planta. Animada en reposo cuando está sana; fija en cualquier otro estado. */
 export function Planta({ fase, estado, variedad = "clasica", maceta = "maceta_terracota" }: Props) {
-  const [fotograma, setFotograma] = useState(0);
   const propia = variedad !== "clasica";
   const animada = estado === "sana" && (propia || fase >= 2);
-
-  useEffect(() => {
-    if (!animada) return;
-    const id = setInterval(() => setFotograma((f) => (f + 1) % FOTOGRAMAS), FOTOGRAMA_MS);
-    return () => clearInterval(id);
-  }, [animada]);
+  const fotograma = useFotograma(FOTOGRAMAS, FOTOGRAMA_MS, animada);
 
   // Las variedades propias traen 4 fotogramas por fase y, desde la fase 3, sedienta (columna 4) y muerta (columna 5).
   const hoja = propia
