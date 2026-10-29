@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { paginaAnuncio, type EspacioAnuncio } from "@/lib/anuncios";
+import type { EspacioAnuncio } from "@/lib/anuncios";
 import { useEleccionCookies } from "@/lib/cookies";
 import styles from "./juego.module.css";
 
 /**
  * Anuncio de un tercero. Solo se carga si el jugador ha aceptado las cookies de anuncios.
- * Va en un marco aislado (sin acceso a la web ni a la sesión del jugador).
+ * Va en un marco con una página nuestra que solo contiene el anuncio (la red necesita ver nuestra dirección).
  */
 export function HuecoAnuncio({ espacio, className }: { espacio: EspacioAnuncio; className: string }) {
   const eleccion = useEleccionCookies();
@@ -17,11 +17,9 @@ export function HuecoAnuncio({ espacio, className }: { espacio: EspacioAnuncio; 
       {permitido ? (
         <iframe
           title="Publicidad"
-          srcDoc={paginaAnuncio(espacio)}
+          src={`/anuncio/${espacio.nombre}`}
           width={espacio.ancho}
           height={espacio.alto}
-          sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"
-          referrerPolicy="no-referrer"
           scrolling="no"
           className={styles.anuncioMarco}
         />

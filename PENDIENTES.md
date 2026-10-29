@@ -17,7 +17,7 @@
 - Registrar todo en Notion cuando el conector funcione.
 
 ## Anuncios reales
-- ✅ Banners de Adsterra puestos (160x600 lateral y 320x50 móvil, claves en `src/lib/anuncios.ts`). Solo se cargan si el jugador acepta las cookies; van en un marco aislado.
+- ✅ Banners de Adsterra puestos (160x600 lateral y 320x50 móvil, claves en `src/lib/anuncios.ts`). Solo se cargan si el jugador acepta las cookies; cada banner va en un marco que carga una página nuestra (`/anuncio/lateral` y `/anuncio/movil`) para que Adsterra vea la dirección del sitio. Esos marcos no están aislados de la web: opción más segura pendiente (subdominio aparte, `anuncios.tupropiaplanta.es`).
 - Decidido: el botón de ayuda extra se queda con el anuncio de prueba (Adsterra no ofrece anuncios con recompensa).
 - Hecho: anuncios para adultos desactivados en Adsterra. Pendiente: vigilar qué anuncios salen y que no tapen el juego en PCs de colegio.
 - El control de 3 ayudas al día se reinicia si el jugador usa "Borrar datos" (se borra su perfil).
