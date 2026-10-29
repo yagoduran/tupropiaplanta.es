@@ -16,6 +16,8 @@ import {
   verAnuncio,
 } from "@/app/juego/acciones";
 import { marco, type IdIcono } from "@/lib/diseno";
+import { horaDelDia } from "@/lib/hora";
+import { cambiarMomento, fijarVolumenMusica, iniciarMusica, pausarMusica, reanudarMusica } from "@/lib/musica";
 import { fijarVolumenEfectos, sonar } from "@/lib/sonido";
 import {
   MENSAJES_ERROR,
@@ -124,6 +126,27 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   useEffect(() => {
     fijarVolumenEfectos(estado.perfil.ajustes.volumen_efectos);
   }, [estado.perfil.ajustes.volumen_efectos]);
+
+  // Música de fondo: empieza con el primer gesto del jugador y sigue el momento del día.
+  const volumenMusica = estado.perfil.ajustes.volumen_musica;
+  useEffect(() => {
+    fijarVolumenMusica(volumenMusica);
+  }, [volumenMusica]);
+
+  useEffect(() => {
+    cambiarMomento(horaDelDia(new Date()));
+    const vigilar = setInterval(() => cambiarMomento(horaDelDia(new Date())), 60_000);
+    const empezar = () => iniciarMusica();
+    const visibilidad = () => (document.hidden ? pausarMusica() : reanudarMusica());
+    window.addEventListener("pointerdown", empezar, { once: true });
+    document.addEventListener("visibilitychange", visibilidad);
+    return () => {
+      clearInterval(vigilar);
+      window.removeEventListener("pointerdown", empezar);
+      document.removeEventListener("visibilitychange", visibilidad);
+      pausarMusica();
+    };
+  }, []);
 
   const cambiarAjustes = (cambios: Partial<AjustesJuego>) => {
     setEstado((e) => ({ ...e, perfil: { ...e.perfil, ajustes: { ...e.perfil.ajustes, ...cambios } } }));
