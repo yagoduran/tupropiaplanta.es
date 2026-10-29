@@ -10,6 +10,8 @@ export type Efecto =
   | "moneda"
   | "comprar"
   | "logro"
+  | "plaga-aparece"
+  | "plaga-eliminada"
   | "cofre"
   | "compra-rechazada"
   | "notificacion"

@@ -6,12 +6,17 @@
 
 ## Funciones por hacer
 - Huecos de cultivo múltiples (varias plantas a la vez): pendiente de decidir.
-- Fase 5: ✅ logros y recompensa diaria (5a). ✅ ranking (5b). Pendiente: plagas (5c).
+- Fase 5: ✅ logros y recompensa diaria (5a). ✅ ranking (5b). ✅ plagas (5c).
 - Fase 6: anuncios, música, ajustes finales.
-- Objetos de la tienda sin efecto todavía (no se venden): medidor de pH, termómetro, pulverizador, fungicida, radio, gato.
+- Objetos de la tienda sin efecto todavía (no se venden): medidor de pH, termómetro, radio, gato.
 
 ## Infraestructura
 - Dominios `.com`, `.store` e `.info`: configurar DNS en Cloudflare (el `.es` ya está).
 - Dar de alta `https://tupropiaplanta.es/**` en Supabase → Redirect URLs.
 - Cuando exista `main`, cambiarlo como rama de producción en Vercel.
 - Registrar todo en Notion cuando el conector funcione.
+
+## Ideas pendientes de plagas
+- Dibujos propios de plaga/hongo por variedad (ahora se dibuja encima de cualquier planta).
+- Notificación del navegador cuando aparezca una plaga.
+- Logro de plagas eliminadas.

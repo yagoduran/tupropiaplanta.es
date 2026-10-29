@@ -694,3 +694,13 @@
   border: 1px solid #1c1626;
   border-radius: 50%;
 }
+
+.plaga {
+  position: absolute;
+  left: calc(32px * var(--s));
+  top: calc(24px * var(--s));
+  width: calc(32px * var(--s));
+  height: calc(32px * var(--s));
+  background-image: url(/assets/sprites/tpp-plagas-1x.png);
+  pointer-events: none;
+}

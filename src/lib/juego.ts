@@ -1,4 +1,5 @@
 import type { Estado, IdIcono } from "./diseno";
+import type { PlagaJuego } from "./plagas";
 import { tonoPorPorcentaje, type Medidor } from "./estado";
 
 export type Accion = "regar" | "abonar" | "podar" | "ajustar_luz" | "cosechar";
@@ -65,6 +66,8 @@ export interface PlantaJuego {
   segundos_vida: number;
   /** Segundos que faltan para poder repetir cada acción. */
   esperas: Partial<Record<Accion, number>>;
+  /** Plaga o hongo que sufre ahora, si lo hay. */
+  plaga: PlagaJuego | null;
 }
 
 export interface EstadoJuego {
@@ -100,6 +103,8 @@ export const MENSAJES_ERROR: Record<string, string> = {
   monedas_insuficientes: "No tienes monedas suficientes.",
   nivel_insuficiente: "Todavía no tienes el nivel necesario.",
   ya_lo_tienes: "Ya tienes ese objeto.",
+  sin_plaga: "Tu planta no tiene ninguna plaga.",
+  tratamiento_incorrecto: "Ese producto no sirve para esta plaga.",
   diaria_ya_reclamada: "Hoy ya has recogido tu regalo. Vuelve mañana.",
   no_lo_tienes: "Todavía no tienes ese objeto.",
   sin_existencias: "No te quedan unidades. Compra más en la tienda.",

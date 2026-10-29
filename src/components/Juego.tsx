@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import {
   borrarDatosDelJuego,
   guardarAjustes,
@@ -27,6 +27,8 @@ import {
   type RespuestaAccion,
 } from "@/lib/juego";
 import { LOGRO_POR_ID } from "@/lib/logros";
+import { PLAGAS, TRATAMIENTOS } from "@/lib/plagas";
+import type { Efecto } from "@/lib/sonido";
 import { Ajustes } from "./Ajustes";
 import { Bocadillo } from "./Bocadillo";
 import { Escena } from "./Escena";
@@ -35,6 +37,7 @@ import { JuegoLayout } from "./JuegoLayout";
 import { PanelAcciones } from "./PanelAcciones";
 import { PanelEstado } from "./PanelEstado";
 import { Planta } from "./Planta";
+import { Plaga } from "./Plaga";
 import { Decoracion } from "./Decoracion";
 import { Logros } from "./Logros";
 import { Ranking } from "./Ranking";
@@ -211,7 +214,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     llamar: (id: string) => ReturnType<typeof comprarObjeto>,
     id: string,
     exito: string,
-    sonido: "comprar" | "clic",
+    sonido: Efecto,
   ) => {
     iniciar(async () => {
       const r = await llamar(id);
@@ -223,6 +226,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const comprar = (id: string) => gestionarObjeto(comprarObjeto, id, "¡Compra hecha!", "comprar");
   const equipar = (id: string) => gestionarObjeto(equiparObjeto, id, "Hecho", "clic");
   const usar = (id: string) => gestionarObjeto(usarObjeto, id, "¡Abono aplicado!", "clic");
+  const tratarPlaga = (id: string) => gestionarObjeto(usarObjeto, id, "¡Plaga eliminada!", "plaga-eliminada");
 
   const reclamar = () => {
     iniciar(async () => {
@@ -242,6 +246,14 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   };
 
   const { perfil, planta } = estado;
+  const plaga = planta?.vida === "viva" ? (planta.plaga ?? null) : null;
+
+  // Suena un aviso cuando aparece una plaga nueva mientras se juega.
+  const plagaAntes = useRef(plaga?.tipo);
+  useEffect(() => {
+    if (plaga && !plagaAntes.current) sonar("plaga-aparece");
+    plagaAntes.current = plaga?.tipo;
+  }, [plaga]);
   const transcurrido = Math.max(0, (ahora - recibidoEn) / 1000);
   const viva = planta?.vida === "viva";
 
@@ -264,6 +276,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const sedienta = !!planta && viva && planta.agua < 35;
 
   const botonPlantar = marco("boton", "var(--u)");
+  const producto = plaga ? PLAGAS[plaga.tipo].tratamiento : null;
+  const tieneProducto = !!producto && (perfil.inventario[producto] ?? 0) > 0;
 
   return (
     <JuegoLayout
@@ -328,13 +342,32 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
               maceta={perfil.equipo.maceta}
             />
           )}
+          {plaga && <Plaga plaga={plaga} />}
           {aviso ? (
             <Bocadillo texto={aviso.texto} icono={aviso.icono} />
+          ) : plaga && producto ? (
+            <Bocadillo
+              texto={`${PLAGAS[plaga.tipo].aviso} Trátala con ${TRATAMIENTOS[producto].toLowerCase()}.`}
+              icono="aviso"
+            />
           ) : sedienta ? (
             <Bocadillo texto="¡Tu planta necesita agua!" />
           ) : planta?.vida === "muerta" ? (
             <Bocadillo texto="Tu planta ha muerto..." icono="aviso" />
           ) : null}
+          {plaga && producto && (
+            <button
+              type="button"
+              className={styles.plantar}
+              style={botonPlantar}
+              disabled={enCurso}
+              onClick={() => (tieneProducto ? tratarPlaga(producto) : elegirPantalla("tienda"))}
+            >
+              {tieneProducto
+                ? `Tratar con ${TRATAMIENTOS[producto].toLowerCase()}`
+                : `Comprar ${TRATAMIENTOS[producto].toLowerCase()}`}
+            </button>
+          )}
           {planta && !viva && (
             <button
               type="button"
