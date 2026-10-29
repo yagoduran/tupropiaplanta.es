@@ -1,7 +1,7 @@
 # Pendientes
 
 ## Diseños que faltan pedir a Claude Design
-- **Plantas sin maceta (o con las 4 macetas).** Los sprites de la planta traen la maceta de terracota dibujada. Al ponerle encima otra maceta se ve una línea blanca fina (el contorno de la planta) en la tierra. La solución limpia es una hoja de planta sin maceta, o una hoja por cada maceta.
+- ✅ Plantas sin maceta, bombilla y luces nuevas: hechos (29/10/2026).
 - **Lámpara de la escena apagada de noche** (opcional): la hoja de luces trae el sprite apagado, pero ahora la lámpara se dibuja siempre encendida.
 
 ## Funciones por hacer

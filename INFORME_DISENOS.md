@@ -5,19 +5,18 @@ Revisados todos los archivos del zip `Tu Propia Planta diseños`. Esfuerzo: 🟢
 ## Ya hecho
 Pantalla principal (estado, escena, acciones, modal), tienda, semillas, logros, ranking, ajustes, confirmar borrado, recompensa diaria, cosecha, planta muerta, aviso +18, login/registro, banner y configuración de cookies, textos legales (aviso, privacidad, condiciones), tutorial, tablet y móvil (barra inferior, banner, tooltip, gira el móvil), recompensa por anuncio, iconos, plagas, macetas, luces, efectos, gato, variedades, sonidos, **Mi perfil** y **Mis plantas** (hecho hoy).
 
-## Entrada y páginas sueltas (sin base de datos nueva)
+## Entrada y páginas sueltas
+✅ Hechas (29/10/2026): inicio (portada), 404, carga, sin conexión, mantenimiento y contacto (los mensajes se guardan en la tabla `tpp.contactos` de Supabase). La imagen para compartir y los iconos ya estaban puestos.
+
+Interruptor de mantenimiento: en Vercel → Settings → Environment Variables, poner `MANTENIMIENTO=1` (y, si se quiere, `MANTENIMIENTO_HASTA=hoy a las 14:30`) y volver a desplegar; para quitarlo, borrar la variable y volver a desplegar.
+
+Siguen pendientes:
 | Pantalla | Esfuerzo | Nota |
 |---|---|---|
-| Inicio (portada para quien no ha entrado) | 🟢 | Ahora `/` lleva directo al login |
-| Error 404 "Esta maceta está vacía" | 🟢 | Ahora sale el 404 genérico |
-| Carga (pantalla mientras entra) | 🟢 | |
-| Sin conexión | 🟢 | Ahora solo hay un aviso pequeño |
-| Mantenimiento "Estamos regando los servidores" | 🟢 | |
-| Contacto y problemas | 🟢 | Hay que decidir el correo de contacto |
 | Recuperar contraseña | 🟡 | Usa el correo de Supabase |
 | Verificar email | 🟡 | Hay que activar la confirmación en Supabase |
 | Bienvenida ("¡Hola de nuevo!") y Sesión caducada | 🟢 | |
-| Imagen para compartir | 🟢 | Imagen de la web al pegar el enlace |
+| Temporadas (primavera, verano, otoño, invierno) | 🟢 | Dibujos ya en `public/assets/temporadas`; pensados para eventos |
 
 ## Progresión (juego nuevo, necesitan base de datos)
 | Pantalla | Esfuerzo | Nota |
@@ -37,11 +36,11 @@ Pantalla principal (estado, escena, acciones, modal), tienda, semillas, logros, 
 Amigos, perfil público, visitas a otros cultivos, regalos, mercado, misiones, eventos, pase de temporada, notificaciones. 🔴 Todo. Antes habría que decidir privacidad y moderación (hay menores en colegios).
 Los dibujos de **temporadas** (primavera, verano, otoño, invierno: ventana, luz, decoración) ya están en `public/assets/temporadas` pero no se usan: 🟢 aplicarlos según la fecha.
 
-## Pendientes de arte
-Plantas sin maceta, bombilla nueva (prompt entregado) y crecimiento visible dentro de cada fase.
+## Arte
+✅ Plantas sin maceta, bombilla y luces nuevas, y crecimiento visible dentro de cada fase (hechos).
 
 ## Orden recomendado
-1. Páginas sueltas (404, carga, sin conexión, mantenimiento, contacto, inicio, temporadas).
+1. ✅ Páginas sueltas (hechas).
 2. Recuperar contraseña y verificar email.
 3. Inventario, estadísticas, colección, títulos, desafíos.
 4. Mejoras del armario, habitaciones, cruces, maestría, prestigio.
