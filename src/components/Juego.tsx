@@ -39,7 +39,9 @@ import { LOGRO_POR_ID } from "@/lib/logros";
 import { PLAGAS, TRATAMIENTOS } from "@/lib/plagas";
 import type { Efecto } from "@/lib/sonido";
 import type { DatosPerfil } from "@/lib/perfil";
+import { calcularBienvenida, guardarVisita, leerVisita, type Bienvenida as DatosBienvenida } from "@/lib/visita";
 import { Ajustes } from "./Ajustes";
+import { Bienvenida } from "./Bienvenida";
 import { Bocadillo } from "./Bocadillo";
 import { Escena } from "./Escena";
 import { EstadoCompacto } from "./EstadoCompacto";
@@ -93,6 +95,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [ampliando, setAmpliando] = useState(false);
   const [ranking, setRanking] = useState<DatosRanking | null>(null);
   const [datosPerfil, setDatosPerfil] = useState<DatosPerfil | null>(null);
+  const [bienvenida, setBienvenida] = useState<DatosBienvenida | null>(null);
 
   const aplicar = useCallback((nuevo: EstadoJuego) => {
     setEstado({ perfil: nuevo.perfil, planta: nuevo.planta });
@@ -109,19 +112,38 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     return () => clearInterval(id);
   }, []);
 
+  // Al abrir el juego, si hace más de una hora de la última visita, se enseña qué ha pasado.
+  useEffect(() => {
+    if (!inicial.perfil.tutorial_hecho) return;
+    const datos = calcularBienvenida(leerVisita(), inicial.planta, Date.now());
+    if (datos) setTimeout(() => setBienvenida(datos), 0);
+  }, [inicial]);
+
+  // Guarda cómo estaba la planta en esta visita (solo con la pestaña a la vista).
+  useEffect(() => {
+    if (!estado.planta || estado.planta.vida !== "viva" || document.hidden) return;
+    guardarVisita(estado.planta, recibidoEn);
+  }, [estado.planta, recibidoEn]);
+
   // Vuelve a pedir el estado real cada minuto y al volver a la pestaña.
   useEffect(() => {
-    const revisar = async () => {
+    const revisar = async (alVolverAVer = false) => {
       try {
         const nuevo = await obtenerEstado();
-        if (nuevo) aplicar(nuevo);
+        if (nuevo) {
+          if (alVolverAVer && nuevo.perfil.tutorial_hecho) {
+            const datos = calcularBienvenida(leerVisita(), nuevo.planta, Date.now());
+            if (datos) setBienvenida(datos);
+          }
+          aplicar(nuevo);
+        }
       } catch {
         // Sin conexión: se vuelve a intentar en la siguiente revisión.
       }
     };
-    const id = setInterval(revisar, REVISION_MS);
+    const id = setInterval(() => revisar(), REVISION_MS);
     const alVolver = () => {
-      if (document.visibilityState === "visible") revisar();
+      if (document.visibilityState === "visible") revisar(true);
     };
     document.addEventListener("visibilitychange", alVolver);
     return () => {
@@ -147,7 +169,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       } else if (r.ok) {
         if (exito) setAviso(exito);
       } else {
-        if (r.error === "sesion") router.replace("/login");
+        if (r.error === "sesion") router.replace("/sesion?motivo=caducada");
         setAviso({ texto: MENSAJES_ERROR[r.error ?? "red"] ?? MENSAJES_ERROR.red, icono: "aviso" });
       }
     },
@@ -397,6 +419,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             alTerminar={terminarTutorial}
             alActivarAvisos={activarAvisos}
           />
+        ) : bienvenida ? (
+          <Bienvenida usuario={perfil.usuario} datos={bienvenida} alContinuar={() => setBienvenida(null)} />
         ) : ampliando ? (
           <AmpliarHueco perfil={perfil} ocupado={enCurso} alComprar={ampliar} alCerrar={() => setAmpliando(false)} />
         ) : anuncioAbierto ? (
