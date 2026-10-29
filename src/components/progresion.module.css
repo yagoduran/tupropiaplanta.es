@@ -562,3 +562,57 @@ button.hueco {
   background: #f2ec9a;
   font-weight: 700;
 }
+
+/* Mejoras del armario y habitaciones */
+.ramaMejoras {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ramaIcono {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--f-small);
+}
+
+.nivelesMejora {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gap);
+}
+
+.nodoMejora {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: calc(var(--u) * 2);
+  font: inherit;
+  font-size: var(--f-small);
+  color: #1c1626;
+  cursor: pointer;
+}
+
+.nodoElegido {
+  outline: calc(var(--u) * 0.7) solid #1c1626;
+  outline-offset: calc(var(--u) * 0.7);
+}
+
+.requisitos {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  list-style: none;
+  font-size: var(--f-small);
+}
+
+.escenaMini {
+  display: block;
+  width: 100%;
+  max-width: 384px;
+  aspect-ratio: 96 / 80;
+  background-size: 100% 100%;
+  border: calc(var(--u) * 0.7) solid #1c1626;
+}

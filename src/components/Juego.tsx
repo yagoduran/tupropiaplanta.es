@@ -22,13 +22,16 @@ import {
   reclamarDiaria,
   verAnuncio,
   elegirHueco,
-  comprarHueco,
+  comprarMejora,
+  comprarHabitacion,
+  elegirHabitacion,
 } from "@/app/juego/acciones";
 import { marco, type IdIcono } from "@/lib/diseno";
 import { horaDelDia } from "@/lib/hora";
 import { cambiarMomento, fijarVolumenMusica, iniciarMusica, pausarMusica, reanudarMusica } from "@/lib/musica";
 import { fijarVolumenEfectos, sonar } from "@/lib/sonido";
 import {
+  HUECO_DESAFIO,
   MENSAJES_ERROR,
   formatoVida,
   medidoresDe,
@@ -53,7 +56,8 @@ import { Bocadillo } from "./Bocadillo";
 import { Escena } from "./Escena";
 import { EstadoCompacto } from "./EstadoCompacto";
 import { JuegoLayout } from "./JuegoLayout";
-import { AmpliarHueco } from "./AmpliarHueco";
+import { Armario } from "./Armario";
+import { Habitaciones } from "./Habitaciones";
 import { AnuncioPrueba } from "./AnuncioPrueba";
 import { PanelAcciones } from "./PanelAcciones";
 import { SelectorHuecos } from "./SelectorHuecos";
@@ -104,7 +108,6 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [tutorial, setTutorial] = useState(!inicial.perfil.tutorial_hecho);
   const [repeticion, setRepeticion] = useState(false);
   const [anuncioAbierto, setAnuncioAbierto] = useState(false);
-  const [ampliando, setAmpliando] = useState(false);
   const [ranking, setRanking] = useState<DatosRanking | null>(null);
   const [datosPerfil, setDatosPerfil] = useState<DatosPerfil | null>(null);
   const [estadisticas, setEstadisticas] = useState<DatosEstadisticas | null>(null);
@@ -284,6 +287,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "coleccion" ||
       id === "titulos" ||
       id === "desafios" ||
+      id === "armario" ||
+      id === "habitaciones" ||
       id === "cultivo" ||
       id === "ajustes" ||
       id === "tienda" ||
@@ -384,7 +389,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   };
 
   const seguirDesafio = () => {
-    cambiarHueco(4);
+    cambiarHueco(HUECO_DESAFIO);
     setPantalla("cultivo");
   };
 
@@ -397,12 +402,27 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     });
   };
 
-  const ampliar = () => {
+  const mejorar = (rama: string) => {
     ejecutar(async () => {
-      const r = await comprarHueco();
+      const r = await comprarMejora(rama);
       sonar(r.ok ? "comprar" : "compra-rechazada");
-      if (r.ok) setAmpliando(false);
-      tratar(r, { texto: "¡Nuevo hueco de cultivo!", icono: "cultivo" });
+      tratar(r, { texto: "¡Mejora comprada!", icono: "tienda" });
+    });
+  };
+
+  const desbloquearHabitacion = (id: string) => {
+    ejecutar(async () => {
+      const r = await comprarHabitacion(id);
+      sonar(r.ok ? "comprar" : "compra-rechazada");
+      tratar(r, { texto: "¡Habitación desbloqueada!", icono: "cultivo" });
+    });
+  };
+
+  const irAHabitacion = (id: string) => {
+    ejecutar(async () => {
+      const r = await elegirHabitacion(id);
+      sonar(r.ok ? "pestana" : "error");
+      tratar(r);
     });
   };
 
@@ -457,12 +477,27 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       enCurso || !planta || !viva || (a === "cosechar" && planta.fase < 8) || (a === "podar" && planta.fase < 3);
   }
 
+  const sensores = perfil.casa.mejoras.sens ?? 0;
   const medidores = planta
     ? medidoresDe(planta, {
-        termometro: (perfil.inventario.termometro ?? 0) > 0,
+        termometro: (perfil.inventario.termometro ?? 0) > 0 || sensores >= 1,
         medidorPh: (perfil.inventario.medidor_ph ?? 0) > 0,
       })
     : [];
+  // Avisos de los sensores del armario.
+  const avisoSensor =
+    planta && viva && !planta.desafio
+      ? sensores >= 1 && planta.temperatura > 30
+        ? "Hace demasiado calor en el armario."
+        : sensores >= 2 && planta.agua > 80 && !plaga
+          ? "Demasiada humedad: cuidado con los hongos."
+          : sensores >= 3 &&
+              planta.fase >= 3 &&
+              !plaga &&
+              (planta.agua < 40 || planta.nutrientes < 30 || planta.luz < 30)
+            ? "Tu planta está descuidada: hay riesgo de plagas."
+            : null
+      : null;
   const vida = planta ? planta.segundos_vida + (viva ? transcurrido : 0) : 0;
   const sedienta = !!planta && viva && planta.agua < 35;
 
@@ -488,8 +523,6 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           />
         ) : bienvenida ? (
           <Bienvenida usuario={perfil.usuario} datos={bienvenida} alContinuar={() => setBienvenida(null)} />
-        ) : ampliando ? (
-          <AmpliarHueco perfil={perfil} ocupado={enCurso} alComprar={ampliar} alCerrar={() => setAmpliando(false)} />
         ) : anuncioAbierto ? (
           <AnuncioPrueba
             monedas={perfil.anuncios.monedas}
@@ -544,13 +577,17 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
               elegirPantalla(destino);
               cambiarHueco(hueco);
             }}
-            alAmpliar={() => setAmpliando(true)}
+            alAmpliar={() => elegirPantalla("habitaciones")}
             alIrATienda={() => elegirPantalla("tienda")}
           />
         ) : pantalla === "estadisticas" ? (
           <Estadisticas datos={estadisticas} />
         ) : pantalla === "coleccion" ? (
           <Coleccion datos={progresion} ocupado={enCurso} alReclamar={reclamarPremioColeccion} />
+        ) : pantalla === "armario" ? (
+          <Armario perfil={perfil} ocupado={enCurso} alComprar={mejorar} />
+        ) : pantalla === "habitaciones" ? (
+          <Habitaciones perfil={perfil} ocupado={enCurso} alComprar={desbloquearHabitacion} alElegir={irAHabitacion} />
         ) : pantalla === "desafios" ? (
           <Desafios
             datos={desafios}
@@ -581,13 +618,13 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       panelEstado={<PanelEstado medidores={medidores} tiempoDeVida={formatoVida(vida)} fase={planta?.fase ?? 1} />}
       estadoCompacto={<EstadoCompacto medidores={medidores} />}
       escena={
-        <Escena luz={perfil.equipo.luz}>
+        <Escena luz={perfil.equipo.luz} habitacion={perfil.casa.habitacion}>
           <Decoracion puestos={perfil.equipo.decoracion} />
           <SelectorHuecos
             huecos={perfil.huecos}
             ocupado={enCurso}
             alElegir={cambiarHueco}
-            alAmpliar={() => setAmpliando(true)}
+            alAmpliar={() => elegirPantalla("habitaciones")}
           />
           {planta && (
             <Planta
@@ -608,6 +645,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             />
           ) : sedienta ? (
             <Bocadillo texto="¡Tu planta necesita agua!" />
+          ) : avisoSensor ? (
+            <Bocadillo texto={avisoSensor} icono="aviso" />
           ) : planta?.desafio && planta.vida === "cosechada" ? (
             <Bocadillo
               texto={`¡Desafío completado! ${(planta.desafio.puntos ?? 0).toLocaleString("es-ES")} puntos`}

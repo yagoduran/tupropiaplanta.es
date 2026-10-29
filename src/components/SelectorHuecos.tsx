@@ -1,5 +1,5 @@
 import { marco } from "@/lib/diseno";
-import type { HuecosJuego } from "@/lib/juego";
+import { HUECO_DESAFIO, type HuecosJuego } from "@/lib/juego";
 import styles from "./juego.module.css";
 
 interface Props {
@@ -34,26 +34,26 @@ export function SelectorHuecos({ huecos, ocupado, alElegir, alAmpliar }: Props) 
           </button>
         );
       })}
-      {(huecos.desafio || huecos.activo === 4) && (
+      {(huecos.desafio || huecos.activo === HUECO_DESAFIO) && (
         <button
           type="button"
           className={styles.hueco}
-          style={huecos.activo === 4 ? activo : normal}
+          style={huecos.activo === HUECO_DESAFIO ? activo : normal}
           disabled={ocupado}
-          aria-current={huecos.activo === 4 ? "true" : undefined}
+          aria-current={huecos.activo === HUECO_DESAFIO ? "true" : undefined}
           aria-label="Desafío en curso"
-          onClick={() => alElegir(4)}
+          onClick={() => alElegir(HUECO_DESAFIO)}
         >
           ★
         </button>
       )}
-      {huecos.siguiente && (
+      {huecos.desbloqueados < huecos.maximo && (
         <button
           type="button"
           className={styles.hueco}
           style={normal}
           disabled={ocupado}
-          aria-label="Ampliar con un hueco nuevo"
+          aria-label="Conseguir más huecos"
           onClick={alAmpliar}
         >
           +

@@ -17,6 +17,8 @@ const OPCIONES_MENU = [
   ["coleccion", "Colección"],
   ["titulos", "Títulos y marcos"],
   ["desafios", "Desafíos"],
+  ["armario", "Mejoras del armario"],
+  ["habitaciones", "Habitaciones"],
 ] as const;
 
 interface Props {

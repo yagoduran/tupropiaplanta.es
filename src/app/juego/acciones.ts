@@ -116,6 +116,28 @@ export async function empezarDesafio(id: string): Promise<Resultado> {
   return data as RespuestaAccion;
 }
 
+/** Compra el siguiente nivel de una rama de mejoras del armario. */
+export async function comprarMejora(rama: string): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_comprar_mejora", { p_rama: rama });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
+export async function comprarHabitacion(id: string): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_comprar_habitacion", { p_id: id });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
+export async function elegirHabitacion(id: string): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_elegir_habitacion", { p_id: id });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
 /** Recoge el regalo diario. */
 export async function reclamarDiaria(): Promise<Resultado> {
   const supabase = await crearClienteServidor();

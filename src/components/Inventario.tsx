@@ -18,8 +18,6 @@ interface Props {
   alIrATienda: () => void;
 }
 
-const miles = (n: number) => n.toLocaleString("es-ES", { useGrouping: "always" });
-
 /** Inventario: tus huecos de cultivo y los objetos que tienes. */
 export function Inventario({ perfil, plantas, ocupado, alIrAHueco, alAmpliar, alIrATienda }: Props) {
   const panel = marco("panel", "var(--u)");
@@ -33,7 +31,9 @@ export function Inventario({ perfil, plantas, ocupado, alIrAHueco, alAmpliar, al
     <div className={styles.contenedor}>
       <div className={styles.cabecera}>
         <h1 className={styles.titulo}>Huecos de cultivo</h1>
-        <span className={styles.resumen}>{huecos.desbloqueados} de 3 desbloqueados</span>
+        <span className={styles.resumen}>
+          {huecos.desbloqueados} de {huecos.maximo} desbloqueados
+        </span>
       </div>
       <div className={styles.inventario}>
         <div className={styles.huecos}>
@@ -114,7 +114,7 @@ export function Inventario({ perfil, plantas, ocupado, alIrAHueco, alAmpliar, al
               </div>
             );
           })}
-          {huecos.siguiente && (
+          {huecos.desbloqueados < huecos.maximo && (
             <div className={`${styles.hueco} ${styles.huecoSiguiente}`}>
               <span className={styles.huecoCabeza}>
                 <span>Hueco {huecos.desbloqueados + 1}</span>
@@ -123,10 +123,10 @@ export function Inventario({ perfil, plantas, ocupado, alIrAHueco, alAmpliar, al
               <span className={styles.huecoDibujo}>
                 <Icono id="candado" k={8} />
               </span>
-              <span className={styles.huecoNombre}>Desbloquear hueco</span>
-              <span className={styles.huecoDetalle}>Amplía tu cámara de cultivo. Nivel {huecos.siguiente.nivel}.</span>
+              <span className={styles.huecoNombre}>Más huecos</span>
+              <span className={styles.huecoDetalle}>Desbloquea habitaciones y mejora la capacidad del armario.</span>
               <button type="button" className={styles.accion} style={boton} disabled={ocupado} onClick={alAmpliar}>
-                {miles(huecos.siguiente.precio)} monedas
+                Ver habitaciones
               </button>
             </div>
           )}

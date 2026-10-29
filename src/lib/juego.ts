@@ -1,3 +1,4 @@
+import type { DatosCasa } from "./casa";
 import type { Estado, IdIcono } from "./diseno";
 import type { PlagaJuego } from "./plagas";
 import { tonoPorPorcentaje, type Medidor } from "./estado";
@@ -13,7 +14,9 @@ export type PantallaJuego =
   | "estadisticas"
   | "coleccion"
   | "titulos"
-  | "desafios";
+  | "desafios"
+  | "armario"
+  | "habitaciones";
 
 export interface AjustesJuego {
   volumen_efectos: number;
@@ -67,11 +70,18 @@ export interface PerfilJuego {
   /** Ayudas por ver anuncio que quedan hoy y monedas que da cada una. */
   anuncios: { restantes: number; monedas: number };
   huecos: HuecosJuego;
+  /** Habitación y mejoras del armario. */
+  casa: DatosCasa;
 }
+
+/** Número de hueco reservado para la planta del desafío. Tiene que coincidir con la base de datos. */
+export const HUECO_DESAFIO = 9;
 
 export interface HuecosJuego {
   activo: number;
-  /** Desafío en curso (hueco especial 4), si lo hay. */
+  /** Máximo de huecos que se pueden tener. */
+  maximo: number;
+  /** Desafío en curso (hueco especial `HUECO_DESAFIO`), si lo hay. */
   desafio: string | null;
   desbloqueados: number;
   /** Precio y nivel del siguiente hueco por comprar; null si ya están todos. */
@@ -138,6 +148,12 @@ export const MENSAJES_ERROR: Record<string, string> = {
   tratamiento_incorrecto: "Ese producto no sirve para esta plaga.",
   huecos_maximos: "Ya tienes todos los huecos de cultivo.",
   hueco_bloqueado: "Ese hueco todavía no es tuyo.",
+  huecos_automaticos: "Los huecos ahora llegan con las habitaciones y la mejora de capacidad.",
+  mejora_comprada: "Ya tienes todos los niveles de esa mejora.",
+  mejora_desconocida: "Esa mejora no existe.",
+  habitacion_comprada: "Esa habitación ya es tuya.",
+  habitacion_bloqueada: "Todavía no puedes entrar en esa habitación.",
+  habitacion_desconocida: "Esa habitación no existe.",
   desafio_riegos: "Sequía: hoy ya has usado tus 3 riegos.",
   desafio_prohibido: "En este desafío no puedes usar ese abono.",
   desafio_en_curso: "Ya tienes un desafío en curso.",
