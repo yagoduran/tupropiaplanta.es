@@ -18,6 +18,8 @@ const OPCIONES_MENU = [
   ["coleccion", "Colección"],
   ["titulos", "Títulos y marcos"],
   ["misiones", "Misiones"],
+  ["eventos", "Eventos"],
+  ["pase", "Pase de temporada"],
   ["amigos", "Amigos"],
   ["desafios", "Desafíos"],
   ["armario", "Mejoras del armario"],

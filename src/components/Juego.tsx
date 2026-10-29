@@ -17,6 +17,10 @@ import {
   obtenerMaestria,
   obtenerMisiones,
   obtenerAmigos,
+  obtenerEventos,
+  obtenerPase,
+  reclamarPase,
+  comprarPase,
   obtenerRegalos,
   enviarRegalo,
   buscarJugadores,
@@ -94,6 +98,9 @@ import { Maestria } from "./Maestria";
 import { Misiones } from "./Misiones";
 import { Amigos } from "./Amigos";
 import { Visita } from "./Visita";
+import { Eventos } from "./Eventos";
+import { Pase } from "./Pase";
+import type { DatosEventos, DatosPase } from "@/lib/temporada";
 import { Regalo } from "./Regalo";
 import { PerfilPublico } from "./PerfilPublico";
 import type {
@@ -167,6 +174,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [regalos, setRegalos] = useState<DatosRegalos | null>(null);
   const [regaloEnviado, setRegaloEnviado] = useState<TipoRegalo | null>(null);
   const [regaloError, setRegaloError] = useState<string | null>(null);
+  const [eventos, setEventos] = useState<DatosEventos | null>(null);
+  const [pase, setPase] = useState<DatosPase | null>(null);
   const [vistaDe, setVistaDe] = useState("");
   const [visita, setVisita] = useState<DatosVisita | null>(null);
   const [perfilPublico, setPerfilPublico] = useState<PerfilPublicoDatos | null>(null);
@@ -354,6 +363,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "maestria" ||
       id === "misiones" ||
       id === "amigos" ||
+      id === "eventos" ||
+      id === "pase" ||
       id === "laboratorio" ||
       id === "prestigio" ||
       id === "cultivo" ||
@@ -377,6 +388,14 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         obtenerCruces()
           .then((r) => recibirCruces(r))
           .catch(() => setCruces(null));
+      if (id === "eventos")
+        obtenerEventos()
+          .then(setEventos)
+          .catch(() => setEventos(null));
+      if (id === "pase")
+        obtenerPase()
+          .then(setPase)
+          .catch(() => setPase(null));
       if (id === "amigos") {
         setResultadosAmigos(null);
         obtenerAmigos()
@@ -542,6 +561,24 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         if (nuevo) aplicar(nuevo);
       })
       .catch(() => setVisita(null));
+  };
+
+  const reclamarPremioPase = (nivel: number, pista: "g" | "s") => {
+    ejecutar(async () => {
+      const r = await reclamarPase(nivel, pista);
+      sonar(r.ok ? "cofre" : "error");
+      tratar(r, { texto: "¡Premio del pase reclamado!", icono: "logros" });
+      setPase(await obtenerPase());
+    });
+  };
+
+  const desbloquearPase = () => {
+    ejecutar(async () => {
+      const r = await comprarPase();
+      sonar(r.ok ? "comprar" : "compra-rechazada");
+      tratar(r, { texto: "¡Pase especial desbloqueado!", icono: "logros" });
+      setPase(await obtenerPase());
+    });
   };
 
   const abrirRegalo = (usuario: string) => {
@@ -923,6 +960,16 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             alAcelerar={acelerarElCruce}
             alAbrir={abrirElCapullo}
             alGuardar={guardarLaSemilla}
+          />
+        ) : pantalla === "eventos" ? (
+          <Eventos datos={eventos} />
+        ) : pantalla === "pase" ? (
+          <Pase
+            datos={pase}
+            ocupado={enCurso}
+            monedas={perfil.monedas}
+            alReclamar={reclamarPremioPase}
+            alComprar={desbloquearPase}
           />
         ) : pantalla === "amigos" ? (
           <Amigos

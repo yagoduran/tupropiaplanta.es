@@ -889,3 +889,80 @@ button.hueco {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Eventos y pase */
+.eventoPestanas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.eventoPestana {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: calc(var(--u) * 2) calc(var(--u) * 3);
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-small);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.eventoEscena {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 220px;
+  object-fit: cover;
+}
+
+.estadoEvento {
+  display: inline-block;
+  padding: 2px 8px;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-small);
+  color: #f6eed6;
+}
+
+.cuenta {
+  display: flex;
+  gap: 8px;
+  font-family: var(--fuente-pixel);
+}
+
+.cuenta strong {
+  display: block;
+  font-size: var(--f-title);
+}
+
+.cuenta span {
+  font-size: var(--f-small);
+}
+
+.paseNivel {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) minmax(0, 1fr);
+  gap: 6px;
+  align-items: stretch;
+}
+
+.pasePremio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: calc(var(--u) * 2) calc(var(--u) * 3);
+  font-size: var(--f-small);
+  font-weight: 700;
+  color: #1c1626;
+  text-align: left;
+  font-family: inherit;
+}
+
+.paseNumero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+  color: #f6eed6;
+}

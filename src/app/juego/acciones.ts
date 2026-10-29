@@ -7,6 +7,7 @@ import type { DatosDesafios } from "@/lib/desafios";
 import type { DatosMaestria } from "@/lib/maestria";
 import type { DatosPrestigio } from "@/lib/prestigio";
 import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
+import type { DatosEventos, DatosPase } from "@/lib/temporada";
 import type { DatosAmigos, DatosRegalos, DatosVisita, PerfilPublicoDatos, Resultado as Jugadores } from "@/lib/amigos";
 import type { RespuestaCruce } from "@/lib/cruces";
 import type { Accion, AjustesJuego, DatosRanking, EstadoJuego, RespuestaAccion } from "@/lib/juego";
@@ -163,6 +164,28 @@ export async function enviarRegalo(
   });
   if (error || !data) return fallo(error?.message);
   return data as RespuestaAccion & Partial<DatosRegalos>;
+}
+
+/** Eventos de temporada. */
+export const obtenerEventos = async () => llamar<DatosEventos>("tpp_evento");
+export const obtenerPase = async () => llamar<DatosPase>("tpp_pase");
+
+type RespuestaPase = (RespuestaAccion & Partial<DatosPase>) | { ok: false; error: string };
+
+/** Reclama el premio de un nivel del pase (pista g = gratis, s = especial). */
+export async function reclamarPase(nivel: number, pista: "g" | "s"): Promise<RespuestaPase> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_reclamar_pase", { p_nivel: nivel, p_pista: pista });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaPase;
+}
+
+/** Compra el pase especial de la temporada. */
+export async function comprarPase(): Promise<RespuestaPase> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_comprar_pase");
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaPase;
 }
 
 /** Riega la planta de un amigo. */

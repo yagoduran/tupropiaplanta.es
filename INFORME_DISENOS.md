@@ -29,7 +29,8 @@ Siguen pendientes:
 ✅ Misiones (diarias y semanales) y notificaciones (campana): hechas.
 ✅ Amigos (solicitud aceptada, búsqueda por nombre, bloquear), perfil público y visitas (regar y saludar): hechos.
 ✅ Regalos (monedas, agua, abono; 3 al día): hechos.
-Pendiente: eventos, pase de temporada y mercado (al final). 🔴 Todo. Antes habría que decidir privacidad y moderación (hay menores en colegios).
+✅ Eventos de temporada y pase de temporada: hechos.
+Pendiente: mercado (al final). 🔴 Antes habría que decidir privacidad y moderación (hay menores en colegios).
 Los dibujos de **temporadas** (primavera, verano, otoño, invierno: ventana, luz, decoración) ya están en `public/assets/temporadas` pero no se usan: 🟢 aplicarlos según la fecha.
 
 ## Arte

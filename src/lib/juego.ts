@@ -25,7 +25,9 @@ export type PantallaJuego =
   | "amigos"
   | "visita"
   | "perfil_publico"
-  | "regalo";
+  | "regalo"
+  | "eventos"
+  | "pase";
 
 export interface AjustesJuego {
   volumen_efectos: number;
@@ -204,6 +206,11 @@ export const MENSAJES_ERROR: Record<string, string> = {
   regalo_ya_enviado: "Hoy ya le has enviado un regalo a este amigo.",
   regalo_monedas_limite: "Hoy no se pueden enviar más monedas a este amigo, o ya has regalado monedas hoy.",
   regalo_sin_abono: "No tienes ningún abono normal para regalar.",
+  pase_invalido: "Ahora no hay ningún pase de temporada en marcha.",
+  pase_nivel: "Todavía no has llegado a ese nivel del pase.",
+  pase_bloqueado: "Desbloquea el pase especial para reclamar este premio.",
+  pase_reclamado: "Ya has reclamado ese premio.",
+  pase_comprado: "Ya tienes el pase especial de esta temporada.",
   mision_desconocida: "Esa misión no existe.",
   mision_reclamada: "Ya has reclamado esa misión.",
   mision_no_lista: "Todavía no has completado esa misión.",
