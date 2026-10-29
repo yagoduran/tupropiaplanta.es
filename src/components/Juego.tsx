@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState, useTransition } from "react";
 import { hacerAccion, obtenerEstado, plantarSemilla } from "@/app/juego/acciones";
 import { marco, type IdIcono } from "@/lib/diseno";
+import { fijarVolumenEfectos, sonar } from "@/lib/sonido";
 import {
   MENSAJES_ERROR,
   formatoVida,
@@ -83,9 +84,14 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     [aplicar],
   );
 
+  useEffect(() => {
+    fijarVolumenEfectos(estado.perfil.ajustes.volumen_efectos);
+  }, [estado.perfil.ajustes.volumen_efectos]);
+
   const accionar = (accion: Accion) => {
     iniciar(async () => {
       const r = await hacerAccion(accion);
+      sonar(r.ok ? (accion === "ajustar_luz" ? "ajustar-luz" : accion) : "error");
       const recompensa = "recompensa" in r ? r.recompensa : undefined;
       tratar(r, accion === "cosechar" ? { texto: `¡Cosecha! +${recompensa ?? 0} monedas`, icono: "moneda" } : undefined);
     });
