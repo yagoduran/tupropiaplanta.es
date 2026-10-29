@@ -7,6 +7,7 @@ import type { DatosDesafios } from "@/lib/desafios";
 import type { DatosMaestria } from "@/lib/maestria";
 import type { DatosPrestigio } from "@/lib/prestigio";
 import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
+import type { DatosAmigos, DatosVisita, PerfilPublicoDatos, Resultado as Jugadores } from "@/lib/amigos";
 import type { RespuestaCruce } from "@/lib/cruces";
 import type { Accion, AjustesJuego, DatosRanking, EstadoJuego, RespuestaAccion } from "@/lib/juego";
 
@@ -116,6 +117,39 @@ export async function obtenerDesafios(): Promise<DatosDesafios | null> {
 export async function empezarDesafio(id: string): Promise<Resultado> {
   const supabase = await crearClienteServidor();
   const { data, error } = await supabase.rpc("tpp_empezar_desafio", { p_id: id });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
+/** Llama a una función de la base de datos y devuelve su respuesta, o null si falla. */
+async function llamar<T>(funcion: string, argumentos?: Record<string, unknown>): Promise<T | null> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc(funcion, argumentos);
+  if (error || !data) return null;
+  return data as T;
+}
+
+/** Amigos, solicitudes y bloqueados. */
+export const obtenerAmigos = async () => llamar<DatosAmigos>("tpp_amigos");
+export const buscarJugadores = async (texto: string) => llamar<Jugadores[]>("tpp_buscar_jugadores", { p_texto: texto });
+export const enviarSolicitud = async (usuario: string) =>
+  llamar<DatosAmigos>("tpp_enviar_solicitud", { p_usuario: usuario });
+export const responderSolicitud = async (usuario: string, aceptar: boolean) =>
+  llamar<DatosAmigos>("tpp_responder_solicitud", { p_usuario: usuario, p_aceptar: aceptar });
+export const quitarAmigo = async (usuario: string) => llamar<DatosAmigos>("tpp_quitar_amigo", { p_usuario: usuario });
+export const bloquearJugador = async (usuario: string) => llamar<DatosAmigos>("tpp_bloquear", { p_usuario: usuario });
+export const desbloquearJugador = async (usuario: string) =>
+  llamar<DatosAmigos>("tpp_desbloquear", { p_usuario: usuario });
+export const obtenerPerfilPublico = async (usuario: string) =>
+  llamar<PerfilPublicoDatos>("tpp_perfil_publico", { p_usuario: usuario });
+export const visitarAmigo = async (usuario: string) => llamar<DatosVisita>("tpp_visitar", { p_usuario: usuario });
+export const saludarAmigo = async (usuario: string, emoji: string) =>
+  llamar<{ ok: boolean; error?: string; saludo?: string }>("tpp_saludar", { p_usuario: usuario, p_emoji: emoji });
+
+/** Riega la planta de un amigo. */
+export async function regarVisita(usuario: string): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_regar_visita", { p_usuario: usuario });
   if (error || !data) return fallo(error?.message);
   return data as RespuestaAccion;
 }

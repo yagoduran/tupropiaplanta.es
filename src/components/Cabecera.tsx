@@ -18,6 +18,7 @@ const OPCIONES_MENU = [
   ["coleccion", "Colección"],
   ["titulos", "Títulos y marcos"],
   ["misiones", "Misiones"],
+  ["amigos", "Amigos"],
   ["desafios", "Desafíos"],
   ["armario", "Mejoras del armario"],
   ["habitaciones", "Habitaciones"],

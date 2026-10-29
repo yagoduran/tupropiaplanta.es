@@ -8,16 +8,28 @@ export const ICONOS_SOCIAL = {
   campana: [5, 0],
   mercado: [6, 0],
   saludo: [7, 0],
+  corazon: [0, 1],
+  copa: [1, 1],
+  emoji_sonrisa: [7, 1],
+  emoji_corazon: [0, 2],
+  emoji_gracias: [1, 2],
+  emoji_animo: [2, 2],
+  emoji_sorpresa: [3, 2],
+  emoji_risa: [4, 2],
+  emoji_pulgar: [5, 2],
+  emoji_planta: [6, 2],
 } as const;
 
 interface Props {
   id: keyof typeof ICONOS_SOCIAL;
+  /** Hoja de 16 px o de 32 px (el mismo dibujo al doble de tamaño). */
+  hoja?: 16 | 32;
   /** Escala: un número o una expresión CSS como "var(--ik)". */
   k?: number | string;
 }
 
-/** Icono de 16x16 px recortado de la hoja social. */
-export function IconoSocial({ id, k = 2 }: Props) {
+/** Icono recortado de la hoja social. */
+export function IconoSocial({ id, k = 2, hoja = 16 }: Props) {
   const f = (n: number) => `calc(${n}px * ${k})`;
   const [c, r] = ICONOS_SOCIAL[id];
   return (
@@ -27,11 +39,11 @@ export function IconoSocial({ id, k = 2 }: Props) {
       style={{
         display: "block",
         flex: "none",
-        width: f(16),
-        height: f(16),
-        backgroundImage: "url(/assets/social/tpp-social-16-1x.png)",
-        backgroundSize: `${f(128)} ${f(48)}`,
-        backgroundPosition: `${f(-c * 16)} ${f(-r * 16)}`,
+        width: f(hoja),
+        height: f(hoja),
+        backgroundImage: `url(/assets/social/tpp-social-${hoja}-1x.png)`,
+        backgroundSize: `${f(8 * hoja)} ${f(3 * hoja)}`,
+        backgroundPosition: `${f(-c * hoja)} ${f(-r * hoja)}`,
       }}
     />
   );

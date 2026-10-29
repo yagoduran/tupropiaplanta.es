@@ -19,7 +19,7 @@ export interface DatosMisiones {
 
 export interface Notificacion {
   id: number;
-  tipo: "sed" | "plaga" | "mision" | "nivel" | "logro";
+  tipo: "sed" | "plaga" | "mision" | "nivel" | "logro" | "amigo" | "visita" | "saludo";
   titulo: string;
   texto: string;
   /** Segundos desde que se creó. */

@@ -148,6 +148,25 @@ export function Ajustes({ ajustes, alCambiar, alVerTutorial, alBorrar }: Props) 
         </div>
 
         <hr className={styles.linea} />
+        <div className={styles.fila2}>
+          <div>
+            <span className={styles.etiqueta}>Aparecer en las búsquedas</span>
+            <p className={styles.ayuda}>Si lo desactivas, solo tus amigos podrán encontrarte y ver tu perfil.</p>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={!ajustes.perfil_oculto}
+            aria-label="Aparecer en las búsquedas de jugadores"
+            className={styles.interruptor}
+            data-activo={!ajustes.perfil_oculto}
+            onClick={() => alCambiar({ perfil_oculto: !ajustes.perfil_oculto })}
+          >
+            <span />
+          </button>
+        </div>
+
+        <hr className={styles.linea} />
         <span className={styles.seccion}>Tutorial</span>
         <button type="button" className={styles.accion} style={secundario} onClick={alVerTutorial}>
           Ver el tutorial otra vez

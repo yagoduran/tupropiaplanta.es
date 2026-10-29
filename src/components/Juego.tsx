@@ -16,6 +16,17 @@ import {
   obtenerDesafios,
   obtenerMaestria,
   obtenerMisiones,
+  obtenerAmigos,
+  buscarJugadores,
+  enviarSolicitud,
+  responderSolicitud,
+  quitarAmigo,
+  bloquearJugador,
+  desbloquearJugador,
+  obtenerPerfilPublico,
+  visitarAmigo,
+  saludarAmigo,
+  regarVisita,
   reclamarMision,
   obtenerNotificaciones,
   leerNotificaciones,
@@ -79,6 +90,10 @@ import { Habitaciones } from "./Habitaciones";
 import { Laboratorio } from "./Laboratorio";
 import { Maestria } from "./Maestria";
 import { Misiones } from "./Misiones";
+import { Amigos } from "./Amigos";
+import { Visita } from "./Visita";
+import { PerfilPublico } from "./PerfilPublico";
+import type { DatosAmigos, DatosVisita, PerfilPublicoDatos, Resultado as ResultadoBusqueda } from "@/lib/amigos";
 import { Campana } from "./Campana";
 import { Prestigio } from "./Prestigio";
 import { AnuncioPrueba } from "./AnuncioPrueba";
@@ -137,6 +152,11 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [progresion, setProgresion] = useState<DatosProgresion | null>(null);
   const [desafios, setDesafios] = useState<DatosDesafios | null>(null);
   const [maestria, setMaestria] = useState<DatosMaestria | null>(null);
+  const [amigos, setAmigos] = useState<DatosAmigos | null>(null);
+  const [resultadosAmigos, setResultadosAmigos] = useState<ResultadoBusqueda[] | null>(null);
+  const [vistaDe, setVistaDe] = useState("");
+  const [visita, setVisita] = useState<DatosVisita | null>(null);
+  const [perfilPublico, setPerfilPublico] = useState<PerfilPublicoDatos | null>(null);
   const [misiones, setMisiones] = useState<DatosMisiones | null>(null);
   const [notificaciones, setNotificaciones] = useState<DatosNotificaciones | null>(null);
   const [prestigio, setPrestigio] = useState<DatosPrestigio | null>(null);
@@ -320,6 +340,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "habitaciones" ||
       id === "maestria" ||
       id === "misiones" ||
+      id === "amigos" ||
       id === "laboratorio" ||
       id === "prestigio" ||
       id === "cultivo" ||
@@ -343,6 +364,12 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         obtenerCruces()
           .then((r) => recibirCruces(r))
           .catch(() => setCruces(null));
+      if (id === "amigos") {
+        setResultadosAmigos(null);
+        obtenerAmigos()
+          .then(setAmigos)
+          .catch(() => setAmigos(null));
+      }
       if (id === "misiones")
         obtenerMisiones()
           .then(setMisiones)
@@ -420,6 +447,103 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       sonar(r.ok ? "cofre" : "error");
       tratar(r, { texto: "¡Premio de la colección reclamado!", icono: "logros" });
       setProgresion(await obtenerProgresion());
+    });
+  };
+
+  /** Avisa del error de una respuesta de amigos; devuelve true si todo fue bien. */
+  const aviso_ok = (r: { ok?: boolean; error?: string } | null, texto: string) => {
+    if (r?.ok) {
+      setAviso({ texto, icono: "cultivo" });
+      return true;
+    }
+    sonar("error");
+    setAviso({ texto: MENSAJES_ERROR[r?.error ?? "red"] ?? MENSAJES_ERROR.red, icono: "aviso" });
+    return false;
+  };
+
+  const buscarAmigos = (texto: string) => {
+    ejecutar(async () => setResultadosAmigos((await buscarJugadores(texto)) ?? []));
+  };
+
+  const mandarSolicitud = (usuario: string) => {
+    ejecutar(async () => {
+      const r = await enviarSolicitud(usuario);
+      if (!aviso_ok(r, "Solicitud enviada.") || !r) return;
+      setAmigos(r);
+      const ahoraAmigos = r.amigos.some((a) => a.usuario === usuario);
+      setResultadosAmigos((lista) =>
+        lista
+          ? lista.map((x) => (x.usuario === usuario ? { ...x, relacion: ahoraAmigos ? "amigos" : "enviada" } : x))
+          : lista,
+      );
+      if (perfilPublico?.jugador?.usuario === usuario) setPerfilPublico(await obtenerPerfilPublico(usuario));
+    });
+  };
+
+  const contestarSolicitud = (usuario: string, aceptar: boolean) => {
+    ejecutar(async () => {
+      const r = await responderSolicitud(usuario, aceptar);
+      if (!aviso_ok(r, aceptar ? "¡Ya sois amigos!" : "Solicitud rechazada.") || !r) return;
+      setAmigos(r);
+      setResultadosAmigos((lista) =>
+        lista
+          ? lista.map((x) => (x.usuario === usuario ? { ...x, relacion: aceptar ? "amigos" : "ninguna" } : x))
+          : lista,
+      );
+    });
+  };
+
+  const gestionarAmistad = (
+    accion: (usuario: string) => Promise<DatosAmigos | null>,
+    usuario: string,
+    texto: string,
+  ) => {
+    ejecutar(async () => {
+      const r = await accion(usuario);
+      if (!aviso_ok(r, texto) || !r) return;
+      setAmigos(r);
+      setResultadosAmigos(null);
+      if (pantalla === "perfil_publico" || pantalla === "visita") setPantalla("amigos");
+    });
+  };
+
+  const abrirPerfilPublico = (usuario: string) => {
+    sonar("pestana");
+    setVistaDe(usuario);
+    setPerfilPublico(null);
+    setPantalla("perfil_publico");
+    obtenerPerfilPublico(usuario)
+      .then(setPerfilPublico)
+      .catch(() => setPerfilPublico(null));
+  };
+
+  const abrirVisita = (usuario: string) => {
+    sonar("pestana");
+    setVistaDe(usuario);
+    setVisita(null);
+    setPantalla("visita");
+    visitarAmigo(usuario)
+      .then(async (v) => {
+        setVisita(v);
+        const nuevo = await obtenerEstado();
+        if (nuevo) aplicar(nuevo);
+      })
+      .catch(() => setVisita(null));
+  };
+
+  const regarAmigo = () => {
+    ejecutar(async () => {
+      const r = await regarVisita(vistaDe);
+      sonar(r.ok ? "regar" : "error");
+      tratar(r, { texto: "¡Has regado su planta! +10 monedas", icono: "agua" });
+      setVisita(await visitarAmigo(vistaDe));
+    });
+  };
+
+  const saludarAlAmigo = (emoji: string) => {
+    ejecutar(async () => {
+      const r = await saludarAmigo(vistaDe, emoji);
+      if (aviso_ok(r, "¡Saludo enviado!")) setVisita((v) => (v ? { ...v, saludo: emoji } : v));
     });
   };
 
@@ -750,6 +874,39 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             alAcelerar={acelerarElCruce}
             alAbrir={abrirElCapullo}
             alGuardar={guardarLaSemilla}
+          />
+        ) : pantalla === "amigos" ? (
+          <Amigos
+            datos={amigos}
+            resultados={resultadosAmigos}
+            ocupado={enCurso}
+            alBuscar={buscarAmigos}
+            alEnviar={mandarSolicitud}
+            alResponder={contestarSolicitud}
+            alQuitar={(u) => gestionarAmistad(quitarAmigo, u, "Hecho.")}
+            alBloquear={(u) => gestionarAmistad(bloquearJugador, u, "Jugador bloqueado.")}
+            alDesbloquear={(u) => gestionarAmistad(desbloquearJugador, u, "Jugador desbloqueado.")}
+            alVisitar={abrirVisita}
+            alPerfil={abrirPerfilPublico}
+          />
+        ) : pantalla === "visita" ? (
+          <Visita
+            datos={visita}
+            ocupado={enCurso}
+            alVolver={() => elegirPantalla("amigos")}
+            alRegar={regarAmigo}
+            alSaludar={saludarAlAmigo}
+            alPerfil={() => abrirPerfilPublico(vistaDe)}
+          />
+        ) : pantalla === "perfil_publico" ? (
+          <PerfilPublico
+            datos={perfilPublico}
+            ocupado={enCurso}
+            alVolver={() => elegirPantalla("amigos")}
+            alVisitar={abrirVisita}
+            alEnviar={mandarSolicitud}
+            alQuitar={(u) => gestionarAmistad(quitarAmigo, u, "Hecho.")}
+            alBloquear={(u) => gestionarAmistad(bloquearJugador, u, "Jugador bloqueado.")}
           />
         ) : pantalla === "misiones" ? (
           <Misiones datos={misiones} ocupado={enCurso} alReclamar={reclamarLaMision} />

@@ -782,3 +782,110 @@ button.hueco {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Amigos */
+.buscador {
+  display: flex;
+  gap: var(--gap);
+}
+
+.campo {
+  flex: 1;
+  min-width: 0;
+  padding: calc(var(--u) * 2) calc(var(--u) * 3);
+  font: inherit;
+  font-size: var(--f-stat);
+  color: #1c1626;
+  background: #fff;
+  border: calc(var(--u) * 0.7) solid #a8845c;
+}
+
+.jugadores {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.jugador {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  padding: calc(var(--u) * 3);
+  color: #1c1626;
+  font-size: var(--f-small);
+}
+
+.jugadorTexto {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.jugadorTexto strong {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.jugadorAcciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.boton {
+  padding: calc(var(--u) * 2) calc(var(--u) * 3) calc(var(--u) * 3);
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-small);
+  font-weight: 700;
+  color: #1c1626;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.punto {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 6px;
+  background: #a8845c;
+}
+
+.puntoOn {
+  background: #36a33b;
+}
+
+.visita {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: var(--gap);
+  align-items: start;
+}
+
+.visitaPlanta {
+  position: relative;
+  margin: 0 auto;
+}
+
+.saludos {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.saludo {
+  display: flex;
+  justify-content: center;
+  padding: 6px;
+  cursor: pointer;
+}
+
+@media (max-width: 899px) {
+  .visita {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

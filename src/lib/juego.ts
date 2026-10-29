@@ -21,7 +21,10 @@ export type PantallaJuego =
   | "maestria"
   | "laboratorio"
   | "prestigio"
-  | "misiones";
+  | "misiones"
+  | "amigos"
+  | "visita"
+  | "perfil_publico";
 
 export interface AjustesJuego {
   volumen_efectos: number;
@@ -34,6 +37,8 @@ export interface AjustesJuego {
   marco?: string;
   /** Si es true, el jugador no sale en el ranking. */
   ranking_oculto?: boolean;
+  /** Si es true, no sales en las búsquedas de jugadores (tus amigos sí te ven). */
+  perfil_oculto?: boolean;
 }
 
 export interface FilaRanking {
@@ -181,6 +186,18 @@ export const MENSAJES_ERROR: Record<string, string> = {
   desafio_en_curso: "Ya tienes un desafío en curso.",
   desafio_jugado: "Ya has jugado este desafío esta semana.",
   hueco_desafio: "Vuelve a tu cultivo para plantar una semilla.",
+  usuario_desconocido: "No hemos encontrado a ese jugador.",
+  a_ti_mismo: "No puedes añadirte a ti mismo.",
+  ya_amigos: "Ya sois amigos.",
+  limite_amigos: "Se ha alcanzado el máximo de 50 amigos.",
+  limite_solicitudes: "Tienes demasiadas solicitudes pendientes (máximo 20).",
+  sin_solicitud: "Esa solicitud ya no existe.",
+  no_es_amigo: "Solo puedes hacer eso con tus amigos.",
+  visita_ya_regada: "Hoy ya has regado la planta de este amigo.",
+  visita_limite: "Hoy ya has regado 5 plantas de amigos. Vuelve mañana.",
+  visita_sin_planta: "Tu amigo no tiene ninguna planta viva ahora mismo.",
+  saludo_ya_enviado: "Hoy ya has saludado a este amigo.",
+  saludo_desconocido: "Ese saludo no existe.",
   mision_desconocida: "Esa misión no existe.",
   mision_reclamada: "Ya has reclamado esa misión.",
   mision_no_lista: "Todavía no has completado esa misión.",
