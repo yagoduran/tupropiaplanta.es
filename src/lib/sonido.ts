@@ -9,6 +9,8 @@ export type Efecto =
   | "error"
   | "moneda"
   | "comprar"
+  | "logro"
+  | "cofre"
   | "compra-rechazada"
   | "notificacion"
   | "abrir-modal"

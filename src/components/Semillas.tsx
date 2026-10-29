@@ -26,13 +26,7 @@ function Tarjeta({ variedad, nivel, enUso, ocupado, alPlantar }: Omit<Props, "av
   const hayPlanta = enUso !== null;
   const esActual = enUso === variedad.id;
 
-  const texto = bloqueada
-    ? `Nivel ${variedad.nivel}`
-    : esActual
-      ? "En uso"
-      : hayPlanta
-        ? "Planta viva"
-        : "Plantar";
+  const texto = bloqueada ? `Nivel ${variedad.nivel}` : esActual ? "En uso" : hayPlanta ? "Planta viva" : "Plantar";
   const activo = !bloqueada && !hayPlanta && !ocupado;
 
   return (

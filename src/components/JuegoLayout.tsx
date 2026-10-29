@@ -21,6 +21,8 @@ interface Props {
   secundaria?: ReactNode;
   /** Capas por encima de todo el juego, como el tutorial. */
   superposicion?: ReactNode;
+  /** Pestaña con una novedad pendiente. */
+  marcada?: IdIcono;
 }
 
 /** Estructura común del juego: cabecera, anuncios laterales, zona de juego y pestañas. */
@@ -34,6 +36,7 @@ export function JuegoLayout({
   alElegirPantalla,
   secundaria,
   superposicion,
+  marcada,
 }: Props) {
   const marcoJuego = marco("panel_oscuro", "var(--u)");
   return (
@@ -80,7 +83,7 @@ export function JuegoLayout({
               </section>
             )}
           </div>
-          <Pestanas activa={pantalla} alElegir={alElegirPantalla} />
+          <Pestanas activa={pantalla} alElegir={alElegirPantalla} marcada={marcada} />
         </div>
         <div className={styles.lateral}>
           <Publicidad />

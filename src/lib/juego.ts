@@ -27,6 +27,10 @@ export interface PerfilJuego {
   equipo: EquipoJuego;
   /** Objetos que tiene el jugador y cuántos. Los gratuitos no aparecen. */
   inventario: Record<string, number>;
+  logros: { valores: Record<string, number>; hechos: string[] };
+  /** Logros conseguidos justo en esta respuesta. */
+  logros_nuevos: string[];
+  diaria: { racha: number; disponible: boolean; premios: number[] };
 }
 
 export interface PlantaJuego {
@@ -80,6 +84,7 @@ export const MENSAJES_ERROR: Record<string, string> = {
   monedas_insuficientes: "No tienes monedas suficientes.",
   nivel_insuficiente: "Todavía no tienes el nivel necesario.",
   ya_lo_tienes: "Ya tienes ese objeto.",
+  diaria_ya_reclamada: "Hoy ya has recogido tu regalo. Vuelve mañana.",
   no_lo_tienes: "Todavía no tienes ese objeto.",
   sin_existencias: "No te quedan unidades. Compra más en la tienda.",
   fase_incorrecta: "Ese abono no sirve en la fase actual de tu planta.",
@@ -110,7 +115,10 @@ export function medidoresDe(p: PlantaJuego): Medidor[] {
     m("agua", "Agua", p.agua, `${Math.round(p.agua)}%`),
     m("nutrientes", "Nutrientes", p.nutrientes, `${Math.round(p.nutrientes)}%`, { nombreCorto: "Nutr." }),
     m("luz", "Luz", p.luz, `${Math.round(p.luz)}%`),
-    m("temperatura", "Temperatura", 60, `${p.temperatura} °C`, { nombreCorto: "Temp.", valorCorto: `${p.temperatura}°` }),
+    m("temperatura", "Temperatura", 60, `${p.temperatura} °C`, {
+      nombreCorto: "Temp.",
+      valorCorto: `${p.temperatura}°`,
+    }),
     m("ph", "pH", 55, coma(p.ph)),
     m("salud", "Salud", p.salud, `${Math.round(p.salud)}%`),
   ];

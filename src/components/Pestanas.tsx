@@ -11,7 +11,14 @@ const PESTANAS: { id: IdIcono; etiqueta: string }[] = [
   { id: "ajustes", etiqueta: "Ajustes" },
 ];
 
-export function Pestanas({ activa, alElegir }: { activa: IdIcono; alElegir: (id: IdIcono) => void }) {
+interface Props {
+  activa: IdIcono;
+  alElegir: (id: IdIcono) => void;
+  /** Pestaña con una novedad pendiente. */
+  marcada?: IdIcono;
+}
+
+export function Pestanas({ activa, alElegir, marcada }: Props) {
   const normal = marco("pestana", "var(--u)");
   const seleccionada = marco("pestana_activa", "var(--u)");
   return (
@@ -30,6 +37,7 @@ export function Pestanas({ activa, alElegir }: { activa: IdIcono; alElegir: (id:
           >
             <Icono id={p.id} />
             <span>{p.etiqueta}</span>
+            {p.id === marcada && <span className={styles.punto} role="img" aria-label="novedad" />}
           </button>
         );
       })}

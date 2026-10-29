@@ -57,6 +57,14 @@ export async function borrarDatosDelJuego(): Promise<{ ok: boolean }> {
   return { ok: !error && !!data };
 }
 
+/** Recoge el regalo diario. */
+export async function reclamarDiaria(): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_reclamar_diaria");
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
 async function conObjeto(rpc: "tpp_comprar" | "tpp_equipar" | "tpp_usar", id: string): Promise<Resultado> {
   const supabase = await crearClienteServidor();
   const { data, error } = await supabase.rpc(rpc, { p_objeto: id });

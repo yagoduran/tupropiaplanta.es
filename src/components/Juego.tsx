@@ -11,6 +11,7 @@ import {
   hacerAccion,
   obtenerEstado,
   plantarSemilla,
+  reclamarDiaria,
 } from "@/app/juego/acciones";
 import { marco, type IdIcono } from "@/lib/diseno";
 import { fijarVolumenEfectos, sonar } from "@/lib/sonido";
@@ -23,6 +24,7 @@ import {
   type EstadoJuego,
   type RespuestaAccion,
 } from "@/lib/juego";
+import { LOGRO_POR_ID } from "@/lib/logros";
 import { Ajustes } from "./Ajustes";
 import { Bocadillo } from "./Bocadillo";
 import { Escena } from "./Escena";
@@ -32,6 +34,7 @@ import { PanelAcciones } from "./PanelAcciones";
 import { PanelEstado } from "./PanelEstado";
 import { Planta } from "./Planta";
 import { Decoracion } from "./Decoracion";
+import { Logros } from "./Logros";
 import { Semillas } from "./Semillas";
 import { Tienda } from "./Tienda";
 import { Tutorial } from "./Tutorial";
@@ -94,7 +97,12 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const tratar = useCallback(
     (r: RespuestaAccion | { ok: false; error: string }, exito?: Aviso) => {
       if ("perfil" in r) aplicar(r);
-      if (r.ok) {
+      const nuevos = "perfil" in r ? r.perfil.logros_nuevos.map((id) => LOGRO_POR_ID[id]).filter(Boolean) : [];
+      if (r.ok && nuevos.length) {
+        const premio = nuevos.reduce((suma, l) => suma + l.premio, 0);
+        sonar("logro");
+        setAviso({ texto: `¡Logro: ${nuevos.map((l) => l.nombre).join(", ")}! +${premio} monedas`, icono: "logros" });
+      } else if (r.ok) {
         if (exito) setAviso(exito);
       } else {
         setAviso({ texto: MENSAJES_ERROR[r.error ?? "red"] ?? MENSAJES_ERROR.red, icono: "aviso" });
@@ -164,7 +172,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   };
 
   const elegirPantalla = (id: IdIcono) => {
-    if (id === "cultivo" || id === "ajustes" || id === "tienda" || id === "semillas") {
+    if (id === "cultivo" || id === "ajustes" || id === "tienda" || id === "semillas" || id === "logros") {
       sonar("pestana");
       setPantalla(id);
     }
@@ -204,6 +212,15 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const equipar = (id: string) => gestionarObjeto(equiparObjeto, id, "Hecho", "clic");
   const usar = (id: string) => gestionarObjeto(usarObjeto, id, "¡Abono aplicado!", "clic");
 
+  const reclamar = () => {
+    iniciar(async () => {
+      const r = await reclamarDiaria();
+      sonar(r.ok ? "cofre" : "error");
+      const recompensa = "recompensa" in r ? r.recompensa : 0;
+      tratar(r, { texto: `¡Regalo diario! +${recompensa} monedas`, icono: "moneda" });
+    });
+  };
+
   const plantar = (variedad: string) => {
     iniciar(async () => {
       const r = await plantarSemilla(variedad);
@@ -240,6 +257,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     <JuegoLayout
       perfil={perfil}
       pantalla={pantalla}
+      marcada={perfil.diaria.disponible && !tutorial ? "logros" : undefined}
       superposicion={
         tutorial && pantalla === "cultivo" && planta ? (
           <Tutorial
@@ -271,6 +289,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             alEquipar={equipar}
             alUsar={usar}
           />
+        ) : pantalla === "logros" ? (
+          <Logros perfil={perfil} ocupado={enCurso} aviso={aviso} alReclamar={reclamar} />
         ) : pantalla === "semillas" ? (
           <Semillas
             nivel={perfil.nivel}

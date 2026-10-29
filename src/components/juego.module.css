@@ -685,3 +685,12 @@
   background-image: url(/assets/sprites/tpp-luces-1x.png);
   pointer-events: none;
 }
+
+.punto {
+  width: calc(var(--u) * 2);
+  height: calc(var(--u) * 2);
+  margin-left: calc(var(--u) * 1);
+  background: #e0453a;
+  border: 1px solid #1c1626;
+  border-radius: 50%;
+}
