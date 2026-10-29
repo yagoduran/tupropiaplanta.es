@@ -56,7 +56,43 @@ img,
   --xp-w: 90px;
   --avatar: 40px;
   --anuncios: none;
+  /* Con los laterales apagados, el anuncio va en un banner de 320x50 bajo el juego. */
+  --banner-esc: flex;
   --anuncio-w: 160px;
+}
+
+/* Escritorio con poca altura: se encoge la escena (cada escalón es un número entero de píxeles por píxel). */
+@media (min-width: 1040px) and (max-height: 699px) {
+  .juego {
+    --s: 5;
+  }
+}
+
+@media (min-width: 1040px) and (max-height: 599px) {
+  .juego {
+    --s: 4;
+  }
+}
+
+/* Anuncios laterales (2 x 172 px): se ponen en cuanto caben a cada lado del juego, encogiendo la escena si hace falta. */
+@media (min-width: 1144px) {
+  .juego {
+    --anuncios: flex;
+    --banner-esc: none;
+    --s: 4;
+  }
+}
+
+@media (min-width: 1240px) and (min-height: 552px) {
+  .juego {
+    --s: 5;
+  }
+}
+
+@media (min-width: 1336px) and (min-height: 632px) {
+  .juego {
+    --s: 6;
+  }
 }
 
 /* Pantalla grande (1920x1080). */
@@ -88,19 +124,8 @@ img,
     --row-gap: 14px;
     --xp-w: 120px;
     --avatar: 52px;
-  }
-}
-
-/* Los anuncios laterales solo si caben a cada lado del juego. */
-@media (min-width: 1360px) {
-  .juego {
     --anuncios: flex;
-  }
-}
-
-@media (min-width: 1700px) and (min-height: 900px) {
-  .juego {
-    --anuncios: flex;
+    --banner-esc: none;
   }
 }
 

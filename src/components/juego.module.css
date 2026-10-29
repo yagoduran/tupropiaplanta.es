@@ -3,7 +3,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-x: hidden;
   background: #1c1626;
   color: #f6eed6;
 }
@@ -477,7 +477,19 @@
 }
 
 .bannerMovil {
-  display: none;
+  display: var(--banner-esc);
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 0 0 12px;
+}
+
+.bannerHueco {
+  width: 320px;
+  height: 50px;
+  background: #444141;
+  border: 2px solid #7d7979;
+  overflow: hidden;
 }
 
 .botonAnuncioCorto {
@@ -581,19 +593,9 @@
     bottom: var(--tab-h);
     z-index: 5;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
     padding: 4px 0 6px;
     background: #2a2236;
     border-top: 2px solid #1c1626;
-  }
-
-  .bannerHueco {
-    width: 320px;
-    height: 50px;
-    background: #444141;
-    border: 2px solid #7d7979;
   }
 
   .pestanas {

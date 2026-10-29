@@ -47,7 +47,7 @@ export function BotonAccion({ id, etiqueta, detalle, espera = 0, pasoAnillo = 0,
       style={{
         ...estilo,
         color,
-        height: pulsado ? "calc(var(--btn-h) - var(--u))" : "var(--btn-h)",
+        minHeight: pulsado ? "calc(var(--btn-h) - var(--u))" : "var(--btn-h)",
         marginTop: pulsado ? "var(--u)" : 0,
         cursor: bloqueado ? "not-allowed" : "pointer",
       }}
