@@ -158,3 +158,13 @@ img,
     scroll-behavior: auto !important;
   }
 }
+
+/* Foco visible con teclado en todo el juego. */
+button:focus-visible,
+a:focus-visible,
+[role="switch"]:focus-visible,
+input:focus-visible {
+  outline: 3px solid #f4d36a;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px #1c1626;
+}

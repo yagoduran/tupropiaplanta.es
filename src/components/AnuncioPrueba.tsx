@@ -23,6 +23,14 @@ export function AnuncioPrueba({ monedas, ocupado, alRecoger, alCerrar }: Props) 
     return () => clearTimeout(id);
   }, [resta]);
 
+  useEffect(() => {
+    const cerrarConEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && !ocupado) alCerrar();
+    };
+    window.addEventListener("keydown", cerrarConEscape);
+    return () => window.removeEventListener("keydown", cerrarConEscape);
+  }, [ocupado, alCerrar]);
+
   const listo = resta <= 0;
   const panel = marco("panel", "var(--u)");
   const boton = marco(listo && !ocupado ? "boton" : "boton_desactivado", "var(--u)");
