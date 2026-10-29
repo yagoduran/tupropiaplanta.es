@@ -12,8 +12,7 @@ export default function Privacidad() {
     <PaginaLegal titulo="Política de privacidad" actualizado="noviembre de 2026">
       <h2>Quién cuida tus datos</h2>
       <p>
-        {dato(TITULAR.nombre)} (NIF/CIF {dato(TITULAR.nif)}), con dirección en {dato(TITULAR.direccion)}. Puedes
-        escribirnos a {dato(TITULAR.email)}.
+        {dato(TITULAR.nombre)}. Puedes escribirnos a {dato(TITULAR.email)}.
       </p>
 
       <h2>Qué datos guardamos</h2>

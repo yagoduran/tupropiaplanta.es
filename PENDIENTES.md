@@ -7,7 +7,7 @@
 ## Funciones por hacer
 - Huecos de cultivo múltiples ✅ (fase 7): hasta 3; hueco 2 = 2.500 monedas y nivel 8, hueco 3 = 10.000 y nivel 15 (tabla en `tpp.hueco_coste`). Mejoras posibles: dibujo propio de cada hueco, aviso del navegador por planta, logro por tener todos los huecos.
 - Fase 5: ✅ logros y recompensa diaria (5a). ✅ ranking (5b). ✅ plagas (5c).
-- Fase 6: ✅ anuncios de prueba + cookies (6a). ✅ música de fondo (6b). ✅ pulido final (6c): rendimiento, accesibilidad, errores de conexión. ✅ textos legales (falta rellenar los datos del titular).
+- Fase 6: ✅ anuncios de prueba + cookies (6a). ✅ música de fondo (6b). ✅ pulido final (6c): rendimiento, accesibilidad, errores de conexión. ✅ textos legales.
 - Objetos de la tienda ✅ (fase 8): medidor de pH, termómetro, radio y gato ya se venden y tienen efecto. Pendiente: que la radio cambie la música cuando haya canciones, el gato que huya cuando aparece una plaga (sonido y dibujo ya existen), y un logro para el gato.
 
 ## Infraestructura
@@ -23,11 +23,12 @@
 - El control de 3 ayudas al día se reinicia si el jugador usa "Borrar datos" (se borra su perfil).
 
 ## Textos legales
-- ✅ Páginas hechas: `/aviso-legal`, `/privacidad`, `/condiciones` (y `/cookies`).
-- **Pendiente (lo rellena el titular):** nombre o razón social, NIF/CIF, dirección y email en `src/lib/titular.ts`. Hasta entonces las páginas muestran "[pendiente de rellenar]", no salen en buscadores y no se enlazan desde el login ni desde Ajustes; al rellenar los cuatro datos aparecen los enlaces solos.
+- ✅ Páginas hechas: `/aviso-legal`, `/privacidad`, `/condiciones` (y `/cookies`). Enlaces visibles en el login y en Ajustes.
+- Decidido: se publican solo nombre y email del titular (sin NIF ni dirección). La ley (LSSI) los pide si hay actividad económica con anuncios: si los ingresos crecen, pasar a una dirección profesional y poner `nif` y `direccion` en `src/lib/titular.ts`.
 - Revisar los textos con un profesional antes de abrir al público (son una base sencilla, no asesoría legal).
 
 ## Música
+- Canciones de Suno: de momento no se van a pagar. Prompts ya entregados (mañana, día, atardecer, noche). Cuando haya canciones: copiar los mp3 a `public/assets/musica/` y poner sus nombres en `CANCIONES`.
 - Ahora suena solo el ambiente (pájaros de día, habitación al atardecer, grillos de noche). Para añadir canciones: copiar los mp3 a `public/assets/musica/` y poner sus nombres en `CANCIONES` (`src/lib/musica.ts`); pasan a sonar una detrás de otra en lugar del ambiente.
 
 ## Ideas pendientes de plagas

@@ -13,8 +13,6 @@ export default function AvisoLegal() {
       <h2>Quién es el titular</h2>
       <ul>
         <li>Titular: {dato(TITULAR.nombre)}</li>
-        <li>NIF/CIF: {dato(TITULAR.nif)}</li>
-        <li>Dirección: {dato(TITULAR.direccion)}</li>
         <li>Correo de contacto: {dato(TITULAR.email)}</li>
         <li>Sitio web: tupropiaplanta.es</li>
       </ul>
