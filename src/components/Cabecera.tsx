@@ -3,20 +3,26 @@
 import { useState } from "react";
 import { cerrarSesion } from "@/app/acciones";
 import { marco } from "@/lib/diseno";
+import { avatarDe } from "@/lib/perfil";
 import { Icono } from "./Icono";
+import { IconoObjeto } from "./IconoObjeto";
 import styles from "./juego.module.css";
 
-const OPCIONES_MENU = ["Mi perfil", "Mis plantas"];
+const OPCIONES_MENU = [
+  ["perfil", "Mi perfil"],
+  ["plantas", "Mis plantas"],
+] as const;
 
 interface Props {
   monedas: number;
   nivel: number;
   xp: number;
   usuario: string;
-  alAbrirAjustes: () => void;
+  avatar?: string;
+  alAbrir: (pantalla: "perfil" | "plantas" | "ajustes") => void;
 }
 
-export function Cabecera({ monedas, nivel, xp, usuario, alAbrirAjustes }: Props) {
+export function Cabecera({ monedas, nivel, xp, usuario, avatar, alAbrir }: Props) {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const panel = marco("panel", "var(--u)");
   const barra = marco("barra", "var(--u)");
@@ -50,17 +56,24 @@ export function Cabecera({ monedas, nivel, xp, usuario, alAbrirAjustes }: Props)
           onClick={() => setMenuAbierto((v) => !v)}
         >
           <span className={styles.avatar} style={panel}>
-            <Icono id="cultivo" />
+            <IconoObjeto celda={avatarDe(avatar).celda} k="var(--ik)" tamano={16} />
           </span>
           <span className={styles.nombreUsuario}>{usuario}</span>
           <Icono id="menu" />
         </button>
         {menuAbierto && (
           <ul className={styles.menu} style={panel}>
-            {OPCIONES_MENU.map((o) => (
-              <li key={o}>
-                <button type="button" className={styles.menuOpcion}>
-                  {o}
+            {OPCIONES_MENU.map(([id, texto]) => (
+              <li key={id}>
+                <button
+                  type="button"
+                  className={styles.menuOpcion}
+                  onClick={() => {
+                    setMenuAbierto(false);
+                    alAbrir(id);
+                  }}
+                >
+                  {texto}
                 </button>
               </li>
             ))}
@@ -70,7 +83,7 @@ export function Cabecera({ monedas, nivel, xp, usuario, alAbrirAjustes }: Props)
                 className={styles.menuOpcion}
                 onClick={() => {
                   setMenuAbierto(false);
-                  alAbrirAjustes();
+                  alAbrir("ajustes");
                 }}
               >
                 Ajustes

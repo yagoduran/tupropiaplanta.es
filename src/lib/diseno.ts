@@ -26,8 +26,20 @@ interface Marco {
 }
 
 const MARCOS = {
-  panel: { t: ["o", "b1", "b2", "d2"], l: ["o", "b1", "b2", "d2"], r: ["o", "b2", "b2", "b1"], b: ["o", "b2", "b2", "b1"], f: "c" },
-  panel_oscuro: { t: ["o", "b2", "d2", "o"], l: ["o", "b2", "d2", "o"], r: ["o", "d2", "d2", "b2"], b: ["o", "d2", "d2", "b2"], f: "s" },
+  panel: {
+    t: ["o", "b1", "b2", "d2"],
+    l: ["o", "b1", "b2", "d2"],
+    r: ["o", "b2", "b2", "b1"],
+    b: ["o", "b2", "b2", "b1"],
+    f: "c",
+  },
+  panel_oscuro: {
+    t: ["o", "b2", "d2", "o"],
+    l: ["o", "b2", "d2", "o"],
+    r: ["o", "d2", "d2", "b2"],
+    b: ["o", "d2", "d2", "b2"],
+    f: "s",
+  },
   boton: { t: ["o", "l3"], l: ["o", "l3"], r: ["o", "l1"], b: ["o", "l1", "l1"], f: "l2" },
   boton_hover: { t: ["o", "l4"], l: ["o", "l4"], r: ["o", "l2"], b: ["o", "l1", "l1"], f: "l3" },
   boton_pulsado: { t: ["o", "l1"], l: ["o", "l1"], r: ["o", "l2"], b: ["o", "l2"], f: "l2" },
@@ -78,22 +90,57 @@ export function marco(id: IdMarco, u: number | string): EstiloMarco {
 }
 
 export const ICONOS = [
-  "agua", "nutrientes", "luz", "temperatura", "ph", "salud", "tiempo", "fase",
-  "regar", "abonar", "podar", "ajustar_luz", "cosechar", "anuncio",
-  "cultivo", "tienda", "semillas", "logros", "ranking", "ajustes",
-  "moneda", "nivel", "menu", "cerrar", "aviso", "email", "candado",
+  "agua",
+  "nutrientes",
+  "luz",
+  "temperatura",
+  "ph",
+  "salud",
+  "tiempo",
+  "fase",
+  "regar",
+  "abonar",
+  "podar",
+  "ajustar_luz",
+  "cosechar",
+  "anuncio",
+  "cultivo",
+  "tienda",
+  "semillas",
+  "logros",
+  "ranking",
+  "ajustes",
+  "moneda",
+  "nivel",
+  "menu",
+  "cerrar",
+  "aviso",
+  "email",
+  "candado",
 ] as const;
 
 export type IdIcono = (typeof ICONOS)[number];
 
 export const FASES = [
-  "Semilla", "Brote", "Plántula", "Vegetativo joven",
-  "Vegetativo adulto", "Prefloración", "Floración", "Cosecha lista",
+  "Semilla",
+  "Brote",
+  "Plántula",
+  "Vegetativo joven",
+  "Vegetativo adulto",
+  "Prefloración",
+  "Floración",
+  "Cosecha lista",
 ] as const;
 
 export const ESTADOS = [
-  "sana", "sedienta", "exceso_agua", "falta_nutrientes",
-  "plaga", "hongo", "muriendo", "muerta",
+  "sana",
+  "sedienta",
+  "exceso_agua",
+  "falta_nutrientes",
+  "plaga",
+  "hongo",
+  "muriendo",
+  "muerta",
 ] as const;
 
 export type Estado = (typeof ESTADOS)[number];

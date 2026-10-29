@@ -1,4 +1,5 @@
 import { marco, type IdIcono } from "@/lib/diseno";
+import type { PantallaJuego } from "@/lib/juego";
 import { Icono } from "./Icono";
 import styles from "./juego.module.css";
 
@@ -12,7 +13,7 @@ const PESTANAS: { id: IdIcono; etiqueta: string }[] = [
 ];
 
 interface Props {
-  activa: IdIcono;
+  activa: PantallaJuego;
   alElegir: (id: IdIcono) => void;
   /** Pestaña con una novedad pendiente. */
   marcada?: IdIcono;

@@ -11,6 +11,7 @@ import {
   usarObjeto,
   hacerAccion,
   obtenerEstado,
+  obtenerMiPerfil,
   obtenerRanking,
   plantarSemilla,
   reclamarDiaria,
@@ -29,12 +30,14 @@ import {
   type Accion,
   type AjustesJuego,
   type DatosRanking,
+  type PantallaJuego,
   type EstadoJuego,
   type RespuestaAccion,
 } from "@/lib/juego";
 import { LOGRO_POR_ID } from "@/lib/logros";
 import { PLAGAS, TRATAMIENTOS } from "@/lib/plagas";
 import type { Efecto } from "@/lib/sonido";
+import type { DatosPerfil } from "@/lib/perfil";
 import { Ajustes } from "./Ajustes";
 import { Bocadillo } from "./Bocadillo";
 import { Escena } from "./Escena";
@@ -49,6 +52,8 @@ import { Planta } from "./Planta";
 import { Plaga } from "./Plaga";
 import { Decoracion } from "./Decoracion";
 import { Logros } from "./Logros";
+import { MisPlantas } from "./MisPlantas";
+import { Perfil } from "./Perfil";
 import { Ranking } from "./Ranking";
 import { Semillas } from "./Semillas";
 import { Tienda } from "./Tienda";
@@ -80,12 +85,13 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         setAviso({ texto: MENSAJES_ERROR.red, icono: "aviso" });
       }
     });
-  const [pantalla, setPantalla] = useState<IdIcono>("cultivo");
+  const [pantalla, setPantalla] = useState<PantallaJuego>("cultivo");
   const [tutorial, setTutorial] = useState(!inicial.perfil.tutorial_hecho);
   const [repeticion, setRepeticion] = useState(false);
   const [anuncioAbierto, setAnuncioAbierto] = useState(false);
   const [ampliando, setAmpliando] = useState(false);
   const [ranking, setRanking] = useState<DatosRanking | null>(null);
+  const [datosPerfil, setDatosPerfil] = useState<DatosPerfil | null>(null);
 
   const aplicar = useCallback((nuevo: EstadoJuego) => {
     setEstado({ perfil: nuevo.perfil, planta: nuevo.planta });
@@ -231,8 +237,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     return permiso === "granted";
   };
 
-  const elegirPantalla = (id: IdIcono) => {
+  const elegirPantalla = (id: PantallaJuego) => {
     if (
+      id === "perfil" ||
+      id === "plantas" ||
       id === "cultivo" ||
       id === "ajustes" ||
       id === "tienda" ||
@@ -242,6 +250,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     ) {
       sonar("pestana");
       setPantalla(id);
+      if (id === "perfil" || id === "plantas")
+        obtenerMiPerfil()
+          .then(setDatosPerfil)
+          .catch(() => setDatosPerfil(null));
       if (id === "ranking")
         obtenerRanking()
           .then(setRanking)
@@ -417,6 +429,18 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           <Logros perfil={perfil} ocupado={enCurso} aviso={aviso} alReclamar={reclamar} />
         ) : pantalla === "ranking" ? (
           <Ranking datos={ranking} />
+        ) : pantalla === "perfil" ? (
+          <Perfil
+            usuario={perfil.usuario}
+            nivel={perfil.nivel}
+            xp={perfil.xp}
+            xpPct={perfil.xp_pct}
+            avatar={perfil.ajustes.avatar}
+            datos={datosPerfil}
+            alElegirAvatar={(avatar) => cambiarAjustes({ avatar })}
+          />
+        ) : pantalla === "plantas" ? (
+          <MisPlantas datos={datosPerfil} />
         ) : pantalla === "semillas" ? (
           <Semillas
             nivel={perfil.nivel}

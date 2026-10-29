@@ -4,10 +4,15 @@ import { tonoPorPorcentaje, type Medidor } from "./estado";
 
 export type Accion = "regar" | "abonar" | "podar" | "ajustar_luz" | "cosechar";
 
+/** Pantallas del juego: las pestañas y las dos del menú de usuario. */
+export type PantallaJuego = IdIcono | "perfil" | "plantas";
+
 export interface AjustesJuego {
   volumen_efectos: number;
   volumen_musica: number;
   avisos: boolean;
+  /** Avatar elegido (ver `AVATARES`). */
+  avatar?: string;
   /** Si es true, el jugador no sale en el ranking. */
   ranking_oculto?: boolean;
 }

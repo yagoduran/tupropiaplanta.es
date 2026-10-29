@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { marco, type IdIcono } from "@/lib/diseno";
-import type { PerfilJuego } from "@/lib/juego";
+import type { PantallaJuego, PerfilJuego } from "@/lib/juego";
 import { BannerMovil } from "./BannerMovil";
 import { Cabecera } from "./Cabecera";
 import { Pestanas } from "./Pestanas";
@@ -15,8 +15,8 @@ interface Props {
   escena: ReactNode;
   panelAcciones: ReactNode;
   /** Pantalla de la pestaña activa. */
-  pantalla: IdIcono;
-  alElegirPantalla: (id: IdIcono) => void;
+  pantalla: PantallaJuego;
+  alElegirPantalla: (id: PantallaJuego) => void;
   /** Contenido de las pantallas que no son el cultivo. */
   secundaria?: ReactNode;
   /** Capas por encima de todo el juego, como el tutorial. */
@@ -46,7 +46,8 @@ export function JuegoLayout({
         nivel={perfil.nivel}
         xp={perfil.xp_pct}
         usuario={perfil.usuario}
-        alAbrirAjustes={() => alElegirPantalla("ajustes")}
+        avatar={perfil.ajustes.avatar}
+        alAbrir={alElegirPantalla}
       />
       <main className={styles.principal}>
         <div className={styles.lateral}>

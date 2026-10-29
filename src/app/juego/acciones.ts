@@ -1,6 +1,7 @@
 "use server";
 
 import { crearClienteServidor } from "@/lib/supabase/servidor";
+import type { DatosPerfil } from "@/lib/perfil";
 import type { Accion, AjustesJuego, DatosRanking, EstadoJuego, RespuestaAccion } from "@/lib/juego";
 
 const ACCIONES: Accion[] = ["regar", "abonar", "podar", "ajustar_luz", "cosechar"];
@@ -63,6 +64,14 @@ export async function obtenerRanking(): Promise<DatosRanking | null> {
   const { data, error } = await supabase.rpc("tpp_ranking");
   if (error || !data) return null;
   return data as DatosRanking;
+}
+
+/** Datos de Mi perfil y Mis plantas. Devuelve null si falla. */
+export async function obtenerMiPerfil(): Promise<DatosPerfil | null> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_mi_perfil");
+  if (error || !data) return null;
+  return data as DatosPerfil;
 }
 
 /** Recoge el regalo diario. */
