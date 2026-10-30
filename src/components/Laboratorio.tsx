@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { PRECIO_ACELERAR, rarezasPosibles, type DatosCruces, type ResultadoCruce } from "@/lib/cruces";
 import { marco } from "@/lib/diseno";
-import { RAREZAS, VARIEDAD_POR_ID, rasgosDe, type Rasgos } from "@/lib/variedades";
+import { RAREZAS, VARIEDAD_POR_ID, hojaHibridoPropio, rasgosDe, type Rasgos } from "@/lib/variedades";
 import { AnimacionCruce, ANIM_APERTURA, ANIM_CAPULLO_QUIETO, ANIM_PROBETA } from "./AnimacionCruce";
 import { IconoProgresion } from "./IconoProgresion";
 import styles from "./progresion.module.css";
@@ -111,7 +111,7 @@ function Resultado({
       ) : (
         <section className={styles.tarjeta} style={marco("panel", "var(--u)")} aria-label="Semilla nueva">
           <div className={styles.vista}>
-            <Sprite hoja={res.hoja} />
+            <Sprite hoja={res.fija ? res.hoja : hojaHibridoPropio(res.id)} />
             <div>
               <p className={styles.pequeno}>
                 <Etiqueta rareza={res.rareza} /> {res.fija ? "Variedad especial" : "Híbrido propio"}

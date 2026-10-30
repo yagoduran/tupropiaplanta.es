@@ -226,10 +226,23 @@ export interface HibridoPropio {
   sabor: number;
 }
 
+/** Hoja de un híbrido propio: una de las 7 hojas de híbrido, siempre la misma para el mismo id. */
+export function hojaHibridoPropio(id: string) {
+  let h = 0;
+  for (const c of id) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return `hibrido-${(h % 7) + 1}`;
+}
+
 /** Añade los híbridos del jugador a la lista de variedades para poder dibujarlos y nombrarlos. */
 export function registrarHibridas(propias: HibridoPropio[]) {
   for (const h of propias) {
-    VARIEDAD_POR_ID[h.id] = { ...h, nivel: 1, descripcion: "Híbrido propio.", hibrida: true };
+    VARIEDAD_POR_ID[h.id] = {
+      ...h,
+      hoja: hojaHibridoPropio(h.id),
+      nivel: 1,
+      descripcion: "Híbrido propio.",
+      hibrida: true,
+    };
   }
 }
 
