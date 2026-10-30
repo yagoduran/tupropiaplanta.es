@@ -283,7 +283,9 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         // Sin conexión: se vuelve a intentar en la siguiente revisión.
       }
     };
-    const id = setInterval(() => revisar(), REVISION_MS);
+    const id = setInterval(() => {
+      if (!document.hidden) revisar();
+    }, REVISION_MS);
     const alVolver = () => {
       if (document.visibilityState === "visible") revisar(true);
     };

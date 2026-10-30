@@ -47,6 +47,9 @@ export interface DatosEstadisticas {
   monedas_ganadas: number;
   /** Primer día con monedas registradas; antes de eso no hay datos de monedas. */
   desde: string | null;
+  /** Horas jugadas en total y en cada día de la semana en curso. */
+  horas: number;
+  horas_semana: { dia: string; horas: number }[];
   semanas: { inicio: string; n: number }[];
   dias: { dia: string; monedas: number }[];
   variedades: { variedad: string; n: number }[];

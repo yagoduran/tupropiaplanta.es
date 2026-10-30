@@ -8,6 +8,7 @@ import { IconoObjeto } from "./IconoObjeto";
 import styles from "./progresion.module.css";
 
 const miles = (n: number) => n.toLocaleString("es-ES", { useGrouping: "always" });
+const DIAS = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 const dia = (iso: string) => new Date(`${iso}T12:00:00`).getDate();
 const semana = (iso: string) =>
   new Date(`${iso}T12:00:00`).toLocaleDateString("es-ES", { day: "numeric", month: "short" });
@@ -29,6 +30,8 @@ export function Estadisticas({ datos }: { datos: DatosEstadisticas | null }) {
   const totalSemanas = datos.semanas.reduce((a, s) => a + s.n, 0);
   const maxDia = Math.max(1, ...datos.dias.map((d) => d.monedas));
   const mediaDia = Math.round(datos.dias.reduce((a, d) => a + d.monedas, 0) / datos.dias.length);
+  const maxHoras = Math.max(1, ...datos.horas_semana.map((h) => h.horas));
+  const totalHoras = datos.horas_semana.reduce((a, h) => a + h.horas, 0);
   const maxVariedad = Math.max(1, ...datos.variedades.map((v) => v.n));
 
   // Línea en escalones de los últimos 14 días.
@@ -45,7 +48,11 @@ export function Estadisticas({ datos }: { datos: DatosEstadisticas | null }) {
   const totales = [
     { icono: <IconoObjeto celda={[3, 5]} k={1} />, valor: miles(datos.cosechas), nombre: "Cosechas totales" },
     { icono: <IconoObjeto celda={[0, 5]} k={1} />, valor: miles(datos.monedas_ganadas), nombre: "Monedas ganadas*" },
-    { icono: <Icono id="tiempo" k={3} />, valor: `${datos.dias_cuenta} días`, nombre: "Con tu cuenta" },
+    {
+      icono: <Icono id="tiempo" k={3} />,
+      valor: `${datos.horas.toLocaleString("es-ES", { maximumFractionDigits: 1 })} h`,
+      nombre: "Horas jugadas*",
+    },
     { icono: <IconoObjeto celda={[8, 5]} k={1} />, valor: `${datos.racha_max} días`, nombre: "Racha más larga" },
   ];
 
@@ -105,6 +112,28 @@ export function Estadisticas({ datos }: { datos: DatosEstadisticas | null }) {
           <div className={styles.etiquetas}>
             {datos.dias.map((d, i) => (
               <span key={d.dia}>{i % 2 === 0 ? dia(d.dia) : ""}</span>
+            ))}
+          </div>
+        </section>
+        <section className={styles.tarjeta} style={panel} aria-label="Horas jugadas">
+          <p className={styles.subtitulo}>
+            Horas jugadas
+            <span>Esta semana {totalHoras.toLocaleString("es-ES", { maximumFractionDigits: 1 })} h</span>
+          </p>
+          <div className={styles.barras}>
+            {datos.horas_semana.map((h) => (
+              <div key={h.dia} className={styles.barraColumna}>
+                {h.horas > 0 && <span>{h.horas.toLocaleString("es-ES")}</span>}
+                <div
+                  className={styles.barra}
+                  style={{ height: `${(100 * h.horas) / maxHoras}%`, background: "#9b6fd6" }}
+                />
+              </div>
+            ))}
+          </div>
+          <div className={styles.etiquetas}>
+            {datos.horas_semana.map((h) => (
+              <span key={h.dia}>{DIAS[new Date(`${h.dia}T12:00:00`).getDay()]}</span>
             ))}
           </div>
         </section>
