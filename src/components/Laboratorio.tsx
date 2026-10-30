@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { PRECIO_ACELERAR, rarezasPosibles, type DatosCruces, type ResultadoCruce } from "@/lib/cruces";
 import { marco } from "@/lib/diseno";
 import { RAREZAS, VARIEDAD_POR_ID, rasgosDe, type Rasgos } from "@/lib/variedades";
+import { AnimacionCruce, ANIM_APERTURA, ANIM_CAPULLO_QUIETO, ANIM_PROBETA } from "./AnimacionCruce";
 import { IconoProgresion } from "./IconoProgresion";
 import styles from "./progresion.module.css";
 
@@ -104,7 +105,7 @@ function Resultado({
           style={marco("panel", "var(--u)")}
           aria-live="polite"
         >
-          <IconoProgresion celda={[2, 0]} k={5} />
+          <AnimacionCruce cuadros={ANIM_APERTURA} k={3} />
           <p className={styles.subtitulo}>Abriendo el capullo…</p>
         </section>
       ) : (
@@ -255,7 +256,16 @@ export function Laboratorio({ datos, recibidoEn, monedas, ocupado, alIniciar, al
         <section className={styles.tarjeta} style={marco("panel", "var(--u)")} aria-label="Cruce">
           <div className={styles.parejaCruce}>
             {hueco(va, "Planta 1")}
-            <IconoProgresion celda={cruce ? (listo ? [2, 0] : [0, 0]) : [1, 0]} k={2} apagado={!completo} />
+            {cruce ? (
+              <AnimacionCruce
+                key={listo ? "capullo" : "probeta"}
+                cuadros={listo ? ANIM_CAPULLO_QUIETO : ANIM_PROBETA}
+                bucle
+                k={2}
+              />
+            ) : (
+              <IconoProgresion celda={[1, 0]} k={2} apagado={!completo} />
+            )}
             {hueco(vb, "Planta 2")}
           </div>
           <p className={styles.subtitulo}>

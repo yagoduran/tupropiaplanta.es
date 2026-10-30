@@ -32,6 +32,7 @@
 - Ahora suena solo el ambiente (pájaros de día, habitación al atardecer, grillos de noche). Para añadir canciones: copiar los mp3 a `public/assets/musica/` y poner sus nombres en `CANCIONES` (`src/lib/musica.ts`); pasan a sonar una detrás de otra en lugar del ambiente.
 
 ## Ideas pendientes de plagas
-- Dibujos propios de plaga/hongo por variedad (ahora se dibuja encima de cualquier planta).
+- ✅ Dibujos de plaga/hongo por variedad: hechos (5 hojas).
+- ✅ Animación del cruce en el Laboratorio (probeta, capullo, destello): hecha.
 - ✅ Avisos del navegador (sed, plaga, lista para cosechar): hechos; solo con el navegador abierto.
 - ✅ Logros de plagas eliminadas (10 y 50) y de huecos (4 y 8): hechos.
