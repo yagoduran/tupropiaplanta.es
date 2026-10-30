@@ -15,7 +15,6 @@ Interruptor de mantenimiento: en Vercel → Settings → Environment Variables, 
 Siguen pendientes:
 | Pantalla | Esfuerzo | Nota |
 |---|---|---|
-| Temporadas (primavera, verano, otoño, invierno) | 🟢 | Dibujos ya en `public/assets/temporadas`; pensados para eventos |
 
 ## Progresión (juego nuevo, necesitan base de datos)
 ✅ Hechas: Inventario (huecos de cultivo y objetos) y Estadísticas (totales y gráficas; sin «horas jugadas», porque no se mide el tiempo de juego), ambas desde el menú de usuario.
@@ -31,7 +30,7 @@ Siguen pendientes:
 ✅ Regalos (monedas, agua, abono; 3 al día): hechos.
 ✅ Eventos de temporada y pase de temporada: hechos.
 ✅ Mercado (objetos y abonos, público, comisión 5 %, caduca a los 3 días, precio de 0,5× a 5× la tienda, máx. 10 ofertas y 10 compras al día): hecho. Sin texto libre ni semillas.
-Los dibujos de **temporadas** (primavera, verano, otoño, invierno: ventana, luz, decoración) ya están en `public/assets/temporadas` pero no se usan: 🟢 aplicarlos según la fecha.
+✅ Temporadas visuales: hechas. Según la fecha (Madrid; primavera 20/3, verano 21/6, otoño 22/9, invierno 21/12) la escena pone la ventana, la decoración y la luz de la estación; en las habitaciones con escena propia solo la decoración.
 
 ## Arte
 ✅ Plantas sin maceta, bombilla y luces nuevas, y crecimiento visible dentro de cada fase (hechos).
