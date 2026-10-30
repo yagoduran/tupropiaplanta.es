@@ -132,6 +132,15 @@ export function Ajustes({ ajustes, alCambiar, alVerTutorial, alBorrar }: Props) 
           >
             Avisar de un error
           </a>
+          <a
+            className={styles.accion}
+            style={{ ...secundario, textDecoration: "none", textAlign: "center" }}
+            href="/contacto?asunto=Soy%20creador%20de%20contenido"
+            target="_blank"
+            rel="noopener"
+          >
+            Soy creador de contenido
+          </a>
         </div>
 
         {donarActivo && (

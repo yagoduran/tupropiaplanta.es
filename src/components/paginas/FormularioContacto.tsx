@@ -5,7 +5,14 @@ import { useState, type FormEvent } from "react";
 import { enviarContacto } from "@/app/contacto/acciones";
 import styles from "./paginas.module.css";
 
-const ASUNTOS = ["Problema técnico", "Mi cuenta", "Monedas y compras", "Sugerencia", "Otro"];
+const ASUNTOS = [
+  "Problema técnico",
+  "Mi cuenta",
+  "Monedas y compras",
+  "Sugerencia",
+  "Soy creador de contenido",
+  "Otro",
+];
 
 export function FormularioContacto({ correo }: { correo: string }) {
   const pedido = useSearchParams().get("asunto");

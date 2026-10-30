@@ -1,5 +1,6 @@
 "use client";
 
+import { InsigniaCreador } from "./InsigniaCreador";
 import { marco } from "@/lib/diseno";
 import type { PerfilPublicoDatos } from "@/lib/amigos";
 import { MENSAJES_ERROR } from "@/lib/juego";
@@ -60,7 +61,10 @@ export function PerfilPublico({ datos, ocupado, alVolver, alVisitar, alEnviar, a
         <div className={styles.jugador}>
           <AvatarJugador jugador={j} k={3} />
           <span className={styles.jugadorTexto}>
-            <strong>{j.usuario}</strong>
+            <strong>
+              {j.usuario}
+              {j.creador && <InsigniaCreador k={2} />}
+            </strong>
             <span>{lineaJugador(j)}</span>
           </span>
         </div>

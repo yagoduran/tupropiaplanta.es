@@ -54,6 +54,7 @@ export interface FilaRanking {
   nivel: number;
   cosechas: number;
   yo: boolean;
+  creador?: boolean;
 }
 
 export type AmbitoRanking = "mundial" | "nacional" | "amigos";

@@ -1,5 +1,6 @@
 "use client";
 
+import { InsigniaCreador } from "./InsigniaCreador";
 import { marco } from "@/lib/diseno";
 import type { AmbitoRanking, DatosRanking } from "@/lib/juego";
 import { nombreDePais } from "@/lib/paises";
@@ -76,6 +77,7 @@ export function Ranking({ datos, ambito, alCambiarAmbito }: Props) {
                 </span>
                 <span className={styles.nombre}>
                   {f.usuario}
+                  {f.creador && <InsigniaCreador />}
                   {f.yo && " (tú)"}
                 </span>
                 <span className={styles.nivel}>

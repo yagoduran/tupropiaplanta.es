@@ -8,6 +8,7 @@ export interface Jugador {
   titulo: string | null;
   marco: string | null;
   prestigio: number;
+  creador?: boolean;
 }
 
 export interface Amigo extends Jugador {
