@@ -88,6 +88,7 @@ import { PLAGAS, TRATAMIENTOS } from "@/lib/plagas";
 import type { Efecto } from "@/lib/sonido";
 import type { DatosEstadisticas, DatosPerfil } from "@/lib/perfil";
 import type { DatosProgresion } from "@/lib/progresion";
+import { Regadera } from "./Regadera";
 import { registrarHibridas } from "@/lib/variedades";
 import { DESAFIO_POR_ID, type DatosDesafios } from "@/lib/desafios";
 import type { DatosMaestria } from "@/lib/maestria";
@@ -177,6 +178,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [tutorial, setTutorial] = useState(!inicial.perfil.tutorial_hecho);
   const [repeticion, setRepeticion] = useState(false);
   const [anuncioAbierto, setAnuncioAbierto] = useState(false);
+  const [regando, setRegando] = useState(false);
   const [ranking, setRanking] = useState<DatosRanking | null>(null);
   const [ambitoRanking, setAmbitoRanking] = useState<AmbitoRanking>("mundial");
   const [datosPerfil, setDatosPerfil] = useState<DatosPerfil | null>(null);
@@ -1183,6 +1185,15 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             />
           )}
           {plaga && <Plaga plaga={plaga} variedad={planta?.variedad} />}
+          {regando && !bloqueadas.regar && (
+            <Regadera
+              alTerminar={() => {
+                setRegando(false);
+                accionar("regar");
+              }}
+              alCancelar={() => setRegando(false)}
+            />
+          )}
           {aviso ? (
             <Bocadillo texto={aviso.texto} icono={aviso.icono} />
           ) : plaga && producto ? (
@@ -1264,7 +1275,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         <PanelAcciones
           esperas={esperas}
           bloqueadas={bloqueadas}
-          alAccionar={accionar}
+          alAccionar={(a) => (a === "regar" ? setRegando((r) => !r) : accionar(a))}
           ayudasRestantes={perfil.anuncios.restantes}
           alVerAnuncio={() => setAnuncioAbierto(true)}
         />

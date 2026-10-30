@@ -896,3 +896,90 @@
   font-size: 12px;
   opacity: 0.7;
 }
+
+.regadera {
+  position: absolute;
+  z-index: 6;
+  width: calc(32px * var(--s));
+  height: calc(32px * var(--s));
+  background-image: url(/assets/sprites/tpp-regadera-1x.png);
+  background-size: calc(96px * var(--s)) calc(32px * var(--s));
+  cursor: grab;
+  touch-action: none;
+}
+
+.regadera:active {
+  cursor: grabbing;
+}
+
+.gota {
+  position: absolute;
+  top: calc(26px * var(--s));
+  width: calc(16px * var(--s));
+  height: calc(16px * var(--s));
+  background-image: url(/assets/sprites/tpp-gotas-1x.png);
+  background-size: calc(64px * var(--s)) calc(16px * var(--s));
+  animation:
+    caidaGota 0.54s steps(1) infinite,
+    bajaGota 0.54s linear infinite;
+}
+
+@keyframes caidaGota {
+  0% {
+    background-position: 0 0;
+  }
+  25% {
+    background-position: calc(-16px * var(--s)) 0;
+  }
+  50% {
+    background-position: calc(-32px * var(--s)) 0;
+  }
+  75% {
+    background-position: calc(-48px * var(--s)) 0;
+  }
+}
+
+@keyframes bajaGota {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(18px * var(--s)));
+  }
+}
+
+.barraRiego {
+  position: absolute;
+  z-index: 7;
+  right: calc(4px * var(--s));
+  top: calc(4px * var(--s));
+  width: calc(28px * var(--s));
+  height: calc(4px * var(--s));
+  background: #1c1626;
+  outline: var(--u) solid #1c1626;
+}
+
+.barraRiego span {
+  display: block;
+  height: 100%;
+  background: #4aa3df;
+}
+
+.cancelarRiego {
+  position: absolute;
+  z-index: 7;
+  right: calc(4px * var(--s));
+  top: calc(12px * var(--s));
+  padding: 0 calc(var(--u) * 2);
+  border: var(--u) solid #1c1626;
+  background: #f6eed6;
+  color: #1c1626;
+  font-family: var(--fuente-pixel);
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gota {
+    animation: caidaGota 0.54s steps(1) infinite;
+  }
+}
