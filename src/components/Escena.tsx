@@ -61,7 +61,7 @@ export function Escena({
       )}
       {estacion("decoracion")}
       {momento !== "noche" && !fondo && estacion("luz")}
-      {luz && <Lampara luz={luz} />}
+      {luz && <Lampara luz={luz} apagada={momento === "noche"} />}
       {children}
     </>
   );

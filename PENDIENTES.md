@@ -2,7 +2,7 @@
 
 ## Diseños que faltan pedir a Claude Design
 - ✅ Plantas sin maceta, bombilla y luces nuevas: hechos (29/10/2026).
-- **Lámpara de la escena apagada de noche** (opcional): la hoja de luces trae el sprite apagado, pero ahora la lámpara se dibuja siempre encendida.
+- ✅ Lámpara apagada de noche (21:00–06:00, hora del jugador): hecho.
 
 ## Funciones por hacer
 - Huecos de cultivo múltiples ✅ (fase 7): hasta 3; hueco 2 = 2.500 monedas y nivel 8, hueco 3 = 10.000 y nivel 15 (tabla en `tpp.hueco_coste`). Mejoras posibles: dibujo propio de cada hueco, aviso del navegador por planta, logro por tener todos los huecos.
