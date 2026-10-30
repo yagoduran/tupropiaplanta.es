@@ -268,9 +268,91 @@
 }
 
 .pestanas {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: var(--tab-gap);
+}
+
+.masVelo {
+  display: none;
+}
+
+.mas {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + var(--tab-gap));
+  z-index: 20;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  padding: calc(var(--u) * 5);
+  color: #1c1626;
+}
+
+.masCategoria {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.masTitulo {
+  padding-bottom: 4px;
+  border-bottom: calc(var(--u) * 1) solid #a8845c;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #5f3c26;
+}
+
+.masItems {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.masItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 calc(var(--u) * 3);
+  font-family: inherit;
+  font-size: var(--f-stat);
+  font-weight: 700;
+  color: #1c1626;
+  text-align: left;
+  cursor: pointer;
+}
+
+.masItem[data-activo] {
+  outline: calc(var(--u) * 1) solid #36a33b;
+  outline-offset: calc(var(--u) * -2);
+}
+
+.masEtiqueta {
+  flex: 1;
+  min-width: 0;
+}
+
+.contador {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #b9512a;
+  border: calc(var(--u) * 1) solid #1c1626;
+  color: #f6eed6;
+  font-family: var(--fuente-pixel);
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .pestana {
@@ -676,6 +758,47 @@
     padding: 6px;
     background: #4b3a5e;
     border-top: var(--u) solid #1c1626;
+  }
+
+  .masVelo {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: var(--tab-h);
+    background: rgba(28, 22, 38, 0.6);
+  }
+
+  .mas {
+    position: fixed;
+    bottom: var(--tab-h);
+    max-height: calc(100dvh - var(--head-h) - var(--tab-h));
+    overflow-y: auto;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .masItems {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .masItem {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 6px;
+    min-height: 80px;
+    padding: 8px 9px 10px;
+    font-size: 13px;
+    line-height: 1.15;
+  }
+
+  .masItem .contador {
+    position: absolute;
+    top: 6px;
+    right: 6px;
   }
 
   .pestana {

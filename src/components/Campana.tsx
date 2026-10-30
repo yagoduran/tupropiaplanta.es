@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { marco } from "@/lib/diseno";
-import { haceCuanto, type DatosNotificaciones, type Notificacion } from "@/lib/misiones";
-import { Icono } from "./Icono";
+import type { PantallaJuego } from "@/lib/juego";
+import type { DatosNotificaciones } from "@/lib/misiones";
 import { IconoSocial } from "./IconoSocial";
+import { ListaAvisos } from "./ListaAvisos";
 import styles from "./juego.module.css";
 
 interface Props {
@@ -13,23 +14,12 @@ interface Props {
   datos: DatosNotificaciones | null;
   alAbrir: () => void;
   alLeer: (id: number | null) => void;
-}
-
-function IconoAviso({ tipo }: { tipo: Notificacion["tipo"] }) {
-  if (tipo === "mision" || tipo === "encargo" || tipo === "disponible") return <IconoSocial id="mision" k={1.5} />;
-  if (tipo === "amigo" || tipo === "visita") return <IconoSocial id="amigo" k={1.5} />;
-  if (tipo === "evento") return <IconoSocial id="estrella_temporada" k={1.5} />;
-  if (tipo === "pase") return <IconoSocial id="pase" k={1.5} />;
-  if (tipo === "regalo") return <IconoSocial id="regalo" k={1.5} />;
-  if (tipo === "mercado") return <IconoSocial id="mercado" k={1.5} />;
-  if (tipo === "saludo") return <IconoSocial id="saludo" k={1.5} />;
-  return (
-    <Icono id={tipo === "sed" ? "agua" : tipo === "plaga" || tipo === "robo" ? "aviso" : tipo === "nivel" ? "nivel" : "logros"} k={2} />
-  );
+  /** Abre la pantalla a la que lleva el aviso pulsado. */
+  alIr: (pantalla: PantallaJuego) => void;
 }
 
 /** Campana de la cabecera: contador de avisos sin leer y lista de los últimos. */
-export function Campana({ avisos, datos, alAbrir, alLeer }: Props) {
+export function Campana({ avisos, datos, alAbrir, alLeer, alIr }: Props) {
   const [abierta, setAbierta] = useState(false);
   const panel = marco("panel", "var(--u)");
   const sinLeer = datos?.no_leidas ?? avisos;
@@ -66,22 +56,14 @@ export function Campana({ avisos, datos, alAbrir, alLeer }: Props) {
               No tienes avisos.
             </p>
           ) : (
-            datos.lista.map((n) => (
-              <button
-                key={n.id}
-                type="button"
-                className={styles.aviso}
-                style={{ background: n.leida ? "#f6eed6" : "#fff" }}
-                onClick={() => !n.leida && alLeer(n.id)}
-              >
-                <IconoAviso tipo={n.tipo} />
-                <span className={styles.avisoTexto}>
-                  <strong>{n.titulo}</strong>
-                  <span>{n.texto}</span>
-                  <span className={styles.avisoCuando}>{haceCuanto(n.hace)}</span>
-                </span>
-              </button>
-            ))
+            <ListaAvisos
+              lista={datos.lista}
+              alPulsar={(n, destino) => {
+                if (!n.leida) alLeer(n.id);
+                setAbierta(false);
+                alIr(destino);
+              }}
+            />
           )}
         </div>
       )}

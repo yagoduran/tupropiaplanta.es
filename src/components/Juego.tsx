@@ -138,6 +138,7 @@ import type {
   PerfilPublicoDatos,
   Resultado as ResultadoBusqueda,
 } from "@/lib/amigos";
+import { Avisos } from "./Avisos";
 import { Campana } from "./Campana";
 import { Prestigio } from "./Prestigio";
 import { AnuncioPrueba } from "./AnuncioPrueba";
@@ -429,9 +430,11 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "semillas" ||
       id === "abonos" ||
       id === "logros" ||
-      id === "ranking"
+      id === "ranking" ||
+      id === "avisos"
     ) {
       sonar("pestana");
+      if (id === "avisos") abrirCampana();
       setPantalla(id);
       if (id === "estadisticas")
         obtenerEstadisticas()
@@ -1054,8 +1057,21 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     <JuegoLayout
       perfil={perfil}
       pantalla={pantalla}
-      campana={<Campana avisos={perfil.avisos} datos={notificaciones} alAbrir={abrirCampana} alLeer={leerAvisos} />}
-      marcada={perfil.diaria.disponible && !tutorial ? "logros" : undefined}
+      campana={
+        <Campana
+          avisos={perfil.avisos}
+          datos={notificaciones}
+          alAbrir={abrirCampana}
+          alLeer={leerAvisos}
+          alIr={elegirPantalla}
+        />
+      }
+      contadores={{ misiones: perfil.misiones_listas, diaria: perfil.diaria.disponible, avisos: perfil.avisos }}
+      alVerTutorial={verTutorial}
+      alAbrirDiaria={() => {
+        if (perfil.diaria.disponible) setDiariaAbierta(true);
+        else setAviso({ texto: "Ya has recogido la entrada de hoy. Vuelve mañana.", icono: "aviso" });
+      }}
       superposicion={
         tutorial && pantalla === "cultivo" && planta ? (
           <Tutorial
@@ -1139,6 +1155,15 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           />
         ) : pantalla === "logros" ? (
           <Logros perfil={perfil} ocupado={enCurso} aviso={aviso} alReclamar={reclamar} />
+        ) : pantalla === "avisos" ? (
+          <Avisos
+            datos={notificaciones}
+            alLeerTodo={() => leerAvisos(null)}
+            alPulsar={(n, destino) => {
+              if (!n.leida) leerAvisos(n.id);
+              elegirPantalla(destino);
+            }}
+          />
         ) : pantalla === "ranking" ? (
           <Ranking datos={ranking} error={errorRanking} opciones={opcionesRanking} alCambiar={cargarRanking} />
         ) : pantalla === "perfil" ? (

@@ -1,3 +1,5 @@
+import type { PantallaJuego } from "./juego";
+
 export interface Mision {
   id: string;
   /** "d" diaria o "s" semanal. */
@@ -19,13 +21,47 @@ export interface DatosMisiones {
 
 export interface Notificacion {
   id: number;
-  tipo: "sed" | "plaga" | "mision" | "nivel" | "logro" | "amigo" | "visita" | "saludo" | "regalo" | "evento" | "pase" | "mercado" | "encargo" | "robo" | "disponible";
+  tipo:
+    | "sed"
+    | "plaga"
+    | "mision"
+    | "nivel"
+    | "logro"
+    | "amigo"
+    | "visita"
+    | "saludo"
+    | "regalo"
+    | "evento"
+    | "pase"
+    | "mercado"
+    | "encargo"
+    | "robo"
+    | "disponible";
   titulo: string;
   texto: string;
   /** Segundos desde que se creó. */
   hace: number;
   leida: boolean;
 }
+
+/** Pantalla a la que lleva cada tipo de aviso al pulsarlo. */
+export const DESTINO_AVISO: Record<Notificacion["tipo"], PantallaJuego> = {
+  sed: "cultivo",
+  plaga: "cultivo",
+  robo: "cultivo",
+  mision: "misiones",
+  nivel: "perfil",
+  logro: "logros",
+  amigo: "amigos",
+  visita: "amigos",
+  saludo: "amigos",
+  regalo: "amigos",
+  evento: "eventos",
+  pase: "pase",
+  mercado: "mercado",
+  encargo: "encargos",
+  disponible: "encargos",
+};
 
 export interface DatosNotificaciones {
   no_leidas: number;

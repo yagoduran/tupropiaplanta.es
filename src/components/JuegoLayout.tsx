@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { marco, type IdIcono } from "@/lib/diseno";
+import { marco } from "@/lib/diseno";
 import type { PantallaJuego, PerfilJuego } from "@/lib/juego";
 import { BannerMovil } from "./BannerMovil";
 import { Cabecera } from "./Cabecera";
@@ -22,8 +22,10 @@ interface Props {
   secundaria?: ReactNode;
   /** Capas por encima de todo el juego, como el tutorial. */
   superposicion?: ReactNode;
-  /** Pestaña con una novedad pendiente. */
-  marcada?: IdIcono;
+  /** Novedades que se anuncian en «Más». */
+  contadores: { misiones: number; diaria: boolean; avisos: number };
+  alVerTutorial: () => void;
+  alAbrirDiaria: () => void;
   /** Campana de avisos de la cabecera. */
   campana?: ReactNode;
 }
@@ -39,7 +41,9 @@ export function JuegoLayout({
   alElegirPantalla,
   secundaria,
   superposicion,
-  marcada,
+  contadores,
+  alVerTutorial,
+  alAbrirDiaria,
   campana,
 }: Props) {
   const marcoJuego = marco("panel_oscuro", "var(--u)");
@@ -91,7 +95,13 @@ export function JuegoLayout({
               </section>
             )}
           </div>
-          <Pestanas activa={pantalla} alElegir={alElegirPantalla} marcada={marcada} />
+          <Pestanas
+            activa={pantalla}
+            alElegir={alElegirPantalla}
+            contadores={contadores}
+            alVerTutorial={alVerTutorial}
+            alAbrirDiaria={alAbrirDiaria}
+          />
         </div>
         <div className={styles.lateral}>
           <Publicidad />
