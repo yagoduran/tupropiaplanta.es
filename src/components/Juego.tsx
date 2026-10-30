@@ -104,6 +104,7 @@ import type { DatosCruces, RespuestaCruce } from "@/lib/cruces";
 import { calcularBienvenida, guardarVisita, leerVisita, type Bienvenida as DatosBienvenida } from "@/lib/visita";
 import { Ajustes } from "./Ajustes";
 import { Bienvenida } from "./Bienvenida";
+import { PlantaMuerta } from "./PlantaMuerta";
 import { Bocadillo } from "./Bocadillo";
 import { Escena } from "./Escena";
 import { EstadoCompacto } from "./EstadoCompacto";
@@ -218,6 +219,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [cruces, setCruces] = useState<DatosCruces | null>(null);
   const [crucesEn, setCrucesEn] = useState(() => Date.now());
   const [bienvenida, setBienvenida] = useState<DatosBienvenida | null>(null);
+  const [muertaVista, setMuertaVista] = useState<string | null>(null);
 
   const aplicar = useCallback((nuevo: EstadoJuego) => {
     setEstado({ perfil: nuevo.perfil, planta: nuevo.planta });
@@ -1029,6 +1031,19 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           />
         ) : bienvenida ? (
           <Bienvenida usuario={perfil.usuario} datos={bienvenida} alContinuar={() => setBienvenida(null)} />
+        ) : planta && planta.vida === "muerta" && !planta.desafio && planta.id !== muertaVista ? (
+          <PlantaMuerta
+            planta={planta}
+            alCerrar={() => setMuertaVista(planta.id)}
+            alEmpezar={() => {
+              setMuertaVista(planta.id);
+              elegirPantalla("semillas");
+            }}
+            alEstadisticas={() => {
+              setMuertaVista(planta.id);
+              elegirPantalla("estadisticas");
+            }}
+          />
         ) : anuncioAbierto ? (
           <AnuncioPrueba
             monedas={perfil.anuncios.monedas}
