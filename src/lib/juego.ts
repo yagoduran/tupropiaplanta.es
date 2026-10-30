@@ -91,7 +91,7 @@ export interface PerfilJuego {
   logros_nuevos: string[];
   diaria: { racha: number; disponible: boolean; premios: number[] };
   /** Ayudas por ver anuncio que quedan hoy y monedas que da cada una. */
-  anuncios: { restantes: number; monedas: number };
+  anuncios: { restantes: number; monedas: number; recuperar: boolean };
   huecos: HuecosJuego;
   /** Semillas híbridas que tiene el jugador y sus híbridos propios. */
   hibridas: { semillas: string[]; propias: HibridoPropio[] };
@@ -241,6 +241,8 @@ export const MENSAJES_ERROR: Record<string, string> = {
   mision_no_lista: "Todavía no has completado esa misión.",
   encargo_desconocido: "Ese encargo ya no está disponible.",
   faltan_gramos: "Todavía no tienes los gramos que piden.",
+  recuperar_agotado: "Hoy ya has recuperado una planta. Vuelve mañana.",
+  nada_que_recuperar: "No hay ninguna planta que recuperar en este hueco.",
   anuncios_agotados: "Hoy ya no quedan más ayudas. Vuelve mañana.",
   diaria_ya_reclamada: "Hoy ya has recogido tu regalo. Vuelve mañana.",
   no_lo_tienes: "Todavía no tienes ese objeto.",

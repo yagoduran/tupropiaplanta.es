@@ -692,6 +692,10 @@
   cursor: pointer;
 }
 
+.recuperar {
+  bottom: calc(var(--u) * 16);
+}
+
 .plantar:disabled {
   opacity: 0.6;
   cursor: wait;

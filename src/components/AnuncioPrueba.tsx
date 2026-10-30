@@ -8,13 +8,15 @@ const SEGUNDOS = 5;
 
 interface Props {
   monedas: number;
+  /** Si es true, el anuncio es para recuperar la planta muerta y no da monedas. */
+  recuperar?: boolean;
   ocupado: boolean;
   alRecoger: () => void;
   alCerrar: () => void;
 }
 
 /** Anuncio de prueba con cuenta atrás. Se sustituirá por el anuncio real de la red publicitaria. */
-export function AnuncioPrueba({ monedas, ocupado, alRecoger, alCerrar }: Props) {
+export function AnuncioPrueba({ monedas, recuperar, ocupado, alRecoger, alCerrar }: Props) {
   const [resta, setResta] = useState(SEGUNDOS);
 
   useEffect(() => {
@@ -47,11 +49,13 @@ export function AnuncioPrueba({ monedas, ocupado, alRecoger, alCerrar }: Props) 
           </div>
         </div>
         <p className={styles.texto}>
-          Al terminar recibes {monedas} monedas y tu planta puede volver a recibir cuidados ya.
+          {recuperar
+            ? "Al terminar tu planta vuelve a la vida con la mitad de su salud."
+            : `Al terminar recibes ${monedas} monedas y tu planta puede volver a recibir cuidados ya.`}
         </p>
         <div className={styles.botones}>
           <button type="button" className={styles.btn} style={boton} disabled={!listo || ocupado} onClick={alRecoger}>
-            Recoger recompensa
+            {recuperar ? "Recuperar mi planta" : "Recoger recompensa"}
           </button>
           <button type="button" className={styles.btn} style={secundario} disabled={ocupado} onClick={alCerrar}>
             Cerrar

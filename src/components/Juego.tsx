@@ -61,6 +61,7 @@ import {
   reclamarDiaria,
   verRobo,
   verAnuncio,
+  recuperarPlanta,
   elegirHueco,
   comprarMejora,
   comprarHabitacion,
@@ -181,6 +182,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [tutorial, setTutorial] = useState(!inicial.perfil.tutorial_hecho);
   const [repeticion, setRepeticion] = useState(false);
   const [anuncioAbierto, setAnuncioAbierto] = useState(false);
+  const [anuncioRecuperar, setAnuncioRecuperar] = useState(false);
   const [regando, setRegando] = useState(false);
   const [cofre, setCofre] = useState<PremioCofre | null>(null);
   const [roboVisto, setRoboVisto] = useState<string | null>(null);
@@ -885,6 +887,16 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     });
   };
 
+  const recuperar = () => {
+    ejecutar(async () => {
+      const r = await recuperarPlanta();
+      sonar(r.ok ? "cofre" : "error");
+      setAnuncioAbierto(false);
+      setAnuncioRecuperar(false);
+      tratar(r, { texto: "¡Tu planta ha vuelto a la vida!", icono: "cultivo" });
+    });
+  };
+
   const plantar = (variedad: string) => {
     ejecutar(async () => {
       const r = await plantarSemilla(variedad);
@@ -995,9 +1007,13 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         ) : anuncioAbierto ? (
           <AnuncioPrueba
             monedas={perfil.anuncios.monedas}
+            recuperar={anuncioRecuperar}
             ocupado={enCurso}
-            alRecoger={recogerAyuda}
-            alCerrar={() => setAnuncioAbierto(false)}
+            alRecoger={anuncioRecuperar ? recuperar : recogerAyuda}
+            alCerrar={() => {
+              setAnuncioAbierto(false);
+              setAnuncioRecuperar(false);
+            }}
           />
         ) : perfil.robo && perfil.robo.en !== roboVisto ? (
           <Robo
@@ -1274,6 +1290,20 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
               onClick={() => cambiarHueco(1)}
             >
               Volver a mi cultivo
+            </button>
+          )}
+          {planta && !viva && !planta.desafio && planta.vida === "muerta" && perfil.anuncios.recuperar && (
+            <button
+              type="button"
+              className={`${styles.plantar} ${styles.recuperar}`}
+              style={marco("boton_secundario", "var(--u)")}
+              disabled={enCurso}
+              onClick={() => {
+                setAnuncioRecuperar(true);
+                setAnuncioAbierto(true);
+              }}
+            >
+              Ver anuncio y recuperar la planta
             </button>
           )}
           {planta && !viva && !planta.desafio && (

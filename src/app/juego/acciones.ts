@@ -324,6 +324,14 @@ export async function verAnuncio(): Promise<Resultado> {
   return data as RespuestaAccion;
 }
 
+/** Revive la planta muerta del hueco activo tras ver el anuncio (1 vez al día). */
+export async function recuperarPlanta(): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_recuperar_planta");
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
 /** Cambia la planta con la que se juega. */
 export async function elegirHueco(hueco: number): Promise<Resultado> {
   const supabase = await crearClienteServidor();
