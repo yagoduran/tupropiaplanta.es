@@ -88,6 +88,7 @@ import { PLAGAS, TRATAMIENTOS } from "@/lib/plagas";
 import type { Efecto } from "@/lib/sonido";
 import type { DatosEstadisticas, DatosPerfil } from "@/lib/perfil";
 import type { DatosProgresion } from "@/lib/progresion";
+import { Cofre, type PremioCofre } from "./Cofre";
 import { Regadera } from "./Regadera";
 import { registrarHibridas } from "@/lib/variedades";
 import { DESAFIO_POR_ID, type DatosDesafios } from "@/lib/desafios";
@@ -179,6 +180,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [repeticion, setRepeticion] = useState(false);
   const [anuncioAbierto, setAnuncioAbierto] = useState(false);
   const [regando, setRegando] = useState(false);
+  const [cofre, setCofre] = useState<PremioCofre | null>(null);
   const [ranking, setRanking] = useState<DatosRanking | null>(null);
   const [ambitoRanking, setAmbitoRanking] = useState<AmbitoRanking>("mundial");
   const [datosPerfil, setDatosPerfil] = useState<DatosPerfil | null>(null);
@@ -512,6 +514,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       sonar(r.ok ? "cofre" : "error");
       const recompensa = "recompensa" in r ? r.recompensa : 0;
       tratar(r, { texto: `¡Regalo diario! +${recompensa} monedas`, icono: "moneda" });
+      if (r.ok) setCofre({ texto: `¡Regalo diario! +${recompensa} monedas` });
     });
   };
 
@@ -520,6 +523,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       const r = await reclamarHito(pct);
       sonar(r.ok ? "cofre" : "error");
       tratar(r, { texto: "¡Premio de la colección reclamado!", icono: "logros" });
+      if (r.ok) setCofre({ texto: "¡Premio de la colección reclamado!", raro: pct >= 75 });
       setProgresion(await obtenerProgresion());
     });
   };
@@ -638,6 +642,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       const r = await reclamarPase(nivel, pista);
       sonar(r.ok ? "cofre" : "error");
       tratar(r, { texto: "¡Premio del pase reclamado!", icono: "logros" });
+      if (r.ok) setCofre({ texto: "¡Premio del pase reclamado!", raro: pista === "s" });
       setPase(await obtenerPase());
     });
   };
@@ -991,6 +996,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             alRecoger={recogerAyuda}
             alCerrar={() => setAnuncioAbierto(false)}
           />
+        ) : cofre ? (
+          <Cofre premio={cofre} alCerrar={() => setCofre(null)} />
         ) : undefined
       }
       alElegirPantalla={elegirPantalla}
