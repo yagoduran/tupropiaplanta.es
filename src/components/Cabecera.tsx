@@ -9,7 +9,9 @@ import type { ReactNode } from "react";
 import { Beta } from "./Beta";
 import { URL_DONAR, donarActivo } from "@/lib/donar";
 import { Icono } from "./Icono";
+import { IconoBase } from "./IconoBase";
 import { IconoObjeto } from "./IconoObjeto";
+import { FormularioMensaje, type TipoMensaje } from "./FormularioMensaje";
 import styles from "./juego.module.css";
 
 const OPCIONES_MENU = [
@@ -59,8 +61,10 @@ export function Cabecera({
   alAbrir,
 }: Props) {
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const [mensaje, setMensaje] = useState<TipoMensaje | null>(null);
   const panel = marco("panel", "var(--u)");
   const barra = marco("barra", "var(--u)");
+  const secundario = marco("boton_secundario", "var(--u)");
 
   return (
     <header className={styles.cabecera}>
@@ -88,6 +92,22 @@ export function Cabecera({
       </div>
 
       <div className={styles.cabeceraUsuario}>
+        <div className={styles.cabeceraAtajos}>
+          <button type="button" className={styles.atajo} style={secundario} onClick={() => setMensaje("sugerencia")}>
+            <IconoBase id="sugerencia" />
+            <span className={styles.atajoTexto}>Sugerencias</span>
+          </button>
+          <button type="button" className={styles.atajo} style={secundario} onClick={() => setMensaje("error")}>
+            <IconoBase id="error" />
+            <span className={styles.atajoTexto}>Avisar de un error</span>
+          </button>
+          {donarActivo && (
+            <a className={styles.atajo} style={secundario} href={URL_DONAR} target="_blank" rel="noopener noreferrer">
+              <IconoBase id="donar" />
+              <span className={styles.atajoTexto}>Donar</span>
+            </a>
+          )}
+        </div>
         {campana}
         <button
           type="button"
@@ -118,6 +138,30 @@ export function Cabecera({
                 </button>
               </li>
             ))}
+            <li className={styles.menuSoloMovil}>
+              <button
+                type="button"
+                className={styles.menuOpcion}
+                onClick={() => {
+                  setMenuAbierto(false);
+                  setMensaje("sugerencia");
+                }}
+              >
+                Sugerencias
+              </button>
+            </li>
+            <li className={styles.menuSoloMovil}>
+              <button
+                type="button"
+                className={styles.menuOpcion}
+                onClick={() => {
+                  setMenuAbierto(false);
+                  setMensaje("error");
+                }}
+              >
+                Avisar de un error
+              </button>
+            </li>
             <li>
               <button
                 type="button"
@@ -153,6 +197,7 @@ export function Cabecera({
           </ul>
         )}
       </div>
+      {mensaje && <FormularioMensaje tipo={mensaje} donde="Cabecera" alCerrar={() => setMensaje(null)} />}
     </header>
   );
 }
