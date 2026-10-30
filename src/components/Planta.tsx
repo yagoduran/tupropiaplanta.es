@@ -2,6 +2,7 @@
 
 import { useFotograma } from "@/lib/animacion";
 import { ESTADOS, type Estado } from "@/lib/diseno";
+import type { CausaDano } from "@/lib/juego";
 import { hojaDe } from "@/lib/variedades";
 import styles from "./juego.module.css";
 
@@ -34,19 +35,33 @@ interface Props {
   variedad?: string;
   /** Maceta equipada, dibujada encima de la planta. */
   maceta?: string;
+  /** Si es macho, usa su propia hoja. */
+  sexo?: "hembra" | "macho" | null;
+  /** Causa del daño; quemada y ciclo de luz roto tienen su propio dibujo. */
+  causa?: CausaDano | null;
 }
 
 /** Sprite de la planta. Animada en reposo cuando está sana; fija en cualquier otro estado. */
-export function Planta({ fase, estado, tamano = 1, variedad = "clasica", maceta = "maceta_plastico" }: Props) {
+export function Planta({
+  fase,
+  estado,
+  tamano = 1,
+  variedad = "clasica",
+  maceta = "maceta_plastico",
+  sexo,
+  causa,
+}: Props) {
+  const macho = sexo === "macho";
   const hojaVariedad = hojaDe(variedad);
-  const propia = hojaVariedad !== "clasica";
+  const propia = macho || hojaVariedad !== "clasica";
   const animada = estado === "sana";
   const fotograma = useFotograma(FOTOGRAMAS, FOTOGRAMA_MS, animada);
 
   // Cada variedad tiene su hoja con 4 fotogramas por fase y, desde la fase 3, sedienta (columna 4) y muerta (columna 5).
   // La clásica, además, usa la hoja general cuando no está sana, porque trae todos los estados.
-  const hoja =
-    propia || animada
+  const hoja = macho
+    ? { src: "/assets/sprites/tpp-planta-macho-1x.png", columnas: 6, filas: 8 }
+    : propia || animada
       ? { src: `/assets/sprites/tpp-variedad-${hojaVariedad}-1x.png`, columnas: 6, filas: 8 }
       : HOJA_ESTADOS;
   const columnaPropia = animada
@@ -59,7 +74,13 @@ export function Planta({ fase, estado, tamano = 1, variedad = "clasica", maceta 
           ? 4
           : 0;
   const columna = propia || animada ? columnaPropia : fase < 3 ? 0 : Math.max(0, ESTADOS.indexOf(estado));
-  const fila = fase - 1;
+  // Quemada por nutrientes o con el ciclo de luz roto: dibujo propio entre las fases 3 y 8 si la planta no está sedienta ni muerta.
+  const columnaDano = causa === "quemada" ? 0 : causa === "ciclo_luz" ? 1 : -1;
+  const dano =
+    columnaDano >= 0 && fase >= 3 && (estado === "sana" || estado === "exceso_agua" || estado === "falta_nutrientes");
+  const hojaFinal = dano ? { src: "/assets/sprites/tpp-estados-nuevos-1x.png", columnas: 2, filas: 6 } : hoja;
+  const columnaFinal = dano ? columnaDano : columna;
+  const fila = dano ? fase - 3 : fase - 1;
   const columnaMaceta = COLUMNA_MACETA[maceta] ?? 0;
 
   return (
@@ -69,9 +90,9 @@ export function Planta({ fase, estado, tamano = 1, variedad = "clasica", maceta 
         role="img"
         aria-label={`Planta en fase ${fase}, estado ${estado.replace("_", " ")}`}
         style={{
-          backgroundImage: `url(${hoja.src})`,
-          backgroundSize: `calc(${hoja.columnas * CELDA}px * var(--s)) calc(${hoja.filas * CELDA}px * var(--s))`,
-          backgroundPosition: `calc(${-columna * CELDA}px * var(--s)) calc(${-fila * CELDA}px * var(--s))`,
+          backgroundImage: `url(${hojaFinal.src})`,
+          backgroundSize: `calc(${hojaFinal.columnas * CELDA}px * var(--s)) calc(${hojaFinal.filas * CELDA}px * var(--s))`,
+          backgroundPosition: `calc(${-columnaFinal * CELDA}px * var(--s)) calc(${-fila * CELDA}px * var(--s))`,
           // La planta (sin maceta) se dibuja 17 px más arriba que la maceta, que va encima.
           transform: `translateY(calc(${-SUBIDA}px * var(--s))) scale(${tamano})`,
           transformOrigin: "50% 100%",

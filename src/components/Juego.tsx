@@ -150,6 +150,7 @@ import { MisPlantas } from "./MisPlantas";
 import { Perfil } from "./Perfil";
 import { Ranking } from "./Ranking";
 import { CicloLuz } from "./CicloLuz";
+import { CAUSAS } from "@/lib/causas";
 import { Semillas } from "./Semillas";
 import { Tienda } from "./Tienda";
 import { Titulos } from "./Titulos";
@@ -985,6 +986,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             : null
       : null;
   const vida = planta ? planta.segundos_vida + (viva ? transcurrido : 0) : 0;
+  const causaAviso = planta?.causa && !plaga ? CAUSAS[planta.causa] : null;
   const sedienta = !!planta && viva && planta.agua < 35;
   const lista = !!planta && viva && planta.fase >= faseCosecha;
 
@@ -1254,6 +1256,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
               tamano={tamanoPlanta(planta.fase, vida, planta.variedad, planta.tipo)}
               variedad={planta.variedad}
               maceta={perfil.equipo.maceta}
+              sexo={planta.sexo}
+              causa={planta.causa}
             />
           )}
           {plaga && <Plaga plaga={plaga} variedad={planta?.variedad} />}
@@ -1273,6 +1277,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
               texto={`${PLAGAS[plaga.tipo].aviso} Trátala con ${TRATAMIENTOS[producto].toLowerCase()}.`}
               icono="aviso"
             />
+          ) : causaAviso && viva ? (
+            <Bocadillo texto={`${causaAviso.titulo} ${causaAviso.evitar}`} columnaAviso={causaAviso.columna} />
+          ) : planta?.sexo === "macho" && viva ? (
+            <Bocadillo texto={`${CAUSAS.macho.titulo} ${CAUSAS.macho.evitar}`} columnaAviso={CAUSAS.macho.columna} />
           ) : sedienta ? (
             <Bocadillo texto="¡Tu planta necesita agua!" />
           ) : avisoSensor ? (
@@ -1287,7 +1295,14 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           ) : !planta ? (
             <Bocadillo texto="Este hueco está vacío. ¡Planta una semilla!" />
           ) : planta?.vida === "muerta" ? (
-            <Bocadillo texto="Tu planta ha muerto..." icono="aviso" />
+            causaAviso ? (
+              <Bocadillo
+                texto={`Tu planta ha muerto. ${causaAviso.titulo} ${causaAviso.evitar}`}
+                columnaAviso={causaAviso.columna}
+              />
+            ) : (
+              <Bocadillo texto="Tu planta ha muerto..." icono="aviso" />
+            )
           ) : null}
           {plaga && producto && (
             <button
