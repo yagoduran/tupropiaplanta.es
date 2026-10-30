@@ -7,7 +7,7 @@ export interface EstadoAcceso {
 }
 
 /** Traduce los errores de Supabase Auth a mensajes claros. */
-export function mensajeDeError(codigo: string | undefined, _mensaje?: string): string {
+export function mensajeDeError(codigo: string | undefined): string {
   switch (codigo) {
     case "invalid_credentials":
       return "El email o la contraseña no son correctos.";

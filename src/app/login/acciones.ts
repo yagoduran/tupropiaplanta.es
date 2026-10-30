@@ -20,7 +20,7 @@ export async function entrar(_anterior: EstadoAcceso, datos: FormData): Promise<
 
   const supabase = await crearClienteServidor();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) return { error: mensajeDeError(error.code, error.message) };
+  if (error) return { error: mensajeDeError(error.code) };
   redirect("/");
 }
 
@@ -49,7 +49,7 @@ export async function registrar(_anterior: EstadoAcceso, datos: FormData): Promi
       data: { usuario, mayor_de_edad: true },
     },
   });
-  if (error) return { error: mensajeDeError(error.code, error.message) };
+  if (error) return { error: mensajeDeError(error.code) };
 
   // Con la confirmación por correo activa no hay sesión hasta que pulsa el enlace.
   if (!data.session) return { verificar: email };
@@ -71,7 +71,7 @@ export async function pedirRecuperacion(_anterior: EstadoAcceso, datos: FormData
     redirectTo: `${await origenActual()}/auth/callback?next=/nueva-contrasena`,
   });
   if (error && (error.code === "over_email_send_rate_limit" || error.code === "over_request_rate_limit")) {
-    return { error: mensajeDeError(error.code, error.message) };
+    return { error: mensajeDeError(error.code) };
   }
   return { aviso: "Enlace enviado. Revisa tu bandeja de entrada y la carpeta de spam." };
 }
@@ -88,7 +88,7 @@ export async function cambiarPassword(_anterior: EstadoAcceso, datos: FormData):
   if (!data.user) return { error: "El enlace ha caducado. Pide uno nuevo." };
 
   const { error } = await supabase.auth.updateUser({ password });
-  if (error) return { error: mensajeDeError(error.code, error.message) };
+  if (error) return { error: mensajeDeError(error.code) };
   redirect("/");
 }
 
@@ -101,7 +101,7 @@ export async function reenviarVerificacion(email: string): Promise<EstadoAcceso>
     email,
     options: { emailRedirectTo: `${await origenActual()}/auth/callback` },
   });
-  if (error) return { error: mensajeDeError(error.code, error.message) };
+  if (error) return { error: mensajeDeError(error.code) };
   return { aviso: "Correo reenviado." };
 }
 
