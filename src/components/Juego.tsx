@@ -1154,7 +1154,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
               maceta={perfil.equipo.maceta}
             />
           )}
-          {plaga && <Plaga plaga={plaga} />}
+          {plaga && <Plaga plaga={plaga} variedad={planta?.variedad} />}
           {aviso ? (
             <Bocadillo texto={aviso.texto} icono={aviso.icono} />
           ) : plaga && producto ? (
