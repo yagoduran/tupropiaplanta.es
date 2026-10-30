@@ -7,6 +7,7 @@ import { marco } from "@/lib/diseno";
 import type { AjustesJuego } from "@/lib/juego";
 import { PAISES } from "@/lib/paises";
 import { sonar } from "@/lib/sonido";
+import { URL_DONAR, donarActivo } from "@/lib/donar";
 import { EnlacesLegales } from "./EnlacesLegales";
 import { Icono } from "./Icono";
 import styles from "./ajustes.module.css";
@@ -132,6 +133,26 @@ export function Ajustes({ ajustes, alCambiar, alVerTutorial, alBorrar }: Props) 
             Avisar de un error
           </a>
         </div>
+
+        {donarActivo && (
+          <>
+            <hr className={styles.linea} />
+            <span className={styles.seccion}>Apoyar el juego</span>
+            <p className={styles.ayuda}>
+              Si te gusta el juego, puedes ayudarnos con una donación voluntaria. No da ventajas dentro del juego: es
+              solo un agradecimiento.
+            </p>
+            <a
+              className={styles.accion}
+              style={{ ...secundario, textDecoration: "none", textAlign: "center" }}
+              href={URL_DONAR}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Donar
+            </a>
+          </>
+        )}
 
         <hr className={styles.linea} />
         <div className={styles.fila2}>

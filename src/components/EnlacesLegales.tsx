@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { URL_DONAR, donarActivo } from "@/lib/donar";
 import { titularCompleto } from "@/lib/titular";
 import styles from "./cookies.module.css";
 
@@ -11,6 +12,11 @@ export function EnlacesLegales() {
       <Link href="/privacidad">Privacidad</Link>
       <Link href="/condiciones">Condiciones</Link>
       <Link href="/cookies">Cookies</Link>
+      {donarActivo && (
+        <a href={URL_DONAR} target="_blank" rel="noopener noreferrer">
+          Apoyar el juego
+        </a>
+      )}
     </nav>
   );
 }

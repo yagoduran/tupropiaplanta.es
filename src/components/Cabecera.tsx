@@ -7,6 +7,7 @@ import type { PantallaJuego } from "@/lib/juego";
 import { avatarDe } from "@/lib/perfil";
 import type { ReactNode } from "react";
 import { Beta } from "./Beta";
+import { URL_DONAR, donarActivo } from "@/lib/donar";
 import { Icono } from "./Icono";
 import { IconoObjeto } from "./IconoObjeto";
 import styles from "./juego.module.css";
@@ -129,6 +130,19 @@ export function Cabecera({
                 Ajustes
               </button>
             </li>
+            {donarActivo && (
+              <li>
+                <a
+                  className={styles.menuOpcion}
+                  href={URL_DONAR}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMenuAbierto(false)}
+                >
+                  Apoyar el juego
+                </a>
+              </li>
+            )}
             <li>
               <form action={cerrarSesion}>
                 <button type="submit" className={styles.menuOpcion}>
