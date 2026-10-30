@@ -881,6 +881,18 @@
   color: #1c1626;
 }
 
+/* En móvil la campana queda lejos del borde derecho: el panel ocupa el ancho de la pantalla bajo la cabecera. */
+@media (max-width: 600px) {
+  .campanaPanel {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    top: 58px;
+    width: auto;
+    max-height: calc(100dvh - 78px);
+  }
+}
+
 .campanaCabeza {
   display: flex;
   align-items: center;
