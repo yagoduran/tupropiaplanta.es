@@ -70,7 +70,7 @@ function pasos(agua: number): Record<number, Paso> {
       anim: "hablar",
       titulo: "El tiempo no se para",
       texto:
-        "Tu planta vive en tiempo real. Aunque cierres la web, sigue creciendo, bebiendo y pasando del día a la noche.",
+        "Tu planta vive en tiempo real y tarda unos 3 días en estar lista. Aunque cierres la web, sigue creciendo y gastando agua. Si aparece una plaga, trátala pronto.",
       boton: "Siguiente",
       focos: ["escena:3,5,23,27"],
       flecha: "izquierda",
@@ -86,7 +86,7 @@ function pasos(agua: number): Record<number, Paso> {
       tipo: "bocadillo",
       anim: "senalar",
       titulo: "Monedas y tienda",
-      texto: "Ganas monedas al cuidar y cosechar. Gástalas en la Tienda: macetas, luces, abonos y decoración.",
+      texto: "Ganas monedas al cuidar y cosechar. Al cosechar puedes vender o guardar los gramos para los encargos del móvil, que pagan más.",
       boton: "Siguiente",
       focos: ["monedas", "pestana-tienda"],
       flecha: "ambas",
@@ -105,8 +105,8 @@ const ESTADOS = [
   { id: "agua", nombre: "Agua", detalle: "baja cada hora" },
   { id: "nutrientes", nombre: "Nutrientes", detalle: "con abono" },
   { id: "luz", nombre: "Luz", detalle: "según la lámpara" },
-  { id: "temperatura", nombre: "Temp.", detalle: "ideal 20-26 °C" },
-  { id: "ph", nombre: "pH", detalle: "ideal 6-7" },
+  { id: "temperatura", nombre: "Temp.", detalle: "ideal 18-30 °C" },
+  { id: "ph", nombre: "pH", detalle: "ideal 5,8-7,4" },
   { id: "salud", nombre: "Salud", detalle: "resume todo" },
 ] as const;
 
