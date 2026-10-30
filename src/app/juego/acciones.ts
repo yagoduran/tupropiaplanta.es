@@ -467,3 +467,20 @@ export async function comprarBonoPrestigio(id: string) {
 export async function renacer(confirmacion: string) {
   return prestigio("tpp_renacer", { p_confirmar: confirmacion });
 }
+
+/** Envía una sugerencia o un aviso de error (máximo 3 al día). Solo lo lee el equipo del juego. */
+export async function enviarMensaje(
+  tipo: "sugerencia" | "error",
+  texto: string,
+  donde: string,
+): Promise<{ ok: true; quedan: number } | { ok: false; error: "texto" | "limite" | "tipo" | "fallo" }> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_enviar_mensaje", {
+    p_tipo: tipo,
+    p_texto: texto,
+    p_donde: donde,
+    p_contexto: {},
+  });
+  if (error || !data) return { ok: false, error: "fallo" };
+  return data as { ok: true; quedan: number } | { ok: false; error: "texto" | "limite" | "tipo" };
+}
