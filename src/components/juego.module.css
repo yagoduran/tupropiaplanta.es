@@ -756,6 +756,28 @@
   pointer-events: none;
 }
 
+/* Bichos más pequeños que pasean por la planta. El moho se queda quieto. */
+.plagaMovil {
+  transform-origin: 50% 50%;
+  animation: pasear 16s ease-in-out infinite;
+}
+
+@keyframes pasear {
+  0%,
+  100% {
+    transform: translate(calc(-8px * var(--s)), calc(10px * var(--s))) scale(0.5);
+  }
+  25% {
+    transform: translate(calc(6px * var(--s)), calc(2px * var(--s))) scale(0.5);
+  }
+  50% {
+    transform: translate(calc(-2px * var(--s)), calc(-8px * var(--s))) scale(0.5);
+  }
+  75% {
+    transform: translate(calc(-10px * var(--s)), calc(-1px * var(--s))) scale(0.5);
+  }
+}
+
 .huecos {
   position: absolute;
   left: calc(var(--u) * 4);

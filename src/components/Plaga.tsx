@@ -19,7 +19,7 @@ export function Plaga({ plaga, variedad }: { plaga: PlagaJuego; variedad?: strin
   const fila = PLAGAS[plaga.tipo].fila + (plaga.grave ? 1 : 0);
   return (
     <div
-      className={`pixel ${styles.plaga}`}
+      className={`pixel ${styles.plaga} ${plaga.tipo === "moho" ? "" : styles.plagaMovil}`}
       aria-hidden
       style={{
         backgroundImage: `url(/assets/sprites/${archivo})`,
