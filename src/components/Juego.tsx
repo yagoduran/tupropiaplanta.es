@@ -58,7 +58,6 @@ import {
   obtenerMiPerfil,
   obtenerRanking,
   plantarSemilla,
-  cambiarHorarioLuz,
   reclamarDiaria,
   resolverCosecha,
   cosechaPendiente,
@@ -156,7 +155,6 @@ import { MisPlantas } from "./MisPlantas";
 import { Perfil } from "./Perfil";
 import { Ranking } from "./Ranking";
 import { Abonos } from "./Abonos";
-import { CicloLuz } from "./CicloLuz";
 import { CAUSAS } from "@/lib/causas";
 import { Semillas } from "./Semillas";
 import { Tienda } from "./Tienda";
@@ -428,7 +426,6 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "ajustes" ||
       id === "tienda" ||
       id === "semillas" ||
-      id === "luz" ||
       id === "abonos" ||
       id === "logros" ||
       id === "ranking"
@@ -948,14 +945,6 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     });
   };
 
-  const guardarLuz = (horas: number, inicio: number) => {
-    ejecutar(async () => {
-      const r = await cambiarHorarioLuz(horas, inicio);
-      sonar(r.ok ? "ajustar-luz" : "error");
-      tratar(r, { texto: "Horario de luz guardado", icono: "luz" });
-    });
-  };
-
   const plantar = (variedad: string, tipo: TipoSemilla) => {
     ejecutar(async () => {
       const r = await plantarSemilla(variedad, tipo);
@@ -1294,16 +1283,6 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             alUsar={usar}
             alTienda={() => elegirPantalla("tienda")}
           />
-        ) : pantalla === "luz" ? (
-          <CicloLuz
-            horas={perfil.luz_horas}
-            inicio={perfil.luz_inicio}
-            tipo={planta && viva ? planta.tipo : null}
-            fase={planta && viva ? planta.fase : null}
-            ocupado={enCurso}
-            aviso={aviso}
-            alGuardar={guardarLuz}
-          />
         ) : pantalla === "semillas" ? (
           <Semillas
             hibridas={perfil.hibridas.semillas}
@@ -1456,8 +1435,6 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           esperas={esperas}
           bloqueadas={bloqueadas}
           alAccionar={(a) => (a === "regar" ? setRegando((r) => !r) : accionar(a))}
-          luzHoras={perfil.luz_horas}
-          alCicloLuz={() => elegirPantalla("luz")}
           alAbonos={() => elegirPantalla("abonos")}
           ayudasRestantes={perfil.anuncios.restantes}
           alVerAnuncio={() => setAnuncioAbierto(true)}

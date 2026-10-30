@@ -17,8 +17,6 @@ interface Props {
   bloqueadas: Partial<Record<Accion, boolean>>;
   alAccionar: (accion: Accion) => void;
   /** Horas de luz al día del horario actual y apertura del panel del ciclo de luz. */
-  luzHoras: number;
-  alCicloLuz: () => void;
   alAbonos: () => void;
   /** Ayudas por anuncio que quedan hoy. */
   ayudasRestantes: number;
@@ -29,8 +27,6 @@ export function PanelAcciones({
   esperas,
   bloqueadas,
   alAccionar,
-  luzHoras,
-  alCicloLuz,
   alAbonos,
   ayudasRestantes,
   alVerAnuncio,
@@ -55,12 +51,6 @@ export function PanelAcciones({
         );
       })}
       <BotonAccion id="nutrientes" etiqueta="Abonos" detalle="Los que tienes" onClick={alAbonos} />
-      <BotonAccion
-        id="ajustar_luz"
-        etiqueta="Ciclo de luz"
-        detalle={`${luzHoras}/${24 - luzHoras}`}
-        onClick={alCicloLuz}
-      />
       <BotonAnuncio restantes={ayudasRestantes} onClick={alVerAnuncio} />
     </>
   );

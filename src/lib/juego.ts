@@ -36,7 +36,6 @@ export type PantallaJuego =
   | "eventos"
   | "pase"
   | "mercado"
-  | "luz"
   | "abonos";
 
 export interface AjustesJuego {
