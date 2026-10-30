@@ -92,6 +92,8 @@
   list-style: none;
   padding: calc(var(--u) * 4);
   color: #1c1626;
+  max-height: calc(100dvh - var(--head-h) - var(--tab-h) - 32px);
+  overflow-y: auto;
 }
 
 .menuOpcion {
@@ -111,6 +113,19 @@
 
 .menuOpcion:hover {
   background: #a8845c;
+}
+
+@media (max-width: 1039px) {
+  .menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: min(360px, calc(100vw - 24px));
+  }
+
+  .menuOpcion {
+    padding: 6px 6px;
+    font-size: 15px;
+  }
 }
 
 .principal {
