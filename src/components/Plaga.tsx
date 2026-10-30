@@ -3,6 +3,7 @@
 import { useFotograma } from "@/lib/animacion";
 import { PLAGAS, type PlagaJuego } from "@/lib/plagas";
 import { hojaDe } from "@/lib/variedades";
+import { Bichos, IndicadorPlaga } from "./PlagasMini";
 import styles from "./juego.module.css";
 
 const CELDA = 32;
@@ -17,15 +18,25 @@ export function Plaga({ plaga, variedad }: { plaga: PlagaJuego; variedad?: strin
   const archivo = HOJAS_PLAGA.includes(hoja) ? `tpp-plagas-${hoja}-1x.png` : "tpp-plagas-1x.png";
   const fotograma = useFotograma(FOTOGRAMAS, FOTOGRAMA_MS);
   const fila = PLAGAS[plaga.tipo].fila + (plaga.grave ? 1 : 0);
+  if (plaga.tipo !== "moho")
+    return (
+      <>
+        <Bichos plaga={plaga} />
+        <IndicadorPlaga plaga={plaga} />
+      </>
+    );
   return (
-    <div
-      className={`pixel ${styles.plaga} ${plaga.tipo === "moho" ? "" : styles.plagaMovil}`}
-      aria-hidden
-      style={{
-        backgroundImage: `url(/assets/sprites/${archivo})`,
-        backgroundSize: `calc(${FOTOGRAMAS * CELDA}px * var(--s)) calc(${12 * CELDA}px * var(--s))`,
-        backgroundPosition: `calc(${-fotograma * CELDA}px * var(--s)) calc(${-fila * CELDA}px * var(--s))`,
-      }}
-    />
+    <>
+      <div
+        className={`pixel ${styles.plaga}`}
+        aria-hidden
+        style={{
+          backgroundImage: `url(/assets/sprites/${archivo})`,
+          backgroundSize: `calc(${FOTOGRAMAS * CELDA}px * var(--s)) calc(${12 * CELDA}px * var(--s))`,
+          backgroundPosition: `calc(${-fotograma * CELDA}px * var(--s)) calc(${-fila * CELDA}px * var(--s))`,
+        }}
+      />
+      <IndicadorPlaga plaga={plaga} />
+    </>
   );
 }

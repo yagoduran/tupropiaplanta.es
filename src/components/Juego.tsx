@@ -165,6 +165,7 @@ import { Semillas } from "./Semillas";
 import { Tienda } from "./Tienda";
 import { Titulos } from "./Titulos";
 import { plantaTutorial } from "@/lib/tutorial";
+import { EfectoTratamiento } from "./PlagasMini";
 import { Tutorial, TOTAL_PASOS } from "./Tutorial";
 import styles from "./juego.module.css";
 
@@ -198,6 +199,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [pantalla, setPantalla] = useState<PantallaJuego>("cultivo");
   const [tutorial, setTutorial] = useState(!inicial.perfil.tutorial_hecho);
   const [repeticion, setRepeticion] = useState(false);
+  const [efectoTratamiento, setEfectoTratamiento] = useState(false);
   const [pasoTut, setPasoTut] = useState(Math.min(TOTAL_PASOS, Math.max(1, inicial.perfil.tutorial_paso)));
   const [anuncioAbierto, setAnuncioAbierto] = useState(false);
   const [anuncioRecuperar, setAnuncioRecuperar] = useState(false);
@@ -574,10 +576,12 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     id: string,
     exito: string,
     sonido: Efecto,
+    alExito?: () => void,
   ) => {
     ejecutar(async () => {
       const r = await llamar(id);
       sonar(r.ok ? sonido : "compra-rechazada");
+      if (r.ok) alExito?.();
       tratar(r, { texto: exito, icono: "tienda" });
     });
   };
@@ -585,7 +589,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const comprar = (id: string) => gestionarObjeto(comprarObjeto, id, "¡Compra hecha!", "comprar");
   const equipar = (id: string) => gestionarObjeto(equiparObjeto, id, "Hecho", "clic");
   const usar = (id: string) => gestionarObjeto(usarObjeto, id, "¡Abono aplicado!", "clic");
-  const tratarPlaga = (id: string) => gestionarObjeto(usarObjeto, id, "¡Plaga eliminada!", "plaga-eliminada");
+  const tratarPlaga = (id: string) =>
+    gestionarObjeto(usarObjeto, id, "¡Plaga eliminada!", "plaga-eliminada", () => setEfectoTratamiento(true));
 
   const acariciar = () => {
     acariciarGato().then((r) => {
@@ -1412,6 +1417,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             />
           )}
           {plaga && <Plaga plaga={plaga} variedad={planta?.variedad} />}
+          {efectoTratamiento && <EfectoTratamiento alTerminar={() => setEfectoTratamiento(false)} />}
           {regando && !bloqueadas.regar && (
             <Regadera
               alTerminar={() => {
