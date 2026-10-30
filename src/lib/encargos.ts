@@ -1,6 +1,10 @@
 export interface Encargo {
   id: string;
   remite: string;
+  /** Tipo de pedido. Los antiguos no lo traen. */
+  tipo?: "normal" | "urgente" | "grande";
+  /** Mensaje con {g} y {v} para el gramaje y la variedad. */
+  mensaje?: string;
   variedad: string;
   /** Gramos que pide. */
   g: number;

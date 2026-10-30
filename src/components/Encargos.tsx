@@ -37,7 +37,9 @@ export function Encargos({ datos, ocupado, alEntregar }: Props) {
     <div className={styles.contenedor}>
       <div className={styles.cabecera}>
         <h1 className={styles.titulo}>Móvil</h1>
-        <span className={styles.resumen}>Cada cosecha te da gramos. Entrégalos a quien te los pide antes de 24 h.</span>
+        <span className={styles.resumen}>
+          Cada cosecha te da gramos. Entrégalos a quien te los pide antes de que se acabe el plazo.
+        </span>
       </div>
       <section className={styles.contenedor} aria-label="Almacén">
         <h2 className={styles.titulo} style={{ fontSize: "var(--f-stat)" }}>
@@ -62,9 +64,17 @@ export function Encargos({ datos, ocupado, alEntregar }: Props) {
                 <div className={styles.misionCabeza}>
                   <IconoSocial id="mision" k="var(--ik)" />
                   <span className={styles.misionTexto}>
-                    <strong>{e.remite}</strong>
+                    <strong>
+                      {e.remite}
+                      {e.tipo === "urgente" && " · Urgente"}
+                      {e.tipo === "grande" && " · Pedido grande"}
+                    </strong>
                     <span>
-                      «Hola, ¿me puedes conseguir {e.g} g de {nombre(e.variedad)}? ¡Te lo pago bien!»
+                      «
+                      {(e.mensaje ?? "Hola, ¿me puedes conseguir {g} g de {v}? ¡Te lo pago bien!")
+                        .replace("{g}", String(e.g))
+                        .replace("{v}", nombre(e.variedad))}
+                      »
                     </span>
                   </span>
                 </div>
