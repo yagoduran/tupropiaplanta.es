@@ -1,0 +1,5 @@
+{
+  "permissions": {
+    "allow": ["mcp__Supabase", "mcp__Notion", "mcp__Vercel", "mcp__github", "Bash", "Read", "Edit", "Write", "Glob", "Grep", "Monitor"]
+  }
+}
