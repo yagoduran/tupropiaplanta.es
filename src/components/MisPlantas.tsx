@@ -13,7 +13,7 @@ const ESTADO = {
 } as const;
 
 function tiempo(horas: number) {
-  if (horas < 1) return "menos de 1 hora";
+  if (horas < 1) return `${Math.round(horas * 60)} min`;
   if (horas < 48) return `${Math.floor(horas)} h`;
   return `${Math.floor(horas / 24)} días`;
 }

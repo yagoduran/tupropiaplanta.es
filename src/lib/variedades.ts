@@ -243,5 +243,5 @@ export const rasgosDe = (v: Pick<Variedad, "recompensa" | "ciclo" | "desgaste" |
   sabor: acotar(v.sabor),
 });
 
-/** Días reales que tarda en llegar a la cosecha (293 horas por el multiplicador del ciclo). */
-export const diasDeCiclo = (v: Variedad) => Math.round((293 * v.ciclo) / 24);
+/** Minutos reales que tarda en llegar a la cosecha (60 por el multiplicador del ciclo). */
+export const minutosDeCiclo = (v: Variedad) => Math.round(60 * v.ciclo);

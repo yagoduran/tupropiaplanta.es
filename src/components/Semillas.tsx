@@ -1,7 +1,7 @@
 "use client";
 
 import { marco } from "@/lib/diseno";
-import { RAREZAS, VARIEDADES, VARIEDAD_POR_ID, diasDeCiclo, type Variedad } from "@/lib/variedades";
+import { RAREZAS, VARIEDADES, VARIEDAD_POR_ID, minutosDeCiclo, type Variedad } from "@/lib/variedades";
 import type { IdIcono } from "@/lib/diseno";
 import { Icono } from "./Icono";
 import styles from "./semillas.module.css";
@@ -52,7 +52,7 @@ function Tarjeta({ variedad, nivel, enUso, ocupado, alPlantar }: Omit<Props, "av
         <ul className={styles.datos}>
           <li>
             <span>Ciclo</span>
-            <strong className="numero">{diasDeCiclo(variedad)} días</strong>
+            <strong className="numero">{minutosDeCiclo(variedad)} min</strong>
           </li>
           <li>
             <span>Monedas</span>

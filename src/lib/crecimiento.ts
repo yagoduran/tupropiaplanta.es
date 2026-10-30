@@ -1,7 +1,7 @@
 import { VARIEDAD_POR_ID } from "./variedades";
 
-/** Horas (de ciclo normal) a las que empieza cada fase. Tiene que coincidir con `tpp.fase_de` en la base de datos. */
-const INICIO_FASE = [0, 1, 5, 53, 101, 173, 221, 293];
+/** Horas (de ciclo normal) a las que empieza cada fase: 2, 7, 17, 27, 40, 50 y 60 minutos. Tiene que coincidir con `tpp.fase_de`. */
+const INICIO_FASE = [0, 2 / 60, 7 / 60, 17 / 60, 27 / 60, 40 / 60, 50 / 60, 1];
 
 /** Tamaño de la planta al empezar una fase; crece hasta 1 al terminarla. */
 const TAMANO_MINIMO = 0.82;

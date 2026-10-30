@@ -42,7 +42,7 @@ function pasos(agua: number): Record<number, Paso> {
       tipo: "bocadillo",
       anim: "senalar",
       titulo: "Tu maceta",
-      texto: "Aquí vive tu planta. Ya está plantada: en unas horas verás cómo crece el primer brote.",
+      texto: "Aquí vive tu planta. Ya está plantada: en unos minutos verás cómo crece el primer brote.",
       boton: "Siguiente",
       focos: ["escena:31,37,34,35"],
       flecha: "arriba",
