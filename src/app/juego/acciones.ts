@@ -9,6 +9,7 @@ import type { DatosPrestigio } from "@/lib/prestigio";
 import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
 import type { DatosEventos, DatosPase } from "@/lib/temporada";
 import type { DatosAmigos, DatosRegalos, DatosVisita, PerfilPublicoDatos, Resultado as Jugadores } from "@/lib/amigos";
+import type { DatosMercado } from "@/lib/mercado";
 import type { RespuestaCruce } from "@/lib/cruces";
 import type { Accion, AjustesJuego, DatosRanking, EstadoJuego, RespuestaAccion } from "@/lib/juego";
 
@@ -165,6 +166,24 @@ export async function enviarRegalo(
   if (error || !data) return fallo(error?.message);
   return data as RespuestaAccion & Partial<DatosRegalos>;
 }
+
+/** Mercado entre jugadores. */
+export const obtenerMercado = async () => llamar<DatosMercado>("tpp_mercado");
+
+type RespuestaMercado = (RespuestaAccion & Partial<DatosMercado>) | { ok: false; error: string };
+
+async function llamarMercado(funcion: string, argumentos?: Record<string, unknown>): Promise<RespuestaMercado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc(funcion, argumentos);
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaMercado;
+}
+export const publicarOferta = async (objeto: string, precio: number) =>
+  llamarMercado("tpp_mercado_publicar", { p_objeto: objeto, p_precio: Math.trunc(precio) });
+export const comprarOferta = async (id: number) => llamarMercado("tpp_mercado_comprar", { p_id: id });
+export const retirarOferta = async (id: number) => llamarMercado("tpp_mercado_retirar", { p_id: id });
+export const republicarOferta = async (id: number) => llamarMercado("tpp_mercado_republicar", { p_id: id });
+export const cobrarOferta = async (id: number) => llamarMercado("tpp_mercado_cobrar", { p_id: id });
 
 /** Eventos de temporada. */
 export const obtenerEventos = async () => llamar<DatosEventos>("tpp_evento");

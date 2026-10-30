@@ -21,6 +21,7 @@ const OPCIONES_MENU = [
   ["eventos", "Eventos"],
   ["pase", "Pase de temporada"],
   ["amigos", "Amigos"],
+  ["mercado", "Mercado"],
   ["desafios", "Desafíos"],
   ["armario", "Mejoras del armario"],
   ["habitaciones", "Habitaciones"],

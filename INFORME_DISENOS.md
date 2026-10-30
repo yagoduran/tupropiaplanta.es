@@ -30,7 +30,7 @@ Siguen pendientes:
 ✅ Amigos (solicitud aceptada, búsqueda por nombre, bloquear), perfil público y visitas (regar y saludar): hechos.
 ✅ Regalos (monedas, agua, abono; 3 al día): hechos.
 ✅ Eventos de temporada y pase de temporada: hechos.
-Pendiente: mercado (al final). 🔴 Antes habría que decidir privacidad y moderación (hay menores en colegios).
+✅ Mercado (objetos y abonos, público, comisión 5 %, caduca a los 3 días, precio de 0,5× a 5× la tienda, máx. 10 ofertas y 10 compras al día): hecho. Sin texto libre ni semillas.
 Los dibujos de **temporadas** (primavera, verano, otoño, invierno: ventana, luz, decoración) ya están en `public/assets/temporadas` pero no se usan: 🟢 aplicarlos según la fecha.
 
 ## Arte

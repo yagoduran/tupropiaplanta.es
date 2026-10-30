@@ -27,7 +27,8 @@ export type PantallaJuego =
   | "perfil_publico"
   | "regalo"
   | "eventos"
-  | "pase";
+  | "pase"
+  | "mercado";
 
 export interface AjustesJuego {
   volumen_efectos: number;
@@ -163,7 +164,6 @@ export const MENSAJES_ERROR: Record<string, string> = {
   variedad_desconocida: "Esa semilla no existe.",
   monedas_insuficientes: "No tienes monedas suficientes.",
   nivel_insuficiente: "Todavía no tienes el nivel necesario.",
-  ya_lo_tienes: "Ya tienes ese objeto.",
   sin_plaga: "Tu planta no tiene ninguna plaga.",
   tratamiento_incorrecto: "Ese producto no sirve para esta plaga.",
   huecos_maximos: "Ya tienes todos los huecos de cultivo.",
@@ -206,6 +206,14 @@ export const MENSAJES_ERROR: Record<string, string> = {
   regalo_ya_enviado: "Hoy ya le has enviado un regalo a este amigo.",
   regalo_monedas_limite: "Hoy no se pueden enviar más monedas a este amigo, o ya has regalado monedas hoy.",
   regalo_sin_abono: "No tienes ningún abono normal para regalar.",
+  ya_lo_tienes: "Ya tienes ese objeto.",
+  precio_fuera_rango: "El precio tiene que estar entre la mitad y cinco veces el de la tienda.",
+  mercado_limite: "Ya tienes 10 ofertas a la venta. Retira alguna para publicar otra.",
+  objeto_en_uso: "No puedes vender un objeto que llevas puesto. Quítalo antes.",
+  objeto_desconocido: "Ese objeto no se puede vender.",
+  oferta_no_disponible: "Esa oferta ya no está disponible.",
+  oferta_propia: "No puedes comprar tus propias ofertas.",
+  compras_limite: "Hoy ya has hecho 10 compras en el mercado. Vuelve mañana.",
   pase_invalido: "Ahora no hay ningún pase de temporada en marcha.",
   pase_nivel: "Todavía no has llegado a ese nivel del pase.",
   pase_bloqueado: "Desbloquea el pase especial para reclamar este premio.",

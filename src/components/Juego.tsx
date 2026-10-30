@@ -22,6 +22,12 @@ import {
   reclamarPase,
   comprarPase,
   obtenerRegalos,
+  obtenerMercado,
+  publicarOferta,
+  comprarOferta,
+  retirarOferta,
+  republicarOferta,
+  cobrarOferta,
   enviarRegalo,
   buscarJugadores,
   enviarSolicitud,
@@ -102,6 +108,8 @@ import { Eventos } from "./Eventos";
 import { Pase } from "./Pase";
 import type { DatosEventos, DatosPase } from "@/lib/temporada";
 import { Regalo } from "./Regalo";
+import { Mercado } from "./Mercado";
+import type { DatosMercado } from "@/lib/mercado";
 import { PerfilPublico } from "./PerfilPublico";
 import type {
   DatosRegalos,
@@ -171,6 +179,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [maestria, setMaestria] = useState<DatosMaestria | null>(null);
   const [amigos, setAmigos] = useState<DatosAmigos | null>(null);
   const [resultadosAmigos, setResultadosAmigos] = useState<ResultadoBusqueda[] | null>(null);
+  const [mercado, setMercado] = useState<DatosMercado | null>(null);
+  const [mercadoError, setMercadoError] = useState<string | null>(null);
   const [regalos, setRegalos] = useState<DatosRegalos | null>(null);
   const [regaloEnviado, setRegaloEnviado] = useState<TipoRegalo | null>(null);
   const [regaloError, setRegaloError] = useState<string | null>(null);
@@ -364,6 +374,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "misiones" ||
       id === "amigos" ||
       id === "eventos" ||
+      id === "mercado" ||
       id === "pase" ||
       id === "laboratorio" ||
       id === "prestigio" ||
@@ -392,6 +403,12 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         obtenerEventos()
           .then(setEventos)
           .catch(() => setEventos(null));
+      if (id === "mercado") {
+        setMercadoError(null);
+        obtenerMercado()
+          .then(setMercado)
+          .catch(() => setMercado(null));
+      }
       if (id === "pase")
         obtenerPase()
           .then(setPase)
@@ -492,6 +509,34 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     setAviso({ texto: MENSAJES_ERROR[r?.error ?? "red"] ?? MENSAJES_ERROR.red, icono: "aviso" });
     return false;
   };
+
+  const moverMercado = (
+    accion: () => ReturnType<typeof comprarOferta>,
+    texto: string | ((r: { cobrado?: number } | { ok: false; error: string }) => string),
+    icono: Aviso["icono"] = "moneda",
+  ) => {
+    ejecutar(async () => {
+      const r = await accion();
+      sonar(r.ok ? "cofre" : "error");
+      setMercadoError(r.ok ? null : (r.error ?? "red"));
+      if ("activas" in r && r.activas !== undefined) setMercado(r as DatosMercado);
+      tratar(r, { texto: typeof texto === "function" ? texto(r) : texto, icono });
+    });
+  };
+
+  const publicarEnMercado = (objeto: string, precio: number) =>
+    moverMercado(() => publicarOferta(objeto, precio), "Publicado. Lo verás en Mis ventas.", "cultivo");
+  const comprarEnMercado = (id: number) =>
+    moverMercado(() => comprarOferta(id), "¡Comprado! Ya está en tu inventario.");
+  const retirarDelMercado = (id: number) =>
+    moverMercado(() => retirarOferta(id), "Oferta retirada. El objeto vuelve a tu inventario.", "cultivo");
+  const republicarEnMercado = (id: number) =>
+    moverMercado(() => republicarOferta(id), "Publicado de nuevo por 3 días más.", "cultivo");
+  const cobrarDelMercado = (id: number) =>
+    moverMercado(
+      () => cobrarOferta(id),
+      (r) => `¡Cobrado! +${"cobrado" in r ? (r.cobrado ?? 0) : 0} monedas`,
+    );
 
   const buscarAmigos = (texto: string) => {
     ejecutar(async () => setResultadosAmigos((await buscarJugadores(texto)) ?? []));
@@ -963,6 +1008,18 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           />
         ) : pantalla === "eventos" ? (
           <Eventos datos={eventos} />
+        ) : pantalla === "mercado" ? (
+          <Mercado
+            datos={mercado}
+            monedas={perfil.monedas}
+            ocupado={enCurso}
+            error={mercadoError}
+            alPublicar={publicarEnMercado}
+            alComprar={comprarEnMercado}
+            alRetirar={retirarDelMercado}
+            alRepublicar={republicarEnMercado}
+            alCobrar={cobrarDelMercado}
+          />
         ) : pantalla === "pase" ? (
           <Pase
             datos={pase}
