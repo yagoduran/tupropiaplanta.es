@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Beta } from "../Beta";
 import { Icono } from "../Icono";
 import { Escena } from "../Escena";
 import { Planta } from "../Planta";
@@ -32,8 +33,11 @@ export function Inicio() {
     <PaginaSuelta ancho={1000} logo={false}>
       <div className={styles.heroe}>
         <div className={styles.heroeTexto}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className={styles.logo} src="/assets/logo/tpp-logo-horizontal-claro-1x.png" alt="Tu Propia Planta" />
+          <span style={{ display: "inline-flex", alignItems: "flex-end", gap: 6, maxWidth: "100%" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className={styles.logo} src="/assets/logo/tpp-logo-horizontal-claro-1x.png" alt="Tu Propia Planta" />
+            <Beta />
+          </span>
           <h1 className={styles.titular}>Cuida tu planta las 24 horas, aunque no estés</h1>
           <p className={styles.texto}>
             Un juego de cultivo en tiempo real para el navegador. Tu planta crece, tiene sed y da cosecha mientras haces

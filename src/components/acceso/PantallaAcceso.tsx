@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Beta } from "../Beta";
 import { EnlacesLegales } from "../EnlacesLegales";
 import styles from "./acceso.module.css";
 
@@ -9,8 +10,11 @@ export function PantallaAcceso({ children }: { children: ReactNode }) {
       <div className={styles.fondo} aria-hidden />
       <div className={styles.velo} aria-hidden />
       <div className={styles.centro}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className={styles.logo} src="/assets/logo/tpp-logo-horizontal-oscuro-1x.png" alt="Tu Propia Planta" />
+        <span style={{ display: "inline-flex", alignItems: "flex-end", gap: 6, maxWidth: "100%" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className={styles.logo} src="/assets/logo/tpp-logo-horizontal-oscuro-1x.png" alt="Tu Propia Planta" />
+          <Beta />
+        </span>
         {children}
         <EnlacesLegales />
       </div>

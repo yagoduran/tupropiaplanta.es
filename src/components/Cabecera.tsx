@@ -6,6 +6,7 @@ import { marco } from "@/lib/diseno";
 import type { PantallaJuego } from "@/lib/juego";
 import { avatarDe } from "@/lib/perfil";
 import type { ReactNode } from "react";
+import { Beta } from "./Beta";
 import { Icono } from "./Icono";
 import { IconoObjeto } from "./IconoObjeto";
 import styles from "./juego.module.css";
@@ -61,9 +62,10 @@ export function Cabecera({
 
   return (
     <header className={styles.cabecera}>
-      <div className={styles.cabeceraLogo}>
+      <div className={styles.cabeceraLogo} style={{ display: "flex", alignItems: "flex-end", gap: 4 }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/assets/logo/tpp-logo-horizontal-oscuro-1x.png" alt="Tu Propia Planta" />
+        <Beta pequena />
       </div>
 
       <div className={styles.cabeceraCentro}>
