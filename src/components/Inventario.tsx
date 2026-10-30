@@ -157,6 +157,7 @@ export function Inventario({
                   <span>
                     <strong>{VARIEDAD_POR_ID[id].nombre}</strong>
                     <span className="numero"> {g} g</span>
+                    <span> · {Math.round(6 * VARIEDAD_POR_ID[id].recompensa)} monedas/g</span>
                   </span>
                   <button
                     type="button"
@@ -181,7 +182,8 @@ export function Inventario({
             </div>
           )}
           <p className={styles.nota}>
-            Vendidos valen 6 monedas por gramo. En un encargo se pagan a unas 10 y dan experiencia.
+            Cada variedad se vende a un precio por gramo distinto: cuanto más rara, más vale. En un encargo se paga casi
+            el doble y da experiencia.
           </p>
           <button type="button" className={styles.accion} style={secundario} onClick={alIrAEncargos}>
             Ver encargos

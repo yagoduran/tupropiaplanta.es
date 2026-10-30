@@ -79,8 +79,8 @@ Ver un anuncio de ayuda (hasta 3 al día) da +25 monedas y **reinicia todas las 
 - La cosecha queda **pendiente** y se elige:
   - **Vender**: cobras las monedas ya.
   - **Guardar**: los gramos van al **almacén** (Inventario → «Gramos guardados»).
-- En el Inventario, los gramos se pueden **vender a 6 monedas/g** (botones «Vender 10 g» y «Vender todo») o guardar para encargos.
-- **Comparación**: 20 g vendidos a 6 monedas = 120; la misma cosecha vendida en el momento = 160; usada en un encargo = 10 monedas/g (normal), 15 (urgente) o 12 (grande), es decir ~200, ~300 o ~240 por cada 20 g de clásica. Guardar para encargos es lo que más paga, pero tarda y caduca.
+- En el Inventario, los gramos se pueden **vender a 6 monedas/g × el valor de la variedad** (clásica 6, hoja azul 8, dorada 10, noche 13, cristal 18, aurora 20; botones «Vender 10 g» y «Vender todo») o guardar para encargos.
+- **Comparación**: 20 g de clásica vendidos a 6 monedas = 120; la misma cosecha vendida en el momento = 160; usada en un encargo = 10 monedas/g (normal), 15 (urgente) o 12 (grande), es decir ~200, ~300 o ~240 por cada 20 g de clásica. Guardar para encargos es lo que más paga, pero tarda y caduca.
 - Un hito de maestría sube con cada cosecha (+100 + salud).
 
 ## 5. Variedades (16, por rareza)
@@ -179,7 +179,7 @@ Las demás son **híbridas** (se consiguen cruzando o por premios, no se compran
 7. **Personal**: contratar ayudantes que cuiden plantas (más caro = más plantas).
 8. **Navegación**: menú lateral demasiado largo; avisos que no llevan a ningún sitio.
 9. **Tutorial** desactualizado.
-10. **Economía sin ajustar**: no se ha probado con jugadores reales; las cifras (6 monedas/g, precios de semillas, comisión del 5 %, robos) son estimaciones mías.
+10. **Economía sin ajustar**: no se ha probado con jugadores reales; las cifras (6 monedas/g × variedad, precios de semillas, comisión del 5 %, robos) son estimaciones mías.
 
 ## 13. Preguntas para otra IA
 
