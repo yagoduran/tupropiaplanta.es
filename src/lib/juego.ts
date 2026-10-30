@@ -171,10 +171,24 @@ export interface EstadoJuego {
   planta: PlantaJuego | null;
 }
 
+/** Cosecha recién hecha que espera a que el jugador elija entre venderla o guardarla. */
+export interface CosechaPendiente {
+  variedad: string;
+  gramos: number;
+  monedas: number;
+  xp: number;
+  /** De 1 a 5 estrellas, según la salud de la planta. */
+  calidad: number;
+  /** Días que ha tardado en crecer. */
+  dias: number;
+}
+
 export interface RespuestaAccion extends EstadoJuego {
   ok: boolean;
   error?: string;
   recompensa?: number;
+  /** Solo al cosechar: lo que hay que vender o guardar. */
+  cosecha?: CosechaPendiente | null;
   /** Monedas ganadas por cuidar la planta. */
   ganadas?: number;
 }

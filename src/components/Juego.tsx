@@ -60,6 +60,8 @@ import {
   plantarSemilla,
   cambiarHorarioLuz,
   reclamarDiaria,
+  resolverCosecha,
+  cosechaPendiente,
   verRobo,
   verAnuncio,
   recuperarPlanta,
@@ -85,6 +87,7 @@ import {
   type PantallaJuego,
   type EstadoJuego,
   type RespuestaAccion,
+  type CosechaPendiente,
 } from "@/lib/juego";
 import { tamanoPlanta } from "@/lib/crecimiento";
 import { LOGRO_POR_ID } from "@/lib/logros";
@@ -105,6 +108,7 @@ import { calcularBienvenida, guardarVisita, leerVisita, type Bienvenida as Datos
 import { Ajustes } from "./Ajustes";
 import { Bienvenida } from "./Bienvenida";
 import { PlantaMuerta } from "./PlantaMuerta";
+import { CosechaLista } from "./CosechaLista";
 import { Bocadillo } from "./Bocadillo";
 import { Escena } from "./Escena";
 import { EstadoCompacto } from "./EstadoCompacto";
@@ -220,6 +224,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [crucesEn, setCrucesEn] = useState(() => Date.now());
   const [bienvenida, setBienvenida] = useState<DatosBienvenida | null>(null);
   const [muertaVista, setMuertaVista] = useState<string | null>(null);
+  const [cosechaPend, setCosechaPend] = useState<CosechaPendiente | null>(null);
 
   const aplicar = useCallback((nuevo: EstadoJuego) => {
     setEstado({ perfil: nuevo.perfil, planta: nuevo.planta });
@@ -242,6 +247,13 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     const datos = calcularBienvenida(leerVisita(), inicial.planta, Date.now());
     if (datos) setTimeout(() => setBienvenida(datos), 0);
   }, [inicial]);
+
+  // Si se cerró el juego sin vender ni guardar la última cosecha, vuelve a preguntar.
+  useEffect(() => {
+    cosechaPendiente()
+      .then((c) => c && setCosechaPend(c))
+      .catch(() => {});
+  }, []);
 
   // Guarda cómo estaba la planta en esta visita (solo con la pestaña a la vista).
   useEffect(() => {
@@ -490,13 +502,28 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       sonar(r.ok ? accion : "error");
       const recompensa = "recompensa" in r ? r.recompensa : undefined;
       const ganadas = "ganadas" in r ? r.ganadas : undefined;
+      if (accion === "cosechar" && "cosecha" in r && r.cosecha) setCosechaPend(r.cosecha);
       tratar(
         r,
-        accion === "cosechar"
+        accion === "cosechar" && !("cosecha" in r && r.cosecha)
           ? { texto: `¡Cosecha! +${recompensa ?? 0} monedas`, icono: "moneda" }
           : ganadas
             ? { texto: `+${ganadas} ${ganadas === 1 ? "moneda" : "monedas"}`, icono: "moneda" }
             : undefined,
+      );
+    });
+  };
+
+  const decidirCosecha = (vender: boolean) => {
+    ejecutar(async () => {
+      const r = await resolverCosecha(vender);
+      sonar(r.ok ? (vender ? "comprar" : "clic") : "error");
+      if (r.ok) setCosechaPend(null);
+      tratar(
+        r,
+        vender
+          ? { texto: `¡Cosecha vendida! +${cosechaPend?.monedas ?? 0} monedas`, icono: "moneda" }
+          : { texto: `Guardados ${cosechaPend?.gramos ?? 0} g para los encargos`, icono: "tienda" },
       );
     });
   };
@@ -1031,6 +1058,13 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           />
         ) : bienvenida ? (
           <Bienvenida usuario={perfil.usuario} datos={bienvenida} alContinuar={() => setBienvenida(null)} />
+        ) : cosechaPend ? (
+          <CosechaLista
+            cosecha={cosechaPend}
+            ocupado={enCurso}
+            alVender={() => decidirCosecha(true)}
+            alGuardar={() => decidirCosecha(false)}
+          />
         ) : planta && planta.vida === "muerta" && !planta.desafio && planta.id !== muertaVista ? (
           <PlantaMuerta
             planta={planta}

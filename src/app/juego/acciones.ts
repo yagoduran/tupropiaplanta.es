@@ -15,6 +15,7 @@ import type { RespuestaCruce } from "@/lib/cruces";
 import type {
   Accion,
   AjustesJuego,
+  CosechaPendiente,
   TipoSemilla,
   AmbitoRanking,
   DatosRanking,
@@ -322,6 +323,21 @@ export async function elegirHabitacion(id: string): Promise<Resultado> {
   const { data, error } = await supabase.rpc("tpp_elegir_habitacion", { p_id: id });
   if (error || !data) return fallo(error?.message);
   return data as RespuestaAccion;
+}
+
+/** Vende la última cosecha (monedas) o la guarda (gramos para los encargos). */
+export async function resolverCosecha(vender: boolean): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_resolver_cosecha", { p_vender: vender });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
+/** Cosecha que se quedó sin vender ni guardar, si la hay. */
+export async function cosechaPendiente(): Promise<CosechaPendiente | null> {
+  const supabase = await crearClienteServidor();
+  const { data } = await supabase.rpc("tpp_cosecha_pendiente");
+  return (data as CosechaPendiente | null) ?? null;
 }
 
 /** Recoge el regalo diario. */
