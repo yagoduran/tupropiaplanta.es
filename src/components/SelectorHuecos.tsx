@@ -44,7 +44,7 @@ function MiniPlanta({
       <span
         className="pixel"
         style={{
-          backgroundImage: "url(/assets/sprites/tpp-macetas-1x.png)",
+          backgroundImage: "url(/assets/sprites/tpp-macetas-1x.png?v=2)",
           backgroundSize: `${8 * MINI}px ${MINI}px`,
           backgroundPosition: `${-Math.max(0, columnaMaceta) * MINI}px 0`,
         }}

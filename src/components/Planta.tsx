@@ -102,7 +102,7 @@ export function Planta({
         className={`pixel ${styles.planta}`}
         aria-hidden
         style={{
-          backgroundImage: "url(/assets/sprites/tpp-macetas-1x.png)",
+          backgroundImage: "url(/assets/sprites/tpp-macetas-1x.png?v=2)",
           backgroundSize: `calc(${8 * CELDA}px * var(--s)) calc(${CELDA}px * var(--s))`,
           backgroundPosition: `calc(${-columnaMaceta * CELDA}px * var(--s)) 0`,
         }}
