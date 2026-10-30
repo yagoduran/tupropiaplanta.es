@@ -4,7 +4,13 @@ import type { Estado, IdIcono } from "./diseno";
 import type { PlagaJuego } from "./plagas";
 import { tonoPorPorcentaje, type Medidor } from "./estado";
 
-export type Accion = "regar" | "abonar" | "podar" | "ajustar_luz" | "cosechar";
+export type Accion = "regar" | "abonar" | "podar" | "cosechar";
+
+/** Tipo de semilla: fotoperiódica, autofloreciente, feminizada y autofloreciente feminizada. */
+export type TipoSemilla = "foto" | "auto" | "fem" | "autofem";
+
+/** Qué ha dañado a la planta ahora: sed, hambre, oscuridad, ahogo, plaga, quemada por nutrientes o ciclo de luz roto. */
+export type CausaDano = "sed" | "hambre" | "oscuridad" | "ahogo" | "plaga" | "quemada" | "ciclo_luz";
 
 /** Pantallas del juego: las pestañas y las del menú de usuario. */
 export type PantallaJuego =
@@ -29,7 +35,8 @@ export type PantallaJuego =
   | "regalo"
   | "eventos"
   | "pase"
-  | "mercado";
+  | "mercado"
+  | "luz";
 
 export interface AjustesJuego {
   volumen_efectos: number;
@@ -84,6 +91,9 @@ export interface PerfilJuego {
   tutorial_hecho: boolean;
   tutorial_paso: number;
   ajustes: AjustesJuego;
+  /** Horario de luz: horas encendida al día (8 a 24) y hora de encendido (0 a 23). */
+  luz_horas: number;
+  luz_inicio: number;
   equipo: EquipoJuego;
   /** Objetos que tiene el jugador y cuántos. Los gratuitos no aparecen. */
   inventario: Record<string, number>;
@@ -131,6 +141,11 @@ export interface HuecosJuego {
 export interface PlantaJuego {
   id: string;
   variedad: string;
+  tipo: TipoSemilla;
+  /** Sexo de la planta; solo se sabe desde la prefloración (fase 6). */
+  sexo: "hembra" | "macho" | null;
+  /** Causa del daño que sufre ahora, si lo hay. */
+  causa: CausaDano | null;
   /** Si la planta sigue viva, ha muerto o ya se ha cosechado. */
   vida: "viva" | "muerta" | "cosechada";
   fase: number;
@@ -168,7 +183,6 @@ export const ESPERA_TOTAL: Record<Accion, number> = {
   regar: 300,
   abonar: 1800,
   podar: 3600,
-  ajustar_luz: 3600,
   cosechar: 0,
 };
 
@@ -180,6 +194,8 @@ export const MENSAJES_ERROR: Record<string, string> = {
   ya_hay_planta: "Ya tienes una planta viva.",
   variedad_bloqueada: "Todavía no tienes el nivel para esa semilla.",
   variedad_desconocida: "Esa semilla no existe.",
+  tipo_desconocido: "Ese tipo de semilla no existe.",
+  horario_invalido: "Ese horario de luz no es válido.",
   monedas_insuficientes: "No tienes monedas suficientes.",
   nivel_insuficiente: "Todavía no tienes el nivel necesario.",
   sin_plaga: "Tu planta no tiene ninguna plaga.",

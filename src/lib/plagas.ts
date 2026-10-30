@@ -2,7 +2,7 @@ export type TipoPlaga = "pulgon" | "arana" | "mosca" | "caracol" | "oruga" | "mo
 
 export interface PlagaJuego {
   tipo: TipoPlaga;
-  /** Lleva más de 2 minutos sin tratar y quita más salud. */
+  /** Lleva más de 6 horas sin tratar y quita más salud. */
   grave: boolean;
 }
 

@@ -54,6 +54,9 @@ export function Visita({ datos, ocupado, alVolver, alRegar, alSaludar, alPerfil 
         esperas: {},
         plaga: null,
         desafio: null,
+        tipo: "foto",
+        sexo: null,
+        causa: null,
         id: "visita",
       } as PlantaJuego)
     : [];

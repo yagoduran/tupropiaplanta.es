@@ -58,6 +58,7 @@ import {
   obtenerMiPerfil,
   obtenerRanking,
   plantarSemilla,
+  cambiarHorarioLuz,
   reclamarDiaria,
   verRobo,
   verAnuncio,
@@ -77,6 +78,7 @@ import {
   formatoVida,
   medidoresDe,
   type Accion,
+  type TipoSemilla,
   type AjustesJuego,
   type AmbitoRanking,
   type DatosRanking,
@@ -147,6 +149,7 @@ import { Inventario } from "./Inventario";
 import { MisPlantas } from "./MisPlantas";
 import { Perfil } from "./Perfil";
 import { Ranking } from "./Ranking";
+import { CicloLuz } from "./CicloLuz";
 import { Semillas } from "./Semillas";
 import { Tienda } from "./Tienda";
 import { Titulos } from "./Titulos";
@@ -401,6 +404,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "ajustes" ||
       id === "tienda" ||
       id === "semillas" ||
+      id === "luz" ||
       id === "logros" ||
       id === "ranking"
     ) {
@@ -478,7 +482,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const accionar = (accion: Accion) => {
     ejecutar(async () => {
       const r = await hacerAccion(accion);
-      sonar(r.ok ? (accion === "ajustar_luz" ? "ajustar-luz" : accion) : "error");
+      sonar(r.ok ? accion : "error");
       const recompensa = "recompensa" in r ? r.recompensa : undefined;
       const ganadas = "ganadas" in r ? r.ganadas : undefined;
       tratar(
@@ -900,9 +904,17 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     });
   };
 
-  const plantar = (variedad: string) => {
+  const guardarLuz = (horas: number, inicio: number) => {
     ejecutar(async () => {
-      const r = await plantarSemilla(variedad);
+      const r = await cambiarHorarioLuz(horas, inicio);
+      sonar(r.ok ? "ajustar-luz" : "error");
+      tratar(r, { texto: "Horario de luz guardado", icono: "luz" });
+    });
+  };
+
+  const plantar = (variedad: string, tipo: TipoSemilla) => {
+    ejecutar(async () => {
+      const r = await plantarSemilla(variedad, tipo);
       tratar(r, { texto: "¡Semilla plantada!", icono: "cultivo" });
       if (r.ok) setPantalla("cultivo");
     });
@@ -931,6 +943,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const transcurrido = Math.max(0, (ahora - recibidoEn) / 1000);
   const viva = planta?.vida === "viva";
 
+  // El macho se puede arrancar desde la prefloración (fase 6); el resto, al terminar el ciclo (fase 8).
+  const faseCosecha = planta?.sexo === "macho" ? 6 : 8;
   const esperas: Partial<Record<Accion, number>> = {};
   if (planta && viva) {
     for (const [k, v] of Object.entries(planta.esperas)) {
@@ -940,9 +954,13 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   }
 
   const bloqueadas: Partial<Record<Accion, boolean>> = {};
-  for (const a of ["regar", "abonar", "podar", "ajustar_luz", "cosechar"] as Accion[]) {
+  for (const a of ["regar", "abonar", "podar", "cosechar"] as Accion[]) {
     bloqueadas[a] =
-      enCurso || !planta || !viva || (a === "cosechar" && planta.fase < 8) || (a === "podar" && planta.fase < 3);
+      enCurso ||
+      !planta ||
+      !viva ||
+      (a === "cosechar" && planta.fase < faseCosecha) ||
+      (a === "podar" && planta.fase < 3);
   }
 
   const sensores = perfil.casa.mejoras.sens ?? 0;
@@ -968,7 +986,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       : null;
   const vida = planta ? planta.segundos_vida + (viva ? transcurrido : 0) : 0;
   const sedienta = !!planta && viva && planta.agua < 35;
-  const lista = !!planta && viva && planta.fase >= 8;
+  const lista = !!planta && viva && planta.fase >= faseCosecha;
 
   // Avisos del navegador (si el jugador los activó): solo cuando la pestaña no está a la vista.
   const avisosActivos = perfil.ajustes.avisos;
@@ -1195,6 +1213,16 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             ocupado={enCurso}
             alElegir={equiparPerfil}
           />
+        ) : pantalla === "luz" ? (
+          <CicloLuz
+            horas={perfil.luz_horas}
+            inicio={perfil.luz_inicio}
+            tipo={planta && viva ? planta.tipo : null}
+            fase={planta && viva ? planta.fase : null}
+            ocupado={enCurso}
+            aviso={aviso}
+            alGuardar={guardarLuz}
+          />
         ) : pantalla === "semillas" ? (
           <Semillas
             hibridas={perfil.hibridas.semillas}
@@ -1203,6 +1231,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             ocupado={enCurso}
             aviso={aviso}
             alPlantar={plantar}
+            monedas={perfil.monedas}
           />
         ) : undefined
       }
@@ -1222,7 +1251,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             <Planta
               fase={planta.fase}
               estado={planta.estado}
-              tamano={tamanoPlanta(planta.fase, vida, planta.variedad)}
+              tamano={tamanoPlanta(planta.fase, vida, planta.variedad, planta.tipo)}
               variedad={planta.variedad}
               maceta={perfil.equipo.maceta}
             />
@@ -1333,6 +1362,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           esperas={esperas}
           bloqueadas={bloqueadas}
           alAccionar={(a) => (a === "regar" ? setRegando((r) => !r) : accionar(a))}
+          luzHoras={perfil.luz_horas}
+          alCicloLuz={() => elegirPantalla("luz")}
           ayudasRestantes={perfil.anuncios.restantes}
           alVerAnuncio={() => setAnuncioAbierto(true)}
         />

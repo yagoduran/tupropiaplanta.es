@@ -265,6 +265,3 @@ export const rasgosDe = (v: Pick<Variedad, "recompensa" | "ciclo" | "desgaste" |
   velocidad: acotar(100 - (v.ciclo - 1) * 100),
   sabor: acotar(v.sabor),
 });
-
-/** Minutos reales que tarda en llegar a la cosecha (60 por el multiplicador del ciclo). */
-export const minutosDeCiclo = (v: Variedad) => Math.round(60 * v.ciclo);

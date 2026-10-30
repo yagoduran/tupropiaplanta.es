@@ -12,9 +12,17 @@ import type { DatosEventos, DatosPase } from "@/lib/temporada";
 import type { DatosAmigos, DatosRegalos, DatosVisita, PerfilPublicoDatos, Resultado as Jugadores } from "@/lib/amigos";
 import type { DatosMercado } from "@/lib/mercado";
 import type { RespuestaCruce } from "@/lib/cruces";
-import type { Accion, AjustesJuego, AmbitoRanking, DatosRanking, EstadoJuego, RespuestaAccion } from "@/lib/juego";
+import type {
+  Accion,
+  AjustesJuego,
+  TipoSemilla,
+  AmbitoRanking,
+  DatosRanking,
+  EstadoJuego,
+  RespuestaAccion,
+} from "@/lib/juego";
 
-const ACCIONES: Accion[] = ["regar", "abonar", "podar", "ajustar_luz", "cosechar"];
+const ACCIONES: Accion[] = ["regar", "abonar", "podar", "cosechar"];
 
 /** Estado actualizado del jugador y su planta. Devuelve null si no hay sesión. */
 export async function obtenerEstado(): Promise<EstadoJuego | null> {
@@ -32,14 +40,28 @@ export async function hacerAccion(accion: Accion): Promise<RespuestaAccion | { o
   return data as RespuestaAccion;
 }
 
-export async function plantarSemilla(variedad = "clasica"): Promise<RespuestaAccion | { ok: false; error: string }> {
+export async function plantarSemilla(
+  variedad = "clasica",
+  tipo: TipoSemilla = "foto",
+): Promise<RespuestaAccion | { ok: false; error: string }> {
   const supabase = await crearClienteServidor();
-  const { data, error } = await supabase.rpc("tpp_plantar", { p_variedad: variedad });
+  const { data, error } = await supabase.rpc("tpp_plantar", { p_variedad: variedad, p_tipo: tipo });
   if (error || !data) return { ok: false, error: error?.message?.includes("no_autenticado") ? "sesion" : "red" };
   return data as RespuestaAccion;
 }
 
 type Resultado = RespuestaAccion | { ok: false; error: string };
+
+/** Cambia el horario de luz: horas encendida al día y hora de encendido. */
+export async function cambiarHorarioLuz(
+  horas: number,
+  inicio: number,
+): Promise<RespuestaAccion | { ok: false; error: string }> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_luz_horario", { p_horas: horas, p_inicio: inicio });
+  if (error || !data) return { ok: false, error: error?.message?.includes("no_autenticado") ? "sesion" : "red" };
+  return data as RespuestaAccion;
+}
 
 const fallo = (mensaje?: string): Resultado => ({
   ok: false,

@@ -110,3 +110,35 @@
 .boton:disabled {
   cursor: not-allowed;
 }
+
+.tipos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: calc(var(--u) * 2);
+}
+
+.tipo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: calc(var(--u) * 2);
+  border: 2px solid #5f3c26;
+  background: #f0dcb4;
+  color: #1c1626;
+  font-size: var(--f-small);
+  text-align: center;
+  cursor: pointer;
+}
+
+.tipoActivo {
+  background: #ffd86b;
+  border-color: #1c1626;
+}
+
+.iconoTipo {
+  width: calc(32px * var(--ik));
+  height: calc(32px * var(--ik));
+  background-image: url(/assets/sprites/tpp-semillas-tipos-1x.png);
+  background-size: calc(128px * var(--ik)) calc(128px * var(--ik));
+}
