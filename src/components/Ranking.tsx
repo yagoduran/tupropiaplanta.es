@@ -17,11 +17,12 @@ const AMBITOS: [AmbitoRanking, string][] = [
 
 interface Props {
   datos: DatosRanking | null;
+  error: boolean;
   ambito: AmbitoRanking;
   alCambiarAmbito: (a: AmbitoRanking) => void;
 }
 
-export function Ranking({ datos, ambito, alCambiarAmbito }: Props) {
+export function Ranking({ datos, error, ambito, alCambiarAmbito }: Props) {
   const panel = marco("tarjeta", "var(--u)");
   return (
     <div className={styles.contenedor}>
@@ -56,7 +57,14 @@ export function Ranking({ datos, ambito, alCambiarAmbito }: Props) {
         ))}
       </div>
       <div className={styles.panel} style={panel}>
-        {!datos ? (
+        {error ? (
+          <p className={styles.vacio}>
+            No se ha podido cargar el ranking.{" "}
+            <button type="button" className={styles.ambito} onClick={() => alCambiarAmbito(ambito)}>
+              Reintentar
+            </button>
+          </p>
+        ) : !datos ? (
           <p className={styles.vacio}>Cargando…</p>
         ) : datos.top.length === 0 ? (
           <p className={styles.vacio}>

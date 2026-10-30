@@ -188,6 +188,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [roboVisto, setRoboVisto] = useState<string | null>(null);
   const [ranking, setRanking] = useState<DatosRanking | null>(null);
   const [ambitoRanking, setAmbitoRanking] = useState<AmbitoRanking>("mundial");
+  const [errorRanking, setErrorRanking] = useState(false);
   const [datosPerfil, setDatosPerfil] = useState<DatosPerfil | null>(null);
   const [estadisticas, setEstadisticas] = useState<DatosEstadisticas | null>(null);
   const [progresion, setProgresion] = useState<DatosProgresion | null>(null);
@@ -467,9 +468,11 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
 
   const cargarRanking = (ambito: AmbitoRanking) => {
     setAmbitoRanking(ambito);
+    setRanking(null);
+    setErrorRanking(false);
     obtenerRanking(ambito)
-      .then(setRanking)
-      .catch(() => setRanking(null));
+      .then((d) => (d ? setRanking(d) : setErrorRanking(true)))
+      .catch(() => setErrorRanking(true));
   };
 
   const accionar = (accion: Accion) => {
@@ -1048,7 +1051,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         ) : pantalla === "logros" ? (
           <Logros perfil={perfil} ocupado={enCurso} aviso={aviso} alReclamar={reclamar} />
         ) : pantalla === "ranking" ? (
-          <Ranking datos={ranking} ambito={ambitoRanking} alCambiarAmbito={cargarRanking} />
+          <Ranking datos={ranking} error={errorRanking} ambito={ambitoRanking} alCambiarAmbito={cargarRanking} />
         ) : pantalla === "perfil" ? (
           <Perfil
             usuario={perfil.usuario}
