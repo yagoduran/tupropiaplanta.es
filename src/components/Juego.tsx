@@ -109,6 +109,7 @@ import { Ajustes } from "./Ajustes";
 import { Bienvenida } from "./Bienvenida";
 import { PlantaMuerta } from "./PlantaMuerta";
 import { CosechaLista } from "./CosechaLista";
+import { RecompensaDiaria } from "./RecompensaDiaria";
 import { Bocadillo } from "./Bocadillo";
 import { Escena } from "./Escena";
 import { EstadoCompacto } from "./EstadoCompacto";
@@ -224,6 +225,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [crucesEn, setCrucesEn] = useState(() => Date.now());
   const [bienvenida, setBienvenida] = useState<DatosBienvenida | null>(null);
   const [muertaVista, setMuertaVista] = useState<string | null>(null);
+  const [diariaAbierta, setDiariaAbierta] = useState(inicial.perfil.diaria.disponible && inicial.perfil.tutorial_hecho);
   const [cosechaPend, setCosechaPend] = useState<CosechaPendiente | null>(null);
 
   const aplicar = useCallback((nuevo: EstadoJuego) => {
@@ -558,7 +560,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       sonar(r.ok ? "cofre" : "error");
       const recompensa = "recompensa" in r ? r.recompensa : 0;
       tratar(r, { texto: `¡Regalo diario! +${recompensa} monedas`, icono: "moneda" });
-      if (r.ok) setCofre({ texto: `¡Regalo diario! +${recompensa} monedas` });
+      if (r.ok) {
+        setDiariaAbierta(false);
+        setCofre({ texto: `¡Regalo diario! +${recompensa} monedas` });
+      }
     });
   };
 
@@ -1064,6 +1069,13 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             ocupado={enCurso}
             alVender={() => decidirCosecha(true)}
             alGuardar={() => decidirCosecha(false)}
+          />
+        ) : diariaAbierta && perfil.diaria.disponible ? (
+          <RecompensaDiaria
+            diaria={perfil.diaria}
+            ocupado={enCurso}
+            alRecoger={reclamar}
+            alCerrar={() => setDiariaAbierta(false)}
           />
         ) : planta && planta.vida === "muerta" && !planta.desafio && planta.id !== muertaVista ? (
           <PlantaMuerta
