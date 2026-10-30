@@ -95,7 +95,7 @@ export function Inventario({ perfil, plantas, ocupado, alIrAHueco, alAmpliar, al
                       width: 128,
                       height: 128,
                       backgroundImage: "url(/assets/sprites/tpp-macetas-1x.png)",
-                      backgroundSize: "512px 128px",
+                      backgroundSize: "1024px 128px",
                       backgroundPosition: "-128px 0",
                     }}
                   />

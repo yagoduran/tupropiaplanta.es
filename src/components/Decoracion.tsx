@@ -7,6 +7,10 @@ const POSICIONES: Record<string, { x: number; y: number }> = {
   poster: { x: 30, y: 14 },
   planta_adorno: { x: 76, y: 62 },
   radio: { x: 80, y: 28 },
+  deco_primavera: { x: 62, y: 12 },
+  deco_verano: { x: 6, y: 62 },
+  deco_otono: { x: 22, y: 62 },
+  deco_invierno: { x: 60, y: 62 },
 };
 
 /** Objetos de decoración puestos en la escena, a 16 px nativos. */

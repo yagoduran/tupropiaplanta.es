@@ -131,6 +131,15 @@ export const TITULOS: { categoria: string; titulos: Titulo[] }[] = [
       { id: "enciclopedia", nombre: "Enciclopedia viviente", requisito: "100 % de la colección" },
     ],
   },
+  {
+    categoria: "Temporada",
+    titulos: [
+      { id: "ts_primavera", nombre: "Alma de primavera", requisito: "Nivel 30 del pase de primavera (pista especial)" },
+      { id: "ts_verano", nombre: "Hijo del verano", requisito: "Nivel 30 del pase de verano (pista especial)" },
+      { id: "ts_otono", nombre: "Guardián del otoño", requisito: "Nivel 30 del pase de otoño (pista especial)" },
+      { id: "ts_invierno", nombre: "Corazón de invierno", requisito: "Nivel 30 del pase de invierno (pista especial)" },
+    ],
+  },
 ];
 
 export const TITULO_POR_ID: Record<string, Titulo> = Object.fromEntries(

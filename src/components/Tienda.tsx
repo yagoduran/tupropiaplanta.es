@@ -150,7 +150,7 @@ export function Tienda(props: Props) {
         ))}
       </div>
       <div className={styles.rejilla}>
-        {CATALOGO.filter((o) => o.categoria === categoria).map((o) => (
+        {CATALOGO.filter((o) => o.categoria === categoria && !o.exclusivo).map((o) => (
           <Tarjeta key={o.id} objeto={o} {...props} />
         ))}
       </div>

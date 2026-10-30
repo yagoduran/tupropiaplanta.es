@@ -13,6 +13,8 @@ export interface ObjetoTienda {
   nivel: number;
   /** Columna y fila del icono en la hoja de objetos. */
   celda: [number, number];
+  /** Solo se consigue en el pase de temporada: no se vende en la tienda ni en el mercado. */
+  exclusivo?: boolean;
 }
 
 export const CATEGORIAS: { id: CategoriaTienda; etiqueta: string }[] = [
@@ -234,6 +236,94 @@ export const CATALOGO: ObjetoTienda[] = [
     precio: 1500,
     nivel: 10,
     celda: [3, 4],
+  },
+  {
+    id: "maceta_primavera",
+    categoria: "macetas",
+    tipo: "maceta",
+    nombre: "Maceta de primavera",
+    efecto: "Exclusiva del pase de temporada de primavera.",
+    precio: -1,
+    nivel: 1,
+    celda: [4, 0],
+    exclusivo: true,
+  },
+  {
+    id: "deco_primavera",
+    categoria: "decoracion",
+    tipo: "decoracion",
+    nombre: "Tulipán de primavera",
+    efecto: "Exclusiva del pase de temporada de primavera.",
+    precio: -1,
+    nivel: 1,
+    celda: [4, 4],
+    exclusivo: true,
+  },
+  {
+    id: "maceta_verano",
+    categoria: "macetas",
+    tipo: "maceta",
+    nombre: "Maceta de verano",
+    efecto: "Exclusiva del pase de temporada de verano.",
+    precio: -1,
+    nivel: 1,
+    celda: [5, 0],
+    exclusivo: true,
+  },
+  {
+    id: "deco_verano",
+    categoria: "decoracion",
+    tipo: "decoracion",
+    nombre: "Limonada de verano",
+    efecto: "Exclusiva del pase de temporada de verano.",
+    precio: -1,
+    nivel: 1,
+    celda: [5, 4],
+    exclusivo: true,
+  },
+  {
+    id: "maceta_otono",
+    categoria: "macetas",
+    tipo: "maceta",
+    nombre: "Maceta de otoño",
+    efecto: "Exclusiva del pase de temporada de otoño.",
+    precio: -1,
+    nivel: 1,
+    celda: [6, 0],
+    exclusivo: true,
+  },
+  {
+    id: "deco_otono",
+    categoria: "decoracion",
+    tipo: "decoracion",
+    nombre: "Calabaza de otoño",
+    efecto: "Exclusiva del pase de temporada de otoño.",
+    precio: -1,
+    nivel: 1,
+    celda: [6, 4],
+    exclusivo: true,
+  },
+  {
+    id: "maceta_invierno",
+    categoria: "macetas",
+    tipo: "maceta",
+    nombre: "Maceta de invierno",
+    efecto: "Exclusiva del pase de temporada de invierno.",
+    precio: -1,
+    nivel: 1,
+    celda: [7, 0],
+    exclusivo: true,
+  },
+  {
+    id: "deco_invierno",
+    categoria: "decoracion",
+    tipo: "decoracion",
+    nombre: "Muñeco de nieve",
+    efecto: "Exclusiva del pase de temporada de invierno.",
+    precio: -1,
+    nivel: 1,
+    celda: [7, 4],
+    exclusivo: true,
   },
 ];
 

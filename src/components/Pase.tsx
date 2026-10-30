@@ -1,8 +1,10 @@
 "use client";
 
 import { marco } from "@/lib/diseno";
+import { OBJETO_POR_ID } from "@/lib/tienda";
 import type { DatosPase, PremioPase } from "@/lib/temporada";
 import { Icono } from "./Icono";
+import { IconoObjeto } from "./IconoObjeto";
 import { IconoSocial } from "./IconoSocial";
 import styles from "./progresion.module.css";
 
@@ -16,7 +18,10 @@ interface Props {
 
 const miles = (n: number) => n.toLocaleString("es-ES", { useGrouping: "always" });
 
-function IconoPremio({ tipo }: { tipo: PremioPase["tipo"] }) {
+function IconoPremio({ tipo, id }: { tipo: PremioPase["tipo"]; id?: string }) {
+  const objeto = id ? OBJETO_POR_ID[id] : null;
+  if ((tipo === "maceta" || tipo === "decoracion") && objeto)
+    return <IconoObjeto celda={objeto.celda} tamano={32} k={0.75} />;
   if (tipo === "monedas") return <Icono id="moneda" k={2} />;
   if (tipo === "xp") return <Icono id="nivel" k={2} />;
   if (tipo === "objeto") return <Icono id="nutrientes" k={2} />;
@@ -40,7 +45,7 @@ function Premio({ p, ocupado, alReclamar }: { p: PremioPase; ocupado: boolean; a
       disabled={!listo || ocupado}
       onClick={alReclamar}
     >
-      <IconoPremio tipo={p.tipo} />
+      <IconoPremio tipo={p.tipo} id={p.id} />
       <span>{listo ? `Reclamar: ${p.etq}` : p.estado === "reclamado" ? "✓ " + p.etq : p.etq}</span>
     </button>
   );

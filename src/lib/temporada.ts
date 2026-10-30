@@ -25,7 +25,8 @@ export interface DatosEventos {
 }
 
 export interface PremioPase {
-  tipo: "monedas" | "xp" | "objeto" | "semilla" | "marco";
+  tipo: "monedas" | "xp" | "objeto" | "semilla" | "marco" | "maceta" | "decoracion" | "titulo";
+  id?: string;
   etq: string;
   estado: "reclamado" | "listo" | "futuro" | "bloqueado";
 }

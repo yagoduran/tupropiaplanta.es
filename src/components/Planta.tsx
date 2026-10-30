@@ -19,6 +19,10 @@ const COLUMNA_MACETA: Record<string, number> = {
   maceta_terracota: 1,
   maceta_tela: 2,
   maceta_ceramica: 3,
+  maceta_primavera: 4,
+  maceta_verano: 5,
+  maceta_otono: 6,
+  maceta_invierno: 7,
 };
 
 interface Props {
@@ -78,7 +82,7 @@ export function Planta({ fase, estado, tamano = 1, variedad = "clasica", maceta 
         aria-hidden
         style={{
           backgroundImage: "url(/assets/sprites/tpp-macetas-1x.png)",
-          backgroundSize: `calc(${4 * CELDA}px * var(--s)) calc(${CELDA}px * var(--s))`,
+          backgroundSize: `calc(${8 * CELDA}px * var(--s)) calc(${CELDA}px * var(--s))`,
           backgroundPosition: `calc(${-columnaMaceta * CELDA}px * var(--s)) 0`,
         }}
       />
