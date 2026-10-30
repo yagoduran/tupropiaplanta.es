@@ -732,6 +732,9 @@
   width: calc(64px * var(--s));
   height: calc(64px * var(--s));
   background-image: url(/assets/sprites/tpp-luces-1x.png);
+  /* Más pequeña y pegada al techo para que no choque con la planta. */
+  transform: scale(0.6);
+  transform-origin: 50% 0;
   pointer-events: none;
 }
 
