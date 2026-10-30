@@ -164,11 +164,35 @@ export const HABITACIONES: Habitacion[] = [
   },
 ];
 
+/** Mejoras de cada habitación (3 niveles). Tienen que coincidir con `tpp.mejoras()` y con los bonos de `tpp.sincronizar` y `tpp.accion`. */
+export const MEJORAS_HABITACION: Record<Habitacion["id"], [NivelMejora, NivelMejora, NivelMejora]> = {
+  armario: [
+    { nombre: "Estantes con tapa", texto: "Los nutrientes bajan un 5 % más despacio.", precio: 1500, nivel: 5 },
+    { nombre: "Sustrato aislado", texto: "Los nutrientes bajan un 10 % más despacio.", precio: 4000, nivel: 15 },
+    { nombre: "Armario hermético", texto: "Los nutrientes bajan un 15 % más despacio.", precio: 9000, nivel: 25 },
+  ],
+  sotano: [
+    { nombre: "Trampas de pegamento", texto: "Plagas −15 % (en vez de −10 %).", precio: 2500, nivel: 18 },
+    { nombre: "Puerta con burlete", texto: "Plagas −20 %.", precio: 6000, nivel: 26 },
+    { nombre: "Sótano estéril", texto: "Plagas −30 %.", precio: 12000, nivel: 34 },
+  ],
+  invernadero: [
+    { nombre: "Cristales limpios", texto: "Crecimiento +20 % (en vez de +15 %).", precio: 6000, nivel: 28 },
+    { nombre: "Ventanas automáticas", texto: "Crecimiento +25 %.", precio: 14000, nivel: 34 },
+    { nombre: "Clima perfecto", texto: "Crecimiento +30 %.", precio: 30000, nivel: 40 },
+  ],
+  azotea: [
+    { nombre: "Toldo y suelo nuevo", texto: "Monedas al cosechar +25 % (en vez de +20 %).", precio: 15000, nivel: 38 },
+    { nombre: "Depósito de lluvia", texto: "Monedas al cosechar +30 %.", precio: 35000, nivel: 42 },
+    { nombre: "Huerto en la azotea", texto: "Monedas al cosechar +40 %.", precio: 80000, nivel: 45 },
+  ],
+};
+
 export const HABITACION_POR_ID: Record<string, Habitacion> = Object.fromEntries(HABITACIONES.map((h) => [h.id, h]));
 
 export interface DatosCasa {
   habitacion: string;
   habitaciones: string[];
   /** Nivel (0 a 3) de cada rama de mejoras. */
-  mejoras: Partial<Record<RamaMejoras["id"], number>>;
+  mejoras: Partial<Record<RamaMejoras["id"] | `h_${Habitacion["id"]}`, number>>;
 }

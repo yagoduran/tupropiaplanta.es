@@ -198,6 +198,7 @@ export const MENSAJES_ERROR: Record<string, string> = {
   nombre_invalido: "El nombre solo puede tener letras y espacios (hasta 20).",
   huecos_automaticos: "Los huecos ahora llegan con las habitaciones y la mejora de capacidad.",
   mejora_comprada: "Ya tienes todos los niveles de esa mejora.",
+  habitacion_no_tuya: "Primero tienes que desbloquear esa habitación.",
   mejora_desconocida: "Esa mejora no existe.",
   habitacion_comprada: "Esa habitación ya es tuya.",
   habitacion_bloqueada: "Todavía no puedes entrar en esa habitación.",

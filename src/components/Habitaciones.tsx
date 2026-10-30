@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { HABITACIONES, HABITACION_POR_ID } from "@/lib/casa";
+import { HABITACIONES, HABITACION_POR_ID, MEJORAS_HABITACION, ROMANOS } from "@/lib/casa";
 import { marco } from "@/lib/diseno";
 import type { PerfilJuego } from "@/lib/juego";
 import { IconoProgresion } from "./IconoProgresion";
@@ -12,12 +12,13 @@ interface Props {
   ocupado: boolean;
   alComprar: (id: string) => void;
   alElegir: (id: string) => void;
+  alMejorar: (rama: string) => void;
 }
 
 const miles = (n: number) => n.toLocaleString("es-ES", { useGrouping: "always" });
 
 /** Habitaciones: cada una trae más macetas y un bono, y cambia el fondo del cultivo. */
-export function Habitaciones({ perfil, ocupado, alComprar, alElegir }: Props) {
+export function Habitaciones({ perfil, ocupado, alComprar, alElegir, alMejorar }: Props) {
   const [elegida, setElegida] = useState(perfil.casa.habitacion);
   const { habitaciones, habitacion: actual } = perfil.casa;
   const h = HABITACION_POR_ID[elegida] ?? HABITACIONES[0];
@@ -44,6 +45,11 @@ export function Habitaciones({ perfil, ocupado, alComprar, alElegir }: Props) {
     texto = "Te faltan monedas";
     activo = false;
   }
+
+  const ramaHab = `h_${h.id}` as const;
+  const nivelHab = perfil.casa.mejoras[ramaHab] ?? 0;
+  const siguienteHab = nivelHab < 3 ? MEJORAS_HABITACION[h.id][nivelHab] : null;
+  const puedeMejorar = !!siguienteHab && perfil.nivel >= siguienteHab.nivel && perfil.monedas >= siguienteHab.precio;
 
   const requisitos = mia
     ? []
@@ -137,9 +143,39 @@ export function Habitaciones({ perfil, ocupado, alComprar, alElegir }: Props) {
               </ul>
             </>
           )}
+          {mia && (
+            <>
+              <p className={styles.subtitulo}>
+                Mejoras de la habitación<span>{nivelHab} de 3</span>
+              </p>
+              <ul className={styles.requisitos}>
+                {MEJORAS_HABITACION[h.id].map((m, i) => (
+                  <li key={m.nombre}>
+                    <span style={{ color: i < nivelHab ? "#1d6630" : "#b9512a" }}>{i < nivelHab ? "✓" : "✗"}</span>{" "}
+                    {ROMANOS[i]} · {m.nombre}: {m.texto}
+                  </li>
+                ))}
+              </ul>
+              {siguienteHab && (
+                <button
+                  type="button"
+                  className={styles.accion}
+                  style={marco(puedeMejorar && !ocupado ? "boton_secundario" : "boton_desactivado", "var(--u)")}
+                  disabled={!puedeMejorar || ocupado}
+                  onClick={() => alMejorar(ramaHab)}
+                >
+                  {perfil.nivel < siguienteHab.nivel
+                    ? `Necesitas el nivel ${siguienteHab.nivel}`
+                    : perfil.monedas < siguienteHab.precio
+                      ? `Te faltan monedas · ${miles(siguienteHab.precio)}`
+                      : `Mejorar · ${miles(siguienteHab.precio)}`}
+                </button>
+              )}
+            </>
+          )}
           <p className={styles.nota}>
             Tus huecos son los de la habitación más grande que tengas, más la mejora de Capacidad. La habitación en la
-            que estás da su bono a todas tus plantas.
+            que estás da su bono a todas tus plantas, mejorado con sus mejoras (no valen en los desafíos).
           </p>
           <button
             type="button"

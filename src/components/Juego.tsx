@@ -1168,7 +1168,13 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         ) : pantalla === "armario" ? (
           <Armario perfil={perfil} ocupado={enCurso} alComprar={mejorar} />
         ) : pantalla === "habitaciones" ? (
-          <Habitaciones perfil={perfil} ocupado={enCurso} alComprar={desbloquearHabitacion} alElegir={irAHabitacion} />
+          <Habitaciones
+            perfil={perfil}
+            ocupado={enCurso}
+            alComprar={desbloquearHabitacion}
+            alElegir={irAHabitacion}
+            alMejorar={mejorar}
+          />
         ) : pantalla === "desafios" ? (
           <Desafios
             datos={desafios}
