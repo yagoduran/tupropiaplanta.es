@@ -4,6 +4,7 @@ import type { PantallaJuego, PerfilJuego } from "@/lib/juego";
 import { BannerMovil } from "./BannerMovil";
 import { Cabecera } from "./Cabecera";
 import { Pestanas } from "./Pestanas";
+import { Pie } from "./Pie";
 import { Publicidad } from "./Publicidad";
 import styles from "./juego.module.css";
 
@@ -96,6 +97,7 @@ export function JuegoLayout({
           <Publicidad />
         </div>
       </main>
+      <Pie />
       <BannerMovil />
       {superposicion}
     </div>

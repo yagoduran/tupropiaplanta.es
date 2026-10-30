@@ -57,6 +57,7 @@ const MARCOS = {
   boton_espera: { t: ["o", "b2"], l: ["o", "b2"], r: ["o", "d1"], b: ["o", "d1", "d1"], f: "d2" },
   boton_secundario: { t: ["o", "w"], l: ["o", "w"], r: ["o", "sd2"], b: ["o", "sd2", "sd2"], f: "c" },
   boton_secundario_hover: { t: ["o", "w"], l: ["o", "w"], r: ["o", "c"], b: ["o", "sd2", "sd2"], f: "w" },
+  boton_oscuro: { t: ["o", "d2"], l: ["o", "d2"], r: ["o", "d1"], b: ["o", "d1", "d1"], f: "s" },
   barra: { t: ["o"], l: ["o"], r: ["o"], b: ["o"], f: "d1" },
   bocadillo: { t: ["o"], l: ["o"], r: ["o"], b: ["o", "sd2"], f: "w" },
   pestana: { t: ["o", "b1"], l: ["o", "b1"], r: ["o", "d2"], b: ["o", "d2"], f: "b2" },
