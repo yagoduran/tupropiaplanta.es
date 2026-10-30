@@ -95,6 +95,8 @@ export function Mercado({
   const max = sel ? precioMaximo(sel.precio) : 0;
   const valido = sel !== null && Number.isFinite(num) && num >= min && num <= max;
   const tasa = valido ? comision(num) : 0;
+  const similares = sel ? datos.ofertas.filter((o) => o.objeto === sel.objeto) : [];
+  const medio = similares.length ? Math.round(similares.reduce((t, o) => t + o.precio, 0) / similares.length) : null;
   const pendientes = datos.mias.filter((m) => m.estado === "vendida").length;
 
   const elegir = (id: string, base: number) => {
@@ -263,6 +265,12 @@ export function Mercado({
               />
               <p className={styles.nota}>
                 Entre {miles(min)} y {miles(max)} monedas.
+                {medio !== null && (
+                  <>
+                    <br />
+                    Precio medio en el mercado: <strong>{miles(medio)} monedas</strong>
+                  </>
+                )}
                 <br />
                 Comisión del mercado (5 %): <strong>{miles(tasa)} monedas</strong>
                 <br />
