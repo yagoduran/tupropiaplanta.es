@@ -337,6 +337,14 @@ export async function resolverCosecha(vender: boolean): Promise<Resultado> {
   return data as RespuestaAccion;
 }
 
+/** Vende gramos guardados de una variedad (todos si no se indica cantidad). */
+export async function venderGramos(variedad: string, gramos: number | null): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_vender_gramos", { p_variedad: variedad, p_gramos: gramos });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
 /** Cosecha que se quedó sin vender ni guardar, si la hay. */
 export async function cosechaPendiente(): Promise<CosechaPendiente | null> {
   const supabase = await crearClienteServidor();

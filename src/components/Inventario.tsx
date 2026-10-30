@@ -16,13 +16,26 @@ interface Props {
   alIrAHueco: (hueco: number, destino: PantallaJuego) => void;
   alAmpliar: () => void;
   alIrATienda: () => void;
+  alVender: (variedad: string, gramos: number | null) => void;
+  alIrAEncargos: () => void;
 }
 
 /** Inventario: tus huecos de cultivo y los objetos que tienes. */
-export function Inventario({ perfil, plantas, ocupado, alIrAHueco, alAmpliar, alIrATienda }: Props) {
+export function Inventario({
+  perfil,
+  plantas,
+  ocupado,
+  alIrAHueco,
+  alAmpliar,
+  alIrATienda,
+  alVender,
+  alIrAEncargos,
+}: Props) {
   const panel = marco("panel", "var(--u)");
   const boton = marco("boton", "var(--u)");
+  const secundario = marco("boton_secundario", "var(--u)");
   const { huecos, inventario } = perfil;
+  const gramos = Object.entries(perfil.almacen ?? {}).filter(([id, g]) => g > 0 && VARIEDAD_POR_ID[id]);
   const objetos = Object.entries(inventario)
     .filter(([id, n]) => n > 0 && OBJETO_POR_ID[id])
     .map(([id, n]) => ({ objeto: OBJETO_POR_ID[id], n }));
@@ -131,6 +144,49 @@ export function Inventario({ perfil, plantas, ocupado, alIrAHueco, alAmpliar, al
             </div>
           )}
         </div>
+        <section className={styles.tarjeta} style={panel} aria-label="Gramos guardados">
+          <p className={styles.subtitulo}>Gramos guardados</p>
+          {gramos.length === 0 ? (
+            <p className={styles.nota}>
+              No tienes gramos guardados. Al cosechar puedes elegir guardarlos para los encargos.
+            </p>
+          ) : (
+            <div className={styles.gramos}>
+              {gramos.map(([id, g]) => (
+                <div key={id} className={styles.gramosFila}>
+                  <span>
+                    <strong>{VARIEDAD_POR_ID[id].nombre}</strong>
+                    <span className="numero"> {g} g</span>
+                  </span>
+                  <button
+                    type="button"
+                    className={styles.accion}
+                    style={secundario}
+                    disabled={ocupado || g < 10}
+                    onClick={() => alVender(id, 10)}
+                  >
+                    Vender 10 g
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.accion}
+                    style={secundario}
+                    disabled={ocupado}
+                    onClick={() => alVender(id, null)}
+                  >
+                    Vender todo
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+          <p className={styles.nota}>
+            Vendidos valen 6 monedas por gramo. En un encargo se pagan a unas 10 y dan experiencia.
+          </p>
+          <button type="button" className={styles.accion} style={secundario} onClick={alIrAEncargos}>
+            Ver encargos
+          </button>
+        </section>
         <section className={styles.tarjeta} style={panel} aria-label="Objetos">
           <p className={styles.subtitulo}>Inventario</p>
           {objetos.length === 0 ? (

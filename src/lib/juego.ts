@@ -108,6 +108,8 @@ export interface PerfilJuego {
   equipo: EquipoJuego;
   /** Objetos que tiene el jugador y cuántos. Los gratuitos no aparecen. */
   inventario: Record<string, number>;
+  /** Gramos guardados de cada variedad, para los encargos o para vender. */
+  almacen: Record<string, number>;
   logros: { valores: Record<string, number>; hechos: string[] };
   /** Logros conseguidos justo en esta respuesta. */
   logros_nuevos: string[];
@@ -213,6 +215,7 @@ export const ESPERA_TOTAL: Record<Accion, number> = {
 
 export const MENSAJES_ERROR: Record<string, string> = {
   espera: "Todavía no puedes repetir eso. Espera un poco.",
+  sin_gramos: "No tienes gramos de esa variedad.",
   fase_insuficiente: "Tu planta aún no está lista para eso.",
   sin_planta: "No tienes ninguna planta. Planta una semilla.",
   planta_muerta: "Tu planta ha muerto. Planta una semilla nueva.",

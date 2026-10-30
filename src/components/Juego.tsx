@@ -60,6 +60,7 @@ import {
   plantarSemilla,
   reclamarDiaria,
   resolverCosecha,
+  venderGramos,
   cosechaPendiente,
   verRobo,
   verAnuncio,
@@ -531,6 +532,15 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           ? { texto: `¡Cosecha vendida! +${cosechaPend?.monedas ?? 0} monedas`, icono: "moneda" }
           : { texto: `Guardados ${cosechaPend?.gramos ?? 0} g para los encargos`, icono: "tienda" },
       );
+    });
+  };
+
+  const venderAlmacen = (variedad: string, gramos: number | null) => {
+    ejecutar(async () => {
+      const r = await venderGramos(variedad, gramos);
+      sonar(r.ok ? "comprar" : "error");
+      const monedas = "recompensa" in r ? (r.recompensa ?? 0) : 0;
+      tratar(r, { texto: `Vendidos ${gramos ?? "todos los"} g: +${monedas} monedas`, icono: "moneda" });
     });
   };
 
@@ -1156,6 +1166,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             }}
             alAmpliar={() => elegirPantalla("habitaciones")}
             alIrATienda={() => elegirPantalla("tienda")}
+            alVender={venderAlmacen}
+            alIrAEncargos={() => elegirPantalla("encargos")}
           />
         ) : pantalla === "estadisticas" ? (
           <Estadisticas datos={estadisticas} />
