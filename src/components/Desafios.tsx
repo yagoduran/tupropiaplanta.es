@@ -61,7 +61,7 @@ export function Desafios({ datos, enCurso, ocupado, alEmpezar, alContinuar }: Pr
     texto = "Seguir con el desafío";
     accion = alContinuar;
   } else if (estado?.jugado) {
-    texto = "Ya jugado esta semana";
+    texto = `Disponible en ${renovacion(datos.renueva_en)}`;
     desactivado = true;
   } else if (hayOtro) {
     texto = "Ya tienes otro desafío en curso";
