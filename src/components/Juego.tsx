@@ -82,7 +82,7 @@ import {
   type Accion,
   type TipoSemilla,
   type AjustesJuego,
-  type AmbitoRanking,
+  type OpcionesRanking,
   type DatosRanking,
   type PantallaJuego,
   type EstadoJuego,
@@ -198,7 +198,11 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [cofre, setCofre] = useState<PremioCofre | null>(null);
   const [roboVisto, setRoboVisto] = useState<string | null>(null);
   const [ranking, setRanking] = useState<DatosRanking | null>(null);
-  const [ambitoRanking, setAmbitoRanking] = useState<AmbitoRanking>("mundial");
+  const [opcionesRanking, setOpcionesRanking] = useState<OpcionesRanking>({
+    ambito: "mundial",
+    periodo: "siempre",
+    metrica: "cosecha",
+  });
   const [errorRanking, setErrorRanking] = useState(false);
   const [datosPerfil, setDatosPerfil] = useState<DatosPerfil | null>(null);
   const [estadisticas, setEstadisticas] = useState<DatosEstadisticas | null>(null);
@@ -485,15 +489,16 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         obtenerMiPerfil()
           .then(setDatosPerfil)
           .catch(() => setDatosPerfil(null));
-      if (id === "ranking") cargarRanking(ambitoRanking);
+      if (id === "ranking") cargarRanking({});
     }
   };
 
-  const cargarRanking = (ambito: AmbitoRanking) => {
-    setAmbitoRanking(ambito);
+  const cargarRanking = (cambios: Partial<OpcionesRanking>) => {
+    const opciones = { ...opcionesRanking, ...cambios };
+    setOpcionesRanking(opciones);
     setRanking(null);
     setErrorRanking(false);
-    obtenerRanking(ambito)
+    obtenerRanking(opciones)
       .then((d) => (d ? setRanking(d) : setErrorRanking(true)))
       .catch(() => setErrorRanking(true));
   };
@@ -1134,7 +1139,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         ) : pantalla === "logros" ? (
           <Logros perfil={perfil} ocupado={enCurso} aviso={aviso} alReclamar={reclamar} />
         ) : pantalla === "ranking" ? (
-          <Ranking datos={ranking} error={errorRanking} ambito={ambitoRanking} alCambiarAmbito={cargarRanking} />
+          <Ranking datos={ranking} error={errorRanking} opciones={opcionesRanking} alCambiar={cargarRanking} />
         ) : pantalla === "perfil" ? (
           <Perfil
             usuario={perfil.usuario}

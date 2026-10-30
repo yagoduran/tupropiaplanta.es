@@ -17,7 +17,7 @@ import type {
   AjustesJuego,
   CosechaPendiente,
   TipoSemilla,
-  AmbitoRanking,
+  OpcionesRanking,
   DatosRanking,
   EstadoJuego,
   RespuestaAccion,
@@ -92,9 +92,13 @@ export async function borrarDatosDelJuego(): Promise<{ ok: boolean }> {
 }
 
 /** Clasificación de los mejores jugadores. Devuelve null si falla. */
-export async function obtenerRanking(ambito: AmbitoRanking): Promise<DatosRanking | null> {
+export async function obtenerRanking(o: OpcionesRanking): Promise<DatosRanking | null> {
   const supabase = await crearClienteServidor();
-  const { data, error } = await supabase.rpc("tpp_ranking", { p_ambito: ambito });
+  const { data, error } = await supabase.rpc("tpp_ranking", {
+    p_ambito: o.ambito,
+    p_periodo: o.periodo,
+    p_metrica: o.metrica,
+  });
   if (error || !data) return null;
   return data as DatosRanking;
 }

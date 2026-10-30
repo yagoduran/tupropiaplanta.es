@@ -60,20 +60,31 @@ export interface FilaRanking {
   pos: number;
   usuario: string;
   nivel: number;
-  cosechas: number;
+  /** Cosechas, días de la planta más vieja o días de racha, según el criterio. */
+  valor: number;
   yo: boolean;
   creador?: boolean;
 }
 
 export type AmbitoRanking = "mundial" | "nacional" | "amigos";
+export type PeriodoRanking = "hoy" | "semana" | "siempre";
+export type MetricaRanking = "cosecha" | "vieja" | "racha";
+
+export interface OpcionesRanking {
+  ambito: AmbitoRanking;
+  periodo: PeriodoRanking;
+  metrica: MetricaRanking;
+}
 
 export interface DatosRanking {
   ambito: AmbitoRanking;
+  periodo: PeriodoRanking;
+  metrica: MetricaRanking;
   /** País elegido por el jugador; null si no ha elegido. */
   pais: string | null;
   top: FilaRanking[];
   /** Puesto del jugador; null si está oculto. */
-  mia: { pos: number; nivel: number; cosechas: number } | null;
+  mia: { pos: number; nivel: number; valor: number } | null;
   total: number;
 }
 
