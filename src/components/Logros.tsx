@@ -1,8 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { marco, type IdIcono } from "@/lib/diseno";
 import type { PerfilJuego } from "@/lib/juego";
-import { LOGROS, type Logro } from "@/lib/logros";
+import { CATEGORIAS_LOGRO, LOGROS, categoriaDe, type CategoriaLogro, type Logro } from "@/lib/logros";
 import { Icono } from "./Icono";
 import { Medalla } from "./Medalla";
 import styles from "./logros.module.css";
@@ -63,7 +64,7 @@ function Diaria({ perfil, ocupado, alReclamar }: Omit<Props, "aviso">) {
 }
 
 function Tarjeta({ logro, valor, hecho }: { logro: Logro; valor: number; hecho: boolean }) {
-  const tarjeta = marco("tarjeta", "var(--u)");
+  const tarjeta = marco(hecho ? "dorado" : "tarjeta", "var(--u)");
   const pct = Math.min(100, Math.round((100 * valor) / logro.meta));
   return (
     <article className={styles.tarjeta} style={tarjeta}>
@@ -94,6 +95,10 @@ function Tarjeta({ logro, valor, hecho }: { logro: Logro; valor: number; hecho: 
 
 export function Logros({ perfil, ocupado, alReclamar, aviso }: Props) {
   const { valores, hechos } = perfil.logros;
+  const [filtro, setFiltro] = useState<CategoriaLogro | "todos">("todos");
+  const activa = marco("pestana_activa", "var(--u)");
+  const inactiva = marco("pestana", "var(--u)");
+  const lista = LOGROS.filter((l) => filtro === "todos" || categoriaDe(l.id) === filtro);
   return (
     <div className={styles.contenedor}>
       <div className={styles.cabecera}>
@@ -112,8 +117,23 @@ export function Logros({ perfil, ocupado, alReclamar, aviso }: Props) {
         </span>
       </div>
       <Diaria perfil={perfil} ocupado={ocupado} alReclamar={alReclamar} />
+      <div className={styles.filtros} role="tablist" aria-label="Categoría de logros">
+        {[{ id: "todos" as const, nombre: "Todos" }, ...CATEGORIAS_LOGRO].map((c) => (
+          <button
+            key={c.id}
+            type="button"
+            role="tab"
+            aria-selected={filtro === c.id}
+            className={styles.filtro}
+            style={filtro === c.id ? { ...activa, color: "#1c1626" } : { ...inactiva, color: "#f6eed6" }}
+            onClick={() => setFiltro(c.id)}
+          >
+            {c.nombre}
+          </button>
+        ))}
+      </div>
       <div className={styles.rejilla}>
-        {LOGROS.map((l) => (
+        {lista.map((l) => (
           <Tarjeta key={l.id} logro={l} valor={valores[l.id] ?? 0} hecho={hechos.includes(l.id)} />
         ))}
       </div>

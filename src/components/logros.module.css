@@ -173,3 +173,19 @@
   gap: 4px;
   font-size: var(--f-small);
 }
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--u) * 2);
+}
+
+.filtro {
+  flex: 1 1 0;
+  min-width: calc(var(--u) * 22);
+  padding: calc(var(--u) * 2) calc(var(--u) * 4);
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-small);
+  font-weight: 700;
+  cursor: pointer;
+}

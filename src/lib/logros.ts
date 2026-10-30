@@ -123,3 +123,34 @@ export const LOGROS: Logro[] = [
 ];
 
 export const LOGRO_POR_ID = Object.fromEntries(LOGROS.map((l) => [l.id, l]));
+
+export type CategoriaLogro = "cuidados" | "cosechas" | "constancia" | "coleccion";
+
+export const CATEGORIAS_LOGRO: { id: CategoriaLogro; nombre: string }[] = [
+  { id: "cuidados", nombre: "Cuidados" },
+  { id: "cosechas", nombre: "Cosechas" },
+  { id: "constancia", nombre: "Constancia" },
+  { id: "coleccion", nombre: "Colección" },
+];
+
+const CATEGORIA: Record<string, CategoriaLogro> = {
+  riegos_50: "cuidados",
+  abonos_25: "cuidados",
+  plagas_10: "cuidados",
+  plagas_50: "cuidados",
+  gato_caricias: "cuidados",
+  primera_cosecha: "cosechas",
+  cosechas_5: "cosechas",
+  cosechas_20: "cosechas",
+  racha_7: "constancia",
+  nivel_5: "constancia",
+  nivel_10: "constancia",
+  nivel_20: "constancia",
+  variedades_5: "coleccion",
+  compras_5: "coleccion",
+  gastado_1000: "coleccion",
+  huecos_4: "coleccion",
+  huecos_8: "coleccion",
+};
+
+export const categoriaDe = (id: string): CategoriaLogro => CATEGORIA[id] ?? "coleccion";
