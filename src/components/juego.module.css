@@ -704,9 +704,8 @@
 
 .plantar {
   position: absolute;
-  left: 50%;
+  left: calc(var(--u) * 4);
   bottom: calc(var(--u) * 4);
-  transform: translateX(-50%);
   padding: calc(var(--u) * 2) calc(var(--u) * 5) calc(var(--u) * 3);
   color: #1c1626;
   font-family: var(--fuente-pixel);
