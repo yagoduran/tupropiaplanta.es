@@ -34,4 +34,4 @@
 ## Ideas pendientes de plagas
 - Dibujos propios de plaga/hongo por variedad (ahora se dibuja encima de cualquier planta).
 - Notificación del navegador cuando aparezca una plaga.
-- Logro de plagas eliminadas.
+- ✅ Logros de plagas eliminadas (10 y 50) y de huecos (4 y 8): hechos.

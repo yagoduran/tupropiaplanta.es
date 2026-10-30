@@ -88,6 +88,38 @@ export const LOGROS: Logro[] = [
     meta: 10,
     premio: 100,
   },
+  {
+    id: "plagas_10",
+    nombre: "Cazaplagas",
+    descripcion: "Elimina 10 plagas.",
+    medalla: "bronce",
+    meta: 10,
+    premio: 80,
+  },
+  {
+    id: "plagas_50",
+    nombre: "Exterminador",
+    descripcion: "Elimina 50 plagas.",
+    medalla: "oro",
+    meta: 50,
+    premio: 200,
+  },
+  {
+    id: "huecos_4",
+    nombre: "Huertero",
+    descripcion: "Ten 4 huecos de cultivo.",
+    medalla: "plata",
+    meta: 4,
+    premio: 100,
+  },
+  {
+    id: "huecos_8",
+    nombre: "Gran huerta",
+    descripcion: "Ten los 8 huecos de cultivo.",
+    medalla: "oro",
+    meta: 8,
+    premio: 250,
+  },
 ];
 
 export const LOGRO_POR_ID = Object.fromEntries(LOGROS.map((l) => [l.id, l]));
