@@ -744,6 +744,26 @@
   cursor: pointer;
 }
 
+.hueco {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.miniPlanta {
+  position: relative;
+  display: block;
+  width: 32px;
+  height: 32px;
+  margin-top: -4px;
+  overflow: hidden;
+}
+
+.miniPlanta > span {
+  position: absolute;
+  inset: 0;
+}
+
 .hueco:disabled {
   opacity: 0.6;
   cursor: wait;

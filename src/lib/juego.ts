@@ -107,7 +107,13 @@ export interface HuecosJuego {
   desbloqueados: number;
   /** Precio y nivel del siguiente hueco por comprar; null si ya están todos. */
   siguiente: { precio: number; nivel: number } | null;
-  lista: { hueco: number; vida: "viva" | "muerta" | "cosechada" | "vacio"; plaga: boolean }[];
+  lista: {
+    hueco: number;
+    vida: "viva" | "muerta" | "cosechada" | "vacio";
+    plaga: boolean;
+    variedad: string | null;
+    fase: number | null;
+  }[];
 }
 
 export interface PlantaJuego {

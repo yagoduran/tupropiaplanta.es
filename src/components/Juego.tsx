@@ -1144,6 +1144,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             ocupado={enCurso}
             alElegir={cambiarHueco}
             alAmpliar={() => elegirPantalla("habitaciones")}
+            maceta={perfil.equipo.maceta}
           />
           {planta && (
             <Planta
