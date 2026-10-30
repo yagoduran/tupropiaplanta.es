@@ -104,8 +104,8 @@ export function Ajustes({ ajustes, alCambiar, alVerTutorial, alBorrar }: Props) 
       <h1 className={styles.titulo}>Ajustes</h1>
       <div className={styles.panel} style={panel}>
         <span className={styles.seccion}>Sonido</span>
-        <Control etiqueta="Efectos" valor={efectos} alCambiar={setEfectos} />
         <Control etiqueta="Música" valor={musica} alCambiar={setMusica} />
+        <Control etiqueta="Efectos" valor={efectos} alCambiar={setEfectos} />
         <button type="button" className={styles.prueba} style={secundario} onClick={() => sonar("clic")}>
           Probar efecto
         </button>
