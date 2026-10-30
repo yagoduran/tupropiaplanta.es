@@ -6,10 +6,15 @@ export function PantallaCarga() {
   return (
     <PaginaSuelta fondo="dia" ancho={520}>
       <div style={{ width: "100%" }} role="status" aria-live="polite">
+        <div
+          className={`pixel ${styles.brote}`}
+          aria-hidden
+          style={{ backgroundImage: "url(/assets/sprites/tpp-plantas-1x.png)" }}
+        />
         <p className={styles.texto} style={{ marginBottom: 8 }}>
-          Encendiendo la lámpara…
+          Preparando la tierra…
         </p>
-        <div className={styles.barra}>
+        <div className={`${styles.barra} ${styles.barraSegmentada}`}>
           <div className={styles.barraRelleno} />
         </div>
       </div>

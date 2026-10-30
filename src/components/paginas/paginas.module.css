@@ -315,6 +315,31 @@
   animation: cargando 2.4s ease-in-out infinite alternate;
 }
 
+/* Barra de carga en bloques: 20 segmentos separados por una línea oscura. */
+.barraSegmentada {
+  position: relative;
+}
+
+.barraSegmentada::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(to right, transparent 0 calc(5% - 2px), #3a2418 calc(5% - 2px) 5%);
+  pointer-events: none;
+}
+
+.barraSegmentada .barraRelleno {
+  animation-timing-function: steps(18, end);
+}
+
+.brote {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 4px;
+  background-size: 512px 512px;
+  background-position: 0 -64px;
+}
+
 @keyframes cargando {
   from {
     width: 15%;
