@@ -59,6 +59,7 @@ import {
   obtenerRanking,
   plantarSemilla,
   reclamarDiaria,
+  verRobo,
   verAnuncio,
   elegirHueco,
   comprarMejora,
@@ -89,6 +90,7 @@ import type { Efecto } from "@/lib/sonido";
 import type { DatosEstadisticas, DatosPerfil } from "@/lib/perfil";
 import type { DatosProgresion } from "@/lib/progresion";
 import { Cofre, type PremioCofre } from "./Cofre";
+import { Robo } from "./Robo";
 import { Regadera } from "./Regadera";
 import { registrarHibridas } from "@/lib/variedades";
 import { DESAFIO_POR_ID, type DatosDesafios } from "@/lib/desafios";
@@ -181,6 +183,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [anuncioAbierto, setAnuncioAbierto] = useState(false);
   const [regando, setRegando] = useState(false);
   const [cofre, setCofre] = useState<PremioCofre | null>(null);
+  const [roboVisto, setRoboVisto] = useState<string | null>(null);
   const [ranking, setRanking] = useState<DatosRanking | null>(null);
   const [ambitoRanking, setAmbitoRanking] = useState<AmbitoRanking>("mundial");
   const [datosPerfil, setDatosPerfil] = useState<DatosPerfil | null>(null);
@@ -995,6 +998,14 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             ocupado={enCurso}
             alRecoger={recogerAyuda}
             alCerrar={() => setAnuncioAbierto(false)}
+          />
+        ) : perfil.robo && perfil.robo.en !== roboVisto ? (
+          <Robo
+            monedas={perfil.robo.monedas}
+            alCerrar={() => {
+              setRoboVisto(perfil.robo?.en ?? null);
+              verRobo();
+            }}
           />
         ) : cofre ? (
           <Cofre premio={cofre} alCerrar={() => setCofre(null)} />

@@ -24,7 +24,7 @@ function IconoAviso({ tipo }: { tipo: Notificacion["tipo"] }) {
   if (tipo === "mercado") return <IconoSocial id="mercado" k={1.5} />;
   if (tipo === "saludo") return <IconoSocial id="saludo" k={1.5} />;
   return (
-    <Icono id={tipo === "sed" ? "agua" : tipo === "plaga" ? "aviso" : tipo === "nivel" ? "nivel" : "logros"} k={2} />
+    <Icono id={tipo === "sed" ? "agua" : tipo === "plaga" || tipo === "robo" ? "aviso" : tipo === "nivel" ? "nivel" : "logros"} k={2} />
   );
 }
 

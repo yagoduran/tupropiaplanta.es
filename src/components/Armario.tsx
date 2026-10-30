@@ -60,7 +60,9 @@ export function Armario({ perfil, ocupado, alComprar }: Props) {
     <div className={styles.contenedor}>
       <div className={styles.cabecera}>
         <h1 className={styles.titulo}>Mejoras del armario</h1>
-        <span className={styles.resumen}>{compradas} de 15 mejoras compradas</span>
+        <span className={styles.resumen}>
+          {compradas} de {RAMAS.length * 3} mejoras compradas
+        </span>
       </div>
 
       <div className={styles.desafios}>

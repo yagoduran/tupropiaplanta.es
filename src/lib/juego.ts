@@ -102,6 +102,8 @@ export interface PerfilJuego {
   misiones_listas: number;
   /** Habitación y mejoras del armario. */
   casa: DatosCasa;
+  /** Robo que el jugador aún no ha visto. */
+  robo?: { monedas: number; en: string } | null;
 }
 
 /** Número de hueco reservado para la planta del desafío. Tiene que coincidir con la base de datos. */

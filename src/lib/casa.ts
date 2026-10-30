@@ -9,7 +9,7 @@ export interface NivelMejora {
 }
 
 export interface RamaMejoras {
-  id: "vent" | "riego" | "sens" | "luz" | "cap";
+  id: "vent" | "riego" | "sens" | "luz" | "seg" | "cap";
   nombre: string;
   icono: IdIcono;
   niveles: [NivelMejora, NivelMejora, NivelMejora];
@@ -74,6 +74,21 @@ export const RAMAS: RamaMejoras[] = [
         precio: 7000,
         nivel: 28,
       },
+    ],
+  },
+  {
+    id: "seg",
+    nombre: "Seguridad",
+    icono: "aviso",
+    niveles: [
+      {
+        nombre: "Cerradura reforzada",
+        texto: "Los robos mientras no estás son la mitad de probables.",
+        precio: 900,
+        nivel: 9,
+      },
+      { nombre: "Alarma", texto: "Los robos son cuatro veces menos probables.", precio: 3000, nivel: 20 },
+      { nombre: "Caja fuerte", texto: "Ya no te pueden robar mientras no estás.", precio: 7500, nivel: 30 },
     ],
   },
   {

@@ -1,0 +1,108 @@
+.capa {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  background: rgba(28, 22, 38, 0.76);
+  color: #1c1626;
+}
+
+.caja {
+  box-sizing: border-box;
+  width: min(100%, 360px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap);
+  padding: calc(var(--u) * 5);
+  --k: 3;
+}
+
+.escenario {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: calc(32px * var(--k));
+  display: grid;
+  place-items: center;
+}
+
+.ladron,
+.aviso {
+  width: calc(32px * var(--k));
+  height: calc(32px * var(--k));
+}
+
+.ladron {
+  position: absolute;
+  left: calc(50% - 16px * var(--k));
+  background-image: url(/assets/sprites/tpp-ladron-1x.png);
+  background-size: calc(256px * var(--k)) calc(32px * var(--k));
+  background-position: calc(-128px * var(--k)) 0;
+}
+
+.ladron[data-fase="huye"] {
+  animation:
+    pasoLadron 0.36s steps(1) infinite,
+    huidaLadron 1.4s ease-in forwards;
+}
+
+@keyframes pasoLadron {
+  0% {
+    background-position: calc(-160px * var(--k)) 0;
+  }
+  33% {
+    background-position: calc(-192px * var(--k)) 0;
+  }
+  66% {
+    background-position: calc(-224px * var(--k)) 0;
+  }
+}
+
+@keyframes huidaLadron {
+  to {
+    transform: translateX(calc(180px * var(--k)));
+  }
+}
+
+.aviso {
+  background-image: url(/assets/objetos/tpp-aviso-robo-1x.png);
+  background-size: 100% 100%;
+}
+
+.titulo,
+.texto {
+  margin: 0;
+  text-align: center;
+  opacity: 0;
+}
+
+.titulo {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-title);
+}
+
+.titulo[data-visible="true"],
+.texto[data-visible="true"] {
+  opacity: 1;
+}
+
+.boton {
+  padding: calc(var(--u) * 2) calc(var(--u) * 6);
+  font-family: var(--fuente-pixel);
+  color: #1c1626;
+  cursor: pointer;
+}
+
+.boton:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ladron[data-fase="huye"] {
+    animation: pasoLadron 0.36s steps(1) infinite;
+  }
+}

@@ -310,6 +310,12 @@ export async function reclamarDiaria(): Promise<Resultado> {
   return data as RespuestaAccion;
 }
 
+/** Marca como visto el robo pendiente. */
+export async function verRobo(): Promise<void> {
+  const supabase = await crearClienteServidor();
+  await supabase.rpc("tpp_ver_robo");
+}
+
 /** Da la ayuda extra tras ver el anuncio: monedas y sin esperas. */
 export async function verAnuncio(): Promise<Resultado> {
   const supabase = await crearClienteServidor();
