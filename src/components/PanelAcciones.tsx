@@ -23,14 +23,7 @@ interface Props {
   alVerAnuncio: () => void;
 }
 
-export function PanelAcciones({
-  esperas,
-  bloqueadas,
-  alAccionar,
-  alAbonos,
-  ayudasRestantes,
-  alVerAnuncio,
-}: Props) {
+export function PanelAcciones({ esperas, bloqueadas, alAccionar, alAbonos, ayudasRestantes, alVerAnuncio }: Props) {
   return (
     <>
       {ACCIONES.map((a) => {
