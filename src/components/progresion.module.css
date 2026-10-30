@@ -1143,3 +1143,119 @@ button.hueco {
     grid-column: 1 / -1;
   }
 }
+
+/* Eventos: tarjeta principal con marco de temporada */
+.eventoHero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 220px) minmax(0, 1fr);
+  gap: calc(var(--u) * 4);
+  padding: calc(var(--u) * 5);
+  color: #1c1626;
+}
+
+.eventoHero .eventoEscena {
+  max-height: none;
+  height: 100%;
+}
+
+.eventoInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: var(--f-small);
+}
+
+.eventoEtiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.eventoNombre {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-title);
+  line-height: 1.1;
+}
+
+.cuentaCaja {
+  min-width: calc(var(--u) * 18);
+  padding: calc(var(--u) * 2);
+  background: #1c1626;
+  color: #f6eed6;
+  text-align: center;
+}
+
+.cuentaCaja span {
+  color: #a8845c;
+}
+
+.esquina {
+  position: absolute;
+  pointer-events: none;
+}
+
+.esquinaAI {
+  top: calc(var(--u) * -2);
+  left: calc(var(--u) * -2);
+}
+
+.esquinaAD {
+  top: calc(var(--u) * -2);
+  right: calc(var(--u) * -2);
+}
+
+.esquinaBI {
+  bottom: calc(var(--u) * -2);
+  left: calc(var(--u) * -2);
+}
+
+.esquinaBD {
+  bottom: calc(var(--u) * -2);
+  right: calc(var(--u) * -2);
+}
+
+.eventoAbajo {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap);
+}
+
+.eventoEdicion {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  padding: calc(var(--u) * 5);
+  color: #1c1626;
+  font-size: var(--f-small);
+}
+
+.eventoSemilla {
+  flex: none;
+  width: 64px;
+  height: 64px;
+}
+
+.eventoMisiones {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 2);
+  padding: calc(var(--u) * 4);
+  color: #1c1626;
+  font-size: var(--f-small);
+}
+
+.eventoMision {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  padding: calc(var(--u) * 2);
+}
+
+@media (max-width: 899px) {
+  .eventoHero,
+  .eventoAbajo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

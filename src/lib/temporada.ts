@@ -60,5 +60,6 @@ export function cuentaAtras(segundos: number): { v: string; k: string }[] {
     { v: String(Math.floor(s / 86400)), k: "días" },
     { v: dos(Math.floor((s % 86400) / 3600)), k: "horas" },
     { v: dos(Math.floor((s % 3600) / 60)), k: "min" },
+    { v: dos(s % 60), k: "seg" },
   ];
 }
