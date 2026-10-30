@@ -19,6 +19,7 @@ interface Props {
   /** Horas de luz al día del horario actual y apertura del panel del ciclo de luz. */
   luzHoras: number;
   alCicloLuz: () => void;
+  alAbonos: () => void;
   /** Ayudas por anuncio que quedan hoy. */
   ayudasRestantes: number;
   alVerAnuncio: () => void;
@@ -30,6 +31,7 @@ export function PanelAcciones({
   alAccionar,
   luzHoras,
   alCicloLuz,
+  alAbonos,
   ayudasRestantes,
   alVerAnuncio,
 }: Props) {
@@ -52,6 +54,7 @@ export function PanelAcciones({
           />
         );
       })}
+      <BotonAccion id="nutrientes" etiqueta="Abonos" detalle="Los que tienes" onClick={alAbonos} />
       <BotonAccion
         id="ajustar_luz"
         etiqueta="Ciclo de luz"

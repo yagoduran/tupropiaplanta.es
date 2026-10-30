@@ -1,0 +1,92 @@
+.contenedor {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 3);
+}
+
+.cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--u) * 2);
+}
+
+.titulo {
+  font-family: var(--fuente-pixel);
+  font-size: calc(var(--f-stat) + 4px);
+  font-weight: 700;
+}
+
+.aviso {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 2);
+  font-size: var(--f-small);
+  font-weight: 700;
+}
+
+.ayuda {
+  font-size: var(--f-small);
+  line-height: 1.4;
+}
+
+.alerta {
+  padding: calc(var(--u) * 2);
+  border: 2px solid #8a2b1f;
+  background: #f6d2c4;
+  color: #5a1a12;
+  font-size: var(--f-small);
+  font-weight: 700;
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 3);
+}
+
+.tarjeta {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 3);
+  padding: calc(var(--u) * 3);
+  color: #1c1626;
+}
+
+.datos {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.nombre {
+  font-family: var(--fuente-pixel);
+  font-size: calc(var(--f-stat) + 1px);
+  font-weight: 700;
+}
+
+.texto {
+  font-size: var(--f-small);
+  line-height: 1.3;
+}
+
+.cantidad {
+  font-size: var(--f-small);
+  font-weight: 700;
+}
+
+.boton {
+  padding: calc(var(--u) * 2) calc(var(--u) * 3) calc(var(--u) * 3);
+  font-family: var(--fuente-pixel);
+  font-size: calc(var(--f-stat) + 1px);
+  font-weight: 700;
+  color: #1c1626;
+  cursor: pointer;
+}
+
+.boton:disabled {
+  cursor: not-allowed;
+}

@@ -36,7 +36,8 @@ export type PantallaJuego =
   | "eventos"
   | "pase"
   | "mercado"
-  | "luz";
+  | "luz"
+  | "abonos";
 
 export interface AjustesJuego {
   volumen_efectos: number;

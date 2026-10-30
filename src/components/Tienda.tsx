@@ -102,7 +102,7 @@ function Tarjeta({ objeto, perfil, ocupado, alComprar, alEquipar, alUsar }: Prop
           {principal.texto}
           {principal.numero && <span className="numero"> {principal.numero}</span>}
         </button>
-        {consumible && cantidad > 0 && (
+        {consumible && cantidad > 0 && objeto.categoria !== "fertilizantes" && (
           <button
             type="button"
             className={styles.boton}

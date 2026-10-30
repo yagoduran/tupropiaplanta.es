@@ -149,6 +149,7 @@ import { Inventario } from "./Inventario";
 import { MisPlantas } from "./MisPlantas";
 import { Perfil } from "./Perfil";
 import { Ranking } from "./Ranking";
+import { Abonos } from "./Abonos";
 import { CicloLuz } from "./CicloLuz";
 import { CAUSAS } from "@/lib/causas";
 import { Semillas } from "./Semillas";
@@ -406,6 +407,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "tienda" ||
       id === "semillas" ||
       id === "luz" ||
+      id === "abonos" ||
       id === "logros" ||
       id === "ranking"
     ) {
@@ -1215,6 +1217,15 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             ocupado={enCurso}
             alElegir={equiparPerfil}
           />
+        ) : pantalla === "abonos" ? (
+          <Abonos
+            perfil={perfil}
+            planta={planta}
+            ocupado={enCurso}
+            aviso={aviso}
+            alUsar={usar}
+            alTienda={() => elegirPantalla("tienda")}
+          />
         ) : pantalla === "luz" ? (
           <CicloLuz
             horas={perfil.luz_horas}
@@ -1379,6 +1390,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           alAccionar={(a) => (a === "regar" ? setRegando((r) => !r) : accionar(a))}
           luzHoras={perfil.luz_horas}
           alCicloLuz={() => elegirPantalla("luz")}
+          alAbonos={() => elegirPantalla("abonos")}
           ayudasRestantes={perfil.anuncios.restantes}
           alVerAnuncio={() => setAnuncioAbierto(true)}
         />
