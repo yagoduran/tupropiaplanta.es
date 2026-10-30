@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { cerrarSesion } from "@/app/acciones";
 import { marco } from "@/lib/diseno";
 import type { AjustesJuego } from "@/lib/juego";
+import { PAISES } from "@/lib/paises";
 import { sonar } from "@/lib/sonido";
 import { EnlacesLegales } from "./EnlacesLegales";
 import { Icono } from "./Icono";
@@ -169,6 +170,27 @@ export function Ajustes({ ajustes, alCambiar, alVerTutorial, alBorrar }: Props) 
           >
             <span />
           </button>
+        </div>
+
+        <hr className={styles.linea} />
+        <div className={styles.fila2}>
+          <div>
+            <span className={styles.etiqueta}>Tu país</span>
+            <p className={styles.ayuda}>Opcional. Solo sirve para el ranking nacional.</p>
+          </div>
+          <select
+            aria-label="Tu país"
+            className={styles.selector}
+            value={ajustes.pais ?? ""}
+            onChange={(e) => alCambiar({ pais: e.target.value })}
+          >
+            <option value="">Sin elegir</option>
+            {PAISES.map(([codigo, nombre]) => (
+              <option key={codigo} value={codigo}>
+                {nombre}
+              </option>
+            ))}
+          </select>
         </div>
 
         <hr className={styles.linea} />

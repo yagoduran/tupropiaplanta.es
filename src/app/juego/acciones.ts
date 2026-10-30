@@ -12,7 +12,7 @@ import type { DatosEventos, DatosPase } from "@/lib/temporada";
 import type { DatosAmigos, DatosRegalos, DatosVisita, PerfilPublicoDatos, Resultado as Jugadores } from "@/lib/amigos";
 import type { DatosMercado } from "@/lib/mercado";
 import type { RespuestaCruce } from "@/lib/cruces";
-import type { Accion, AjustesJuego, DatosRanking, EstadoJuego, RespuestaAccion } from "@/lib/juego";
+import type { Accion, AjustesJuego, AmbitoRanking, DatosRanking, EstadoJuego, RespuestaAccion } from "@/lib/juego";
 
 const ACCIONES: Accion[] = ["regar", "abonar", "podar", "ajustar_luz", "cosechar"];
 
@@ -69,9 +69,9 @@ export async function borrarDatosDelJuego(): Promise<{ ok: boolean }> {
 }
 
 /** Clasificación de los mejores jugadores. Devuelve null si falla. */
-export async function obtenerRanking(): Promise<DatosRanking | null> {
+export async function obtenerRanking(ambito: AmbitoRanking): Promise<DatosRanking | null> {
   const supabase = await crearClienteServidor();
-  const { data, error } = await supabase.rpc("tpp_ranking");
+  const { data, error } = await supabase.rpc("tpp_ranking", { p_ambito: ambito });
   if (error || !data) return null;
   return data as DatosRanking;
 }

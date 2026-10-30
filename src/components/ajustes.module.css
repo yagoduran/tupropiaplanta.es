@@ -198,3 +198,14 @@
   padding: calc(var(--u) * 5);
   line-height: 1.45;
 }
+
+.selector {
+  flex: none;
+  max-width: 50%;
+  padding: calc(var(--u) * 1) calc(var(--u) * 2);
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+  color: #1c1626;
+  background: #e8d9b4;
+  border: calc(var(--u) * 0.5) solid #a8845c;
+}

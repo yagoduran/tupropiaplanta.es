@@ -42,6 +42,8 @@ export interface AjustesJuego {
   marco?: string;
   /** Si es true, el jugador no sale en el ranking. */
   ranking_oculto?: boolean;
+  /** País elegido (2 letras) para el ranking nacional; vacío lo quita. */
+  pais?: string;
   /** Si es true, no sales en las búsquedas de jugadores (tus amigos sí te ven). */
   perfil_oculto?: boolean;
 }
@@ -50,13 +52,19 @@ export interface FilaRanking {
   pos: number;
   usuario: string;
   nivel: number;
+  cosechas: number;
   yo: boolean;
 }
 
+export type AmbitoRanking = "mundial" | "nacional" | "amigos";
+
 export interface DatosRanking {
+  ambito: AmbitoRanking;
+  /** País elegido por el jugador; null si no ha elegido. */
+  pais: string | null;
   top: FilaRanking[];
   /** Puesto del jugador; null si está oculto. */
-  mia: { pos: number; nivel: number } | null;
+  mia: { pos: number; nivel: number; cosechas: number } | null;
   total: number;
 }
 

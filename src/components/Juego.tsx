@@ -76,6 +76,7 @@ import {
   medidoresDe,
   type Accion,
   type AjustesJuego,
+  type AmbitoRanking,
   type DatosRanking,
   type PantallaJuego,
   type EstadoJuego,
@@ -177,6 +178,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [repeticion, setRepeticion] = useState(false);
   const [anuncioAbierto, setAnuncioAbierto] = useState(false);
   const [ranking, setRanking] = useState<DatosRanking | null>(null);
+  const [ambitoRanking, setAmbitoRanking] = useState<AmbitoRanking>("mundial");
   const [datosPerfil, setDatosPerfil] = useState<DatosPerfil | null>(null);
   const [estadisticas, setEstadisticas] = useState<DatosEstadisticas | null>(null);
   const [progresion, setProgresion] = useState<DatosProgresion | null>(null);
@@ -450,11 +452,15 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         obtenerMiPerfil()
           .then(setDatosPerfil)
           .catch(() => setDatosPerfil(null));
-      if (id === "ranking")
-        obtenerRanking()
-          .then(setRanking)
-          .catch(() => setRanking(null));
+      if (id === "ranking") cargarRanking(ambitoRanking);
     }
+  };
+
+  const cargarRanking = (ambito: AmbitoRanking) => {
+    setAmbitoRanking(ambito);
+    obtenerRanking(ambito)
+      .then(setRanking)
+      .catch(() => setRanking(null));
   };
 
   const accionar = (accion: Accion) => {
@@ -1006,7 +1012,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         ) : pantalla === "logros" ? (
           <Logros perfil={perfil} ocupado={enCurso} aviso={aviso} alReclamar={reclamar} />
         ) : pantalla === "ranking" ? (
-          <Ranking datos={ranking} />
+          <Ranking datos={ranking} ambito={ambitoRanking} alCambiarAmbito={cargarRanking} />
         ) : pantalla === "perfil" ? (
           <Perfil
             usuario={perfil.usuario}

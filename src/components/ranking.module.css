@@ -87,3 +87,25 @@
   flex: none;
   font-size: var(--f-small);
 }
+
+.ambitos {
+  display: flex;
+  gap: calc(var(--u) * 2);
+  flex-wrap: wrap;
+}
+
+.ambito {
+  padding: calc(var(--u) * 1.5) calc(var(--u) * 4);
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+  color: #1c1626;
+  background: #e8d9b4;
+  border: calc(var(--u) * 0.5) solid #a8845c;
+  cursor: pointer;
+}
+
+.ambito[data-activo="true"] {
+  background: #ffe9a0;
+  border-color: #d9a43a;
+  font-weight: 700;
+}

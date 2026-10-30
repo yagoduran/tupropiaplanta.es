@@ -1,0 +1,32 @@
+/** Países que se pueden elegir para el ranking nacional (código de 2 letras). */
+export const PAISES: [string, string][] = [
+  ["ES", "España"],
+  ["MX", "México"],
+  ["AR", "Argentina"],
+  ["CO", "Colombia"],
+  ["CL", "Chile"],
+  ["PE", "Perú"],
+  ["VE", "Venezuela"],
+  ["EC", "Ecuador"],
+  ["UY", "Uruguay"],
+  ["PY", "Paraguay"],
+  ["BO", "Bolivia"],
+  ["CR", "Costa Rica"],
+  ["PA", "Panamá"],
+  ["DO", "República Dominicana"],
+  ["GT", "Guatemala"],
+  ["HN", "Honduras"],
+  ["SV", "El Salvador"],
+  ["NI", "Nicaragua"],
+  ["CU", "Cuba"],
+  ["PR", "Puerto Rico"],
+  ["PT", "Portugal"],
+  ["FR", "Francia"],
+  ["IT", "Italia"],
+  ["DE", "Alemania"],
+  ["GB", "Reino Unido"],
+  ["US", "Estados Unidos"],
+  ["OT", "Otro país"],
+];
+
+export const nombreDePais = (codigo: string | null | undefined) => PAISES.find(([c]) => c === codigo)?.[1] ?? "";
