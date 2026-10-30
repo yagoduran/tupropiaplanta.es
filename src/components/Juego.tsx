@@ -16,6 +16,8 @@ import {
   obtenerDesafios,
   obtenerMaestria,
   obtenerMisiones,
+  obtenerEncargos,
+  entregarEncargo,
   obtenerAmigos,
   obtenerEventos,
   obtenerPase,
@@ -103,6 +105,8 @@ import { Habitaciones } from "./Habitaciones";
 import { Laboratorio } from "./Laboratorio";
 import { Maestria } from "./Maestria";
 import { Misiones } from "./Misiones";
+import { Encargos } from "./Encargos";
+import type { DatosEncargos } from "@/lib/encargos";
 import { Amigos } from "./Amigos";
 import { Visita } from "./Visita";
 import { Eventos } from "./Eventos";
@@ -191,6 +195,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [visita, setVisita] = useState<DatosVisita | null>(null);
   const [perfilPublico, setPerfilPublico] = useState<PerfilPublicoDatos | null>(null);
   const [misiones, setMisiones] = useState<DatosMisiones | null>(null);
+  const [encargos, setEncargos] = useState<DatosEncargos | null>(null);
   const [notificaciones, setNotificaciones] = useState<DatosNotificaciones | null>(null);
   const [prestigio, setPrestigio] = useState<DatosPrestigio | null>(null);
   const [cruces, setCruces] = useState<DatosCruces | null>(null);
@@ -373,6 +378,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "habitaciones" ||
       id === "maestria" ||
       id === "misiones" ||
+      id === "encargos" ||
       id === "amigos" ||
       id === "eventos" ||
       id === "mercado" ||
@@ -424,6 +430,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         obtenerMisiones()
           .then(setMisiones)
           .catch(() => setMisiones(null));
+      if (id === "encargos")
+        obtenerEncargos()
+          .then(setEncargos)
+          .catch(() => setEncargos(null));
       if (id === "maestria")
         obtenerMaestria()
           .then(setMaestria)
@@ -691,6 +701,15 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       sonar(r.ok ? "cofre" : "error");
       tratar(r, { texto: "¡Premio de la misión reclamado!", icono: "logros" });
       setMisiones(await obtenerMisiones());
+    });
+  };
+
+  const entregarElEncargo = (id: string) => {
+    ejecutar(async () => {
+      const r = await entregarEncargo(id);
+      sonar(r.ok ? "cofre" : "error");
+      tratar(r, { texto: "¡Encargo entregado!", icono: "logros" });
+      setEncargos(await obtenerEncargos());
     });
   };
 
@@ -1100,6 +1119,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           />
         ) : pantalla === "misiones" ? (
           <Misiones datos={misiones} ocupado={enCurso} alReclamar={reclamarLaMision} />
+        ) : pantalla === "encargos" ? (
+          <Encargos datos={encargos} ocupado={enCurso} alEntregar={entregarElEncargo} />
         ) : pantalla === "maestria" ? (
           <Maestria datos={maestria} />
         ) : pantalla === "armario" ? (

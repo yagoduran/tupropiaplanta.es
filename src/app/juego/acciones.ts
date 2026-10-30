@@ -6,6 +6,7 @@ import type { DatosProgresion } from "@/lib/progresion";
 import type { DatosDesafios } from "@/lib/desafios";
 import type { DatosMaestria } from "@/lib/maestria";
 import type { DatosPrestigio } from "@/lib/prestigio";
+import type { DatosEncargos } from "@/lib/encargos";
 import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
 import type { DatosEventos, DatosPase } from "@/lib/temporada";
 import type { DatosAmigos, DatosRegalos, DatosVisita, PerfilPublicoDatos, Resultado as Jugadores } from "@/lib/amigos";
@@ -235,6 +236,22 @@ export async function obtenerMisiones(): Promise<DatosMisiones | null> {
 export async function reclamarMision(id: string): Promise<Resultado> {
   const supabase = await crearClienteServidor();
   const { data, error } = await supabase.rpc("tpp_reclamar_mision", { p_id: id });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
+/** Encargos del móvil y gramos guardados. Devuelve null si falla. */
+export async function obtenerEncargos(): Promise<DatosEncargos | null> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_encargos");
+  if (error || !data) return null;
+  return data as DatosEncargos;
+}
+
+/** Entrega un encargo con los gramos del almacén. */
+export async function entregarEncargo(id: string): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_entregar_encargo", { p_id: id });
   if (error || !data) return fallo(error?.message);
   return data as RespuestaAccion;
 }

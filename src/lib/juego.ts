@@ -22,6 +22,7 @@ export type PantallaJuego =
   | "laboratorio"
   | "prestigio"
   | "misiones"
+  | "encargos"
   | "amigos"
   | "visita"
   | "perfil_publico"
@@ -228,6 +229,8 @@ export const MENSAJES_ERROR: Record<string, string> = {
   mision_desconocida: "Esa misión no existe.",
   mision_reclamada: "Ya has reclamado esa misión.",
   mision_no_lista: "Todavía no has completado esa misión.",
+  encargo_desconocido: "Ese encargo ya no está disponible.",
+  faltan_gramos: "Todavía no tienes los gramos que piden.",
   anuncios_agotados: "Hoy ya no quedan más ayudas. Vuelve mañana.",
   diaria_ya_reclamada: "Hoy ya has recogido tu regalo. Vuelve mañana.",
   no_lo_tienes: "Todavía no tienes ese objeto.",
