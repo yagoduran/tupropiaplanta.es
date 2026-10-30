@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function Condiciones() {
   return (
-    <PaginaLegal titulo="Condiciones de uso" actualizado="noviembre de 2026">
+    <PaginaLegal titulo="Condiciones de uso" actualizado="octubre de 2026">
       <h2>Quién puede jugar</h2>
       <p>Solo personas mayores de 18 años. Al crear tu cuenta confirmas que lo eres.</p>
 

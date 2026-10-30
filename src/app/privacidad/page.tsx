@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function Privacidad() {
   return (
-    <PaginaLegal titulo="Política de privacidad" actualizado="noviembre de 2026">
+    <PaginaLegal titulo="Política de privacidad" actualizado="octubre de 2026">
       <h2>Quién cuida tus datos</h2>
       <p>
         {dato(TITULAR.nombre)}. Puedes escribirnos a {dato(TITULAR.email)}.

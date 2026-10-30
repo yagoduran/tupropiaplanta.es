@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function AvisoLegal() {
   return (
-    <PaginaLegal titulo="Aviso legal" actualizado="noviembre de 2026">
+    <PaginaLegal titulo="Aviso legal" actualizado="octubre de 2026">
       <h2>Quién es el titular</h2>
       <ul>
         <li>Titular: {dato(TITULAR.nombre)}</li>
