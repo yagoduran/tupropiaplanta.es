@@ -124,7 +124,7 @@ export const HABITACIONES: Habitacion[] = [
     precio: 5000,
     nivel: 15,
     descripcion: "Apenas entra luz por el ventanuco: controlas la luz con lámparas. −10 % de plagas.",
-    escena: "/assets/escena/escena-noche-1x.png",
+    escena: "/assets/escena/escena-sotano-1x.png",
   },
   {
     id: "invernadero",
@@ -134,7 +134,7 @@ export const HABITACIONES: Habitacion[] = [
     precio: 15000,
     nivel: 25,
     descripcion: "Techo de cristal y temperatura estable: +15 % de velocidad de crecimiento.",
-    escena: "/assets/temporadas/escena-verano-1x.png",
+    escena: "/assets/escena/escena-invernadero-1x.png",
   },
   {
     id: "azotea",
@@ -144,7 +144,7 @@ export const HABITACIONES: Habitacion[] = [
     precio: 40000,
     nivel: 35,
     descripcion: "Luz solar directa todo el día: +20 % de monedas al cosechar.",
-    escena: "/assets/temporadas/escena-primavera-1x.png",
+    escena: "/assets/escena/escena-azotea-1x.png",
     bloqueada: "Necesita la llave de la azotea (bonificación de prestigio)",
   },
 ];
