@@ -107,6 +107,14 @@ export async function reclamarHito(pct: number): Promise<Resultado> {
   return data as RespuestaAccion;
 }
 
+/** Acaricia al gato (cuenta para el logro, como mucho una vez cada 5 segundos). */
+export async function acariciarGato(): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_acariciar_gato");
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
 /** Desafíos de la semana. Devuelve null si falla. */
 export async function obtenerDesafios(): Promise<DatosDesafios | null> {
   const supabase = await crearClienteServidor();

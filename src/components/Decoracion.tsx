@@ -10,10 +10,18 @@ const POSICIONES: Record<string, { x: number; y: number }> = {
 };
 
 /** Objetos de decoración puestos en la escena, a 16 px nativos. */
-export function Decoracion({ puestos }: { puestos: string[] }) {
+export function Decoracion({
+  puestos,
+  hayPlaga,
+  alAcariciarGato,
+}: {
+  puestos: string[];
+  hayPlaga: boolean;
+  alAcariciarGato: () => void;
+}) {
   return (
     <>
-      {puestos.includes("gato") && <Gato />}
+      {puestos.includes("gato") && <Gato huye={hayPlaga} alAcariciar={alAcariciarGato} />}
       {puestos.map((id) => {
         const objeto = OBJETO_POR_ID[id];
         const pos = POSICIONES[id];

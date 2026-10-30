@@ -52,6 +52,7 @@ import {
   guardarCruce,
   empezarDesafio,
   reclamarHito,
+  acariciarGato,
   obtenerMiPerfil,
   obtenerRanking,
   plantarSemilla,
@@ -481,6 +482,12 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const usar = (id: string) => gestionarObjeto(usarObjeto, id, "¡Abono aplicado!", "clic");
   const tratarPlaga = (id: string) => gestionarObjeto(usarObjeto, id, "¡Plaga eliminada!", "plaga-eliminada");
 
+  const acariciar = () => {
+    acariciarGato().then((r) => {
+      if (r.ok) tratar(r);
+    });
+  };
+
   const reclamar = () => {
     ejecutar(async () => {
       const r = await reclamarDiaria();
@@ -865,9 +872,12 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   // Suena un aviso cuando aparece una plaga nueva mientras se juega.
   const plagaAntes = useRef(plaga?.tipo);
   useEffect(() => {
-    if (plaga && !plagaAntes.current) sonar("plaga-aparece");
+    if (plaga && !plagaAntes.current) {
+      sonar("plaga-aparece");
+      if (perfil.equipo.decoracion.includes("gato")) sonar("gato-huye");
+    }
     plagaAntes.current = plaga?.tipo;
-  }, [plaga]);
+  }, [plaga, perfil.equipo.decoracion]);
   const transcurrido = Math.max(0, (ahora - recibidoEn) / 1000);
   const viva = planta?.vida === "viva";
 
@@ -1113,7 +1123,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       estadoCompacto={<EstadoCompacto medidores={medidores} />}
       escena={
         <Escena luz={perfil.equipo.luz} habitacion={perfil.casa.habitacion}>
-          <Decoracion puestos={perfil.equipo.decoracion} />
+          <Decoracion puestos={perfil.equipo.decoracion} hayPlaga={!!plaga} alAcariciarGato={acariciar} />
           <SelectorHuecos
             huecos={perfil.huecos}
             ocupado={enCurso}

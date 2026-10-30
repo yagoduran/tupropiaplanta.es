@@ -80,6 +80,14 @@ export const LOGROS: Logro[] = [
     meta: 1000,
     premio: 100,
   },
+  {
+    id: "gato_caricias",
+    nombre: "Amigo de los gatos",
+    descripcion: "Acaricia a tu gato 10 veces.",
+    medalla: "bronce",
+    meta: 10,
+    premio: 100,
+  },
 ];
 
 export const LOGRO_POR_ID = Object.fromEntries(LOGROS.map((l) => [l.id, l]));

@@ -8,7 +8,7 @@
 - Huecos de cultivo múltiples ✅ (fase 7): hasta 3; hueco 2 = 2.500 monedas y nivel 8, hueco 3 = 10.000 y nivel 15 (tabla en `tpp.hueco_coste`). Mejoras posibles: dibujo propio de cada hueco, aviso del navegador por planta, logro por tener todos los huecos.
 - Fase 5: ✅ logros y recompensa diaria (5a). ✅ ranking (5b). ✅ plagas (5c).
 - Fase 6: ✅ anuncios de prueba + cookies (6a). ✅ música de fondo (6b). ✅ pulido final (6c): rendimiento, accesibilidad, errores de conexión. ✅ textos legales.
-- Objetos de la tienda ✅ (fase 8): medidor de pH, termómetro, radio y gato ya se venden y tienen efecto. Pendiente: que la radio cambie la música cuando haya canciones, el gato que huya cuando aparece una plaga (sonido y dibujo ya existen), y un logro para el gato.
+- Objetos de la tienda ✅ (fase 8): medidor de pH, termómetro, radio y gato ya se venden y tienen efecto. ✅ El gato huye mientras haya una plaga (con su sonido) y hay logro por acariciarlo 10 veces. Pendiente: que la radio cambie la música cuando haya canciones.
 
 ## Infraestructura
 - Dominios `.com`, `.store` e `.info`: configurar DNS en Cloudflare (el `.es` ya está).

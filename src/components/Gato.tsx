@@ -10,10 +10,11 @@ const FOTOGRAMAS = 4;
 const FOTOGRAMA_MS = 300;
 const FILA_RESPIRANDO = 1;
 const FILA_RONRONEO = 4;
+const FILA_HUIDA = 5;
 const RONRONEO_MS = 2500;
 
-/** Gato de la escena: respira y, si lo tocas, ronronea. */
-export function Gato() {
+/** Gato de la escena: respira, ronronea si lo tocas y huye mientras haya una plaga. */
+export function Gato({ huye, alAcariciar }: { huye: boolean; alAcariciar: () => void }) {
   const [ronroneando, setRonroneando] = useState(false);
   const fotograma = useFotograma(FOTOGRAMAS, FOTOGRAMA_MS);
 
@@ -23,15 +24,17 @@ export function Gato() {
     return () => clearTimeout(id);
   }, [ronroneando]);
 
-  const fila = ronroneando ? FILA_RONRONEO : FILA_RESPIRANDO;
+  const fila = huye ? FILA_HUIDA : ronroneando ? FILA_RONRONEO : FILA_RESPIRANDO;
   return (
     <button
       type="button"
       className={`pixel ${styles.gato}`}
       aria-label="Acariciar al gato"
       onClick={() => {
+        if (huye) return;
         setRonroneando(true);
         sonar("gato-maullido");
+        alAcariciar();
       }}
       style={{
         backgroundSize: `calc(${FOTOGRAMAS * CELDA}px * var(--s)) calc(${6 * CELDA}px * var(--s))`,
