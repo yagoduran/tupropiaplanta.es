@@ -939,30 +939,207 @@ button.hueco {
   font-size: var(--f-small);
 }
 
-.paseNivel {
-  display: grid;
-  grid-template-columns: 48px minmax(0, 1fr) minmax(0, 1fr);
-  gap: 6px;
-  align-items: stretch;
-}
-
-.pasePremio {
+.paseQuedan {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   padding: calc(var(--u) * 2) calc(var(--u) * 3);
+  background: #1c1626;
+  color: #f6eed6;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+}
+
+.paseCabecera {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: var(--gap);
+  align-items: center;
+  padding: calc(var(--u) * 3);
+  color: #1c1626;
+}
+
+.paseNivelActual {
+  padding: calc(var(--u) * 2) calc(var(--u) * 4) calc(var(--u) * 3);
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-title);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.paseXp {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  font-size: var(--f-small);
+  font-weight: 600;
+}
+
+.paseBarra {
+  position: relative;
+  height: calc(var(--u) * 6);
+  border: var(--u) solid #1c1626;
+  background: #3a2418;
+}
+
+.paseBarra span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: #f4d36a;
+  box-shadow:
+    inset 0 var(--u) 0 #f2ec9a,
+    inset 0 calc(var(--u) * -1) 0 #d9a43a;
+}
+
+.paseComprar,
+.paseActivo {
+  padding: calc(var(--u) * 2) calc(var(--u) * 4) calc(var(--u) * 3);
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+  font-weight: 700;
+  color: #1c1626;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.paseComprar:disabled {
+  cursor: default;
+}
+
+.paseActivo {
+  cursor: default;
+}
+
+.paseVia {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: calc(var(--u) * 3) 0;
+  background: #3a2418;
+  border: var(--u) solid #1c1626;
+  scrollbar-width: thin;
+  scrollbar-color: #8a5a2e #3a2418;
+}
+
+.paseRejilla {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: calc(var(--u) * 32) calc(var(--u) * 12) calc(var(--u) * 32);
+  grid-template-columns: calc(var(--u) * 30);
+  grid-auto-columns: calc(var(--u) * 32);
+  row-gap: calc(var(--u) * 2);
+  width: max-content;
+}
+
+.paseEtiqueta {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 calc(var(--u) * 3);
+  background: #3a2418;
+  border-right: 2px solid #1c1626;
+  color: #f6eed6;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-small);
+  font-weight: 700;
+}
+
+.paseEtiqueta small {
+  font-family: var(--fuente-texto);
+  font-weight: 400;
+  color: #c49a5a;
+}
+
+.paseColumna {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: 1 / -1;
+  padding: 0 calc(var(--u) * 1.3);
+}
+
+.paseCelda {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 0 4px;
+  font-family: var(--fuente-pixel);
   font-size: var(--f-small);
   font-weight: 700;
   color: #1c1626;
-  text-align: left;
-  font-family: inherit;
 }
 
-.paseNumero {
+.paseEtq2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 100%;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.paseHecho {
+  position: absolute;
+  top: 4px;
+  right: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: #36a33b;
+  border: 2px solid #1c1626;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.paseCandado {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+}
+
+.paseCruce {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.paseCamino {
+  position: absolute;
+  left: calc(var(--u) * -1.3);
+  right: calc(var(--u) * -1.3);
+  top: 50%;
+  height: calc(var(--u) * 2);
+  margin-top: calc(var(--u) * -1);
+}
+
+.paseNodo {
+  position: relative;
+  min-width: calc(var(--u) * 11);
+  padding: 3px 6px 5px;
+  text-align: center;
+  color: #1c1626;
   font-family: var(--fuente-pixel);
   font-size: var(--f-stat);
-  color: #f6eed6;
+  font-weight: 700;
+}
+
+@media (max-width: 899px) {
+  .paseCabecera {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .paseComprar,
+  .paseActivo {
+    grid-column: 1 / -1;
+  }
 }
