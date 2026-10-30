@@ -918,6 +918,21 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       : null;
   const vida = planta ? planta.segundos_vida + (viva ? transcurrido : 0) : 0;
   const sedienta = !!planta && viva && planta.agua < 35;
+  const lista = !!planta && viva && planta.fase >= 8;
+
+  // Avisos del navegador (si el jugador los activó): solo cuando la pestaña no está a la vista.
+  const avisosActivos = perfil.ajustes.avisos;
+  const avisosAntes = useRef({ sedienta, plaga: !!plaga, lista });
+  useEffect(() => {
+    const antes = avisosAntes.current;
+    avisosAntes.current = { sedienta, plaga: !!plaga, lista };
+    if (!avisosActivos || typeof Notification === "undefined" || Notification.permission !== "granted") return;
+    if (document.visibilityState === "visible") return;
+    const avisar = (texto: string) => new Notification("Tu Propia Planta", { body: texto, icon: "/icon.png" });
+    if (sedienta && !antes.sedienta) avisar("Tu planta tiene sed: necesita agua.");
+    if (plaga && !antes.plaga) avisar("¡Ha aparecido una plaga en tu planta!");
+    if (lista && !antes.lista) avisar("Tu planta está lista para cosechar.");
+  }, [avisosActivos, sedienta, plaga, lista]);
 
   const botonPlantar = marco("boton", "var(--u)");
   const producto = plaga ? PLAGAS[plaga.tipo].tratamiento : null;
