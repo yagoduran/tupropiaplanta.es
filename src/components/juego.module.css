@@ -655,14 +655,18 @@
     display: block;
   }
 
+  /* La página entera hace scroll (con el pie al final); la cabecera se queda arriba. */
   .raiz {
-    height: 100dvh;
-    min-height: 0;
+    min-height: 100dvh;
+  }
+
+  .cabecera {
+    position: sticky;
+    top: 0;
   }
 
   .principal {
     display: block;
-    overflow-y: auto;
     padding: 8px var(--pad) calc(var(--tab-h) + var(--banner-h) + 12px);
   }
 
