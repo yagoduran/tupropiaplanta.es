@@ -7,7 +7,7 @@ export interface EstadoAcceso {
 }
 
 /** Traduce los errores de Supabase Auth a mensajes claros. */
-export function mensajeDeError(codigo: string | undefined, mensaje: string): string {
+export function mensajeDeError(codigo: string | undefined, _mensaje?: string): string {
   switch (codigo) {
     case "invalid_credentials":
       return "El email o la contraseña no son correctos.";
@@ -22,6 +22,6 @@ export function mensajeDeError(codigo: string | undefined, mensaje: string): str
     case "over_request_rate_limit":
       return "Demasiados intentos. Espera un poco y vuelve a probar.";
     default:
-      return mensaje || "No se ha podido completar la operación. Inténtalo de nuevo.";
+      return "No se ha podido completar la operación. Comprueba tu conexión e inténtalo de nuevo.";
   }
 }
