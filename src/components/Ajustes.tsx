@@ -109,6 +109,30 @@ export function Ajustes({ ajustes, alCambiar, alVerTutorial, alBorrar }: Props) 
         </button>
 
         <hr className={styles.linea} />
+        <span className={styles.seccion}>Ayuda</span>
+        <p className={styles.ayuda}>El juego está en BETA: tus ideas y avisos de fallos nos ayudan a mejorarlo.</p>
+        <div className={styles.botones}>
+          <a
+            className={styles.accion}
+            style={{ ...secundario, textDecoration: "none", textAlign: "center" }}
+            href="/contacto?asunto=Sugerencia"
+            target="_blank"
+            rel="noopener"
+          >
+            Enviar una sugerencia
+          </a>
+          <a
+            className={styles.accion}
+            style={{ ...secundario, textDecoration: "none", textAlign: "center" }}
+            href="/contacto?asunto=Problema%20t%C3%A9cnico"
+            target="_blank"
+            rel="noopener"
+          >
+            Avisar de un error
+          </a>
+        </div>
+
+        <hr className={styles.linea} />
         <div className={styles.fila2}>
           <div>
             <span className={styles.etiqueta}>Notificaciones del navegador</span>

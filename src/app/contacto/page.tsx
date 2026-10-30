@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { FormularioContacto } from "@/components/paginas/FormularioContacto";
 import { PaginaSuelta } from "@/components/paginas/PaginaSuelta";
@@ -13,7 +14,9 @@ export default function Contacto() {
       <div className={styles.panel}>
         <h1 className={styles.titulo}>Contacto y problemas</h1>
         <p className={styles.texto}>Cuéntanos qué ha pasado. Respondemos en un plazo de 48 horas laborables.</p>
-        <FormularioContacto correo={TITULAR.email} />
+        <Suspense>
+          <FormularioContacto correo={TITULAR.email} />
+        </Suspense>
       </div>
       <nav className={styles.enlaces}>
         <Link href="/">Volver al inicio</Link>

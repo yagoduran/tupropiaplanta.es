@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { enviarContacto } from "@/app/contacto/acciones";
 import styles from "./paginas.module.css";
@@ -7,7 +8,8 @@ import styles from "./paginas.module.css";
 const ASUNTOS = ["Problema técnico", "Mi cuenta", "Monedas y compras", "Sugerencia", "Otro"];
 
 export function FormularioContacto({ correo }: { correo: string }) {
-  const [asunto, setAsunto] = useState(ASUNTOS[0]);
+  const pedido = useSearchParams().get("asunto");
+  const [asunto, setAsunto] = useState(ASUNTOS.find((a) => a === pedido) ?? ASUNTOS[0]);
   const [email, setEmail] = useState("");
   const [mensaje, setMensaje] = useState("");
   const [tecnicos, setTecnicos] = useState(true);
