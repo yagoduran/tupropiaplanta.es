@@ -86,7 +86,8 @@ function pasos(agua: number): Record<number, Paso> {
       tipo: "bocadillo",
       anim: "senalar",
       titulo: "Monedas y tienda",
-      texto: "Ganas monedas al cuidar y cosechar. Al cosechar puedes vender o guardar los gramos para los encargos del móvil, que pagan más.",
+      texto:
+        "Ganas monedas al cuidar y cosechar. Al cosechar puedes vender o guardar los gramos para los encargos del móvil, que pagan más.",
       boton: "Siguiente",
       focos: ["monedas", "pestana-tienda"],
       flecha: "ambas",
