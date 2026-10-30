@@ -184,6 +184,14 @@ img,
   }
 }
 
+/* Efecto de pulsado: el botón se hunde y se oscurece mientras se mantiene pulsado. */
+.juego button:not(:disabled):active,
+.juego a[role="button"]:active {
+  transform: translateY(calc(var(--u) * 2));
+  filter: brightness(0.88);
+  transition: none;
+}
+
 /* Foco visible con teclado en todo el juego. */
 button:focus-visible,
 a:focus-visible,
