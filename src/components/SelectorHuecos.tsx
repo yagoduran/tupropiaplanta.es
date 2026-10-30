@@ -11,7 +11,7 @@ interface Props {
   maceta: string;
 }
 
-const MINI = 32;
+const MINI = 24;
 
 /** Mini planta de un hueco: su variedad y fase sobre una maceta; vacío es solo la maceta. */
 function MiniPlanta({
@@ -37,7 +37,7 @@ function MiniPlanta({
             backgroundImage: `url(/assets/sprites/tpp-variedad-${hoja}-1x.png)`,
             backgroundSize: `${6 * MINI}px ${8 * MINI}px`,
             backgroundPosition: `${-columna * MINI}px ${-(fase - 1) * MINI}px`,
-            transform: "translateY(-8px)",
+            transform: "translateY(-6px)",
           }}
         />
       )}
