@@ -185,6 +185,15 @@
   min-height: calc(80px * var(--s));
 }
 
+/* En escritorio las pantallas largas (logros, ajustes...) hacen scroll dentro del marco y las pestañas siempre se ven. */
+@media (min-width: 1040px) {
+  .secundaria {
+    min-height: 0;
+    max-height: calc(100dvh - var(--head-h) - var(--tab-h) - var(--gap) * 5 - var(--u) * 14);
+    overflow-y: auto;
+  }
+}
+
 .panelLateral {
   width: var(--panel-w);
   flex: none;
