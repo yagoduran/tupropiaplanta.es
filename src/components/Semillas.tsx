@@ -50,7 +50,13 @@ function Tarjeta({ variedad, nivel, enUso, ocupado, alPlantar, tipo, sinMonedas 
   const activo = !bloqueada && !hayPlanta && !ocupado && !sinMonedas;
 
   return (
-    <article className={styles.tarjeta} style={tarjeta}>
+    <article
+      className={styles.tarjeta}
+      style={{
+        ...tarjeta,
+        outline: bloqueada || variedad.rareza === "comun" ? undefined : `calc(var(--u) * 1) solid ${rareza.fondo}`,
+      }}
+    >
       <span className={styles.rareza} style={{ background: rareza.fondo, color: rareza.texto }}>
         {rareza.etiqueta}
       </span>
