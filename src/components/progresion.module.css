@@ -1259,3 +1259,79 @@ button.hueco {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Perfil público */
+.desde {
+  font-size: var(--f-small);
+  opacity: 0.8;
+}
+
+.destacados {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gap);
+}
+
+.destacado {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: calc(var(--u) * 3);
+  color: #1c1626;
+}
+
+.destacado > span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: var(--f-small);
+}
+
+.perfilDoble {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap);
+}
+
+.bloque {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.rareza {
+  padding: 2px calc(var(--u) * 3);
+  font-size: var(--f-small);
+}
+
+.semana {
+  display: flex;
+  gap: calc(var(--u) * 2);
+}
+
+.dia {
+  display: grid;
+  place-items: center;
+  width: calc(var(--u) * 9);
+  height: calc(var(--u) * 9);
+  background: #3a2f4d;
+  color: #a99cc0;
+  font-size: var(--f-small);
+}
+
+.dia[data-hecho="true"] {
+  background: #36a33b;
+  color: #1c1626;
+}
+
+.dia[data-hoy="true"] {
+  outline: calc(var(--u) * 1) solid #f6eed6;
+}
+
+@media (max-width: 700px) {
+  .destacados,
+  .perfilDoble {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

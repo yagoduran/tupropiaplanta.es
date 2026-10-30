@@ -49,6 +49,18 @@ export interface PerfilPublicoDatos {
     variedades_total: number;
     logros: number;
     logros_total: number;
+    /** Ids de sus 3 logros de más premio. */
+    destacados: string[];
+    favorita: { variedad: string; cosechas: number } | null;
+    racha: number;
+    /** Lunes a domingo de esta semana: días con actividad. */
+    semana: boolean[];
+    /** Día de hoy dentro de la semana, 0 = lunes. */
+    hoy_semana: number;
+    mejor_cosecha: number | null;
+    dias: number;
+    amigos: number;
+    desde: string;
   };
 }
 
