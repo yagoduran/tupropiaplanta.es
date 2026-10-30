@@ -112,7 +112,7 @@ declare
   hoy date := (now() at time zone 'Europe/Madrid')::date;
   o tpp.ofertas;
   tipo text;
-  comprador text;
+  nombre_comp text;
   nombre_obj text;
 begin
   perform tpp.asegurar_perfil(p_uid);
@@ -127,7 +127,7 @@ begin
   if tpp.bloqueado(p_uid, o.vendedor) then
     return jsonb_build_object('ok', false, 'error', 'oferta_no_disponible') || tpp.mercado(p_uid);
   end if;
-  if (select count(*) from tpp.ofertas where comprador = p_uid and (vendida_en at time zone 'Europe/Madrid')::date = hoy) >= 10 then
+  if (select count(*) from tpp.ofertas x where x.comprador = p_uid and (x.vendida_en at time zone 'Europe/Madrid')::date = hoy) >= 10 then
     return jsonb_build_object('ok', false, 'error', 'compras_limite') || tpp.mercado(p_uid);
   end if;
   select c ->> 'tipo' into tipo from jsonb_array_elements(tpp.catalogo()) c where c ->> 'id' = o.objeto;
@@ -141,8 +141,8 @@ begin
   insert into tpp.inventario (usuario_id, objeto, cantidad) values (p_uid, o.objeto, 1)
     on conflict (usuario_id, objeto) do update set cantidad = tpp.inventario.cantidad + 1;
   update tpp.ofertas set estado = 'vendida', comprador = p_uid, vendida_en = now() where id = o.id;
-  select usuario into comprador from tpp.perfiles where id = p_uid;
-  perform tpp.notificar(o.vendedor, 'mercado', 'Has vendido algo', comprador || ' ha comprado tu oferta. Ve a Mis ventas para cobrar ' ||
+  select usuario into nombre_comp from tpp.perfiles where id = p_uid;
+  perform tpp.notificar(o.vendedor, 'mercado', 'Has vendido algo', nombre_comp || ' ha comprado tu oferta. Ve a Mis ventas para cobrar ' ||
     (o.precio - tpp.mercado_comision(o.precio)) || ' monedas.');
   return jsonb_build_object('ok', true) || tpp.mercado(p_uid) || tpp.estado_json(p_uid);
 end;
