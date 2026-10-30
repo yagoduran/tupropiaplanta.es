@@ -821,8 +821,13 @@
     grid-template-columns: calc(96px * var(--s)) minmax(0, 1fr);
     grid-template-areas:
       "escena acciones"
-      "estado acciones";
+      "estado acciones"
+      "buzon buzon";
     align-items: start;
+  }
+
+  .buzonMovil {
+    grid-area: buzon;
   }
 
   .escena {

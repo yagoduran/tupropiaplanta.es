@@ -16,6 +16,8 @@ import {
   obtenerDesafios,
   obtenerMaestria,
   obtenerMisiones,
+  aceptarEncargo,
+  rechazarEncargo,
   obtenerEncargos,
   entregarEncargo,
   obtenerAmigos,
@@ -119,6 +121,7 @@ import { Habitaciones } from "./Habitaciones";
 import { Laboratorio } from "./Laboratorio";
 import { Maestria } from "./Maestria";
 import { Misiones } from "./Misiones";
+import { Buzon } from "./Buzon";
 import { Encargos } from "./Encargos";
 import type { DatosEncargos } from "@/lib/encargos";
 import { Amigos } from "./Amigos";
@@ -404,6 +407,21 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     return permiso === "granted";
   };
 
+  const cargarEncargos = useCallback(async () => {
+    const r = await obtenerEncargos();
+    setEncargos(r && { ...r, recibido: Date.now() });
+  }, []);
+
+  useEffect(() => {
+    if (tutorial) return;
+    const cargar = () => {
+      cargarEncargos().catch(() => {});
+    };
+    cargar();
+    const id = setInterval(cargar, 60000);
+    return () => clearInterval(id);
+  }, [tutorial, cargarEncargos]);
+
   const elegirPantalla = (id: PantallaJuego) => {
     if (
       id === "perfil" ||
@@ -472,10 +490,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         obtenerMisiones()
           .then(setMisiones)
           .catch(() => setMisiones(null));
-      if (id === "encargos")
-        obtenerEncargos()
-          .then(setEncargos)
-          .catch(() => setEncargos(null));
+      if (id === "encargos") cargarEncargos().catch(() => setEncargos(null));
       if (id === "maestria")
         obtenerMaestria()
           .then(setMaestria)
@@ -783,12 +798,29 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     });
   };
 
+  const aceptarElEncargo = (id: string) => {
+    ejecutar(async () => {
+      const r = await aceptarEncargo(id);
+      sonar(r.ok ? "cofre" : "error");
+      if (r.ok) setAviso({ texto: "¡Encargo aceptado! Ya corre el plazo de entrega.", icono: "logros" });
+      await cargarEncargos();
+    });
+  };
+
+  const rechazarElEncargo = (id: string) => {
+    ejecutar(async () => {
+      const r = await rechazarEncargo(id);
+      sonar(r.ok ? "pestana" : "error");
+      await cargarEncargos();
+    });
+  };
+
   const entregarElEncargo = (id: string) => {
     ejecutar(async () => {
       const r = await entregarEncargo(id);
       sonar(r.ok ? "cofre" : "error");
       tratar(r, { texto: "¡Encargo entregado!", icono: "logros" });
-      setEncargos(await obtenerEncargos());
+      await cargarEncargos();
     });
   };
 
@@ -1066,6 +1098,15 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           alIr={elegirPantalla}
         />
       }
+      buzon={
+        <Buzon
+          datos={encargos}
+          ocupado={enCurso}
+          alAceptar={aceptarElEncargo}
+          alRechazar={rechazarElEncargo}
+          alVerTodos={() => elegirPantalla("encargos")}
+        />
+      }
       contadores={{ misiones: perfil.misiones_listas, diaria: perfil.diaria.disponible, avisos: perfil.avisos }}
       alVerTutorial={verTutorial}
       alAbrirDiaria={() => {
@@ -1281,7 +1322,13 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         ) : pantalla === "misiones" ? (
           <Misiones datos={misiones} ocupado={enCurso} alReclamar={reclamarLaMision} />
         ) : pantalla === "encargos" ? (
-          <Encargos datos={encargos} ocupado={enCurso} alEntregar={entregarElEncargo} />
+          <Encargos
+            datos={encargos}
+            ocupado={enCurso}
+            alEntregar={entregarElEncargo}
+            alAceptar={aceptarElEncargo}
+            alRechazar={rechazarElEncargo}
+          />
         ) : pantalla === "maestria" ? (
           <Maestria datos={maestria} />
         ) : pantalla === "armario" ? (

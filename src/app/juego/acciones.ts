@@ -283,6 +283,20 @@ export async function entregarEncargo(id: string): Promise<Resultado> {
   return data as RespuestaAccion;
 }
 
+/** Acepta un encargo nuevo: empieza a correr el plazo de entrega. */
+export async function aceptarEncargo(id: string): Promise<{ ok: boolean }> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_aceptar_encargo", { p_id: id });
+  return { ok: !error && !!data && (data as { ok: boolean }).ok };
+}
+
+/** Rechaza un encargo nuevo o cancela uno aceptado. */
+export async function rechazarEncargo(id: string): Promise<{ ok: boolean }> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_rechazar_encargo", { p_id: id });
+  return { ok: !error && !!data && (data as { ok: boolean }).ok };
+}
+
 /** Avisos de la campana. Devuelve null si falla. */
 export async function obtenerNotificaciones(): Promise<DatosNotificaciones | null> {
   const supabase = await crearClienteServidor();

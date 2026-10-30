@@ -22,6 +22,8 @@ interface Props {
   secundaria?: ReactNode;
   /** Capas por encima de todo el juego, como el tutorial. */
   superposicion?: ReactNode;
+  /** Buzón de encargos de la pantalla principal del móvil. */
+  buzon?: ReactNode;
   /** Novedades que se anuncian en «Más». */
   contadores: { misiones: number; diaria: boolean; avisos: number };
   alVerTutorial: () => void;
@@ -41,6 +43,7 @@ export function JuegoLayout({
   alElegirPantalla,
   secundaria,
   superposicion,
+  buzon,
   contadores,
   alVerTutorial,
   alAbrirDiaria,
@@ -88,6 +91,7 @@ export function JuegoLayout({
                 <section className={`${styles.panelLateral} ${styles.acciones}`} aria-label="Acciones">
                   {panelAcciones}
                 </section>
+                {buzon && <section className={`${styles.soloMovil} ${styles.buzonMovil}`}>{buzon}</section>}
               </>
             ) : (
               <section className={styles.secundaria} aria-label={pantalla}>
