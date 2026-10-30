@@ -5,6 +5,15 @@
   color: #1c1626;
 }
 
+/* En el paso de la cosecha el aviso del juego pone su propio fondo y deja pulsar «Vender». */
+.capa[data-libre="true"] {
+  pointer-events: none;
+}
+
+.capa[data-libre="true"] > * {
+  pointer-events: auto;
+}
+
 .oscuro {
   position: absolute;
   inset: 0;
@@ -12,39 +21,40 @@
 }
 
 .oscuro path {
-  fill: rgba(28, 22, 38, 0.76);
+  fill: rgba(28, 22, 38, 0.72);
 }
 
+/* Zona señalada: marco dorado de 4 px que parpadea. Es lo único que se puede pulsar. */
 .foco {
   position: absolute;
   box-sizing: border-box;
-  border: var(--u) solid #f4d36a;
-  outline: var(--u) solid #1c1626;
-  box-shadow: inset 0 0 0 var(--u) #1c1626;
-  pointer-events: none;
+  border: calc(var(--u) * 2) solid #f4d36a;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  z-index: 60;
 }
 
-.flecha {
-  position: absolute;
-  background-image: url(/assets/sprites/tpp-guia-1x.png);
-  pointer-events: none;
+.foco[data-cuadro="1"] {
+  border-color: #d9a43a;
 }
 
 .bocadillo {
   position: absolute;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: var(--gap);
-  padding: calc(var(--u) * 4);
+  z-index: 61;
+  display: flex;
+  align-items: flex-start;
+  gap: calc(var(--gap) * 0.6);
   max-width: calc(100vw - 24px);
 }
 
-.guia {
-  flex: none;
-  width: calc(32px * var(--ik));
-  height: calc(32px * var(--ik));
-  background-image: url(/assets/sprites/tpp-guia-1x.png);
-  background-size: calc(128px * var(--ik)) calc(160px * var(--ik));
+.globo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 0.6);
+  min-width: 0;
+  padding: calc(var(--u) * 4);
 }
 
 .cuerpo {
@@ -58,10 +68,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 6px 10px;
   font-size: var(--f-small);
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: #5f3c26;
 }
@@ -72,14 +83,18 @@
 }
 
 .puntos > span {
-  width: var(--pip);
+  width: calc(var(--pip) * 1.6);
   height: var(--pip);
   border: 2px solid #1c1626;
-  background: #f6eed6;
+  background: #efe3c6;
 }
 
-.puntos > span[data-hecho="true"] {
+.puntos > span[data-estado="hecho"] {
   background: #36a33b;
+}
+
+.puntos > span[data-estado="actual"] {
+  background: #f4d36a;
 }
 
 .titulo {
@@ -93,37 +108,11 @@
   font-size: calc(var(--f-stat) + 2px);
   line-height: 1.45;
   text-wrap: pretty;
+  cursor: default;
 }
 
-.estados {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 6px 12px;
-  list-style: none;
-  font-size: var(--f-small);
-}
-
-.estados li {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.horas {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 6px;
-}
-
-.horas img {
-  width: 100%;
-  aspect-ratio: 96 / 80;
-  outline: 2px solid #1c1626;
-  opacity: 0.55;
-}
-
-.horas img[data-actual="true"] {
-  opacity: 1;
+.oculto {
+  visibility: hidden;
 }
 
 .botones {
@@ -143,7 +132,6 @@
   color: #5f3c26;
   font-size: var(--f-small);
   font-weight: 600;
-  text-decoration: underline;
   cursor: pointer;
 }
 
@@ -156,18 +144,15 @@
   cursor: pointer;
 }
 
-.principal {
-  min-width: calc(var(--u) * 30);
-}
-
 .btn:disabled {
-  opacity: 0.6;
-  cursor: wait;
+  color: #4b3a5e;
+  cursor: not-allowed;
 }
 
 .centro {
   position: absolute;
   inset: 0;
+  z-index: 62;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -189,34 +174,6 @@
   grid-template-columns: auto minmax(0, 1fr);
   gap: var(--gap);
   align-items: center;
-}
-
-.semillas {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: calc(var(--gap) * 0.6);
-}
-
-.semilla {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: calc(var(--u) * 3);
-  font-size: var(--f-small);
-  text-align: center;
-}
-
-.maceta {
-  width: calc(64px * var(--ik));
-  height: calc(64px * var(--ik));
-  background-size: calc(384px * var(--ik)) calc(512px * var(--ik));
-  background-position: 0 calc(-448px * var(--ik));
-}
-
-.nota {
-  font-size: var(--f-small);
-  color: #5f3c26;
 }
 
 .regalo {

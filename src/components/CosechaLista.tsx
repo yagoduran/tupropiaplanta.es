@@ -88,7 +88,14 @@ export function CosechaLista({ cosecha, ocupado, alVender, alGuardar }: Props) {
           <button type="button" className={styles.btn} style={boton} disabled={ocupado} onClick={alVender} autoFocus>
             Vender
           </button>
-          <button type="button" className={styles.btn} style={secundario} disabled={ocupado} onClick={alGuardar}>
+          <button
+            type="button"
+            className={styles.btn}
+            style={secundario}
+            data-tut="guardar"
+            disabled={ocupado}
+            onClick={alGuardar}
+          >
             Guardar
           </button>
         </div>

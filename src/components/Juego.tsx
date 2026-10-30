@@ -164,7 +164,8 @@ import { CAUSAS } from "@/lib/causas";
 import { Semillas } from "./Semillas";
 import { Tienda } from "./Tienda";
 import { Titulos } from "./Titulos";
-import { Tutorial } from "./Tutorial";
+import { plantaTutorial } from "@/lib/tutorial";
+import { Tutorial, TOTAL_PASOS } from "./Tutorial";
 import styles from "./juego.module.css";
 
 const REVISION_MS = 60_000;
@@ -184,8 +185,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [enCurso, iniciar] = useTransition();
 
   /** Como `iniciar`, pero si no hay conexión avisa al jugador en lugar de romper la pantalla. */
-  const ejecutar = (tarea: () => Promise<void>) =>
+  const ejecutar = (tarea: () => Promise<void>, enTutorial = false) =>
     iniciar(async () => {
+      // Mientras dura el tutorial nada llega al servidor: los pasos usan una planta de ejemplo.
+      if (tutorial && !enTutorial) return;
       try {
         await tarea();
       } catch {
@@ -195,6 +198,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [pantalla, setPantalla] = useState<PantallaJuego>("cultivo");
   const [tutorial, setTutorial] = useState(!inicial.perfil.tutorial_hecho);
   const [repeticion, setRepeticion] = useState(false);
+  const [pasoTut, setPasoTut] = useState(Math.min(TOTAL_PASOS, Math.max(1, inicial.perfil.tutorial_paso)));
   const [anuncioAbierto, setAnuncioAbierto] = useState(false);
   const [anuncioRecuperar, setAnuncioRecuperar] = useState(false);
   const [regando, setRegando] = useState(false);
@@ -370,12 +374,14 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   };
 
   const verTutorial = () => {
+    setPasoTut(1);
     setRepeticion(true);
     setTutorial(true);
     setPantalla("cultivo");
   };
 
   const cambiarPasoTutorial = (paso: number) => {
+    setPasoTut(paso);
     if (!repeticion) guardarTutorial(paso).catch(() => {});
   };
 
@@ -397,7 +403,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         sonar("moneda");
         setAviso({ texto: `¡Regalo de bienvenida! +${r.recompensa} monedas`, icono: "moneda" });
       }
-    });
+    }, true);
   };
 
   const activarAvisos = async () => {
@@ -423,6 +429,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   }, [tutorial, cargarEncargos]);
 
   const elegirPantalla = (id: PantallaJuego) => {
+    if (tutorial) return;
     if (
       id === "perfil" ||
       id === "plantas" ||
@@ -998,7 +1005,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     });
   };
 
-  const { perfil, planta } = estado;
+  const { perfil } = estado;
+  const planta = tutorial && pantalla === "cultivo" ? plantaTutorial(pasoTut, estado.planta) : estado.planta;
   registrarHibridas(perfil.hibridas.propias);
   const formatoRestante = (segundos: number) => {
     const s = Math.max(0, Math.floor(segundos));
@@ -1114,12 +1122,13 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         else setAviso({ texto: "Ya has recogido la entrada de hoy. Vuelve mañana.", icono: "aviso" });
       }}
       superposicion={
-        tutorial && pantalla === "cultivo" && planta ? (
+        tutorial && pantalla === "cultivo" ? (
           <Tutorial
             key={repeticion ? "repeticion" : "inicial"}
-            pasoInicial={repeticion ? 1 : inicial.perfil.tutorial_paso}
-            agua={planta.agua}
-            alCambiarPaso={cambiarPasoTutorial}
+            paso={pasoTut}
+            retomar={!repeticion && inicial.perfil.tutorial_paso > 1}
+            repeticion={repeticion}
+            alIr={cambiarPasoTutorial}
             alSaltar={saltarTutorial}
             alTerminar={terminarTutorial}
             alActivarAvisos={activarAvisos}
@@ -1449,6 +1458,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           {plaga && producto && (
             <button
               type="button"
+              data-tut="tratar"
               className={styles.plantar}
               style={botonPlantar}
               disabled={enCurso}
@@ -1462,6 +1472,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           {!planta && (
             <button
               type="button"
+              data-tut="plantar"
               className={styles.plantar}
               style={botonPlantar}
               disabled={enCurso}
