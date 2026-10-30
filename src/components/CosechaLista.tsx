@@ -4,7 +4,8 @@ import { useEffect } from "react";
 import { marco } from "@/lib/diseno";
 import type { CosechaPendiente } from "@/lib/juego";
 import { VARIEDAD_POR_ID, hojaDe } from "@/lib/variedades";
-import { Icono } from "./Icono";
+import { CALIDADES } from "@/lib/calidad";
+import { Estrellas } from "./Estrellas";
 import styles from "./anuncio.module.css";
 
 interface Props {
@@ -35,10 +36,9 @@ export function CosechaLista({ cosecha, ocupado, alVender, alGuardar }: Props) {
     {
       nombre: "Calidad",
       valor: (
-        <span style={{ display: "inline-flex", gap: 2 }} aria-label={`${cosecha.calidad} de 5 estrellas`}>
-          {[1, 2, 3, 4, 5].map((n) => (
-            <Icono key={n} id="nivel" k={1.5} opacidad={n <= cosecha.calidad ? 1 : 0.25} />
-          ))}
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+          <Estrellas calidad={cosecha.calidad} k={1.5} />
+          <span>{CALIDADES[Math.max(1, Math.min(5, cosecha.calidad)) - 1].nombre}</span>
         </span>
       ),
     },

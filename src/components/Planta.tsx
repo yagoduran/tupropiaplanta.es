@@ -39,6 +39,8 @@ interface Props {
   sexo?: "hembra" | "macho" | null;
   /** Causa del daño; quemada y ciclo de luz roto tienen su propio dibujo. */
   causa?: CausaDano | null;
+  /** Calidad prevista (1-5). En las fases 7 y 8 la clásica cambia de aspecto según ella. */
+  calidad?: number;
 }
 
 /** Sprite de la planta. Animada en reposo cuando está sana; fija en cualquier otro estado. */
@@ -50,6 +52,7 @@ export function Planta({
   maceta = "maceta_plastico",
   sexo,
   causa,
+  calidad,
 }: Props) {
   const macho = sexo === "macho";
   const hojaVariedad = hojaDe(variedad);
@@ -78,9 +81,22 @@ export function Planta({
   const columnaDano = causa === "quemada" ? 0 : causa === "ciclo_luz" ? 1 : -1;
   const dano =
     columnaDano >= 0 && fase >= 3 && (estado === "sana" || estado === "exceso_agua" || estado === "falta_nutrientes");
-  const hojaFinal = dano ? { src: "/assets/sprites/tpp-estados-nuevos-1x.png", columnas: 2, filas: 6 } : hoja;
-  const columnaFinal = dano ? columnaDano : columna;
-  const fila = dano ? fase - 3 : fase - 1;
+  // Clásica sana en floración: hojas amarillas con 1-2 estrellas, resina con 4 y brillo con 5. Con 3 se queda la de siempre.
+  const porCalidad =
+    !dano &&
+    !macho &&
+    hojaVariedad === "clasica" &&
+    estado === "sana" &&
+    (fase === 7 || fase === 8) &&
+    !!calidad &&
+    calidad !== 3;
+  const hojaFinal = dano
+    ? { src: "/assets/sprites/tpp-estados-nuevos-1x.png", columnas: 2, filas: 6 }
+    : porCalidad
+      ? { src: "/assets/plagas/tpp-planta-calidad-1x.png", columnas: 5, filas: 2 }
+      : hoja;
+  const columnaFinal = dano ? columnaDano : porCalidad ? calidad! - 1 : columna;
+  const fila = dano ? fase - 3 : porCalidad ? fase - 7 : fase - 1;
   const columnaMaceta = COLUMNA_MACETA[maceta] ?? 0;
 
   return (

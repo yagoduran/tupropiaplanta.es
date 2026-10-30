@@ -165,6 +165,7 @@ import { Semillas } from "./Semillas";
 import { Tienda } from "./Tienda";
 import { Titulos } from "./Titulos";
 import { plantaTutorial } from "@/lib/tutorial";
+import { calidadPrevista } from "@/lib/calidad";
 import { EfectoTratamiento } from "./PlagasMini";
 import { Tutorial, TOTAL_PASOS } from "./Tutorial";
 import styles from "./juego.module.css";
@@ -1414,6 +1415,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
               maceta={perfil.equipo.maceta}
               sexo={planta.sexo}
               causa={planta.causa}
+              calidad={calidadPrevista(planta.salud)}
             />
           )}
           {plaga && <Plaga plaga={plaga} variedad={planta?.variedad} />}
