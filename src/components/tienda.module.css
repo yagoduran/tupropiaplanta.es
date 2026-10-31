@@ -34,40 +34,132 @@
   gap: var(--gap);
 }
 
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--u) * 2);
+}
+
+.chip {
+  padding: 0 calc(var(--u) * 3);
+  height: calc(var(--tab-h) * 0.6);
+  border: var(--u) solid #1c1626;
+  color: #1c1626;
+  font-size: var(--f-small);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.chip[aria-pressed="true"] {
+  outline: calc(var(--u) * 1.5) solid #f4d36a;
+}
+
+.vacio {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap);
+  padding: calc(var(--u) * 4);
+  background: #f6eed6;
+  border: var(--u) solid #1c1626;
+  color: #1c1626;
+  font-weight: 600;
+}
+
+.quitar {
+  color: #7c2e1b;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .tarjeta {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--gap) * 0.5);
-  padding: calc(var(--u) * 4);
+  padding: 0;
+  text-align: left;
   color: #1c1626;
+  cursor: pointer;
+  transition: background 0.1s;
 }
 
-.cabecera {
+.tarjeta:hover {
+  background-color: #ffffff;
+}
+
+.tarjeta:active {
+  transform: translateY(calc(var(--u) * 1.5));
+}
+
+.franja {
+  display: block;
+  height: calc(var(--u) * 2);
+}
+
+.contenido {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 6px;
+  flex-direction: column;
+  gap: calc(var(--gap) * 0.5);
+  padding: calc(var(--u) * 3) calc(var(--u) * 4) calc(var(--u) * 4);
+}
+
+.baldosa {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--u) * 3);
+  background: #4b3a5e;
+  overflow: hidden;
 }
 
 .etiqueta {
-  padding: 2px 6px;
-  color: #f6eed6;
+  position: absolute;
+  left: calc(var(--u) * 2);
+  top: calc(var(--u) * 2);
+  padding: 0 5px;
+  border: var(--u) solid #1c1626;
   font-size: var(--f-small);
   font-weight: 700;
-  text-align: right;
+}
+
+.rareza_epica .baldosa::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.45) 50%, transparent 65%);
+  transform: translateX(-120%);
+}
+
+.rareza_epica:hover .baldosa::after {
+  transform: translateX(120%);
+  transition: transform 0.6s;
+}
+
+.rareza_legendaria .baldosa {
+  animation: destello 1.2s steps(2) infinite;
+}
+
+@keyframes destello {
+  0% {
+    filter: drop-shadow(0 0 3px #f4d36a);
+  }
+  100% {
+    filter: drop-shadow(0 0 6px #f4d36a);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rareza_legendaria .baldosa {
+    animation: none;
+  }
 }
 
 .nombre {
   font-family: var(--fuente-pixel);
   font-size: calc(var(--f-stat) + 2px);
   font-weight: 700;
-}
-
-.efecto {
-  flex: 1;
-  font-size: var(--f-small);
-  line-height: 1.35;
-  color: #5f3c26;
+  line-height: 1.1;
 }
 
 .precio {
@@ -78,11 +170,79 @@
   font-weight: 700;
 }
 
-.cantidad {
-  margin-left: auto;
-  font-family: var(--fuente-texto);
+.velo {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(28, 22, 38, 0.75);
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  width: min(100%, 480px);
+  max-height: 100%;
+  overflow-y: auto;
+  padding: calc(var(--u) * 5);
+  background-color: #f6eed6;
+  color: #1c1626;
+}
+
+.modalCabecera {
+  display: flex;
+  gap: var(--gap);
+  align-items: flex-start;
+}
+
+.modalBaldosa {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--u) * 4);
+  background: #4b3a5e;
+}
+
+.modalTexto {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.chipRareza {
+  align-self: flex-start;
+  padding: 0 6px;
+  border: var(--u) solid #1c1626;
   font-size: var(--f-small);
+  font-weight: 700;
+}
+
+.modalNombre {
+  font-family: var(--fuente-pixel);
+  font-size: calc(var(--f-stat) + 6px);
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.modalEfecto {
+  font-size: calc(var(--f-small) + 1px);
+  line-height: 1.4;
   color: #5f3c26;
+}
+
+.modalTotal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: calc(var(--u) * 2);
+  border-top: var(--u) solid #a8845c;
+  font-weight: 700;
 }
 
 .botones {

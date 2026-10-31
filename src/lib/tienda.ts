@@ -327,4 +327,24 @@ export const CATALOGO: ObjetoTienda[] = [
   },
 ];
 
+export type Rareza = "comun" | "poco_comun" | "rara" | "epica" | "legendaria";
+
+export const RAREZAS: { id: Rareza; nombre: string; fondo: string; borde: string }[] = [
+  { id: "comun", nombre: "Común", fondo: "#efe3c6", borde: "#a8845c" },
+  { id: "poco_comun", nombre: "Poco común", fondo: "#c9f26b", borde: "#36a33b" },
+  { id: "rara", nombre: "Rara", fondo: "#bfe6f7", borde: "#2f6fb0" },
+  { id: "epica", nombre: "Épica", fondo: "#b48ee0", borde: "#7a52b8" },
+  { id: "legendaria", nombre: "Legendaria", fondo: "#f4d36a", borde: "#d9a43a" },
+];
+
+/** El catálogo no guarda rareza: se deduce del precio, con los tramos del diseño. */
+export function rarezaDe(objeto: ObjetoTienda): Rareza {
+  const p = objeto.precio;
+  if (p <= 500) return "comun";
+  if (p <= 1000) return "poco_comun";
+  if (p <= 2500) return "rara";
+  if (p <= 7000) return "epica";
+  return "legendaria";
+}
+
 export const OBJETO_POR_ID = Object.fromEntries(CATALOGO.map((o) => [o.id, o])) as Record<string, ObjetoTienda>;
