@@ -575,21 +575,23 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   };
 
   const gestionarObjeto = (
-    llamar: (id: string) => ReturnType<typeof comprarObjeto>,
+    llamar: (id: string, cantidad?: number) => ReturnType<typeof comprarObjeto>,
     id: string,
     exito: string,
     sonido: Efecto,
     alExito?: () => void,
+    cantidad?: number,
   ) => {
     ejecutar(async () => {
-      const r = await llamar(id);
+      const r = await llamar(id, cantidad);
       sonar(r.ok ? sonido : "compra-rechazada");
       if (r.ok) alExito?.();
       tratar(r, { texto: exito, icono: "tienda" });
     });
   };
 
-  const comprar = (id: string) => gestionarObjeto(comprarObjeto, id, "¡Compra hecha!", "comprar");
+  const comprar = (id: string, cantidad = 1) =>
+    gestionarObjeto(comprarObjeto, id, "¡Compra hecha!", "comprar", undefined, cantidad);
   const equipar = (id: string) => gestionarObjeto(equiparObjeto, id, "Hecho", "clic");
   const usar = (id: string) => gestionarObjeto(usarObjeto, id, "¡Abono aplicado!", "clic");
   const tratarPlaga = (id: string) =>

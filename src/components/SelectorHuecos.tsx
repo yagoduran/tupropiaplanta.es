@@ -2,6 +2,7 @@ import { marco } from "@/lib/diseno";
 import { HUECO_DESAFIO, type HuecosJuego } from "@/lib/juego";
 import { hojaDe } from "@/lib/variedades";
 import styles from "./juego.module.css";
+import { hojaMaceta } from "./Planta";
 
 interface Props {
   huecos: HuecosJuego;
@@ -29,7 +30,7 @@ function MiniPlanta({
 }) {
   const hoja = variedad ? hojaDe(variedad) : null;
   const columna = vida === "muerta" && (fase ?? 1) >= 3 ? 5 : 0;
-  const columnaMaceta = ["maceta_plastico", "maceta_terracota", "maceta_tela", "maceta_ceramica"].indexOf(maceta);
+  const pot = hojaMaceta(maceta);
   return (
     <span className={styles.miniPlanta} aria-hidden>
       {hoja && fase && (
@@ -46,9 +47,9 @@ function MiniPlanta({
       <span
         className="pixel"
         style={{
-          backgroundImage: "url(/assets/sprites/tpp-macetas-1x.png?v=2)",
-          backgroundSize: `${8 * MINI}px ${MINI}px`,
-          backgroundPosition: `${-Math.max(0, columnaMaceta) * MINI}px 0`,
+          backgroundImage: `url(${pot.src})`,
+          backgroundSize: `${pot.columnas * MINI}px ${MINI}px`,
+          backgroundPosition: `${-pot.columna * MINI}px 0`,
         }}
       />
     </span>

@@ -282,3 +282,45 @@
   font-size: calc(var(--f-stat) + 1px);
   font-weight: 600;
 }
+
+.pronto {
+  align-self: flex-start;
+  padding: 0 6px;
+  background: #f7b072;
+  border: var(--u) solid #1c1626;
+  font-size: var(--f-small);
+  font-weight: 700;
+}
+
+.cantidad {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 700;
+}
+
+.cantidadControl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cantidadControl button {
+  width: calc(var(--tab-h) * 0.6);
+  height: calc(var(--tab-h) * 0.6);
+  background: #ffffff;
+  border: var(--u) solid #1c1626;
+  font-family: var(--fuente-pixel);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cantidadControl button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.cantidadControl .numero {
+  min-width: 2ch;
+  text-align: center;
+}

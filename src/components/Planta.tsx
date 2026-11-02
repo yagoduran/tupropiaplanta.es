@@ -26,6 +26,28 @@ export const COLUMNA_MACETA: Record<string, number> = {
   maceta_invierno: 7,
 };
 
+const MACETAS_NUEVAS = [
+  "hormigon",
+  "madera",
+  "autorriego",
+  "tela_grande",
+  "colgante",
+  "cubo",
+  "esmaltada",
+  "rayas",
+  "japonesa",
+  "cobre",
+  "neon",
+  "dorada",
+];
+
+/** Hoja y columna de una maceta: las primeras 8 en la hoja original, las nuevas en su propia hoja. */
+export function hojaMaceta(id: string): { src: string; columnas: number; columna: number } {
+  const nueva = MACETAS_NUEVAS.indexOf(id);
+  if (nueva >= 0) return { src: "/assets/sprites/tpp-macetas-nuevas-64-1x.png", columnas: 12, columna: nueva };
+  return { src: "/assets/sprites/tpp-macetas-1x.png?v=2", columnas: 8, columna: COLUMNA_MACETA[id] ?? 0 };
+}
+
 interface Props {
   fase: number;
   estado: Estado;
@@ -97,7 +119,7 @@ export function Planta({
       : hoja;
   const columnaFinal = dano ? columnaDano : porCalidad ? calidad! - 1 : columna;
   const fila = dano ? fase - 3 : porCalidad ? fase - 7 : fase - 1;
-  const columnaMaceta = COLUMNA_MACETA[maceta] ?? 0;
+  const hojaPot = hojaMaceta(maceta);
 
   return (
     <>
@@ -118,9 +140,9 @@ export function Planta({
         className={`pixel ${styles.planta}`}
         aria-hidden
         style={{
-          backgroundImage: "url(/assets/sprites/tpp-macetas-1x.png?v=2)",
-          backgroundSize: `calc(${8 * CELDA}px * var(--s)) calc(${CELDA}px * var(--s))`,
-          backgroundPosition: `calc(${-columnaMaceta * CELDA}px * var(--s)) 0`,
+          backgroundImage: `url(${hojaPot.src})`,
+          backgroundSize: `calc(${hojaPot.columnas * CELDA}px * var(--s)) calc(${CELDA}px * var(--s))`,
+          backgroundPosition: `calc(${-hojaPot.columna * CELDA}px * var(--s)) 0`,
         }}
       />
     </>

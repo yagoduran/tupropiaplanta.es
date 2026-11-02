@@ -209,7 +209,7 @@ export function Inventario({
                   aria-label={`${objeto.nombre}, ${n}`}
                   onClick={alIrATienda}
                 >
-                  <IconoObjeto celda={objeto.celda} k={1.5} />
+                  <IconoObjeto celda={objeto.celda} hoja={objeto.hoja} k={1.5} />
                   <span className={styles.cantidad}>×{n}</span>
                 </button>
               ))}

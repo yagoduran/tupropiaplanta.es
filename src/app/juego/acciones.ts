@@ -420,15 +420,19 @@ export async function comprarHueco(): Promise<Resultado> {
   return data as RespuestaAccion;
 }
 
-async function conObjeto(rpc: "tpp_comprar" | "tpp_equipar" | "tpp_usar", id: string): Promise<Resultado> {
+async function conObjeto(
+  rpc: "tpp_comprar" | "tpp_equipar" | "tpp_usar",
+  id: string,
+  extra: { p_cantidad?: number } = {},
+): Promise<Resultado> {
   const supabase = await crearClienteServidor();
-  const { data, error } = await supabase.rpc(rpc, { p_objeto: id });
+  const { data, error } = await supabase.rpc(rpc, { p_objeto: id, ...extra });
   if (error || !data) return fallo(error?.message);
   return data as RespuestaAccion;
 }
 
-export async function comprarObjeto(id: string): Promise<Resultado> {
-  return conObjeto("tpp_comprar", id);
+export async function comprarObjeto(id: string, cantidad = 1): Promise<Resultado> {
+  return conObjeto("tpp_comprar", id, { p_cantidad: Math.max(1, Math.min(99, Math.floor(cantidad))) });
 }
 
 export async function equiparObjeto(id: string): Promise<Resultado> {

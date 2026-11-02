@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { COLUMNA_MACETA } from "./Planta";
+import { hojaMaceta } from "./Planta";
 import { marco } from "@/lib/diseno";
 import type { PerfilJuego } from "@/lib/juego";
 import { hojaDe } from "@/lib/variedades";
@@ -31,7 +31,7 @@ export function ArmarioCultivo({ sitios, maceta, alPulsar }: Props) {
   }, []);
 
   const fotograma = !abierto ? 0 : !luz ? 3 : 1 + (t % 2);
-  const col = COLUMNA_MACETA[maceta] ?? 0;
+  const pot = hojaMaceta(maceta);
   const boton = marco("boton", "var(--u)");
   const secundario = marco("boton_secundario", "var(--u)");
 
@@ -93,9 +93,9 @@ export function ArmarioCultivo({ sitios, maceta, alPulsar }: Props) {
                         className={`pixel ${styles.armarioCapa}`}
                         style={{
                           top: "51.9%",
-                          backgroundImage: "url(/assets/sprites/tpp-macetas-1x.png?v=2)",
-                          backgroundSize: "800% 100%",
-                          backgroundPosition: `${(col / 7) * 100}% 0`,
+                          backgroundImage: `url(${pot.src})`,
+                          backgroundSize: `${pot.columnas * 100}% 100%`,
+                          backgroundPosition: `${(pot.columna / (pot.columnas - 1)) * 100}% 0`,
                         }}
                       />
                     </>

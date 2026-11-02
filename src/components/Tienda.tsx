@@ -19,7 +19,7 @@ import styles from "./tienda.module.css";
 interface Props {
   perfil: PerfilJuego;
   ocupado: boolean;
-  alComprar: (id: string) => void;
+  alComprar: (id: string, cantidad?: number) => void;
   alEquipar: (id: string) => void;
   alUsar: (id: string) => void;
   aviso?: { texto: string; icono: IdIcono } | null;
@@ -42,14 +42,14 @@ interface Estado {
 
 type Acciones = Pick<Props, "alComprar" | "alEquipar" | "alUsar">;
 
-function estadoDe(objeto: ObjetoTienda, perfil: PerfilJuego, { alComprar, alEquipar }: Acciones): Estado {
+function estadoDe(objeto: ObjetoTienda, perfil: PerfilJuego, { alComprar, alEquipar }: Acciones, unidades = 1): Estado {
   const { equipo, inventario, monedas, nivel } = perfil;
   const consumible = objeto.tipo === "consumible";
   const gratis = objeto.precio === 0;
   const cantidad = inventario[objeto.id] ?? 0;
   const lo_tiene = gratis || cantidad > 0;
   const bloqueado = nivel < objeto.nivel;
-  const falta = objeto.precio - monedas;
+  const falta = objeto.precio * (consumible ? unidades : 1) - monedas;
   const puesto =
     objeto.tipo === "maceta"
       ? equipo.maceta === objeto.id
@@ -85,7 +85,7 @@ function estadoDe(objeto: ObjetoTienda, perfil: PerfilJuego, { alComprar, alEqui
   } else if (falta > 0) {
     principal = { texto: "Te faltan", numero: miles(falta), estilo: "apagado" };
   } else {
-    principal = { texto: "Comprar", estilo: "boton", accion: () => alComprar(objeto.id) };
+    principal = { texto: "Comprar", estilo: "boton", accion: () => alComprar(objeto.id, consumible ? unidades : 1) };
   }
   if (consumible && cantidad > 0) etiqueta = { texto: `Tienes ${cantidad}`, fondo: "#ffffff", color: "#1c1626" };
 
@@ -111,7 +111,7 @@ function Tarjeta({ objeto, estado, alAbrir }: { objeto: ObjetoTienda; estado: Es
       <span className={styles.franja} style={{ background: r.borde }} />
       <span className={styles.contenido}>
         <span className={styles.baldosa} style={{ boxShadow: `inset 0 0 0 calc(var(--u) * 1.5) ${r.borde}` }}>
-          <IconoObjeto celda={objeto.celda} k="var(--ik)" apagado={bloqueado && !lo_tiene} />
+          <IconoObjeto celda={objeto.celda} hoja={objeto.hoja} k="var(--ik)" apagado={bloqueado && !lo_tiene} />
           {etiqueta && (
             <span className={styles.etiqueta} style={{ background: etiqueta.fondo, color: etiqueta.color }}>
               {etiqueta.texto}
@@ -135,12 +135,16 @@ function Detalle({
   objeto,
   estado,
   ocupado,
+  unidades,
+  alCambiarUnidades,
   alCerrar,
   alUsar,
 }: {
   objeto: ObjetoTienda;
   estado: Estado;
   ocupado: boolean;
+  unidades: number;
+  alCambiarUnidades: (n: number) => void;
   alCerrar: () => void;
   alUsar: (id: string) => void;
 }) {
@@ -153,6 +157,8 @@ function Detalle({
   const estiloBoton = { boton, secundario, apagado }[principal.estilo];
   const oculto = bloqueado && !lo_tiene;
   const puedeUsar = consumible && cantidad > 0 && objeto.categoria !== "fertilizantes";
+  const selector = consumible && !oculto && !gratis && objeto.precio > 0;
+  const total = objeto.precio * (consumible ? unidades : 1);
 
   return (
     <div className={styles.velo} onClick={alCerrar}>
@@ -166,7 +172,7 @@ function Detalle({
       >
         <div className={styles.modalCabecera}>
           <span className={styles.modalBaldosa} style={{ boxShadow: `inset 0 0 0 calc(var(--u) * 2) ${r.borde}` }}>
-            <IconoObjeto celda={objeto.celda} k="calc(var(--ik) * 1.5)" apagado={oculto} />
+            <IconoObjeto celda={objeto.celda} hoja={objeto.hoja} k="calc(var(--ik) * 1.5)" apagado={oculto} />
           </span>
           <div className={styles.modalTexto}>
             <span className={styles.chipRareza} style={{ background: r.fondo }}>
@@ -176,8 +182,35 @@ function Detalle({
             <p className={styles.modalEfecto}>
               {oculto ? `Se abre al llegar al nivel ${objeto.nivel}.` : objeto.efecto}
             </p>
+            {objeto.pronto && !oculto && <p className={styles.pronto}>Efecto próximamente: ya puedes tenerlo.</p>}
           </div>
         </div>
+        {selector && (
+          <div className={styles.cantidad}>
+            <span>Cantidad</span>
+            <span className={styles.cantidadControl}>
+              <button
+                type="button"
+                aria-label="Quitar una unidad"
+                disabled={unidades <= 1}
+                onClick={() => alCambiarUnidades(unidades - 1)}
+              >
+                −
+              </button>
+              <span className="numero" aria-live="polite">
+                {unidades}
+              </span>
+              <button
+                type="button"
+                aria-label="Añadir una unidad"
+                disabled={unidades >= 99}
+                onClick={() => alCambiarUnidades(unidades + 1)}
+              >
+                +
+              </button>
+            </span>
+          </div>
+        )}
         <div className={styles.modalTotal}>
           <span>{lo_tiene && !consumible ? "Precio" : "Total"}</span>
           <span
@@ -185,7 +218,7 @@ function Detalle({
             style={{ color: falta > 0 && !lo_tiene && !bloqueado ? "#b9512a" : undefined }}
           >
             <Icono id="moneda" k={1.5} />
-            <span className={gratis ? undefined : "numero"}>{gratis ? "Gratis" : miles(objeto.precio)}</span>
+            <span className={gratis ? undefined : "numero"}>{gratis ? "Gratis" : miles(total)}</span>
           </span>
         </div>
         <div className={styles.botones}>
@@ -229,6 +262,7 @@ export function Tienda(props: Props) {
   const [categoria, setCategoria] = useState<CategoriaTienda>("macetas");
   const [filtro, setFiltro] = useState<Rareza | null>(null);
   const [abierto, setAbierto] = useState<string | null>(null);
+  const [unidades, setUnidades] = useState(1);
   const normal = marco("pestana", "var(--u)");
   const activa = marco("pestana_activa", "var(--u)");
   const acciones = { alComprar: props.alComprar, alEquipar: props.alEquipar, alUsar: props.alUsar };
@@ -300,7 +334,10 @@ export function Tienda(props: Props) {
               key={o.id}
               objeto={o}
               estado={estadoDe(o, props.perfil, acciones)}
-              alAbrir={() => setAbierto(o.id)}
+              alAbrir={() => {
+                setUnidades(1);
+                setAbierto(o.id);
+              }}
             />
           ))}
         </div>
@@ -308,8 +345,10 @@ export function Tienda(props: Props) {
       {objetoAbierto && (
         <Detalle
           objeto={objetoAbierto}
-          estado={estadoDe(objetoAbierto, props.perfil, acciones)}
+          estado={estadoDe(objetoAbierto, props.perfil, acciones, unidades)}
           ocupado={props.ocupado}
+          unidades={unidades}
+          alCambiarUnidades={(n) => setUnidades(Math.min(99, Math.max(1, n)))}
           alCerrar={() => setAbierto(null)}
           alUsar={props.alUsar}
         />
