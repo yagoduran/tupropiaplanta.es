@@ -9,6 +9,7 @@ import { RAREZAS, VARIEDAD_POR_ID, hojaDe } from "@/lib/variedades";
 import { ArmarioCultivo } from "./ArmarioCultivo";
 import { Estrellas } from "./Estrellas";
 import { Icono } from "./Icono";
+import { IconoHogar } from "./IconoHogar";
 import styles from "./hogar.module.css";
 
 interface Props {
@@ -182,7 +183,10 @@ export function Hogar({ perfil, ocupado, alIrAHueco, alMover, alDesbloquear }: P
                     aria-label={h.nombre}
                   >
                     <header className={styles.cabeceraHab}>
-                      <strong>{h.nombre}</strong>
+                      <strong className={styles.nombreHab}>
+                        <IconoHogar id={h.id} k={1.5} />
+                        {h.nombre}
+                      </strong>
                       {mia && (
                         <span className="numero">
                           {usados}/{lista.length}
@@ -331,7 +335,7 @@ export function Hogar({ perfil, ocupado, alIrAHueco, alMover, alDesbloquear }: P
                         setFicha(null);
                       }}
                     >
-                      Mover
+                      <IconoHogar id="mover" k={1} /> Mover
                     </button>
                     <button
                       type="button"

@@ -110,6 +110,12 @@
   font-size: calc(var(--f-stat) + 1px);
 }
 
+.nombreHab {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--u) * 2);
+}
+
 .sitios {
   display: flex;
   flex-wrap: wrap;
