@@ -297,6 +297,7 @@ export const MENSAJES_ERROR: Record<string, string> = {
   mision_no_lista: "Todavía no has completado esa misión.",
   encargo_desconocido: "Ese encargo ya no está disponible.",
   faltan_gramos: "Todavía no tienes los gramos que piden.",
+  calidad_baja: "Tus gramos guardados no llegan a la calidad que piden.",
   recuperar_agotado: "Hoy ya has recuperado una planta. Vuelve mañana.",
   nada_que_recuperar: "No hay ninguna planta que recuperar en este hueco.",
   anuncios_agotados: "Hoy ya no quedan más ayudas. Vuelve mañana.",

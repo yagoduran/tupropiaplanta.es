@@ -2,7 +2,9 @@ export interface Encargo {
   id: string;
   remite: string;
   /** Tipo de pedido. Los antiguos no lo traen. */
-  tipo?: "normal" | "urgente" | "grande";
+  tipo?: "normal" | "urgente" | "grande" | "calidad" | "coleccion";
+  /** Estrellas mínimas que pide (0 si no pide calidad). */
+  q?: number;
   /** Mensaje con {g} y {v} para el gramaje y la variedad. */
   mensaje?: string;
   variedad: string;
@@ -42,6 +44,10 @@ export interface DatosEncargos {
   almacen: Record<string, number>;
   /** Segundos que faltan para el próximo encargo, o null si ya tiene 3. */
   siguiente_en: number | null;
+  /** Calidad media (en estrellas) de los gramos guardados de cada variedad. */
+  calidad?: Record<string, number>;
+  /** Reputación (0 a 100) con cada cliente, por índice. Sin dato es 50. */
+  reputacion?: Record<string, number>;
   /** Últimos encargos entregados o caducados. */
   historial?: EncargoHistorial[];
   /** Momento (ms) en que se recibieron, para ir restando los segundos que pasan. */
@@ -68,6 +74,8 @@ export const TIPOS_ENCARGO = {
   normal: { nombre: "Pedido normal", plazo: "3 días" },
   urgente: { nombre: "Urgente", plazo: "24 horas" },
   grande: { nombre: "Al por mayor", plazo: "5 días" },
+  calidad: { nombre: "Calidad mínima", plazo: "3 días" },
+  coleccion: { nombre: "Coleccionista", plazo: "3 días" },
 } as const;
 
 /** Tiempo restante legible: «2 d 4 h», «1 h 20 min» o «42:10». */

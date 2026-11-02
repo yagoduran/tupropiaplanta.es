@@ -75,7 +75,11 @@ export function Encargos({ datos, ocupado, alEntregar, alAceptar, alRechazar }: 
     const v = estadoVisual(x, restan(x));
     const nuevo = v === "nuevo";
     const tiene = Math.min(x.tengo, x.g);
-    const listo = x.tengo >= x.g;
+    const hayGramos = x.tengo >= x.g;
+    const miCalidad = Math.round(datos.calidad?.[x.variedad] ?? 3);
+    const hayCalidad = !x.q || miCalidad >= x.q;
+    const listo = hayGramos && hayCalidad;
+    const reputacion = x.cliente !== undefined ? (datos.reputacion?.[String(x.cliente)] ?? 50) : null;
     const cliente = x.cliente !== undefined ? CLIENTES[x.cliente] : undefined;
     return (
       <div className={styles.detalle} style={panel}>
@@ -97,12 +101,14 @@ export function Encargos({ datos, ocupado, alEntregar, alAceptar, alRechazar }: 
         <p className={styles.mensaje}>«{textoMensaje(x)}»</p>
         <h3 className={styles.subtitulo}>Lo que pide</h3>
         <div className={styles.requisito}>
-          <span className={styles.marca} style={{ background: listo ? "#c9f26b" : "#f7b072" }}>
-            {listo ? "✓" : "!"}
+          <span className={styles.marca} style={{ background: hayGramos ? "#c9f26b" : "#f7b072" }}>
+            {hayGramos ? "✓" : "!"}
           </span>
           <span className={styles.requisitoTexto}>
-            <strong>{resumen(x)}</strong>
-            <span style={{ color: listo ? "#1d6630" : "#b9512a" }}>Tienes {x.tengo} g</span>
+            <strong>
+              {x.g} g de {nombreVariedad(x.variedad)}
+            </strong>
+            <span style={{ color: hayGramos ? "#1d6630" : "#b9512a" }}>Tienes {x.tengo} g</span>
           </span>
         </div>
         <div className={styles.pista} aria-hidden>
@@ -114,6 +120,17 @@ export function Encargos({ datos, ocupado, alEntregar, alAceptar, alRechazar }: 
             }}
           />
         </div>
+        {!!x.q && (
+          <div className={styles.requisito}>
+            <span className={styles.marca} style={{ background: hayCalidad ? "#c9f26b" : "#f7b072" }}>
+              {hayCalidad ? "✓" : "!"}
+            </span>
+            <span className={styles.requisitoTexto}>
+              <strong>Calidad {x.q} estrellas o más</strong>
+              <span style={{ color: hayCalidad ? "#1d6630" : "#b9512a" }}>La tuya: {miCalidad}★</span>
+            </span>
+          </div>
+        )}
         <h3 className={styles.subtitulo}>Recompensa</h3>
         <div className={styles.premios}>
           <span>
@@ -123,6 +140,12 @@ export function Encargos({ datos, ocupado, alEntregar, alAceptar, alRechazar }: 
             <Icono id="nivel" /> +{miles(x.xp)} XP
           </span>
         </div>
+        {reputacion !== null && (
+          <p className={styles.texto}>
+            Reputación con {x.remite}: <strong>{reputacion}/100</strong>
+            {reputacion >= 75 ? " · Cliente fijo: paga un 10 % más." : ""}
+          </p>
+        )}
         <div className={styles.relojes}>
           {nuevo ? (
             <>
@@ -169,7 +192,11 @@ export function Encargos({ datos, ocupado, alEntregar, alAceptar, alRechazar }: 
                 disabled={ocupado || !listo}
                 onClick={() => alEntregar(x.id)}
               >
-                {listo ? `Entregar ${x.g} g` : `Te faltan ${x.g - x.tengo} g`}
+                {listo
+                  ? `Entregar ${x.g} g`
+                  : !hayGramos
+                    ? `Te faltan ${x.g - x.tengo} g`
+                    : `Necesitas ${x.q} estrellas`}
               </button>
               <button
                 type="button"

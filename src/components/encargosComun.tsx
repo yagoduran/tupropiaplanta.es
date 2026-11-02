@@ -43,4 +43,5 @@ export function textoMensaje(e: Encargo) {
     .replace("{v}", nombreVariedad(e.variedad));
 }
 
-export const resumen = (e: Pick<Encargo, "g" | "variedad">) => `${e.g} g de ${nombreVariedad(e.variedad)}`;
+export const resumen = (e: Pick<Encargo, "g" | "variedad" | "q">) =>
+  `${e.g} g de ${nombreVariedad(e.variedad)}${e.q ? ` · ${e.q}★ o más` : ""}`;
