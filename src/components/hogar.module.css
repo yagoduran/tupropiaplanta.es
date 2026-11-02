@@ -345,3 +345,59 @@
     background: rgba(201, 242, 107, 0.15);
   }
 }
+
+.armario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.armarioCabeza {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+  flex-wrap: wrap;
+}
+
+.armarioTitulo {
+  font-family: var(--fuente-pixel);
+  font-size: calc(var(--f-stat) + 4px);
+}
+
+.armarioMarco {
+  display: flex;
+  justify-content: center;
+  padding: calc(var(--u) * 4);
+  background: #4b3a5e;
+  border: calc(var(--u) * 2) solid #1c1626;
+}
+
+.armarioDibujo {
+  position: relative;
+  width: min(100%, 352px);
+  aspect-ratio: 176 / 160;
+}
+
+.armarioFondo {
+  position: absolute;
+  inset: 0;
+}
+
+.armarioSitio {
+  position: absolute;
+  top: 0;
+  width: 36.36%;
+  height: 100%;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.armarioCapa {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 1;
+}

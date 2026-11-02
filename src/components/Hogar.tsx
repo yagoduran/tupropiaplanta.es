@@ -6,6 +6,7 @@ import { calidadPrevista } from "@/lib/calidad";
 import { FASES, marco } from "@/lib/diseno";
 import type { PantallaJuego, PerfilJuego } from "@/lib/juego";
 import { RAREZAS, VARIEDAD_POR_ID, hojaDe } from "@/lib/variedades";
+import { ArmarioCultivo } from "./ArmarioCultivo";
 import { Estrellas } from "./Estrellas";
 import { Icono } from "./Icono";
 import styles from "./hogar.module.css";
@@ -271,6 +272,8 @@ export function Hogar({ perfil, ocupado, alIrAHueco, alMover, alDesbloquear }: P
           </div>
         ))}
       </div>
+
+      <ArmarioCultivo sitios={deHabitacion("armario")} maceta={perfil.equipo.maceta} alPulsar={pulsar} />
 
       {fichaSitio && !editando && (
         <div className={styles.velo} onClick={() => setFicha(null)}>

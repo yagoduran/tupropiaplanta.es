@@ -15,7 +15,7 @@ const SUBIDA = 17;
 const HOJA_ESTADOS = { src: "/assets/sprites/tpp-plantas-1x.png", columnas: 8, filas: 8 };
 
 // Columna de cada maceta en la hoja de macetas. Los sprites de la planta ya no llevan maceta: siempre se dibuja una.
-const COLUMNA_MACETA: Record<string, number> = {
+export const COLUMNA_MACETA: Record<string, number> = {
   maceta_plastico: 0,
   maceta_terracota: 1,
   maceta_tela: 2,
