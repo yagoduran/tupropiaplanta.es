@@ -343,6 +343,14 @@ export async function elegirHabitacion(id: string): Promise<Resultado> {
   return data as RespuestaAccion;
 }
 
+/** Mueve una planta a otro sitio de la casa; si está ocupado, las dos se intercambian. */
+export async function moverPlanta(desde: number, hacia: number): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_mover_planta", { p_desde: desde, p_hacia: hacia });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
 /** Vende la última cosecha (monedas) o la guarda (gramos para los encargos). */
 export async function resolverCosecha(vender: boolean): Promise<Resultado> {
   const supabase = await crearClienteServidor();

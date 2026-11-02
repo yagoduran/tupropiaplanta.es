@@ -71,6 +71,7 @@ import {
   comprarMejora,
   comprarHabitacion,
   elegirHabitacion,
+  moverPlanta,
 } from "@/app/juego/acciones";
 import { marco, type IdIcono } from "@/lib/diseno";
 import { horaDelDia } from "@/lib/hora";
@@ -156,6 +157,7 @@ import { Coleccion } from "./Coleccion";
 import { Desafios } from "./Desafios";
 import { Estadisticas } from "./Estadisticas";
 import { Inventario } from "./Inventario";
+import { Hogar } from "./Hogar";
 import { MisPlantas } from "./MisPlantas";
 import { Perfil } from "./Perfil";
 import { Ranking } from "./Ranking";
@@ -983,6 +985,14 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     });
   };
 
+  const moverPlantaA = (desde: number, hacia: number) => {
+    ejecutar(async () => {
+      const r = await moverPlanta(desde, hacia);
+      sonar(r.ok ? "pestana" : "error");
+      tratar(r);
+    });
+  };
+
   const recogerAyuda = () => {
     ejecutar(async () => {
       const r = await verAnuncio();
@@ -1349,13 +1359,25 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         ) : pantalla === "armario" ? (
           <Armario perfil={perfil} ocupado={enCurso} alComprar={mejorar} />
         ) : pantalla === "habitaciones" ? (
-          <Habitaciones
-            perfil={perfil}
-            ocupado={enCurso}
-            alComprar={desbloquearHabitacion}
-            alElegir={irAHabitacion}
-            alMejorar={mejorar}
-          />
+          <>
+            <Hogar
+              perfil={perfil}
+              ocupado={enCurso}
+              alIrAHueco={(hueco, destino) => {
+                elegirPantalla(destino);
+                cambiarHueco(hueco);
+              }}
+              alMover={moverPlantaA}
+              alDesbloquear={desbloquearHabitacion}
+            />
+            <Habitaciones
+              perfil={perfil}
+              ocupado={enCurso}
+              alComprar={desbloquearHabitacion}
+              alElegir={irAHabitacion}
+              alMejorar={mejorar}
+            />
+          </>
         ) : pantalla === "desafios" ? (
           <Desafios
             datos={desafios}
