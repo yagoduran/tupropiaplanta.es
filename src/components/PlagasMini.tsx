@@ -89,11 +89,11 @@ function andar(ruta: (typeof RUTAS)[number], t: number) {
   return { x, y, espejo, modo };
 }
 
-/** Bichos de 8 × 8 que pasean por la planta. Como mucho 3 a la vista; con plaga grave salen los 3. */
+/** Bichos de 8 × 8 que pasean por la planta. Como mucho 3 a la vista: 1 si es leve, 2 si es media y 3 si es grave. */
 export function Bichos({ plaga }: { plaga: PlagaJuego }) {
   const t = useReloj();
   const fila = FILA_BICHO[plaga.tipo] ?? 0;
-  const cuantos = plaga.grave ? 3 : 2;
+  const cuantos = plaga.grave ? 3 : plaga.media ? 2 : 1;
   const caminar = Math.floor(t / 1.5) % 4;
   const lento = Math.floor(t / 3) % 2;
   return (
@@ -120,16 +120,16 @@ export function Bichos({ plaga }: { plaga: PlagaJuego }) {
   );
 }
 
-/** Marca de 16 × 16 arriba a la derecha de la planta: amarilla si es leve, roja y parpadeando si es grave. */
+/** Marca de 16 × 16 arriba a la derecha de la planta: amarilla si es leve, naranja si es media, roja y parpadeando si es grave. */
 export function IndicadorPlaga({ plaga }: { plaga: PlagaJuego }) {
   const t = useReloj();
-  const nivel = plaga.grave ? 2 : 0;
+  const nivel = plaga.grave ? 2 : plaga.media ? 1 : 0;
   const cuadro = nivel === 2 ? Math.floor(t / 3) % 2 : 0;
   return (
     <span
       className={`pixel ${styles.indicadorPlaga}`}
       role="img"
-      aria-label={plaga.grave ? "Plaga grave" : "Plaga leve"}
+      aria-label={plaga.grave ? "Plaga grave" : plaga.media ? "Plaga media" : "Plaga leve"}
       style={{
         backgroundSize: `calc(32px * var(--s)) calc(48px * var(--s))`,
         backgroundPosition: `calc(${-cuadro * 16}px * var(--s)) calc(${-nivel * 16}px * var(--s))`,

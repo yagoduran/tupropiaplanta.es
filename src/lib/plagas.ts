@@ -4,6 +4,8 @@ export interface PlagaJuego {
   tipo: TipoPlaga;
   /** Lleva más de 6 horas sin tratar y quita más salud. */
   grave: boolean;
+  /** De 3 a 6 horas sin tratar: nivel intermedio. */
+  media?: boolean;
 }
 
 export const PLAGAS: Record<
