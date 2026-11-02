@@ -117,6 +117,7 @@
 
 .botones {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
   margin-top: 4px;
@@ -141,6 +142,7 @@
   font-family: var(--fuente-pixel);
   font-size: calc(var(--f-stat) + 2px);
   font-weight: 700;
+  white-space: nowrap;
   cursor: pointer;
 }
 
