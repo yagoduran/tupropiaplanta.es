@@ -26,7 +26,7 @@ export function Habitaciones({ perfil, ocupado, alComprar, alElegir, alMejorar }
   const nivelOk = perfil.nivel >= h.nivel;
   const monedasOk = perfil.monedas >= h.precio;
 
-  let texto = `Desbloquear · ${miles(h.precio)}`;
+  let texto = h.precio === 0 ? "Desbloquear" : `Desbloquear · ${miles(h.precio)}`;
   let activo = !ocupado;
   let accion = () => alComprar(h.id);
   if (mia && h.id === actual) {
@@ -48,14 +48,17 @@ export function Habitaciones({ perfil, ocupado, alComprar, alElegir, alMejorar }
 
   const ramaHab = `h_${h.id}` as const;
   const nivelHab = perfil.casa.mejoras[ramaHab] ?? 0;
-  const siguienteHab = nivelHab < 3 ? MEJORAS_HABITACION[h.id][nivelHab] : null;
+  const mejorasHab = MEJORAS_HABITACION[h.id];
+  const siguienteHab = mejorasHab && nivelHab < 3 ? mejorasHab[nivelHab] : null;
   const puedeMejorar = !!siguienteHab && perfil.nivel >= siguienteHab.nivel && perfil.monedas >= siguienteHab.precio;
 
   const requisitos = mia
     ? []
     : [
         { ok: nivelOk, texto: `Nivel ${h.nivel} (tienes ${perfil.nivel})` },
-        { ok: monedasOk, texto: `${miles(h.precio)} monedas (tienes ${miles(perfil.monedas)})` },
+        ...(h.precio > 0
+          ? [{ ok: monedasOk, texto: `${miles(h.precio)} monedas (tienes ${miles(perfil.monedas)})` }]
+          : []),
         ...(h.bloqueada ? [{ ok: !!perfil.prestigio.bonos.key, texto: h.bloqueada }] : []),
       ];
 
@@ -90,14 +93,14 @@ export function Habitaciones({ perfil, ocupado, alComprar, alElegir, alMejorar }
                 <span className={styles.desafioTexto}>
                   <strong>{r.nombre}</strong>
                   <span>
-                    {r.piso} · {r.macetas} macetas
+                    {r.piso} · {r.macetas} huecos
                   </span>
                   <span className={styles.desafioPie}>
                     {r.id === actual
                       ? "Estás aquí"
                       : mio
                         ? "Ya es tuya"
-                        : `${miles(r.precio)} monedas · Nv. ${r.nivel}`}
+                        : `${r.precio > 0 ? `${miles(r.precio)} monedas · ` : ""}Nv. ${r.nivel}`}
                   </span>
                 </span>
               </button>
@@ -130,6 +133,7 @@ export function Habitaciones({ perfil, ocupado, alComprar, alElegir, alMejorar }
           <p className={styles.pequeno}>{h.descripcion}</p>
           <p className={styles.pequeno}>
             <strong>Huecos de cultivo:</strong> {h.macetas}
+            {h.id === "armario" ? " (más los de la mejora de Capacidad)" : ""}
           </p>
           {requisitos.length > 0 && (
             <>
@@ -143,13 +147,13 @@ export function Habitaciones({ perfil, ocupado, alComprar, alElegir, alMejorar }
               </ul>
             </>
           )}
-          {mia && (
+          {mia && mejorasHab && (
             <>
               <p className={styles.subtitulo}>
                 Mejoras de la habitación<span>{nivelHab} de 3</span>
               </p>
               <ul className={styles.requisitos}>
-                {MEJORAS_HABITACION[h.id].map((m, i) => (
+                {mejorasHab.map((m, i) => (
                   <li key={m.nombre}>
                     <span style={{ color: i < nivelHab ? "#1d6630" : "#b9512a" }}>{i < nivelHab ? "✓" : "✗"}</span>{" "}
                     {ROMANOS[i]} · {m.nombre}: {m.texto}
@@ -174,8 +178,8 @@ export function Habitaciones({ perfil, ocupado, alComprar, alElegir, alMejorar }
             </>
           )}
           <p className={styles.nota}>
-            Tus huecos son los de la habitación más grande que tengas, más la mejora de Capacidad. La habitación en la
-            que estás da su bono a todas tus plantas, mejorado con sus mejoras (no valen en los desafíos).
+            Cada habitación tiene sus propios huecos y da su bono a las plantas que haya en ella, mejorado con sus
+            mejoras (no valen en los desafíos). La mejora de Capacidad añade huecos al armario.
           </p>
           <button
             type="button"

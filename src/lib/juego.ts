@@ -145,10 +145,17 @@ export interface HuecosJuego {
   siguiente: { precio: number; nivel: number } | null;
   lista: {
     hueco: number;
+    habitacion: string;
+    /** Posición dentro de su habitación (empieza en 1). */
+    sitio: number;
     vida: "viva" | "muerta" | "cosechada" | "vacio";
     plaga: boolean;
     variedad: string | null;
     fase: number | null;
+    agua: number | null;
+    nutrientes: number | null;
+    luz: number | null;
+    salud: number | null;
   }[];
 }
 
