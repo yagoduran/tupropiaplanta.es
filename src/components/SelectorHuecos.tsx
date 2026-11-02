@@ -9,6 +9,8 @@ interface Props {
   alElegir: (hueco: number) => void;
   alAmpliar: () => void;
   maceta: string;
+  /** Habitación en la que se está: solo salen sus huecos. */
+  habitacion: string;
 }
 
 const MINI = 24;
@@ -54,31 +56,33 @@ function MiniPlanta({
 }
 
 /** Botones 1 / 2 / 3 sobre la escena para cambiar de planta. El siguiente hueco por comprar sale como "+" y el desafío en curso como "★". */
-export function SelectorHuecos({ huecos, ocupado, alElegir, alAmpliar, maceta }: Props) {
+export function SelectorHuecos({ huecos, ocupado, alElegir, alAmpliar, maceta, habitacion }: Props) {
   const activo = marco("boton", "var(--u)");
   const normal = marco("boton_secundario", "var(--u)");
   return (
     <nav className={styles.huecos} aria-label="Huecos de cultivo">
-      {huecos.lista.map((h) => {
-        const esActivo = h.hueco === huecos.activo;
-        const aviso = !esActivo && (h.plaga || h.vida === "muerta");
-        return (
-          <button
-            key={h.hueco}
-            type="button"
-            className={styles.hueco}
-            style={esActivo ? activo : normal}
-            disabled={ocupado}
-            aria-current={esActivo ? "true" : undefined}
-            aria-label={`Hueco ${h.hueco}${aviso ? ", necesita atención" : ""}`}
-            onClick={() => alElegir(h.hueco)}
-          >
-            <MiniPlanta variedad={h.variedad} fase={h.fase} vida={h.vida} maceta={maceta} />
-            {h.hueco}
-            {aviso && <span className={styles.huecoAviso} aria-hidden />}
-          </button>
-        );
-      })}
+      {huecos.lista
+        .filter((h) => h.habitacion === habitacion)
+        .map((h) => {
+          const esActivo = h.hueco === huecos.activo;
+          const aviso = !esActivo && (h.plaga || h.vida === "muerta");
+          return (
+            <button
+              key={h.hueco}
+              type="button"
+              className={styles.hueco}
+              style={esActivo ? activo : normal}
+              disabled={ocupado}
+              aria-current={esActivo ? "true" : undefined}
+              aria-label={`Hueco ${h.sitio}${aviso ? ", necesita atención" : ""}`}
+              onClick={() => alElegir(h.hueco)}
+            >
+              <MiniPlanta variedad={h.variedad} fase={h.fase} vida={h.vida} maceta={maceta} />
+              {h.sitio}
+              {aviso && <span className={styles.huecoAviso} aria-hidden />}
+            </button>
+          );
+        })}
       {(huecos.desafio || huecos.activo === HUECO_DESAFIO) && (
         <button
           type="button"
@@ -92,18 +96,18 @@ export function SelectorHuecos({ huecos, ocupado, alElegir, alAmpliar, maceta }:
           ★
         </button>
       )}
-      {huecos.desbloqueados < huecos.maximo && (
+      {
         <button
           type="button"
           className={styles.hueco}
           style={normal}
           disabled={ocupado}
-          aria-label="Conseguir más huecos"
+          aria-label="Ver la casa"
           onClick={alAmpliar}
         >
           +
         </button>
-      )}
+      }
     </nav>
   );
 }

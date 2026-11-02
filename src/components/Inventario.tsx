@@ -1,5 +1,6 @@
 "use client";
 
+import { HABITACION_POR_ID } from "@/lib/casa";
 import { FASES, marco } from "@/lib/diseno";
 import type { PantallaJuego, PerfilJuego } from "@/lib/juego";
 import type { DatosPerfil } from "@/lib/perfil";
@@ -65,7 +66,9 @@ export function Inventario({
                   onClick={() => alIrAHueco(h.hueco, "cultivo")}
                 >
                   <span className={styles.huecoCabeza}>
-                    <span>Hueco {h.hueco}</span>
+                    <span>
+                      {HABITACION_POR_ID[h.habitacion]?.nombre} · {h.sitio}
+                    </span>
                     <span>{h.plaga ? "Con plaga" : "Ocupado"}</span>
                   </span>
                   <span className={styles.huecoDibujo}>
@@ -96,7 +99,9 @@ export function Inventario({
             return (
               <div key={h.hueco} className={clase}>
                 <span className={styles.huecoCabeza}>
-                  <span>Hueco {h.hueco}</span>
+                  <span>
+                    {HABITACION_POR_ID[h.habitacion]?.nombre} · {h.sitio}
+                  </span>
                   <span>{h.vida === "muerta" ? "Planta muerta" : "Libre"}</span>
                 </span>
                 <span className={styles.huecoDibujo}>
@@ -130,7 +135,7 @@ export function Inventario({
           {huecos.desbloqueados < huecos.maximo && (
             <div className={`${styles.hueco} ${styles.huecoSiguiente}`}>
               <span className={styles.huecoCabeza}>
-                <span>Hueco {huecos.desbloqueados + 1}</span>
+                <span>Casa</span>
                 <span>Siguiente</span>
               </span>
               <span className={styles.huecoDibujo}>
