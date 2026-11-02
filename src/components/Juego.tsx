@@ -1442,7 +1442,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             maceta={perfil.equipo.maceta}
             habitacion={perfil.casa.habitacion}
           />
-          {planta && (
+          {planta && (planta.vida !== "cosechada" || planta.desafio) && (
             <Planta
               fase={planta.fase}
               estado={planta.estado}
