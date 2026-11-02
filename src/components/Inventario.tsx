@@ -159,29 +159,35 @@ export function Inventario({
             <div className={styles.gramos}>
               {gramos.map(([id, g]) => (
                 <div key={id} className={styles.gramosFila}>
-                  <span>
-                    <strong>{VARIEDAD_POR_ID[id].nombre}</strong>
-                    <span className="numero"> {g} g</span>
-                    <span> · {Math.round(6 * VARIEDAD_POR_ID[id].recompensa)} monedas/g</span>
+                  <span className={styles.gramosDatos}>
+                    <span>
+                      <strong>{VARIEDAD_POR_ID[id].nombre}</strong>
+                      <span className="numero"> · {g} g</span>
+                    </span>
+                    <span className={styles.gramosPrecio}>
+                      {Math.round(6 * VARIEDAD_POR_ID[id].recompensa)} monedas/g
+                    </span>
                   </span>
-                  <button
-                    type="button"
-                    className={styles.accion}
-                    style={secundario}
-                    disabled={ocupado || g < 10}
-                    onClick={() => alVender(id, 10)}
-                  >
-                    Vender 10 g
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.accion}
-                    style={secundario}
-                    disabled={ocupado}
-                    onClick={() => alVender(id, null)}
-                  >
-                    Vender todo
-                  </button>
+                  <span className={styles.gramosBotones}>
+                    <button
+                      type="button"
+                      className={styles.accion}
+                      style={secundario}
+                      disabled={ocupado || g < 10}
+                      onClick={() => alVender(id, 10)}
+                    >
+                      Vender 10 g
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.accion}
+                      style={secundario}
+                      disabled={ocupado}
+                      onClick={() => alVender(id, null)}
+                    >
+                      Vender todo
+                    </button>
+                  </span>
                 </div>
               ))}
             </div>

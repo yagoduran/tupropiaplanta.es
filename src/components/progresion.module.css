@@ -1345,8 +1345,28 @@ button.hueco {
 
 .gramosFila {
   display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 2);
+  padding: calc(var(--u) * 3);
+  background: rgba(28, 22, 38, 0.08);
+  border: var(--u) solid #a8845c;
+}
+
+.gramosDatos {
+  display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: calc(var(--u) * 3);
+  align-items: baseline;
   justify-content: space-between;
+  gap: calc(var(--u) * 2);
+}
+
+.gramosPrecio {
+  font-size: var(--f-small);
+  color: #5f3c26;
+}
+
+.gramosBotones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--u) * 2);
 }
