@@ -1,3 +1,4 @@
+-- AVISO: la función tpp.huecos_json() de este archivo tiene un fallo y fue sustituida por la de 20261153000000. Si se vuelve a aplicar todo desde cero, esa migración corrige el resultado.
 -- La casa: ahora se cultiva en todas las habitaciones a la vez. Cada habitación tiene sus propios sitios (macetas) y cada planta
 -- recibe el bono de la habitación donde está. El número de hueco de una planta ya no es 1..8 sino "base de la habitación + sitio":
 --   armario 1-6 (3 de serie + hasta 3 de la mejora de capacidad), salón 11-13, cocina 21-22, dormitorio 31-32, baño 41,
