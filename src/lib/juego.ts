@@ -201,6 +201,8 @@ export interface CosechaPendiente {
   calidad: number;
   /** Días que ha tardado en crecer. */
   dias: number;
+  /** Estado de la planta al cosechar (1 a 5), para «Qué ha influido». */
+  factores?: { id: "luz" | "riego" | "abono" | "plagas" | "salud"; valor: number }[];
 }
 
 export interface RespuestaAccion extends EstadoJuego {

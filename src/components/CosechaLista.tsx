@@ -6,6 +6,7 @@ import type { CosechaPendiente } from "@/lib/juego";
 import { VARIEDAD_POR_ID, hojaDe } from "@/lib/variedades";
 import { CALIDADES } from "@/lib/calidad";
 import { Estrellas } from "./Estrellas";
+import { Icono } from "./Icono";
 import styles from "./anuncio.module.css";
 
 interface Props {
@@ -16,6 +17,16 @@ interface Props {
 }
 
 /** «¡Cosecha lista!»: peso, calidad y premio; el jugador elige vender o guardar. */
+const FACTORES = {
+  luz: { nombre: "Luz", icono: "luz" },
+  riego: { nombre: "Riego", icono: "agua" },
+  abono: { nombre: "Abono", icono: "nutrientes" },
+  plagas: { nombre: "Plagas", icono: "aviso" },
+  salud: { nombre: "Salud", icono: "salud" },
+} as const;
+
+const colorFactor = (v: number) => (v >= 4 ? "#36a33b" : v >= 3 ? "#c9f26b" : v >= 2 ? "#f4d36a" : "#e07b3f");
+
 export function CosechaLista({ cosecha, ocupado, alVender, alGuardar }: Props) {
   useEffect(() => {
     const cerrar = (e: KeyboardEvent) => {
@@ -81,6 +92,33 @@ export function CosechaLista({ cosecha, ocupado, alVender, alGuardar }: Props) {
             ))}
           </dl>
         </div>
+        {cosecha.factores && (
+          <div className={styles.texto} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            <strong>Qué ha influido</strong>
+            {cosecha.factores.map((f) => {
+              const info = FACTORES[f.id];
+              return (
+                <div key={f.id} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <Icono id={info.icono} k={1.5} />
+                  <span style={{ flex: 1 }}>{info.nombre}</span>
+                  <span aria-label={`${f.valor} de 5`} style={{ display: "inline-flex", gap: 3 }}>
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <span
+                        key={i}
+                        style={{
+                          width: 12,
+                          height: 8,
+                          border: "2px solid #1c1626",
+                          background: i <= f.valor ? colorFactor(f.valor) : "#efe3c6",
+                        }}
+                      />
+                    ))}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        )}
         <p className={styles.texto}>
           Vende la cosecha para cobrar las monedas, o guárdala para entregarla en los encargos.
         </p>
