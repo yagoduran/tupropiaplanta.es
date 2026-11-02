@@ -23,12 +23,12 @@ const ESTADOS = {
 /** Eventos de temporada: cuatro al año, con tres misiones y una semilla de edición limitada. */
 export function Eventos({ datos }: { datos: DatosEventos | null }) {
   const [elegido, setElegido] = useState<string | null>(null);
-  const [inicio] = useState(() => Date.now());
   const [transcurrido, setTranscurrido] = useState(0);
   useEffect(() => {
+    const inicio = Date.now();
     const id = setInterval(() => setTranscurrido(Math.floor((Date.now() - inicio) / 1000)), 1000);
     return () => clearInterval(id);
-  }, [inicio]);
+  }, []);
 
   if (!datos) {
     return (

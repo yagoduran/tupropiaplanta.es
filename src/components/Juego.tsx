@@ -182,8 +182,9 @@ interface Aviso {
 
 export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [estado, setEstado] = useState(inicial);
-  const [recibidoEn, setRecibidoEn] = useState(() => Date.now());
-  const [ahora, setAhora] = useState(() => Date.now());
+  // Se rellenan al montar: leer la hora durante el render rompe la página (Cache Components).
+  const [recibidoEn, setRecibidoEn] = useState(0);
+  const [ahora, setAhora] = useState(0);
   const [aviso, setAviso] = useState<Aviso | null>(null);
   const router = useRouter();
   const [enCurso, iniciar] = useTransition();
@@ -238,7 +239,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [notificaciones, setNotificaciones] = useState<DatosNotificaciones | null>(null);
   const [prestigio, setPrestigio] = useState<DatosPrestigio | null>(null);
   const [cruces, setCruces] = useState<DatosCruces | null>(null);
-  const [crucesEn, setCrucesEn] = useState(() => Date.now());
+  const [crucesEn, setCrucesEn] = useState(0);
   const [bienvenida, setBienvenida] = useState<DatosBienvenida | null>(null);
   const [muertaVista, setMuertaVista] = useState<string | null>(null);
   const [diariaAbierta, setDiariaAbierta] = useState(inicial.perfil.diaria.disponible && inicial.perfil.tutorial_hecho);
@@ -249,6 +250,16 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     const ahoraMs = Date.now();
     setRecibidoEn(ahoraMs);
     setAhora(ahoraMs);
+  }, []);
+
+  // Hora de partida al montar.
+  useEffect(() => {
+    const id = setTimeout(() => {
+      const t = Date.now();
+      setRecibidoEn((r) => r || t);
+      setAhora((a) => a || t);
+    }, 0);
+    return () => clearTimeout(id);
   }, []);
 
   // Reloj de la pantalla: cuenta atrás de esperas y tiempo de vida.
@@ -276,7 +287,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   // Guarda cómo estaba la planta en esta visita (solo con la pestaña a la vista).
   useEffect(() => {
     if (!estado.planta || estado.planta.vida !== "viva" || document.hidden) return;
-    guardarVisita(estado.planta, recibidoEn);
+    if (recibidoEn) guardarVisita(estado.planta, recibidoEn);
   }, [estado.planta, recibidoEn]);
 
   // Vuelve a pedir el estado real cada minuto y al volver a la pestaña.
@@ -1044,7 +1055,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     }
     plagaAntes.current = plaga?.tipo;
   }, [plaga, perfil.equipo.decoracion]);
-  const transcurrido = Math.max(0, (ahora - recibidoEn) / 1000);
+  const transcurrido = recibidoEn ? Math.max(0, (ahora - recibidoEn) / 1000) : 0;
   const viva = planta?.vida === "viva";
 
   // El macho se puede arrancar desde la prefloración (fase 6); el resto, al terminar el ciclo (fase 8).
