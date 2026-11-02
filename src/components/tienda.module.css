@@ -186,8 +186,10 @@
   flex-direction: column;
   gap: var(--gap);
   width: min(100%, 480px);
-  max-height: 100%;
+  max-height: calc(100dvh - 32px);
+  overflow-x: hidden;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: calc(var(--u) * 5);
   background-color: #f6eed6;
   color: #1c1626;
@@ -195,12 +197,14 @@
 
 .modalCabecera {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--gap);
   align-items: flex-start;
 }
 
 .modalBaldosa {
   flex: none;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -209,6 +213,7 @@
 }
 
 .modalTexto {
+  flex: 1 1 12ch;
   display: flex;
   flex-direction: column;
   gap: 6px;
