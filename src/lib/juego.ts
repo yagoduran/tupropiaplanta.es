@@ -38,7 +38,9 @@ export type PantallaJuego =
   | "mercado"
   | "abonos"
   | "avisos"
-  | "secado";
+  | "secado"
+  | "vuelta"
+  | "registro_eventos";
 
 export interface AjustesJuego {
   volumen_efectos: number;

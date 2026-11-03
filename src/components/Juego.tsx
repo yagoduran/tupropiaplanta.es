@@ -65,6 +65,10 @@ import {
   sacarSecado,
   abrirTarro,
   obtenerSecado,
+  obtenerEventosVuelta,
+  decidirEvento,
+  usarAbonoCasero,
+  cerrarEventosVuelta,
   venderGramos,
   cosechaPendiente,
   verRobo,
@@ -128,6 +132,8 @@ import { Misiones } from "./Misiones";
 import { Buzon } from "./Buzon";
 import { Encargos } from "./Encargos";
 import { Secado } from "./Secado";
+import { EventosVuelta } from "./EventosVuelta";
+import type { DatosVuelta } from "@/lib/vuelta";
 import { ocupacion, type DatosSecado } from "@/lib/secado";
 import type { DatosEncargos } from "@/lib/encargos";
 import { Amigos } from "./Amigos";
@@ -242,6 +248,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [misiones, setMisiones] = useState<DatosMisiones | null>(null);
   const [encargos, setEncargos] = useState<DatosEncargos | null>(null);
   const [secado, setSecado] = useState<DatosSecado | null>(null);
+  const [vuelta, setVuelta] = useState<DatosVuelta | null>(null);
   const [notificaciones, setNotificaciones] = useState<DatosNotificaciones | null>(null);
   const [prestigio, setPrestigio] = useState<DatosPrestigio | null>(null);
   const [cruces, setCruces] = useState<DatosCruces | null>(null);
@@ -452,6 +459,36 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
 
   const guardarSecado = (d: DatosSecado | null) => setSecado(d && { ...d, recibido: Date.now() });
 
+  // Al abrir el juego tras una ausencia: eventos pendientes de decidir.
+  const vueltaRevisada = useRef(false);
+  useEffect(() => {
+    if (tutorial || vueltaRevisada.current) return;
+    vueltaRevisada.current = true;
+    obtenerEventosVuelta()
+      .then((d) => {
+        setVuelta(d);
+        if (d && d.pendientes.length > 0) setPantalla("vuelta");
+      })
+      .catch(() => {});
+  }, [tutorial]);
+
+  const decidirElEvento = async (id: number, opcion: number) => {
+    const r = await decidirEvento(id, opcion);
+    sonar(r.ok ? "comprar" : "error");
+    if (r.ok) tratar(r);
+    return {
+      ok: r.ok,
+      falta: "falta" in r ? r.falta : undefined,
+      resultado: "resultado" in r ? r.resultado : undefined,
+    };
+  };
+
+  const cerrarVuelta = () => {
+    cerrarEventosVuelta().catch(() => {});
+    setVuelta((d) => d && { ...d, resumen: null, vuelta: [] });
+    setPantalla("cultivo");
+  };
+
   const elegirPantalla = (id: PantallaJuego) => {
     if (tutorial) return;
     if (
@@ -468,6 +505,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "misiones" ||
       id === "encargos" ||
       id === "secado" ||
+      id === "registro_eventos" ||
       id === "amigos" ||
       id === "eventos" ||
       id === "mercado" ||
@@ -523,6 +561,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           .then(setMisiones)
           .catch(() => setMisiones(null));
       if (id === "encargos") cargarEncargos().catch(() => setEncargos(null));
+      if (id === "registro_eventos")
+        obtenerEventosVuelta()
+          .then(setVuelta)
+          .catch(() => setVuelta(null));
       if (id === "secado")
         obtenerSecado()
           .then(guardarSecado)
@@ -622,6 +664,14 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     const r = await abrirTarro(id, humedad);
     if (r.ok && "secado" in r && r.secado) guardarSecado(r.secado);
     return r.ok && "bonus" in r ? (r.bonus ?? 0) : null;
+  };
+
+  const usarElAbonoCasero = () => {
+    ejecutar(async () => {
+      const r = await usarAbonoCasero();
+      sonar(r.ok ? "clic" : "error");
+      tratar(r, { texto: "Abono casero: +15 % de crecimiento 24 h", icono: "tienda" });
+    });
   };
 
   const venderAlmacen = (variedad: string, gramos: number | null) => {
@@ -1326,6 +1376,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             alAmpliar={() => elegirPantalla("habitaciones")}
             alIrATienda={() => elegirPantalla("tienda")}
             alVender={venderAlmacen}
+            alUsarAbonoCasero={usarElAbonoCasero}
             alIrAEncargos={() => elegirPantalla("encargos")}
           />
         ) : pantalla === "estadisticas" ? (
@@ -1422,6 +1473,16 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             alAceptar={aceptarElEncargo}
             alRechazar={rechazarElEncargo}
           />
+        ) : pantalla === "vuelta" || pantalla === "registro_eventos" ? (
+          <EventosVuelta
+            modo={pantalla === "vuelta" ? "vuelta" : "registro"}
+            datos={vuelta}
+            monedas={perfil.monedas}
+            ocupado={enCurso}
+            alDecidir={decidirElEvento}
+            alCerrar={cerrarVuelta}
+            alVerRegistro={() => elegirPantalla("registro_eventos")}
+          />
         ) : pantalla === "secado" ? (
           <Secado
             datos={secado}
@@ -1483,6 +1544,9 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         ) : pantalla === "semillas" ? (
           <Semillas
             hibridas={perfil.hibridas.semillas}
+            regaladas={Object.entries(perfil.inventario)
+              .filter(([id, n]) => n > 0 && id.startsWith("semilla:"))
+              .map(([id]) => id.slice(8))}
             nivel={perfil.nivel}
             enUso={planta && viva ? planta.variedad : null}
             ocupado={enCurso}

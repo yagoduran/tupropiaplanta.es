@@ -18,12 +18,14 @@ interface Props {
   monedas: number;
   /** Semillas híbridas que tiene el jugador (de cruces y premios). */
   hibridas?: string[];
+  /** Semillas regaladas por eventos, como «variedad:tipo». Se plantan sin pagar. */
+  regaladas?: string[];
   aviso?: { texto: string; icono: IdIcono } | null;
 }
 
 const desgaste = (v: number) => (v <= 1 ? "Normal" : v <= 1.2 ? "Alto" : "Muy alto");
 
-type PropsTarjeta = Omit<Props, "aviso" | "hibridas" | "monedas"> & {
+type PropsTarjeta = Omit<Props, "aviso" | "hibridas" | "monedas" | "regaladas"> & {
   variedad: Variedad;
   tipo: TipoSemilla;
   sinMonedas: boolean;
@@ -101,9 +103,9 @@ function Tarjeta({ variedad, nivel, enUso, ocupado, alPlantar, tipo, sinMonedas 
   );
 }
 
-export function Semillas({ nivel, enUso, ocupado, alPlantar, aviso, monedas, hibridas = [] }: Props) {
+export function Semillas({ nivel, enUso, ocupado, alPlantar, aviso, monedas, hibridas = [], regaladas = [] }: Props) {
   const [tipo, setTipo] = useState<TipoSemilla>("foto");
-  const sinMonedas = monedas < TIPO_POR_ID[tipo].precio;
+  const faltaDinero = monedas < TIPO_POR_ID[tipo].precio;
   return (
     <div className={styles.contenedor}>
       <div className={styles.cabecera}>
@@ -149,7 +151,7 @@ export function Semillas({ nivel, enUso, ocupado, alPlantar, aviso, monedas, hib
             ocupado={ocupado}
             alPlantar={alPlantar}
             tipo={tipo}
-            sinMonedas={sinMonedas}
+            sinMonedas={faltaDinero && !regaladas.includes(`${v.id}:${tipo}`)}
           />
         ))}
       </div>
@@ -169,7 +171,7 @@ export function Semillas({ nivel, enUso, ocupado, alPlantar, aviso, monedas, hib
                   ocupado={ocupado}
                   alPlantar={alPlantar}
                   tipo={tipo}
-                  sinMonedas={sinMonedas}
+                  sinMonedas={faltaDinero && !regaladas.includes(`${v.id}:${tipo}`)}
                 />
               ))}
           </div>

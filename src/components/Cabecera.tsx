@@ -30,6 +30,7 @@ const OPCIONES_MENU = [
   ["desafios", "Desafíos"],
   ["armario", "Mejoras del armario"],
   ["secado", "Secado y curado"],
+  ["registro_eventos", "Registro de eventos"],
   ["habitaciones", "Habitaciones"],
   ["laboratorio", "Laboratorio de cruces"],
   ["maestria", "Maestría"],

@@ -8,6 +8,7 @@ import type { DatosMaestria } from "@/lib/maestria";
 import type { DatosPrestigio } from "@/lib/prestigio";
 import type { DatosEncargos } from "@/lib/encargos";
 import type { DatosSecado } from "@/lib/secado";
+import type { DatosVuelta } from "@/lib/vuelta";
 import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
 import type { DatosEventos, DatosPase } from "@/lib/temporada";
 import type { DatosAmigos, DatosRegalos, DatosVisita, PerfilPublicoDatos, Resultado as Jugadores } from "@/lib/amigos";
@@ -389,6 +390,40 @@ export async function obtenerSecado(): Promise<DatosSecado | null> {
   const supabase = await crearClienteServidor();
   const { data } = await supabase.rpc("tpp_mi_secado");
   return (data as DatosSecado | null) ?? null;
+}
+
+/** Eventos al volver: pendientes, resumen de la ausencia y registro. */
+export async function obtenerEventosVuelta(): Promise<DatosVuelta | null> {
+  const supabase = await crearClienteServidor();
+  const { data } = await supabase.rpc("tpp_mis_eventos");
+  return (data as DatosVuelta | null) ?? null;
+}
+
+/** Decide un evento (opción 0, 1 o 2). Si falta dinero devuelve `falta`. */
+export async function decidirEvento(
+  id: number,
+  opcion: number,
+): Promise<(RespuestaAccion & { resultado?: string; falta?: number }) | { ok: false; error: string; falta?: number }> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_decidir_evento", { p_id: id, p_opcion: opcion });
+  if (error || !data) return { ok: false, error: error?.message ?? "error" };
+  const d = data as { ok: boolean; error?: string; falta?: number; resultado?: string; estado?: EstadoJuego };
+  if (!d.ok || !d.estado) return { ok: false, error: d.error ?? "error", falta: d.falta };
+  return { ...d.estado, ok: true, resultado: d.resultado };
+}
+
+/** Cierra el resumen de la ausencia. */
+export async function cerrarEventosVuelta(): Promise<void> {
+  const supabase = await crearClienteServidor();
+  await supabase.rpc("tpp_cerrar_eventos");
+}
+
+/** Usa un abono casero: +15 % de crecimiento durante 24 h. */
+export async function usarAbonoCasero(): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_usar_abono_casero");
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
 }
 
 /** Vende gramos guardados de una variedad (todos si no se indica cantidad). */

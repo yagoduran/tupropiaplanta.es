@@ -19,6 +19,7 @@ interface Props {
   alIrATienda: () => void;
   alVender: (variedad: string, gramos: number | null) => void;
   alIrAEncargos: () => void;
+  alUsarAbonoCasero: () => void;
 }
 
 /** Inventario: tus huecos de cultivo y los objetos que tienes. */
@@ -31,6 +32,7 @@ export function Inventario({
   alIrATienda,
   alVender,
   alIrAEncargos,
+  alUsarAbonoCasero,
 }: Props) {
   const panel = marco("panel", "var(--u)");
   const boton = marco("boton", "var(--u)");
@@ -40,6 +42,13 @@ export function Inventario({
   const objetos = Object.entries(inventario)
     .filter(([id, n]) => n > 0 && OBJETO_POR_ID[id])
     .map(([id, n]) => ({ objeto: OBJETO_POR_ID[id], n }));
+
+  // Objetos de los eventos al volver: semillas regaladas, abono casero y ventilador.
+  const semillas = Object.entries(inventario)
+    .filter(([id, n]) => n > 0 && id.startsWith("semilla:"))
+    .map(([id, n]) => ({ id, n, variedad: VARIEDAD_POR_ID[id.split(":")[1]]?.nombre ?? id.split(":")[1] }));
+  const abonoCasero = inventario["abono_casero"] ?? 0;
+  const ventilador = inventario["ventilador"] ?? 0;
 
   return (
     <div className={styles.contenedor}>
@@ -219,6 +228,43 @@ export function Inventario({
                   <span className={styles.cantidad}>×{n}</span>
                 </button>
               ))}
+            </div>
+          )}
+          {(semillas.length > 0 || abonoCasero > 0 || ventilador > 0) && (
+            <div className={styles.gramos}>
+              {semillas.map((x) => (
+                <div key={x.id} className={styles.gramosFila}>
+                  <span className={styles.gramosDatos}>
+                    <strong>Semilla de {x.variedad}</strong>
+                    <span className={styles.gramosPrecio}>×{x.n} · se planta gratis desde Semillas</span>
+                  </span>
+                </div>
+              ))}
+              {abonoCasero > 0 && (
+                <div className={styles.gramosFila}>
+                  <span className={styles.gramosDatos}>
+                    <strong>Abono casero</strong>
+                    <span className={styles.gramosPrecio}>×{abonoCasero} · +15 % de crecimiento 24 h</span>
+                  </span>
+                  <button
+                    type="button"
+                    className={styles.accion}
+                    style={secundario}
+                    disabled={ocupado}
+                    onClick={alUsarAbonoCasero}
+                  >
+                    Usar
+                  </button>
+                </div>
+              )}
+              {ventilador > 0 && (
+                <div className={styles.gramosFila}>
+                  <span className={styles.gramosDatos}>
+                    <strong>Ventilador</strong>
+                    <span className={styles.gramosPrecio}>×{ventilador}</span>
+                  </span>
+                </div>
+              )}
             </div>
           )}
           <p className={styles.nota}>Los objetos se usan y se equipan desde la Tienda.</p>
