@@ -1,0 +1,190 @@
+.contenedor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  width: 100%;
+}
+
+.titulo {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-title);
+  font-weight: 700;
+  line-height: 1;
+  color: #f6eed6;
+}
+
+.escenas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: var(--gap);
+}
+
+.bloque {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 2);
+  padding: calc(var(--u) * 3);
+  color: #1c1626;
+}
+
+.subtitulo {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--fuente-pixel);
+  font-weight: 700;
+}
+
+.escena {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 192 / 112;
+  background-image: url(/assets/secado/tpp-secado-escenas-192x112-1x.png);
+  background-size: 300% 100%;
+  image-rendering: pixelated;
+  border: var(--u) solid #1c1626;
+}
+
+.ranura {
+  position: absolute;
+  width: calc(100% * 32 / 192);
+  aspect-ratio: 1;
+  padding: 0;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  cursor: pointer;
+}
+
+.ranura:disabled {
+  cursor: default;
+}
+
+.ranura[aria-pressed="true"] {
+  outline: calc(var(--u) * 1.5) solid #f4d36a;
+}
+
+.aviso {
+  position: absolute;
+  width: calc(100% * 16 / 192);
+  aspect-ratio: 1;
+  background-image: url(/assets/secado/tpp-secado-avisos-16-1x.png);
+  background-size: 900% 100%;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+
+.ficha {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 2);
+  padding: calc(var(--u) * 4);
+  color: #1c1626;
+}
+
+.fichaCabeza {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-family: var(--fuente-pixel);
+  font-weight: 700;
+}
+
+.nota {
+  font-size: var(--f-small);
+  line-height: 1.4;
+  color: #5f3c26;
+}
+
+.botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.boton {
+  flex: 1 1 auto;
+  min-height: 44px;
+  padding: calc(var(--u) * 2) calc(var(--u) * 3) calc(var(--u) * 3);
+  font-family: var(--fuente-pixel);
+  font-weight: 700;
+  color: #1c1626;
+  cursor: pointer;
+}
+
+.boton:disabled {
+  cursor: not-allowed;
+}
+
+.velo {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(28, 22, 38, 0.8);
+}
+
+.juego {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap);
+  width: min(100%, 420px);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  padding: calc(var(--u) * 5);
+  color: #1c1626;
+}
+
+.tarro {
+  width: min(60vw, 192px);
+  aspect-ratio: 1;
+  background-image: url(/assets/secado/tpp-secado-tarros-32-1x.png);
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+
+.medidor {
+  position: relative;
+  width: 100%;
+  height: calc(var(--u) * 6);
+  background: #1c1626;
+  border: var(--u) solid #1c1626;
+}
+
+.franjaAmarilla {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: #f4d36a;
+}
+
+.franjaVerde {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: #36a33b;
+}
+
+.marca {
+  position: absolute;
+  top: calc(var(--u) * -2);
+  bottom: calc(var(--u) * -2);
+  width: calc(var(--u) * 2);
+  background: #f6eed6;
+  border: var(--u) solid #1c1626;
+  transform: translateX(-50%);
+}
+
+.mantener {
+  width: 100%;
+  min-height: 56px;
+  font-family: var(--fuente-pixel);
+  font-weight: 700;
+  color: #1c1626;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+}

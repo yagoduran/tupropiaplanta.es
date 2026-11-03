@@ -65,11 +65,11 @@ const PASOS: Paso[] = [
     texto: "Está en su punto. Cosecha ahora: si esperas demasiado, pierde calidad.",
   },
   {
-    titulo: "Vender o guardar",
+    titulo: "Vender o secar",
     expresion: "sorprendida",
     objetivo: "guardar",
     pulsa: "Elige una opción",
-    texto: "Puedes vender ya o guardar los gramos. Guardados valen más en los encargos. Prueba «Guardar».",
+    texto: "Puedes vender en húmedo o secar la cosecha: secada y curada vale más. Prueba «Secar».",
   },
   {
     titulo: "Encargos",
@@ -244,7 +244,7 @@ export function Tutorial({ paso: n, retomar, repeticion, alIr, alSaltar, alTermi
       aria-label="Tutorial"
     >
       {n === 6 && !modal && (
-        <CosechaLista cosecha={COSECHA_EJEMPLO} ocupado={false} alVender={avanzar} alGuardar={avanzar} />
+        <CosechaLista cosecha={COSECHA_EJEMPLO} ocupado={false} alElegir={avanzar} />
       )}
       {!(n === 6 && !modal) && (
         <svg className={styles.oscuro} width={W} height={H} viewBox={`0 0 ${W} ${H}`} aria-hidden>

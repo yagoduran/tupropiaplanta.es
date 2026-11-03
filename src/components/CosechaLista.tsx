@@ -5,6 +5,7 @@ import { marco } from "@/lib/diseno";
 import type { CosechaPendiente } from "@/lib/juego";
 import { VARIEDAD_POR_ID, hojaDe } from "@/lib/variedades";
 import { CALIDADES } from "@/lib/calidad";
+import { MULT_CURADO, MULT_HUMEDO, MULT_SECO } from "@/lib/secado";
 import { Estrellas } from "./Estrellas";
 import { Icono } from "./Icono";
 import styles from "./anuncio.module.css";
@@ -12,8 +13,9 @@ import styles from "./anuncio.module.css";
 interface Props {
   cosecha: CosechaPendiente;
   ocupado: boolean;
-  alVender: () => void;
-  alGuardar: () => void;
+  /** Perchas y tarros libres; si no se indica, no se limita. */
+  libres?: { perchas: number; tarros: number };
+  alElegir: (modo: "humedo" | "seco" | "curado", dias?: 1 | 2 | 3) => void;
 }
 
 /** «¡Cosecha lista!»: peso, calidad y premio; el jugador elige vender o guardar. */
@@ -27,19 +29,40 @@ const FACTORES = {
 
 const colorFactor = (v: number) => (v >= 4 ? "#36a33b" : v >= 3 ? "#c9f26b" : v >= 2 ? "#f4d36a" : "#e07b3f");
 
-export function CosechaLista({ cosecha, ocupado, alVender, alGuardar }: Props) {
+const OPCIONES: {
+  clave: string;
+  modo: "humedo" | "seco" | "curado";
+  dias?: 1 | 2 | 3;
+  nombre: string;
+  mult: number;
+  tiempo: string;
+}[] = [
+  { clave: "humedo", modo: "humedo", nombre: "Vender ya, en húmedo (×0,5)", mult: MULT_HUMEDO, tiempo: "ahora" },
+  { clave: "seco", modo: "seco", nombre: "Secar (×1)", mult: MULT_SECO, tiempo: "12 h" },
+  ...([1, 2, 3] as const).map((d) => ({
+    clave: `curado${d}`,
+    modo: "curado" as const,
+    dias: d,
+    nombre: `${MULT_CURADO[d].nombre} (×${String(MULT_CURADO[d].mult).replace(".", ",")})`,
+    mult: MULT_CURADO[d].mult,
+    tiempo: `${12 + d * 24} h`,
+  })),
+];
+
+export function CosechaLista({ cosecha, ocupado, libres, alElegir }: Props) {
   useEffect(() => {
     const cerrar = (e: KeyboardEvent) => {
-      if (e.key === "Enter" && !ocupado) alVender();
+      if (e.key === "Enter" && !ocupado) alElegir("humedo");
     };
     window.addEventListener("keydown", cerrar);
     return () => window.removeEventListener("keydown", cerrar);
-  }, [alVender, ocupado]);
+  }, [alElegir, ocupado]);
 
   const panel = marco("panel", "var(--u)");
   const tarjeta = marco("tarjeta", "var(--u)");
   const boton = marco("boton", "var(--u)");
   const secundario = marco("boton_secundario", "var(--u)");
+  const opciones = OPCIONES;
   const nombre = VARIEDAD_POR_ID[cosecha.variedad]?.nombre ?? cosecha.variedad;
 
   const filas: { nombre: string; valor: React.ReactNode }[] = [
@@ -120,22 +143,36 @@ export function CosechaLista({ cosecha, ocupado, alVender, alGuardar }: Props) {
           </div>
         )}
         <p className={styles.texto}>
-          Vende la cosecha para cobrar las monedas, o guárdala para entregarla en los encargos.
+          ¿Qué haces con ella? Secarla y curarla vale más; vendida en húmedo, la mitad. Cuando esté lista podrás
+          venderla o guardarla para los encargos.
         </p>
-        <div className={styles.botones}>
-          <button type="button" className={styles.btn} style={boton} disabled={ocupado} onClick={alVender} autoFocus>
-            Vender
-          </button>
-          <button
-            type="button"
-            className={styles.btn}
-            style={secundario}
-            data-tut="guardar"
-            disabled={ocupado}
-            onClick={alGuardar}
-          >
-            Guardar
-          </button>
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          {opciones.map((o) => {
+            const sinSitio =
+              libres && ((o.modo !== "humedo" && libres.perchas <= 0) || (o.modo === "curado" && libres.tarros <= 0));
+            return (
+              <button
+                key={o.clave}
+                type="button"
+                className={styles.btn}
+                style={{ ...(o.modo === "seco" ? boton : secundario), textAlign: "left" }}
+                data-tut={o.modo === "seco" ? "guardar" : undefined}
+                disabled={ocupado || !!sinSitio}
+                onClick={() => alElegir(o.modo, o.dias)}
+              >
+                <span style={{ display: "flex", justifyContent: "space-between", gap: 8 }}>
+                  <span>{o.nombre}</span>
+                  <span className="numero">
+                    {sinSitio
+                      ? o.modo === "curado" && libres!.perchas > 0
+                        ? "Sin tarro libre"
+                        : "Sin percha libre"
+                      : `+${Math.floor(cosecha.monedas * o.mult)} · ${o.tiempo}`}
+                  </span>
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>

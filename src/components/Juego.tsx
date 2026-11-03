@@ -61,7 +61,10 @@ import {
   obtenerRanking,
   plantarSemilla,
   reclamarDiaria,
-  resolverCosecha,
+  secarCosecha,
+  sacarSecado,
+  abrirTarro,
+  obtenerSecado,
   venderGramos,
   cosechaPendiente,
   verRobo,
@@ -124,6 +127,8 @@ import { Maestria } from "./Maestria";
 import { Misiones } from "./Misiones";
 import { Buzon } from "./Buzon";
 import { Encargos } from "./Encargos";
+import { Secado } from "./Secado";
+import { ocupacion, type DatosSecado } from "@/lib/secado";
 import type { DatosEncargos } from "@/lib/encargos";
 import { Amigos } from "./Amigos";
 import { Visita } from "./Visita";
@@ -236,6 +241,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [perfilPublico, setPerfilPublico] = useState<PerfilPublicoDatos | null>(null);
   const [misiones, setMisiones] = useState<DatosMisiones | null>(null);
   const [encargos, setEncargos] = useState<DatosEncargos | null>(null);
+  const [secado, setSecado] = useState<DatosSecado | null>(null);
   const [notificaciones, setNotificaciones] = useState<DatosNotificaciones | null>(null);
   const [prestigio, setPrestigio] = useState<DatosPrestigio | null>(null);
   const [cruces, setCruces] = useState<DatosCruces | null>(null);
@@ -444,6 +450,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     return () => clearInterval(id);
   }, [tutorial, cargarEncargos]);
 
+  const guardarSecado = (d: DatosSecado | null) => setSecado(d && { ...d, recibido: Date.now() });
+
   const elegirPantalla = (id: PantallaJuego) => {
     if (tutorial) return;
     if (
@@ -459,6 +467,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "maestria" ||
       id === "misiones" ||
       id === "encargos" ||
+      id === "secado" ||
       id === "amigos" ||
       id === "eventos" ||
       id === "mercado" ||
@@ -514,6 +523,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           .then(setMisiones)
           .catch(() => setMisiones(null));
       if (id === "encargos") cargarEncargos().catch(() => setEncargos(null));
+      if (id === "secado")
+        obtenerSecado()
+          .then(guardarSecado)
+          .catch(() => guardarSecado(null));
       if (id === "maestria")
         obtenerMaestria()
           .then(setMaestria)
@@ -562,18 +575,53 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     });
   };
 
-  const decidirCosecha = (vender: boolean) => {
+  // Con una cosecha pendiente se mira cuántas perchas y tarros quedan libres.
+  const hayCosecha = !!cosechaPend;
+  useEffect(() => {
+    if (!hayCosecha) return;
+    obtenerSecado()
+      .then(guardarSecado)
+      .catch(() => {});
+  }, [hayCosecha]);
+
+  const elegirCosecha = (modo: "humedo" | "seco" | "curado", dias?: 1 | 2 | 3) => {
     ejecutar(async () => {
-      const r = await resolverCosecha(vender);
-      sonar(r.ok ? (vender ? "comprar" : "clic") : "error");
-      if (r.ok) setCosechaPend(null);
+      const r = await secarCosecha(modo, dias ?? 0);
+      sonar(r.ok ? (modo === "humedo" ? "comprar" : "clic") : "error");
+      if (r.ok) {
+        setCosechaPend(null);
+        if ("secado" in r && r.secado) guardarSecado(r.secado);
+      }
       tratar(
         r,
-        vender
-          ? { texto: `¡Cosecha vendida! +${cosechaPend?.monedas ?? 0} monedas`, icono: "moneda" }
-          : { texto: `Guardados ${cosechaPend?.gramos ?? 0} g para los encargos`, icono: "tienda" },
+        modo === "humedo"
+          ? { texto: `Vendida en húmedo: +${"recompensa" in r ? (r.recompensa ?? 0) : 0} monedas`, icono: "moneda" }
+          : { texto: modo === "seco" ? "Secando 12 h en el armario" : "Secando y curando en tarro", icono: "tienda" },
       );
     });
+  };
+
+  const sacarDelSecado = (id: number, modo: "vender" | "guardar" | "tirar") => {
+    ejecutar(async () => {
+      const r = await sacarSecado(id, modo);
+      sonar(r.ok ? (modo === "vender" ? "comprar" : "clic") : "error");
+      if (r.ok && "secado" in r && r.secado) guardarSecado(r.secado);
+      const monedas = "recompensa" in r ? (r.recompensa ?? 0) : 0;
+      tratar(
+        r,
+        modo === "vender"
+          ? { texto: `Vendida: +${monedas} monedas`, icono: "moneda" }
+          : modo === "guardar"
+            ? { texto: "Guardada para los encargos", icono: "tienda" }
+            : { texto: "Tirada.", icono: "aviso" },
+      );
+    });
+  };
+
+  const abrirElTarro = async (id: number, humedad: number) => {
+    const r = await abrirTarro(id, humedad);
+    if (r.ok && "secado" in r && r.secado) guardarSecado(r.secado);
+    return r.ok && "bonus" in r ? (r.bonus ?? 0) : null;
   };
 
   const venderAlmacen = (variedad: string, gramos: number | null) => {
@@ -1168,8 +1216,15 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           <CosechaLista
             cosecha={cosechaPend}
             ocupado={enCurso}
-            alVender={() => decidirCosecha(true)}
-            alGuardar={() => decidirCosecha(false)}
+            libres={
+              secado
+                ? {
+                    perchas: secado.capacidad - ocupacion(secado.items).perchas,
+                    tarros: secado.capacidad - ocupacion(secado.items).tarros,
+                  }
+                : undefined
+            }
+            alElegir={elegirCosecha}
           />
         ) : diariaAbierta && perfil.diaria.disponible ? (
           <RecompensaDiaria
@@ -1366,6 +1421,14 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             alEntregar={entregarElEncargo}
             alAceptar={aceptarElEncargo}
             alRechazar={rechazarElEncargo}
+          />
+        ) : pantalla === "secado" ? (
+          <Secado
+            datos={secado}
+            ocupado={enCurso}
+            alSacar={sacarDelSecado}
+            alAbrir={abrirElTarro}
+            alRecargar={() => obtenerSecado().then(guardarSecado)}
           />
         ) : pantalla === "maestria" ? (
           <Maestria datos={maestria} />

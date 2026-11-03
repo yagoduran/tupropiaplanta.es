@@ -29,6 +29,7 @@ const OPCIONES_MENU = [
   ["mercado", "Mercado"],
   ["desafios", "Desafíos"],
   ["armario", "Mejoras del armario"],
+  ["secado", "Secado y curado"],
   ["habitaciones", "Habitaciones"],
   ["laboratorio", "Laboratorio de cruces"],
   ["maestria", "Maestría"],

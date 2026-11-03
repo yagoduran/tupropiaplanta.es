@@ -7,6 +7,7 @@ import type { DatosDesafios } from "@/lib/desafios";
 import type { DatosMaestria } from "@/lib/maestria";
 import type { DatosPrestigio } from "@/lib/prestigio";
 import type { DatosEncargos } from "@/lib/encargos";
+import type { DatosSecado } from "@/lib/secado";
 import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
 import type { DatosEventos, DatosPase } from "@/lib/temporada";
 import type { DatosAmigos, DatosRegalos, DatosVisita, PerfilPublicoDatos, Resultado as Jugadores } from "@/lib/amigos";
@@ -357,6 +358,37 @@ export async function resolverCosecha(vender: boolean): Promise<Resultado> {
   const { data, error } = await supabase.rpc("tpp_resolver_cosecha", { p_vender: vender });
   if (error || !data) return fallo(error?.message);
   return data as RespuestaAccion;
+}
+
+/** Empieza a secar o curar la cosecha pendiente (o la vende en húmedo). */
+export async function secarCosecha(modo: "humedo" | "seco" | "curado", dias = 0): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_secar_cosecha", { p_modo: modo, p_dias: dias });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
+/** Saca una cosecha del armario de secado o del tarro: la vende, la guarda o la tira. */
+export async function sacarSecado(id: number, modo: "vender" | "guardar" | "tirar"): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_sacar_secado", { p_id: id, p_modo: modo });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
+/** Abre el tarro: la humedad (%) al soltar decide el bonus. */
+export async function abrirTarro(id: number, humedad: number): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_abrir_tarro", { p_id: id, p_humedad: humedad });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
+/** Cosechas en el armario de secado y en los tarros. */
+export async function obtenerSecado(): Promise<DatosSecado | null> {
+  const supabase = await crearClienteServidor();
+  const { data } = await supabase.rpc("tpp_mi_secado");
+  return (data as DatosSecado | null) ?? null;
 }
 
 /** Vende gramos guardados de una variedad (todos si no se indica cantidad). */

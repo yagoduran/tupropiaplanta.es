@@ -37,7 +37,8 @@ export type PantallaJuego =
   | "pase"
   | "mercado"
   | "abonos"
-  | "avisos";
+  | "avisos"
+  | "secado";
 
 export interface AjustesJuego {
   volumen_efectos: number;
@@ -213,6 +214,10 @@ export interface RespuestaAccion extends EstadoJuego {
   cosecha?: CosechaPendiente | null;
   /** Monedas ganadas por cuidar la planta. */
   ganadas?: number;
+  /** Secado y curado: cosechas en el armario y capacidad. */
+  secado?: import("./secado").DatosSecado;
+  /** Al abrir un tarro: el bonus (%) conseguido. */
+  bonus?: number;
 }
 
 /** Segundos de espera total de cada acción, para dibujar el anillo. */
@@ -297,6 +302,10 @@ export const MENSAJES_ERROR: Record<string, string> = {
   mision_no_lista: "Todavía no has completado esa misión.",
   encargo_desconocido: "Ese encargo ya no está disponible.",
   faltan_gramos: "Todavía no tienes los gramos que piden.",
+  sin_percha: "No te quedan perchas libres en el armario de secado.",
+  sin_tarro: "No te quedan tarros libres para curar.",
+  no_listo: "Todavía no está lista.",
+  no_puede_abrir: "Hoy ya has abierto este tarro, o aún no toca.",
   calidad_baja: "Tus gramos guardados no llegan a la calidad que piden.",
   recuperar_agotado: "Hoy ya has recuperado una planta. Vuelve mañana.",
   nada_que_recuperar: "No hay ninguna planta que recuperar en este hueco.",
