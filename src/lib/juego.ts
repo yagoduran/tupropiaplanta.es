@@ -1,4 +1,5 @@
 import type { DatosCasa } from "./casa";
+import type { AvatarCasa } from "./casaIso";
 import type { HibridoPropio } from "./variedades";
 import type { Estado, IdIcono } from "./diseno";
 import type { PlagaJuego } from "./plagas";
@@ -49,6 +50,8 @@ export interface AjustesJuego {
   avisos: boolean;
   /** Avatar elegido (ver `AVATARES`). */
   avatar?: string;
+  /** Aspecto del personaje de la casa isométrica. */
+  avatar_casa?: AvatarCasa;
   /** Título y marco de perfil equipados (ver `src/lib/progresion.ts`). */
   titulo?: string;
   marco?: string;

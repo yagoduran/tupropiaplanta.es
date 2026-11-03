@@ -327,7 +327,7 @@ export function CasaIso({ habitacion, huecos, avatar, ocupado, alElegirHueco, al
         {celdas.map(({ x, y }) => {
           const e = esquina(x, y);
           return (
-            <div key={`s${x},${y}`}>
+            <div key={`s${x},${y}`} className={styles.grupo}>
               <div
                 className={`pixel ${styles.suelo}`}
                 role="presentation"
@@ -398,7 +398,7 @@ export function CasaIso({ habitacion, huecos, avatar, ocupado, alElegirHueco, al
           const v = esquina(mu.x, mu.y);
           const z = mu.pisable ? 15 : profundidad(mu.x, mu.y) + 5;
           return (
-            <div key={`m${i}`}>
+            <div key={`m${i}`} className={styles.grupo}>
               <Sprite
                 hoja="tpp-iso-muebles-64x96"
                 w={64}
@@ -448,7 +448,7 @@ export function CasaIso({ habitacion, huecos, avatar, ocupado, alElegirHueco, al
                       ? BURBUJA.cosechar
                       : null;
           return (
-            <div key={`p${h.hueco}`}>
+            <div key={`p${h.hueco}`} className={styles.grupo}>
               {hoja && (h.vida === "viva" || h.vida === "muerta") ? (
                 <Sprite
                   hoja="tpp-iso-plantas-32x48"
@@ -526,7 +526,7 @@ export function CasaIso({ habitacion, huecos, avatar, ocupado, alElegirHueco, al
         </div>
 
         {/* Semillita va detrás del jugador */}
-        <div className={styles.semillita} style={{ left: cp.x - 26, top: cp.y - 56, zIndex: zAvatar + 1 }} aria-hidden>
+        <div className={styles.semillita} style={{ left: cp.x - 26, top: cp.y - 56, zIndex: zAvatar - 1 }} aria-hidden>
           <Semillita expresion={expresion} cuadro={quieto ? Math.floor(tick / 5) % 2 : fotograma} tamano="32px" />
         </div>
       </div>

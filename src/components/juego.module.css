@@ -1225,3 +1225,17 @@
     animation: caidaGota 0.54s steps(1) infinite;
   }
 }
+
+.vista {
+  position: absolute;
+  right: calc(var(--u) * 4);
+  top: calc(var(--u) * 4);
+  z-index: 3000;
+  padding: calc(var(--u) * 1.5) calc(var(--u) * 4) calc(var(--u) * 2.5);
+  color: #1c1626;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+}

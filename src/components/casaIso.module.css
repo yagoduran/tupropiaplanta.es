@@ -12,12 +12,12 @@
 }
 
 .lienzo > *,
-.lienzo > div > * {
+.grupo > * {
   position: absolute;
 }
 
-.lienzo > div {
-  position: static;
+.grupo {
+  display: contents;
 }
 
 .suelo {
@@ -76,4 +76,8 @@
   .suave {
     animation: none;
   }
+}
+
+.lienzo div {
+  background-repeat: no-repeat;
 }

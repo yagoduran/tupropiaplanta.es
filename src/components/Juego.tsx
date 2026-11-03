@@ -121,6 +121,8 @@ import { PlantaMuerta } from "./PlantaMuerta";
 import { CosechaLista } from "./CosechaLista";
 import { RecompensaDiaria } from "./RecompensaDiaria";
 import { Bocadillo } from "./Bocadillo";
+import { CasaIso, type CasaIsoApi } from "./CasaIso";
+import { AVATAR_INICIAL } from "@/lib/casaIso";
 import { Escena } from "./Escena";
 import { EstadoCompacto } from "./EstadoCompacto";
 import { JuegoLayout } from "./JuegoLayout";
@@ -220,6 +222,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [anuncioAbierto, setAnuncioAbierto] = useState(false);
   const [anuncioRecuperar, setAnuncioRecuperar] = useState(false);
   const [regando, setRegando] = useState(false);
+  const [vista, setVista] = useState<"casa" | "cultivo">("casa");
+  const casaIso = useRef<CasaIsoApi>(null);
   const [cofre, setCofre] = useState<PremioCofre | null>(null);
   const [roboVisto, setRoboVisto] = useState<string | null>(null);
   const [ranking, setRanking] = useState<DatosRanking | null>(null);
@@ -1222,6 +1226,126 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const producto = plaga ? PLAGAS[plaga.tipo].tratamiento : null;
   const tieneProducto = !!producto && (perfil.inventario[producto] ?? 0) > 0;
 
+  const vistaActual = tutorial ? "cultivo" : vista;
+  const avatarCasa = { ...AVATAR_INICIAL, ...perfil.ajustes.avatar_casa };
+  const botonVista = (
+    <button
+      type="button"
+      className={styles.vista}
+      style={marco("boton_secundario", "var(--u)")}
+      onClick={() => setVista(vistaActual === "casa" ? "cultivo" : "casa")}
+    >
+      {vistaActual === "casa" ? "Ver de cerca" : "Ver la casa"}
+    </button>
+  );
+
+  const superpuestos = (
+    <>
+      {aviso ? (
+        <Bocadillo texto={aviso.texto} icono={aviso.icono} />
+      ) : plaga && producto ? (
+        <Bocadillo
+          texto={`${PLAGAS[plaga.tipo].aviso} Trátala con ${TRATAMIENTOS[producto].toLowerCase()}.`}
+          icono="aviso"
+        />
+      ) : causaAviso && viva ? (
+        <Bocadillo texto={`${causaAviso.titulo} ${causaAviso.evitar}`} columnaAviso={causaAviso.columna} />
+      ) : planta?.sexo === "macho" && viva ? (
+        <Bocadillo texto={`${CAUSAS.macho.titulo} ${CAUSAS.macho.evitar}`} columnaAviso={CAUSAS.macho.columna} />
+      ) : sedienta ? (
+        <Bocadillo texto="¡Tu planta necesita agua!" />
+      ) : avisoSensor ? (
+        <Bocadillo texto={avisoSensor} icono="aviso" />
+      ) : planta?.desafio && planta.vida === "cosechada" ? (
+        <Bocadillo
+          texto={`¡Desafío completado! ${(planta.desafio.puntos ?? 0).toLocaleString("es-ES")} puntos`}
+          icono="moneda"
+        />
+      ) : planta?.desafio && planta.vida === "muerta" ? (
+        <Bocadillo texto="Desafío fallido. Puedes probar otro o volver a tu cultivo." icono="aviso" />
+      ) : !planta ? (
+        <Bocadillo texto="Este hueco está vacío. ¡Planta una semilla!" />
+      ) : planta?.vida === "muerta" ? (
+        causaAviso ? (
+          <Bocadillo
+            texto={`Tu planta ha muerto. ${causaAviso.titulo} ${causaAviso.evitar}`}
+            columnaAviso={causaAviso.columna}
+          />
+        ) : (
+          <Bocadillo texto="Tu planta ha muerto..." icono="aviso" />
+        )
+      ) : null}
+      {plaga && producto && (
+        <button
+          type="button"
+          data-tut="tratar"
+          className={styles.plantar}
+          style={botonPlantar}
+          disabled={enCurso}
+          onClick={() => (tieneProducto ? tratarPlaga(producto) : elegirPantalla("tienda"))}
+        >
+          {tieneProducto
+            ? `Tratar con ${TRATAMIENTOS[producto].toLowerCase()}`
+            : `Comprar ${TRATAMIENTOS[producto].toLowerCase()}`}
+        </button>
+      )}
+      {!planta && (
+        <button
+          type="button"
+          data-tut="plantar"
+          className={styles.plantar}
+          style={botonPlantar}
+          disabled={enCurso}
+          onClick={() => elegirPantalla("semillas")}
+        >
+          Plantar una semilla
+        </button>
+      )}
+      {planta && planta.desafio && viva && (
+        <p className={styles.desafioBanner} style={marco("barra", "var(--u)")}>
+          ★ {DESAFIO_POR_ID[planta.desafio.id]?.nombre ?? "Desafío"} · quedan{" "}
+          {formatoRestante(planta.desafio.restan - transcurrido)}
+        </p>
+      )}
+      {planta && !viva && planta.desafio && (
+        <button
+          type="button"
+          className={styles.plantar}
+          style={botonPlantar}
+          disabled={enCurso}
+          onClick={() => cambiarHueco(1)}
+        >
+          Volver a mi cultivo
+        </button>
+      )}
+      {planta && !viva && !planta.desafio && planta.vida === "muerta" && perfil.anuncios.recuperar && (
+        <button
+          type="button"
+          className={`${styles.plantar} ${styles.recuperar}`}
+          style={marco("boton_secundario", "var(--u)")}
+          disabled={enCurso}
+          onClick={() => {
+            setAnuncioRecuperar(true);
+            setAnuncioAbierto(true);
+          }}
+        >
+          Ver anuncio y recuperar la planta
+        </button>
+      )}
+      {planta && !viva && !planta.desafio && (
+        <button
+          type="button"
+          className={styles.plantar}
+          style={botonPlantar}
+          disabled={enCurso}
+          onClick={() => elegirPantalla("semillas")}
+        >
+          Elegir otra semilla
+        </button>
+      )}
+    </>
+  );
+
   return (
     <JuegoLayout
       perfil={perfil}
@@ -1563,148 +1687,79 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       panelEstado={<PanelEstado medidores={medidores} tiempoDeVida={formatoVida(vida)} fase={planta?.fase ?? 1} />}
       estadoCompacto={<EstadoCompacto medidores={medidores} />}
       escena={
-        <Escena luz={perfil.equipo.luz} habitacion={perfil.casa.habitacion}>
-          <Decoracion puestos={perfil.equipo.decoracion} hayPlaga={!!plaga} alAcariciarGato={acariciar} />
-          <SelectorHuecos
-            huecos={perfil.huecos}
-            ocupado={enCurso}
-            alElegir={cambiarHueco}
-            alAmpliar={() => elegirPantalla("habitaciones")}
-            maceta={perfil.equipo.maceta}
+        vistaActual === "casa" ? (
+          <CasaIso
+            key={perfil.casa.habitacion}
+            ref={casaIso}
             habitacion={perfil.casa.habitacion}
-          />
-          {planta && (planta.vida !== "cosechada" || planta.desafio) && (
-            <Planta
-              fase={planta.fase}
-              estado={planta.estado}
-              tamano={tamanoPlanta(planta.fase, vida, planta.variedad, planta.tipo)}
-              variedad={planta.variedad}
+            huecos={perfil.huecos}
+            avatar={avatarCasa}
+            ocupado={enCurso}
+            alElegirHueco={cambiarHueco}
+            alAbrir={elegirPantalla}
+          >
+            <SelectorHuecos
+              huecos={perfil.huecos}
+              ocupado={enCurso}
+              alElegir={cambiarHueco}
+              alAmpliar={() => elegirPantalla("habitaciones")}
               maceta={perfil.equipo.maceta}
-              sexo={planta.sexo}
-              causa={planta.causa}
-              calidad={calidadPrevista(planta.salud)}
+              habitacion={perfil.casa.habitacion}
             />
-          )}
-          {plaga && <Plaga plaga={plaga} variedad={planta?.variedad} />}
-          {efectoTratamiento && <EfectoTratamiento alTerminar={() => setEfectoTratamiento(false)} />}
-          {regando && !bloqueadas.regar && (
-            <Regadera
-              alTerminar={() => {
-                setRegando(false);
-                accionar("regar");
-              }}
-              alCancelar={() => setRegando(false)}
+            {superpuestos}
+            {botonVista}
+          </CasaIso>
+        ) : (
+          <Escena luz={perfil.equipo.luz} habitacion={perfil.casa.habitacion}>
+            <Decoracion puestos={perfil.equipo.decoracion} hayPlaga={!!plaga} alAcariciarGato={acariciar} />
+            <SelectorHuecos
+              huecos={perfil.huecos}
+              ocupado={enCurso}
+              alElegir={cambiarHueco}
+              alAmpliar={() => elegirPantalla("habitaciones")}
+              maceta={perfil.equipo.maceta}
+              habitacion={perfil.casa.habitacion}
             />
-          )}
-          {aviso ? (
-            <Bocadillo texto={aviso.texto} icono={aviso.icono} />
-          ) : plaga && producto ? (
-            <Bocadillo
-              texto={`${PLAGAS[plaga.tipo].aviso} Trátala con ${TRATAMIENTOS[producto].toLowerCase()}.`}
-              icono="aviso"
-            />
-          ) : causaAviso && viva ? (
-            <Bocadillo texto={`${causaAviso.titulo} ${causaAviso.evitar}`} columnaAviso={causaAviso.columna} />
-          ) : planta?.sexo === "macho" && viva ? (
-            <Bocadillo texto={`${CAUSAS.macho.titulo} ${CAUSAS.macho.evitar}`} columnaAviso={CAUSAS.macho.columna} />
-          ) : sedienta ? (
-            <Bocadillo texto="¡Tu planta necesita agua!" />
-          ) : avisoSensor ? (
-            <Bocadillo texto={avisoSensor} icono="aviso" />
-          ) : planta?.desafio && planta.vida === "cosechada" ? (
-            <Bocadillo
-              texto={`¡Desafío completado! ${(planta.desafio.puntos ?? 0).toLocaleString("es-ES")} puntos`}
-              icono="moneda"
-            />
-          ) : planta?.desafio && planta.vida === "muerta" ? (
-            <Bocadillo texto="Desafío fallido. Puedes probar otro o volver a tu cultivo." icono="aviso" />
-          ) : !planta ? (
-            <Bocadillo texto="Este hueco está vacío. ¡Planta una semilla!" />
-          ) : planta?.vida === "muerta" ? (
-            causaAviso ? (
-              <Bocadillo
-                texto={`Tu planta ha muerto. ${causaAviso.titulo} ${causaAviso.evitar}`}
-                columnaAviso={causaAviso.columna}
+            {planta && (planta.vida !== "cosechada" || planta.desafio) && (
+              <Planta
+                fase={planta.fase}
+                estado={planta.estado}
+                tamano={tamanoPlanta(planta.fase, vida, planta.variedad, planta.tipo)}
+                variedad={planta.variedad}
+                maceta={perfil.equipo.maceta}
+                sexo={planta.sexo}
+                causa={planta.causa}
+                calidad={calidadPrevista(planta.salud)}
               />
-            ) : (
-              <Bocadillo texto="Tu planta ha muerto..." icono="aviso" />
-            )
-          ) : null}
-          {plaga && producto && (
-            <button
-              type="button"
-              data-tut="tratar"
-              className={styles.plantar}
-              style={botonPlantar}
-              disabled={enCurso}
-              onClick={() => (tieneProducto ? tratarPlaga(producto) : elegirPantalla("tienda"))}
-            >
-              {tieneProducto
-                ? `Tratar con ${TRATAMIENTOS[producto].toLowerCase()}`
-                : `Comprar ${TRATAMIENTOS[producto].toLowerCase()}`}
-            </button>
-          )}
-          {!planta && (
-            <button
-              type="button"
-              data-tut="plantar"
-              className={styles.plantar}
-              style={botonPlantar}
-              disabled={enCurso}
-              onClick={() => elegirPantalla("semillas")}
-            >
-              Plantar una semilla
-            </button>
-          )}
-          {planta && planta.desafio && viva && (
-            <p className={styles.desafioBanner} style={marco("barra", "var(--u)")}>
-              ★ {DESAFIO_POR_ID[planta.desafio.id]?.nombre ?? "Desafío"} · quedan{" "}
-              {formatoRestante(planta.desafio.restan - transcurrido)}
-            </p>
-          )}
-          {planta && !viva && planta.desafio && (
-            <button
-              type="button"
-              className={styles.plantar}
-              style={botonPlantar}
-              disabled={enCurso}
-              onClick={() => cambiarHueco(1)}
-            >
-              Volver a mi cultivo
-            </button>
-          )}
-          {planta && !viva && !planta.desafio && planta.vida === "muerta" && perfil.anuncios.recuperar && (
-            <button
-              type="button"
-              className={`${styles.plantar} ${styles.recuperar}`}
-              style={marco("boton_secundario", "var(--u)")}
-              disabled={enCurso}
-              onClick={() => {
-                setAnuncioRecuperar(true);
-                setAnuncioAbierto(true);
-              }}
-            >
-              Ver anuncio y recuperar la planta
-            </button>
-          )}
-          {planta && !viva && !planta.desafio && (
-            <button
-              type="button"
-              className={styles.plantar}
-              style={botonPlantar}
-              disabled={enCurso}
-              onClick={() => elegirPantalla("semillas")}
-            >
-              Elegir otra semilla
-            </button>
-          )}
-        </Escena>
+            )}
+            {plaga && <Plaga plaga={plaga} variedad={planta?.variedad} />}
+            {efectoTratamiento && <EfectoTratamiento alTerminar={() => setEfectoTratamiento(false)} />}
+            {regando && !bloqueadas.regar && (
+              <Regadera
+                alTerminar={() => {
+                  setRegando(false);
+                  accionar("regar");
+                }}
+                alCancelar={() => setRegando(false)}
+              />
+            )}
+            {superpuestos}
+            {botonVista}
+          </Escena>
+        )
       }
       panelAcciones={
         <PanelAcciones
           esperas={esperas}
           bloqueadas={bloqueadas}
-          alAccionar={(a) => (a === "regar" ? setRegando((r) => !r) : accionar(a))}
+          alAccionar={(a) => {
+            if (vistaActual === "casa") {
+              if (a !== "podar")
+                casaIso.current?.animar(a === "regar" ? "regar" : a === "abonar" ? "abonar" : "cosechar");
+              accionar(a);
+            } else if (a === "regar") setRegando((r) => !r);
+            else accionar(a);
+          }}
           alAbonos={() => elegirPantalla("abonos")}
           ayudasRestantes={perfil.anuncios.restantes}
           alVerAnuncio={() => setAnuncioAbierto(true)}
