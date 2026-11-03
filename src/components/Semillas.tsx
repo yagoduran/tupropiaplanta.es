@@ -1,5 +1,6 @@
 "use client";
 
+import { FICHA_POR_ID } from "@/lib/fichas";
 import { marco } from "@/lib/diseno";
 import { useState } from "react";
 import { RAREZAS, VARIEDADES, VARIEDAD_POR_ID, type Variedad } from "@/lib/variedades";
@@ -29,9 +30,10 @@ type PropsTarjeta = Omit<Props, "aviso" | "hibridas" | "monedas" | "regaladas"> 
   variedad: Variedad;
   tipo: TipoSemilla;
   sinMonedas: boolean;
+  coste: number;
 };
 
-function Tarjeta({ variedad, nivel, enUso, ocupado, alPlantar, tipo, sinMonedas }: PropsTarjeta) {
+function Tarjeta({ variedad, nivel, enUso, ocupado, alPlantar, tipo, sinMonedas, coste }: PropsTarjeta) {
   const tarjeta = marco("tarjeta", "var(--u)");
   const boton = marco("boton", "var(--u)");
   const apagado = marco("boton_desactivado", "var(--u)");
@@ -48,7 +50,9 @@ function Tarjeta({ variedad, nivel, enUso, ocupado, alPlantar, tipo, sinMonedas 
         ? "Planta viva"
         : sinMonedas
           ? "Sin monedas"
-          : "Plantar";
+          : coste > 0
+            ? `Plantar · ${coste.toLocaleString("es-ES")}`
+            : "Plantar";
   const activo = !bloqueada && !hayPlanta && !ocupado && !sinMonedas;
 
   return (
@@ -105,7 +109,10 @@ function Tarjeta({ variedad, nivel, enUso, ocupado, alPlantar, tipo, sinMonedas 
 
 export function Semillas({ nivel, enUso, ocupado, alPlantar, aviso, monedas, hibridas = [], regaladas = [] }: Props) {
   const [tipo, setTipo] = useState<TipoSemilla>("foto");
-  const faltaDinero = monedas < TIPO_POR_ID[tipo].precio;
+  const coste = (v: Variedad) =>
+    regaladas.includes(`${v.id}:${tipo}`)
+      ? 0
+      : TIPO_POR_ID[tipo].precio + (v.hibrida ? 0 : (FICHA_POR_ID[v.id]?.semilla ?? 0));
   return (
     <div className={styles.contenedor}>
       <div className={styles.cabecera}>
@@ -136,7 +143,7 @@ export function Semillas({ nivel, enUso, ocupado, alPlantar, aviso, monedas, hib
               style={{ backgroundPosition: `0 calc(${-t.fila * 32}px * var(--ik))` }}
             />
             <strong>{t.nombre}</strong>
-            <span>{t.precio > 0 ? `${t.precio} monedas` : "Gratis"}</span>
+            <span>{t.precio > 0 ? `+${t.precio} monedas` : "Solo la semilla"}</span>
           </button>
         ))}
       </div>
@@ -151,7 +158,8 @@ export function Semillas({ nivel, enUso, ocupado, alPlantar, aviso, monedas, hib
             ocupado={ocupado}
             alPlantar={alPlantar}
             tipo={tipo}
-            sinMonedas={faltaDinero && !regaladas.includes(`${v.id}:${tipo}`)}
+            sinMonedas={monedas < coste(v)}
+            coste={coste(v)}
           />
         ))}
       </div>
@@ -171,7 +179,8 @@ export function Semillas({ nivel, enUso, ocupado, alPlantar, aviso, monedas, hib
                   ocupado={ocupado}
                   alPlantar={alPlantar}
                   tipo={tipo}
-                  sinMonedas={faltaDinero && !regaladas.includes(`${v.id}:${tipo}`)}
+                  sinMonedas={monedas < coste(v)}
+                  coste={coste(v)}
                 />
               ))}
           </div>
