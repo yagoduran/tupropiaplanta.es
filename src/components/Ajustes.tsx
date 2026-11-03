@@ -10,6 +10,7 @@ import { sonar } from "@/lib/sonido";
 import { URL_DONAR, donarActivo } from "@/lib/donar";
 import { EnlacesLegales } from "./EnlacesLegales";
 import { Icono } from "./Icono";
+import { SelectorPersonaje } from "./SelectorPersonaje";
 import styles from "./ajustes.module.css";
 
 interface Props {
@@ -109,6 +110,10 @@ export function Ajustes({ ajustes, alCambiar, alVerTutorial, alBorrar }: Props) 
         <button type="button" className={styles.prueba} style={secundario} onClick={() => sonar("clic")}>
           Probar efecto
         </button>
+
+        <hr className={styles.linea} />
+        <span className={styles.seccion}>Tu personaje</span>
+        <SelectorPersonaje avatar={ajustes.avatar_casa} alCambiar={(a) => alCambiar({ avatar_casa: a })} />
 
         <hr className={styles.linea} />
         <span className={styles.seccion}>Ayuda</span>

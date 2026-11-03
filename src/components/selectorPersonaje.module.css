@@ -1,0 +1,54 @@
+.caja {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--u) * 6);
+  align-items: flex-start;
+}
+
+.retrato {
+  position: relative;
+  display: block;
+  flex: none;
+  background: #1c1626;
+  outline: var(--u) solid #1c1626;
+}
+
+.retrato > span {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+}
+
+.opciones {
+  display: flex;
+  flex: 1 1 200px;
+  flex-direction: column;
+  gap: calc(var(--u) * 3);
+}
+
+.grupo {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 1.5);
+}
+
+.nombre {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+  font-weight: 700;
+}
+
+.fila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--u) * 2);
+}
+
+.boton {
+  padding: calc(var(--u) * 1.5) calc(var(--u) * 3) calc(var(--u) * 2.5);
+  color: #1c1626;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+  font-weight: 700;
+  cursor: pointer;
+}
