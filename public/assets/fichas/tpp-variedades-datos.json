@@ -1,0 +1,935 @@
+{
+ "unidades": {
+  "tiempos": "minutos",
+  "precios": "monedas",
+  "gramos": "g",
+  "temperatura": "°C",
+  "barras": "1-5"
+ },
+ "rasgos": {
+  "perdona": {
+   "texto": "Perdona los descuidos",
+   "icono": "tolerancia",
+   "signo": 1
+  },
+  "inicial": {
+   "texto": "Ideal para empezar",
+   "icono": "rasgo",
+   "signo": 0
+  },
+  "pocaAgua": {
+   "texto": "Pide poca agua",
+   "icono": "consumo-agua",
+   "signo": 1
+  },
+  "bebe": {
+   "texto": "Bebe mucho",
+   "icono": "consumo-agua",
+   "signo": -1
+  },
+  "fresco": {
+   "texto": "Prefiere el fresco",
+   "icono": "temperatura",
+   "signo": 0
+  },
+  "calor": {
+   "texto": "Ama el calor",
+   "icono": "temperatura",
+   "signo": 1
+  },
+  "sensCalor": {
+   "texto": "Sensible al calor",
+   "icono": "temperatura",
+   "signo": -1
+  },
+  "frio": {
+   "texto": "Aguanta el frío",
+   "icono": "temperatura",
+   "signo": 1
+  },
+  "odiaCalor": {
+   "texto": "Odia el calor",
+   "icono": "temperatura",
+   "signo": -1
+  },
+  "granRend": {
+   "texto": "Gran rendimiento",
+   "icono": "rendimiento",
+   "signo": 1
+  },
+  "morado": {
+   "texto": "Fenotipo morado",
+   "icono": "rasgo",
+   "signo": 0
+  },
+  "pocaLuz": {
+   "texto": "Crece con poca luz",
+   "icono": "luz",
+   "signo": 1
+  },
+  "inmune": {
+   "texto": "Casi inmune a plagas",
+   "icono": "plagas",
+   "signo": 1
+  },
+  "resPlagas": {
+   "texto": "Resistente a plagas",
+   "icono": "plagas",
+   "signo": 1
+  },
+  "atrae": {
+   "texto": "Atrae plagas",
+   "icono": "plagas",
+   "signo": -1
+  },
+  "todo": {
+   "texto": "Todoterreno",
+   "icono": "tolerancia",
+   "signo": 1
+  },
+  "rapida": {
+   "texto": "Rápida",
+   "icono": "duracion",
+   "signo": 1
+  },
+  "lenta": {
+   "texto": "Lenta",
+   "icono": "duracion",
+   "signo": -1
+  },
+  "equil": {
+   "texto": "Buen equilibrio",
+   "icono": "efecto-equilibrado",
+   "signo": 0
+  },
+  "ventana": {
+   "texto": "Ventana de cosecha larga",
+   "icono": "ventana-cosecha",
+   "signo": 1
+  },
+  "gris": {
+   "texto": "Hoja gris",
+   "icono": "rasgo",
+   "signo": 0
+  },
+  "exigente": {
+   "texto": "Muy exigente",
+   "icono": "tolerancia",
+   "signo": -1
+  },
+  "hambre": {
+   "texto": "Hambrienta",
+   "icono": "consumo-nutrientes",
+   "signo": -1
+  },
+  "cambia": {
+   "texto": "Cambia de color",
+   "icono": "rasgo",
+   "signo": 0
+  },
+  "maxCal": {
+   "texto": "Calidad máxima",
+   "icono": "sabor",
+   "signo": 1
+  },
+  "rosa": {
+   "texto": "Flores rosas",
+   "icono": "rasgo",
+   "signo": 0
+  },
+  "naranja": {
+   "texto": "Hoja naranja",
+   "icono": "rasgo",
+   "signo": 0
+  },
+  "temporada": {
+   "texto": "Solo en su temporada",
+   "icono": "desbloqueo",
+   "signo": 0
+  }
+ },
+ "variedades": [
+  {
+   "id": "clasica",
+   "nombre": "Verde Clásica",
+   "rareza": "comun",
+   "origen": "Tienda · inicial",
+   "nivel": 1,
+   "semilla": 50,
+   "gramo": 12,
+   "fases": [
+    20,
+    40,
+    60,
+    90,
+    120,
+    90,
+    180
+   ],
+   "riego": 120,
+   "ventana": 240,
+   "agua": 3,
+   "nutrientes": 3,
+   "luz": 3,
+   "luzT": "Media · 16 h",
+   "tMin": 18,
+   "tMax": 26,
+   "plagas": 3,
+   "gramos": 28,
+   "calidad": 2,
+   "sabor": "Herbal y limpio",
+   "efecto": "equilibrado",
+   "sensacion": "Calma con la cabeza clara",
+   "tolerancia": 5,
+   "rasgos": [
+    "perdona",
+    "inicial"
+   ],
+   "total": 600,
+   "barras": {
+    "agua": 3,
+    "nutrientes": 3,
+    "luz": 3,
+    "plagas": 3,
+    "rendimiento": 3,
+    "calidad": 2,
+    "tolerancia": 5,
+    "velocidad": 4
+   }
+  },
+  {
+   "id": "hoja-azul",
+   "nombre": "Hoja Azul",
+   "rareza": "poco_comun",
+   "origen": "Tienda de semillas",
+   "nivel": 3,
+   "semilla": 120,
+   "gramo": 18,
+   "fases": [
+    20,
+    40,
+    70,
+    100,
+    140,
+    100,
+    200
+   ],
+   "riego": 180,
+   "ventana": 300,
+   "agua": 2,
+   "nutrientes": 3,
+   "luz": 3,
+   "luzT": "Media · 16 h",
+   "tMin": 16,
+   "tMax": 24,
+   "plagas": 4,
+   "gramos": 26,
+   "calidad": 3,
+   "sabor": "Frutos del bosque",
+   "efecto": "relajante",
+   "sensacion": "Cuerpo pesado, mente tranquila",
+   "tolerancia": 4,
+   "rasgos": [
+    "pocaAgua",
+    "fresco"
+   ],
+   "total": 670,
+   "barras": {
+    "agua": 2,
+    "nutrientes": 3,
+    "luz": 3,
+    "plagas": 4,
+    "rendimiento": 2,
+    "calidad": 3,
+    "tolerancia": 4,
+    "velocidad": 3
+   }
+  },
+  {
+   "id": "dorada",
+   "nombre": "Dorada del Sur",
+   "rareza": "rara",
+   "origen": "Tienda de semillas",
+   "nivel": 8,
+   "semilla": 300,
+   "gramo": 26,
+   "fases": [
+    20,
+    40,
+    60,
+    80,
+    110,
+    90,
+    170
+   ],
+   "riego": 90,
+   "ventana": 180,
+   "agua": 4,
+   "nutrientes": 4,
+   "luz": 5,
+   "luzT": "Muy alta · 18 h",
+   "tMin": 22,
+   "tMax": 30,
+   "plagas": 2,
+   "gramos": 38,
+   "calidad": 3,
+   "sabor": "Cítrico y dulce",
+   "efecto": "energizante",
+   "sensacion": "Risa fácil y ganas de hacer cosas",
+   "tolerancia": 2,
+   "rasgos": [
+    "calor",
+    "granRend",
+    "bebe"
+   ],
+   "total": 570,
+   "barras": {
+    "agua": 4,
+    "nutrientes": 4,
+    "luz": 5,
+    "plagas": 2,
+    "rendimiento": 4,
+    "calidad": 3,
+    "tolerancia": 2,
+    "velocidad": 4
+   }
+  },
+  {
+   "id": "noche",
+   "nombre": "Noche Púrpura",
+   "rareza": "epica",
+   "origen": "Tienda de semillas",
+   "nivel": 15,
+   "semilla": 650,
+   "gramo": 40,
+   "fases": [
+    25,
+    45,
+    70,
+    110,
+    150,
+    120,
+    240
+   ],
+   "riego": 150,
+   "ventana": 360,
+   "agua": 3,
+   "nutrientes": 4,
+   "luz": 2,
+   "luzT": "Baja · 12 h",
+   "tMin": 16,
+   "tMax": 22,
+   "plagas": 4,
+   "gramos": 30,
+   "calidad": 4,
+   "sabor": "Uva y especias",
+   "efecto": "sonador",
+   "sensacion": "Ojos pesados y sueño profundo",
+   "tolerancia": 3,
+   "rasgos": [
+    "morado",
+    "pocaLuz",
+    "sensCalor"
+   ],
+   "total": 760,
+   "barras": {
+    "agua": 3,
+    "nutrientes": 4,
+    "luz": 2,
+    "plagas": 4,
+    "rendimiento": 3,
+    "calidad": 4,
+    "tolerancia": 3,
+    "velocidad": 2
+   }
+  },
+  {
+   "id": "cristal",
+   "nombre": "Cristal Helado",
+   "rareza": "legendaria",
+   "origen": "Evento Invierno helado",
+   "nivel": 25,
+   "semilla": 1500,
+   "gramo": 70,
+   "fases": [
+    30,
+    60,
+    90,
+    140,
+    180,
+    150,
+    300
+   ],
+   "riego": 240,
+   "ventana": 480,
+   "agua": 1,
+   "nutrientes": 2,
+   "luz": 4,
+   "luzT": "Alta · 16 h",
+   "tMin": 10,
+   "tMax": 20,
+   "plagas": 5,
+   "gramos": 22,
+   "calidad": 5,
+   "sabor": "Menta helada",
+   "efecto": "creativo",
+   "sensacion": "Ideas claras y brillantes",
+   "tolerancia": 2,
+   "rasgos": [
+    "pocaAgua",
+    "inmune",
+    "odiaCalor"
+   ],
+   "total": 950,
+   "barras": {
+    "agua": 1,
+    "nutrientes": 2,
+    "luz": 4,
+    "plagas": 5,
+    "rendimiento": 2,
+    "calidad": 5,
+    "tolerancia": 2,
+    "velocidad": 1
+   }
+  },
+  {
+   "id": "verde-azulado",
+   "nombre": "Verde Azulado",
+   "rareza": "poco_comun",
+   "origen": "Cruce · Verde Clásica × Hoja Azul",
+   "nivel": 5,
+   "semilla": 150,
+   "gramo": 20,
+   "fases": [
+    20,
+    40,
+    60,
+    90,
+    120,
+    100,
+    190
+   ],
+   "riego": 150,
+   "ventana": 300,
+   "agua": 2,
+   "nutrientes": 3,
+   "luz": 3,
+   "luzT": "Media · 16 h",
+   "tMin": 17,
+   "tMax": 25,
+   "plagas": 4,
+   "gramos": 30,
+   "calidad": 3,
+   "sabor": "Hierba fresca y arándano",
+   "efecto": "equilibrado",
+   "sensacion": "Tranquilo sin quedarse dormido",
+   "tolerancia": 4,
+   "rasgos": [
+    "todo",
+    "pocaAgua"
+   ],
+   "total": 620,
+   "barras": {
+    "agua": 2,
+    "nutrientes": 3,
+    "luz": 3,
+    "plagas": 4,
+    "rendimiento": 3,
+    "calidad": 3,
+    "tolerancia": 4,
+    "velocidad": 4
+   }
+  },
+  {
+   "id": "brisa-dorada",
+   "nombre": "Brisa Dorada",
+   "rareza": "rara",
+   "origen": "Cruce · Hoja Azul × Dorada del Sur",
+   "nivel": 10,
+   "semilla": 380,
+   "gramo": 30,
+   "fases": [
+    20,
+    35,
+    55,
+    80,
+    100,
+    90,
+    160
+   ],
+   "riego": 120,
+   "ventana": 180,
+   "agua": 3,
+   "nutrientes": 4,
+   "luz": 4,
+   "luzT": "Alta · 17 h",
+   "tMin": 20,
+   "tMax": 28,
+   "plagas": 3,
+   "gramos": 36,
+   "calidad": 4,
+   "sabor": "Limón y miel",
+   "efecto": "energizante",
+   "sensacion": "Arranque suave y buen humor",
+   "tolerancia": 3,
+   "rasgos": [
+    "rapida",
+    "equil"
+   ],
+   "total": 540,
+   "barras": {
+    "agua": 3,
+    "nutrientes": 4,
+    "luz": 4,
+    "plagas": 3,
+    "rendimiento": 4,
+    "calidad": 4,
+    "tolerancia": 3,
+    "velocidad": 5
+   }
+  },
+  {
+   "id": "ambar-antiguo",
+   "nombre": "Ámbar Antiguo",
+   "rareza": "rara",
+   "origen": "Medalla de oro en Dorada del Sur",
+   "nivel": 18,
+   "semilla": 500,
+   "gramo": 34,
+   "fases": [
+    30,
+    50,
+    80,
+    120,
+    160,
+    140,
+    260
+   ],
+   "riego": 180,
+   "ventana": 600,
+   "agua": 2,
+   "nutrientes": 2,
+   "luz": 3,
+   "luzT": "Media · 15 h",
+   "tMin": 18,
+   "tMax": 26,
+   "plagas": 4,
+   "gramos": 34,
+   "calidad": 4,
+   "sabor": "Madera y caramelo",
+   "efecto": "relajante",
+   "sensacion": "Calor en el pecho, sofá y manta",
+   "tolerancia": 4,
+   "rasgos": [
+    "ventana",
+    "lenta",
+    "gris"
+   ],
+   "total": 840,
+   "barras": {
+    "agua": 2,
+    "nutrientes": 2,
+    "luz": 3,
+    "plagas": 4,
+    "rendimiento": 3,
+    "calidad": 4,
+    "tolerancia": 4,
+    "velocidad": 2
+   }
+  },
+  {
+   "id": "menta-nocturna",
+   "nombre": "Menta Nocturna",
+   "rareza": "epica",
+   "origen": "Cruce · Noche Púrpura × Verde Clásica",
+   "nivel": 14,
+   "semilla": 600,
+   "gramo": 38,
+   "fases": [
+    25,
+    40,
+    65,
+    100,
+    130,
+    110,
+    210
+   ],
+   "riego": 120,
+   "ventana": 300,
+   "agua": 3,
+   "nutrientes": 3,
+   "luz": 2,
+   "luzT": "Baja · 13 h",
+   "tMin": 16,
+   "tMax": 23,
+   "plagas": 3,
+   "gramos": 32,
+   "calidad": 4,
+   "sabor": "Menta y regaliz",
+   "efecto": "sonador",
+   "sensacion": "Relaja sin pesar",
+   "tolerancia": 4,
+   "rasgos": [
+    "pocaLuz",
+    "morado"
+   ],
+   "total": 680,
+   "barras": {
+    "agua": 3,
+    "nutrientes": 3,
+    "luz": 2,
+    "plagas": 3,
+    "rendimiento": 3,
+    "calidad": 4,
+    "tolerancia": 4,
+    "velocidad": 3
+   }
+  },
+  {
+   "id": "sol-medianoche",
+   "nombre": "Sol de Medianoche",
+   "rareza": "epica",
+   "origen": "Cruce · Dorada del Sur × Noche Púrpura",
+   "nivel": 20,
+   "semilla": 900,
+   "gramo": 48,
+   "fases": [
+    25,
+    45,
+    70,
+    100,
+    140,
+    120,
+    230
+   ],
+   "riego": 90,
+   "ventana": 240,
+   "agua": 4,
+   "nutrientes": 5,
+   "luz": 5,
+   "luzT": "Muy alta · 20 h",
+   "tMin": 20,
+   "tMax": 28,
+   "plagas": 2,
+   "gramos": 44,
+   "calidad": 4,
+   "sabor": "Naranja sanguina",
+   "efecto": "energizante",
+   "sensacion": "Euforia y ganas de charlar",
+   "tolerancia": 1,
+   "rasgos": [
+    "granRend",
+    "exigente",
+    "hambre"
+   ],
+   "total": 730,
+   "barras": {
+    "agua": 4,
+    "nutrientes": 5,
+    "luz": 5,
+    "plagas": 2,
+    "rendimiento": 5,
+    "calidad": 4,
+    "tolerancia": 1,
+    "velocidad": 2
+   }
+  },
+  {
+   "id": "escarcha-azul",
+   "nombre": "Escarcha Azul",
+   "rareza": "legendaria",
+   "origen": "Cruce · Cristal Helado × Hoja Azul",
+   "nivel": 28,
+   "semilla": 1800,
+   "gramo": 75,
+   "fases": [
+    30,
+    60,
+    90,
+    130,
+    170,
+    150,
+    290
+   ],
+   "riego": 240,
+   "ventana": 420,
+   "agua": 1,
+   "nutrientes": 2,
+   "luz": 3,
+   "luzT": "Media · 15 h",
+   "tMin": 8,
+   "tMax": 18,
+   "plagas": 5,
+   "gramos": 24,
+   "calidad": 5,
+   "sabor": "Hielo y eucalipto",
+   "efecto": "creativo",
+   "sensacion": "Mente despierta y fresca",
+   "tolerancia": 3,
+   "rasgos": [
+    "pocaAgua",
+    "odiaCalor",
+    "resPlagas"
+   ],
+   "total": 920,
+   "barras": {
+    "agua": 1,
+    "nutrientes": 2,
+    "luz": 3,
+    "plagas": 5,
+    "rendimiento": 2,
+    "calidad": 5,
+    "tolerancia": 3,
+    "velocidad": 1
+   }
+  },
+  {
+   "id": "aurora",
+   "nombre": "Aurora",
+   "rareza": "legendaria",
+   "origen": "75 % de la colección",
+   "nivel": 35,
+   "semilla": 3000,
+   "gramo": 110,
+   "fases": [
+    30,
+    60,
+    100,
+    150,
+    200,
+    160,
+    320
+   ],
+   "riego": 180,
+   "ventana": 360,
+   "agua": 3,
+   "nutrientes": 4,
+   "luz": 4,
+   "luzT": "Alta · 18 h",
+   "tMin": 18,
+   "tMax": 24,
+   "plagas": 4,
+   "gramos": 40,
+   "calidad": 5,
+   "sabor": "Frutas tropicales",
+   "efecto": "creativo",
+   "sensacion": "Colores más vivos y buena conversación",
+   "tolerancia": 2,
+   "rasgos": [
+    "cambia",
+    "maxCal",
+    "lenta"
+   ],
+   "total": 1020,
+   "barras": {
+    "agua": 3,
+    "nutrientes": 4,
+    "luz": 4,
+    "plagas": 4,
+    "rendimiento": 4,
+    "calidad": 5,
+    "tolerancia": 2,
+    "velocidad": 1
+   }
+  },
+  {
+   "id": "ed-primavera",
+   "nombre": "Edición Primavera",
+   "rareza": "especial",
+   "origen": "Evento de primavera",
+   "nivel": 6,
+   "semilla": 400,
+   "gramo": 32,
+   "fases": [
+    15,
+    30,
+    50,
+    80,
+    100,
+    80,
+    150
+   ],
+   "riego": 90,
+   "ventana": 240,
+   "agua": 4,
+   "nutrientes": 3,
+   "luz": 4,
+   "luzT": "Alta · 16 h",
+   "tMin": 16,
+   "tMax": 24,
+   "plagas": 2,
+   "gramos": 32,
+   "calidad": 4,
+   "sabor": "Flores y fresa",
+   "efecto": "equilibrado",
+   "sensacion": "Ligera y risueña",
+   "tolerancia": 3,
+   "rasgos": [
+    "rosa",
+    "rapida",
+    "atrae",
+    "temporada"
+   ],
+   "total": 505,
+   "barras": {
+    "agua": 4,
+    "nutrientes": 3,
+    "luz": 4,
+    "plagas": 2,
+    "rendimiento": 3,
+    "calidad": 4,
+    "tolerancia": 3,
+    "velocidad": 5
+   }
+  },
+  {
+   "id": "ed-verano",
+   "nombre": "Edición Verano",
+   "rareza": "especial",
+   "origen": "Evento de verano",
+   "nivel": 6,
+   "semilla": 400,
+   "gramo": 30,
+   "fases": [
+    15,
+    30,
+    50,
+    80,
+    110,
+    80,
+    150
+   ],
+   "riego": 60,
+   "ventana": 180,
+   "agua": 5,
+   "nutrientes": 3,
+   "luz": 5,
+   "luzT": "Muy alta · 18 h",
+   "tMin": 24,
+   "tMax": 32,
+   "plagas": 3,
+   "gramos": 40,
+   "calidad": 3,
+   "sabor": "Mango y sol",
+   "efecto": "energizante",
+   "sensacion": "Energía de día de playa",
+   "tolerancia": 3,
+   "rasgos": [
+    "calor",
+    "bebe",
+    "granRend",
+    "temporada"
+   ],
+   "total": 515,
+   "barras": {
+    "agua": 5,
+    "nutrientes": 3,
+    "luz": 5,
+    "plagas": 3,
+    "rendimiento": 4,
+    "calidad": 3,
+    "tolerancia": 3,
+    "velocidad": 5
+   }
+  },
+  {
+   "id": "ed-otono",
+   "nombre": "Edición Otoño",
+   "rareza": "especial",
+   "origen": "Evento de otoño",
+   "nivel": 6,
+   "semilla": 400,
+   "gramo": 34,
+   "fases": [
+    20,
+    40,
+    60,
+    100,
+    130,
+    110,
+    200
+   ],
+   "riego": 150,
+   "ventana": 480,
+   "agua": 2,
+   "nutrientes": 4,
+   "luz": 2,
+   "luzT": "Baja · 13 h",
+   "tMin": 14,
+   "tMax": 22,
+   "plagas": 3,
+   "gramos": 30,
+   "calidad": 4,
+   "sabor": "Calabaza y canela",
+   "efecto": "relajante",
+   "sensacion": "Tarde de manta y lluvia",
+   "tolerancia": 4,
+   "rasgos": [
+    "naranja",
+    "ventana",
+    "temporada"
+   ],
+   "total": 660,
+   "barras": {
+    "agua": 2,
+    "nutrientes": 4,
+    "luz": 2,
+    "plagas": 3,
+    "rendimiento": 3,
+    "calidad": 4,
+    "tolerancia": 4,
+    "velocidad": 3
+   }
+  },
+  {
+   "id": "ed-invierno",
+   "nombre": "Edición Invierno",
+   "rareza": "especial",
+   "origen": "Evento de invierno",
+   "nivel": 6,
+   "semilla": 400,
+   "gramo": 36,
+   "fases": [
+    25,
+    50,
+    70,
+    110,
+    140,
+    120,
+    220
+   ],
+   "riego": 240,
+   "ventana": 360,
+   "agua": 1,
+   "nutrientes": 2,
+   "luz": 3,
+   "luzT": "Media · 14 h",
+   "tMin": 6,
+   "tMax": 16,
+   "plagas": 4,
+   "gramos": 26,
+   "calidad": 4,
+   "sabor": "Pino y nieve",
+   "efecto": "sonador",
+   "sensacion": "Silencio de nieve",
+   "tolerancia": 3,
+   "rasgos": [
+    "frio",
+    "pocaAgua",
+    "sensCalor",
+    "temporada"
+   ],
+   "total": 735,
+   "barras": {
+    "agua": 1,
+    "nutrientes": 2,
+    "luz": 3,
+    "plagas": 4,
+    "rendimiento": 2,
+    "calidad": 4,
+    "tolerancia": 3,
+    "velocidad": 2
+   }
+  }
+ ]
+}

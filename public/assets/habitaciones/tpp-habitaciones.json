@@ -1,0 +1,230 @@
+{
+ "escena": {
+  "w": 192,
+  "h": 144
+ },
+ "rooms": [
+  {
+   "id": "salon",
+   "nombre": "Salón",
+   "ventana": true,
+   "bono": "luz",
+   "sitios": [
+    {
+     "i": 0,
+     "x": 42,
+     "y": 71,
+     "soporte": "Alféizar"
+    },
+    {
+     "i": 1,
+     "x": 121,
+     "y": 121,
+     "soporte": "Mesa baja"
+    },
+    {
+     "i": 2,
+     "x": 170,
+     "y": 138,
+     "soporte": "Suelo"
+    }
+   ]
+  },
+  {
+   "id": "cocina",
+   "nombre": "Cocina",
+   "ventana": true,
+   "bono": "temperatura",
+   "sitios": [
+    {
+     "i": 0,
+     "x": 38,
+     "y": 67,
+     "soporte": "Alféizar"
+    },
+    {
+     "i": 1,
+     "x": 76,
+     "y": 98,
+     "soporte": "Encimera"
+    }
+   ]
+  },
+  {
+   "id": "dormitorio",
+   "nombre": "Dormitorio",
+   "ventana": true,
+   "bono": "salud",
+   "sitios": [
+    {
+     "i": 0,
+     "x": 38,
+     "y": 69,
+     "soporte": "Alféizar"
+    },
+    {
+     "i": 1,
+     "x": 85,
+     "y": 102,
+     "soporte": "Mesita"
+    }
+   ]
+  },
+  {
+   "id": "bano",
+   "nombre": "Baño",
+   "ventana": true,
+   "bono": "humedad",
+   "sitios": [
+    {
+     "i": 0,
+     "x": 168,
+     "y": 104,
+     "soporte": "Banco"
+    }
+   ]
+  },
+  {
+   "id": "terraza",
+   "nombre": "Terraza",
+   "ventana": true,
+   "bono": "viento",
+   "sitios": [
+    {
+     "i": 0,
+     "x": 70,
+     "y": 138,
+     "soporte": "Suelo"
+    },
+    {
+     "i": 1,
+     "x": 142,
+     "y": 80,
+     "soporte": "Barandilla"
+    }
+   ]
+  },
+  {
+   "id": "armario",
+   "nombre": "Armario",
+   "ventana": false,
+   "bono": "luz controlada",
+   "sitios": [
+    {
+     "i": 0,
+     "x": 52,
+     "y": 136,
+     "soporte": "Bandeja"
+    },
+    {
+     "i": 1,
+     "x": 96,
+     "y": 136,
+     "soporte": "Bandeja"
+    },
+    {
+     "i": 2,
+     "x": 140,
+     "y": 136,
+     "soporte": "Bandeja"
+    }
+   ]
+  },
+  {
+   "id": "invernadero",
+   "nombre": "Invernadero",
+   "ventana": true,
+   "bono": "crecimiento",
+   "sitios": [
+    {
+     "i": 0,
+     "x": 44,
+     "y": 100,
+     "soporte": "Mesa de cultivo"
+    },
+    {
+     "i": 1,
+     "x": 96,
+     "y": 100,
+     "soporte": "Mesa de cultivo"
+    },
+    {
+     "i": 2,
+     "x": 148,
+     "y": 100,
+     "soporte": "Mesa de cultivo"
+    }
+   ]
+  },
+  {
+   "id": "sotano",
+   "nombre": "Sótano",
+   "ventana": true,
+   "bono": "plagas",
+   "sitios": [
+    {
+     "i": 0,
+     "x": 30,
+     "y": 138,
+     "soporte": "Suelo"
+    },
+    {
+     "i": 1,
+     "x": 76,
+     "y": 138,
+     "soporte": "Suelo"
+    },
+    {
+     "i": 2,
+     "x": 130,
+     "y": 74,
+     "soporte": "Estante"
+    },
+    {
+     "i": 3,
+     "x": 168,
+     "y": 74,
+     "soporte": "Estante"
+    }
+   ]
+  },
+  {
+   "id": "azotea",
+   "nombre": "Azotea",
+   "ventana": true,
+   "bono": "sol",
+   "sitios": [
+    {
+     "i": 0,
+     "x": 26,
+     "y": 138,
+     "soporte": "Suelo"
+    },
+    {
+     "i": 1,
+     "x": 61,
+     "y": 92,
+     "soporte": "Murete"
+    },
+    {
+     "i": 2,
+     "x": 96,
+     "y": 138,
+     "soporte": "Suelo"
+    },
+    {
+     "i": 3,
+     "x": 131,
+     "y": 92,
+     "soporte": "Murete"
+    },
+    {
+     "i": 4,
+     "x": 166,
+     "y": 138,
+     "soporte": "Suelo"
+    }
+   ]
+  }
+ ]
+}
