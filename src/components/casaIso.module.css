@@ -1,0 +1,79 @@
+.contenedor {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #1c1626;
+}
+
+.lienzo {
+  position: absolute;
+  transform-origin: 0 0;
+  image-rendering: pixelated;
+}
+
+.lienzo > *,
+.lienzo > div > * {
+  position: absolute;
+}
+
+.lienzo > div {
+  position: static;
+}
+
+.suelo {
+  width: 32px;
+  height: 16px;
+  z-index: 10;
+  cursor: pointer;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+
+.suave {
+  animation: rebote 0.9s steps(2, end) infinite;
+}
+
+@keyframes rebote {
+  50% {
+    translate: 0 -2px;
+  }
+}
+
+.zona {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.zona:focus-visible {
+  outline: 2px solid #f6eed6;
+}
+
+.avatar {
+  width: 32px;
+  height: 48px;
+  transition:
+    left 220ms linear,
+    top 220ms linear;
+  pointer-events: none;
+}
+
+.avatar > div {
+  position: absolute;
+  inset: 0;
+}
+
+.semillita {
+  width: 32px;
+  height: 32px;
+  transition:
+    left 220ms linear,
+    top 220ms linear;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .suave {
+    animation: none;
+  }
+}
