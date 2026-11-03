@@ -224,6 +224,8 @@ export interface HibridoPropio {
   ciclo: number;
   desgaste: number;
   sabor: number;
+  /** Ficha completa de una F1 (media de los padres). */
+  datos?: { hoja?: string } & Record<string, unknown>;
 }
 
 /** Hoja de un híbrido propio: una de las 7 hojas de híbrido, siempre la misma para el mismo id. */
@@ -238,7 +240,7 @@ export function registrarHibridas(propias: HibridoPropio[]) {
   for (const h of propias) {
     VARIEDAD_POR_ID[h.id] = {
       ...h,
-      hoja: hojaHibridoPropio(h.id),
+      hoja: h.datos?.hoja ?? hojaHibridoPropio(h.id),
       nivel: 1,
       descripcion: "Híbrido propio.",
       hibrida: true,

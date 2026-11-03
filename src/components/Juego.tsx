@@ -54,6 +54,8 @@ import {
   acelerarCruce,
   abrirCruce,
   guardarCruce,
+  obtenerLibro,
+  reclamarTrofeo,
   empezarDesafio,
   reclamarHito,
   acariciarGato,
@@ -113,7 +115,7 @@ import { DESAFIO_POR_ID, type DatosDesafios } from "@/lib/desafios";
 import type { DatosMaestria } from "@/lib/maestria";
 import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
 import type { DatosPrestigio } from "@/lib/prestigio";
-import type { DatosCruces, RespuestaCruce } from "@/lib/cruces";
+import type { DatosCruces, Libro, RespuestaCruce } from "@/lib/cruces";
 import { calcularBienvenida, guardarVisita, leerVisita, type Bienvenida as DatosBienvenida } from "@/lib/visita";
 import { Ajustes } from "./Ajustes";
 import { Bienvenida } from "./Bienvenida";
@@ -258,6 +260,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [prestigio, setPrestigio] = useState<DatosPrestigio | null>(null);
   const [cruces, setCruces] = useState<DatosCruces | null>(null);
   const [crucesEn, setCrucesEn] = useState(0);
+  const [libro, setLibro] = useState<Libro | null>(null);
   const [bienvenida, setBienvenida] = useState<DatosBienvenida | null>(null);
   const [muertaVista, setMuertaVista] = useState<string | null>(null);
   const [diariaAbierta, setDiariaAbierta] = useState(inicial.perfil.diaria.disponible && inicial.perfil.tutorial_hecho);
@@ -542,6 +545,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         obtenerCruces()
           .then((r) => recibirCruces(r))
           .catch(() => setCruces(null));
+      if (id === "laboratorio")
+        obtenerLibro()
+          .then(setLibro)
+          .catch(() => setLibro(null));
       if (id === "eventos")
         obtenerEventos()
           .then(setEventos)
@@ -1004,7 +1011,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       setAviso({ texto: MENSAJES_ERROR.red, icono: "aviso" });
       return;
     }
-    setCruces({ cosechas: r.cosechas, cruce: r.cruce });
+    setCruces({ madres: r.madres, padres: r.padres, cruce: r.cruce });
     setCrucesEn(Date.now());
     if (!r.ok && r.error) setAviso({ texto: MENSAJES_ERROR[r.error] ?? MENSAJES_ERROR.red, icono: "aviso" });
   }
@@ -1041,10 +1048,24 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       sonar(r?.ok ? "cofre" : "error");
       recibirCruces(r);
       if (r?.ok) {
-        setAviso({ texto: "¡Semilla guardada en tus semillas!", icono: "cultivo" });
+        setAviso({ texto: "¡Semillas guardadas! Las encontrarás en Semillas.", icono: "cultivo" });
         const nuevo = await obtenerEstado();
         if (nuevo) aplicar(nuevo);
+        setLibro(await obtenerLibro());
       }
+    });
+  };
+
+  const reclamarElTrofeo = (id: string) => {
+    ejecutar(async () => {
+      const r = await reclamarTrofeo(id);
+      sonar(r?.ok ? "cofre" : "error");
+      if (r) setLibro(r);
+      if (r?.ok) {
+        setAviso({ texto: "¡Trofeo reclamado!", icono: "logros" });
+        const nuevo = await obtenerEstado();
+        if (nuevo) aplicar(nuevo);
+      } else setAviso({ texto: MENSAJES_ERROR[r?.error ?? "red"] ?? MENSAJES_ERROR.red, icono: "aviso" });
     });
   };
 
@@ -1134,6 +1155,14 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     ejecutar(async () => {
       const r = await plantarSemilla(variedad, tipo);
       tratar(r, { texto: "¡Semilla plantada!", icono: "cultivo" });
+      if (r.ok) setPantalla("cultivo");
+    });
+  };
+
+  const plantarDeCruce = (variedad: string) => {
+    ejecutar(async () => {
+      const r = await plantarSemilla(variedad, "cruce");
+      tratar(r, { texto: "¡Semilla de cruce plantada!", icono: "cultivo" });
       if (r.ok) setPantalla("cultivo");
     });
   };
@@ -1516,6 +1545,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         ) : pantalla === "laboratorio" ? (
           <Laboratorio
             datos={cruces}
+            libro={libro}
+            alReclamar={reclamarElTrofeo}
             recibidoEn={crucesEn}
             monedas={perfil.monedas}
             ocupado={enCurso}
@@ -1680,6 +1711,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             ocupado={enCurso}
             aviso={aviso}
             alPlantar={plantar}
+            alPlantarCruce={plantarDeCruce}
+            semillasCruce={perfil.hibridas.cruce ?? {}}
             monedas={perfil.monedas}
           />
         ) : undefined
@@ -1728,6 +1761,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
                 variedad={planta.variedad}
                 maceta={perfil.equipo.maceta}
                 sexo={planta.sexo}
+                fenotipo={planta.fenotipo}
                 causa={planta.causa}
                 calidad={calidadPrevista(planta.salud)}
               />

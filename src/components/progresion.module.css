@@ -1370,3 +1370,63 @@ button.hueco {
   grid-template-columns: 1fr 1fr;
   gap: calc(var(--u) * 2);
 }
+
+/* Genética (8g) */
+.pestanas {
+  display: flex;
+  gap: calc(var(--u) * 2);
+  flex-wrap: wrap;
+}
+.pestana {
+  font: inherit;
+  padding: calc(var(--u) * 2) calc(var(--u) * 4);
+  border: calc(var(--u) * 1) solid #a8845c;
+  background: #fff;
+  cursor: pointer;
+  min-height: 44px;
+}
+.pestanaActiva {
+  background: #e9dcbc;
+  border-color: #36a33b;
+  font-weight: 700;
+}
+.libroRejilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: calc(var(--u) * 2);
+}
+.entrada {
+  font: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--u) * 1);
+  padding: calc(var(--u) * 2);
+  border: calc(var(--u) * 1) solid #a8845c;
+  background: #fff;
+  cursor: pointer;
+  min-height: 92px;
+  text-align: center;
+  font-size: calc(var(--f-peq, 12px));
+}
+.entradaSel {
+  border-color: #36a33b;
+  background: #e9dcbc;
+}
+.cruzarCentro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--u) * 2);
+  text-align: center;
+}
+.lista {
+  display: grid;
+  gap: calc(var(--u) * 2);
+}
+.antesDespues {
+  display: flex;
+  gap: calc(var(--u) * 4);
+  justify-content: center;
+  flex-wrap: wrap;
+}

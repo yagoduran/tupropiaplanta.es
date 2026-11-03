@@ -16,6 +16,10 @@ interface Props {
   enUso: string | null;
   ocupado: boolean;
   alPlantar: (variedad: string, tipo: TipoSemilla) => void;
+  /** Planta una semilla de cruce (se gasta una del inventario). */
+  alPlantarCruce?: (variedad: string) => void;
+  /** Semillas de cruce que tiene el jugador: variedad → cantidad. */
+  semillasCruce?: Record<string, number>;
   monedas: number;
   /** Semillas híbridas que tiene el jugador (de cruces y premios). */
   hibridas?: string[];
@@ -26,7 +30,7 @@ interface Props {
 
 const desgaste = (v: number) => (v <= 1 ? "Normal" : v <= 1.2 ? "Alto" : "Muy alto");
 
-type PropsTarjeta = Omit<Props, "aviso" | "hibridas" | "monedas" | "regaladas"> & {
+type PropsTarjeta = Omit<Props, "aviso" | "hibridas" | "monedas" | "regaladas" | "alPlantarCruce" | "semillasCruce"> & {
   variedad: Variedad;
   tipo: TipoSemilla;
   sinMonedas: boolean;
@@ -107,7 +111,18 @@ function Tarjeta({ variedad, nivel, enUso, ocupado, alPlantar, tipo, sinMonedas,
   );
 }
 
-export function Semillas({ nivel, enUso, ocupado, alPlantar, aviso, monedas, hibridas = [], regaladas = [] }: Props) {
+export function Semillas({
+  nivel,
+  enUso,
+  ocupado,
+  alPlantar,
+  alPlantarCruce,
+  semillasCruce = {},
+  aviso,
+  monedas,
+  hibridas = [],
+  regaladas = [],
+}: Props) {
   const [tipo, setTipo] = useState<TipoSemilla>("foto");
   const coste = (v: Variedad) =>
     regaladas.includes(`${v.id}:${tipo}`)
@@ -163,6 +178,43 @@ export function Semillas({ nivel, enUso, ocupado, alPlantar, aviso, monedas, hib
           />
         ))}
       </div>
+      {Object.values(semillasCruce).some((n) => n > 0) && (
+        <>
+          <p className={styles.ayuda}>
+            Semillas de cruce: se plantan gratis y tienen un 50 % más de opciones de fenotipo raro.
+          </p>
+          <div className={styles.rejilla}>
+            {Object.entries(semillasCruce)
+              .filter(([id, n]) => n > 0 && VARIEDAD_POR_ID[id])
+              .map(([id, n]) => {
+                const v = VARIEDAD_POR_ID[id];
+                const activo = enUso === null && !ocupado;
+                return (
+                  <article key={id} className={styles.tarjeta} style={marco("tarjeta", "var(--u)")}>
+                    <div
+                      className={`pixel ${styles.imagen}`}
+                      style={{ backgroundImage: `url(/assets/sprites/tpp-variedad-${v.hoja}-1x.png)` }}
+                    />
+                    <h3 className={styles.nombre}>{v.nombre}</h3>
+                    <p className={styles.descripcion}>{n} semillas de cruce.</p>
+                    <button
+                      type="button"
+                      className={styles.boton}
+                      style={{
+                        ...(activo ? marco("boton", "var(--u)") : marco("boton_desactivado", "var(--u)")),
+                        color: activo ? "#1c1626" : "#4b3a5e",
+                      }}
+                      disabled={!activo}
+                      onClick={() => alPlantarCruce?.(id)}
+                    >
+                      {enUso !== null ? "Planta viva" : "Plantar"}
+                    </button>
+                  </article>
+                );
+              })}
+          </div>
+        </>
+      )}
       {hibridas.length > 0 && (
         <>
           <p className={styles.ayuda}>Tus semillas híbridas, de cruces y premios.</p>

@@ -13,7 +13,7 @@ import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
 import type { DatosEventos, DatosPase } from "@/lib/temporada";
 import type { DatosAmigos, DatosRegalos, DatosVisita, PerfilPublicoDatos, Resultado as Jugadores } from "@/lib/amigos";
 import type { DatosMercado } from "@/lib/mercado";
-import type { RespuestaCruce } from "@/lib/cruces";
+import type { Libro, RespuestaCruce } from "@/lib/cruces";
 import type {
   Accion,
   AjustesJuego,
@@ -45,7 +45,7 @@ export async function hacerAccion(accion: Accion): Promise<RespuestaAccion | { o
 
 export async function plantarSemilla(
   variedad = "clasica",
-  tipo: TipoSemilla = "foto",
+  tipo: TipoSemilla | "cruce" = "foto",
 ): Promise<RespuestaAccion | { ok: false; error: string }> {
   const supabase = await crearClienteServidor();
   const { data, error } = await supabase.rpc("tpp_plantar", { p_variedad: variedad, p_tipo: tipo });
@@ -576,4 +576,18 @@ export async function enviarMensaje(
   });
   if (error || !data) return { ok: false, error: "fallo" };
   return data as { ok: true; quedan: number } | { ok: false; error: "texto" | "limite" | "tipo" };
+}
+
+export async function obtenerLibro(): Promise<Libro | null> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_libro");
+  if (error || !data) return null;
+  return data as Libro;
+}
+
+export async function reclamarTrofeo(id: string): Promise<(Libro & { ok: boolean; error?: string }) | null> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_reclamar_trofeo", { p_id: id });
+  if (error || !data) return null;
+  return data as Libro & { ok: boolean; error?: string };
 }

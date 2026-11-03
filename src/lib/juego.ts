@@ -126,7 +126,7 @@ export interface PerfilJuego {
   anuncios: { restantes: number; monedas: number; recuperar: boolean };
   huecos: HuecosJuego;
   /** Semillas híbridas que tiene el jugador y sus híbridos propios. */
-  hibridas: { semillas: string[]; propias: HibridoPropio[] };
+  hibridas: { semillas: string[]; propias: HibridoPropio[]; cruce?: Record<string, number> };
   /** Veces que ha renacido y bonos de prestigio comprados. */
   prestigio: { n: number; bonos: Record<string, boolean> };
   /** Avisos sin leer en la campana y misiones completadas por reclamar. */
@@ -172,6 +172,8 @@ export interface PlantaJuego {
   tipo: TipoSemilla;
   /** Sexo de la planta; solo se sabe desde la prefloración (fase 6). */
   sexo: "hembra" | "macho" | null;
+  fenotipo?: string | null;
+  cruzada?: boolean;
   /** Causa del daño que sufre ahora, si lo hay. */
   causa: CausaDano | null;
   /** Si la planta sigue viva, ha muerto o ya se ha cosechado. */
@@ -257,7 +259,11 @@ export const MENSAJES_ERROR: Record<string, string> = {
   confirmacion: "Escribe RENACER para confirmar.",
   sin_semilla: "Todavía no tienes la semilla de esa variedad.",
   cruce_en_curso: "Ya tienes un cruce en marcha.",
-  cosecha_invalida: "Esas plantas no sirven para cruzar.",
+  cosecha_invalida:
+    "Esas plantas no sirven para cruzar: la madre debe ser hembra en prefloración y el padre un macho soltando polen.",
+  trofeo_desconocido: "Ese trofeo no existe.",
+  trofeo_reclamado: "Ya has reclamado ese trofeo.",
+  trofeo_no_listo: "Todavía no has cumplido ese trofeo.",
   cruce_no_listo: "El cruce todavía no ha terminado.",
   sin_cruce: "No hay ningún cruce en marcha.",
   nombre_invalido: "El nombre solo puede tener letras y espacios (hasta 20).",

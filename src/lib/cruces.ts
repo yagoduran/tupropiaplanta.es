@@ -1,29 +1,38 @@
 import type { Rareza } from "./variedades";
 
-export interface CosechaCruce {
+/** Planta viva que puede ser madre o padre. */
+export interface PlantaCruce {
   id: string;
   variedad: string;
+  hueco: number;
+  fase: number;
   salud: number;
-  plantada: string;
+  fenotipo: string | null;
+  /** Precio de semilla de su variedad, para el coste del cruce. */
+  semilla: number;
 }
 
 export interface ResultadoCruce {
+  tipo?: "pura" | "conocido" | "f1";
   id: string;
-  /** Receta fija de la colección (su nombre sale de la lista de variedades). */
+  /** Variedad fija de la colección (su nombre sale de la lista de variedades). */
   fija: boolean;
-  nombre: string | null;
-  rareza: Rareza;
-  hoja: string;
+  nombre?: string | null;
+  rareza?: Rareza;
+  hoja?: string;
   /** Si es una variedad que el jugador no tenía. */
-  nuevo: boolean;
-  recompensa?: number;
-  ciclo?: number;
-  desgaste?: number;
-  sabor?: number;
+  nuevo?: boolean;
+  /** Pareja ordenada «a+b», para el libro. */
+  par?: string;
+  coste?: number;
+  semillas?: number;
+  /** Ficha de la F1. */
+  ficha?: Record<string, unknown> & { hoja?: string; fases?: number[] };
 }
 
 export interface DatosCruces {
-  cosechas: CosechaCruce[];
+  madres: PlantaCruce[];
+  padres: PlantaCruce[];
   cruce: {
     estado: "en_curso" | "abierto";
     variedad_a: string;
@@ -36,23 +45,23 @@ export interface DatosCruces {
 
 export type RespuestaCruce = DatosCruces & { ok: boolean; error?: string };
 
-/** Minutos de un cruce y precio de acelerarlo. Tienen que coincidir con la base de datos. */
-export const MINUTOS_CRUCE = 270;
+export interface Trofeo {
+  id: string;
+  listo: boolean;
+  reclamado: boolean;
+}
+
+export interface Libro {
+  variedades: string[];
+  f1: string[];
+  fenotipos: string[];
+  total: number;
+  trofeos: Trofeo[];
+}
+
+/** Horas de un cruce y precio de acelerarlo. Tienen que coincidir con la base de datos. */
+export const HORAS_CRUCE = 24;
 export const PRECIO_ACELERAR = 150;
 
-const ORDEN: Rareza[] = ["comun", "poco_comun", "rara", "epica", "legendaria"];
-
-/** Probabilidad de cada rareza del resultado: la mejor de las dos plantas (62 %), una más (30 %) o dos más (8 %). */
-export function rarezasPosibles(a: Rareza, b: Rareza): { rareza: Rareza; pct: number }[] {
-  const base = Math.max(ORDEN.indexOf(a), ORDEN.indexOf(b));
-  const mapa = new Map<Rareza, number>();
-  [
-    [0, 62],
-    [1, 30],
-    [2, 8],
-  ].forEach(([extra, pct]) => {
-    const r = ORDEN[Math.min(4, base + extra)];
-    mapa.set(r, (mapa.get(r) ?? 0) + pct);
-  });
-  return [...mapa].map(([rareza, pct]) => ({ rareza, pct }));
-}
+/** Coste de un cruce: el 40 % de la suma de las semillas, a decenas. */
+export const costeCruce = (a: number, b: number) => Math.round((0.4 * (a + b)) / 10) * 10;

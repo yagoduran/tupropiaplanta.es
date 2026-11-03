@@ -1,5 +1,6 @@
 "use client";
 
+import { FENOTIPO_POR_ID, hojaFenotipo } from "@/lib/genetica";
 import { useFotograma } from "@/lib/animacion";
 import { ESTADOS, type Estado } from "@/lib/diseno";
 import type { CausaDano } from "@/lib/juego";
@@ -59,6 +60,8 @@ interface Props {
   maceta?: string;
   /** Si es macho, usa su propia hoja. */
   sexo?: "hembra" | "macho" | null;
+  /** Fenotipo raro (black, resina, enana, fantasma, brasa): usa la hoja de fenotipos de su familia. */
+  fenotipo?: string | null;
   /** Causa del daño; quemada y ciclo de luz roto tienen su propio dibujo. */
   causa?: CausaDano | null;
   /** Calidad prevista (1-5). En las fases 7 y 8 la clásica cambia de aspecto según ella. */
@@ -73,6 +76,7 @@ export function Planta({
   variedad = "clasica",
   maceta = "maceta_plastico",
   sexo,
+  fenotipo,
   causa,
   calidad,
 }: Props) {
@@ -112,13 +116,17 @@ export function Planta({
     (fase === 7 || fase === 8) &&
     !!calidad &&
     calidad !== 3;
-  const hojaFinal = dano
-    ? { src: "/assets/sprites/tpp-estados-nuevos-1x.png", columnas: 2, filas: 6 }
-    : porCalidad
-      ? { src: "/assets/plagas/tpp-planta-calidad-1x.png", columnas: 5, filas: 2 }
-      : hoja;
-  const columnaFinal = dano ? columnaDano : porCalidad ? calidad! - 1 : columna;
-  const fila = dano ? fase - 3 : porCalidad ? fase - 7 : fase - 1;
+  const filaFenotipo = fenotipo && !macho && estado === "sana" && !dano ? FENOTIPO_POR_ID[fenotipo]?.fila : undefined;
+  const hojaFinal =
+    filaFenotipo !== undefined
+      ? { src: `/assets/genetica/tpp-gen-fenotipos-${hojaFenotipo(hojaVariedad)}-1x.png`, columnas: 8, filas: 5 }
+      : dano
+        ? { src: "/assets/sprites/tpp-estados-nuevos-1x.png", columnas: 2, filas: 6 }
+        : porCalidad
+          ? { src: "/assets/plagas/tpp-planta-calidad-1x.png", columnas: 5, filas: 2 }
+          : hoja;
+  const columnaFinal = filaFenotipo !== undefined ? fase - 1 : dano ? columnaDano : porCalidad ? calidad! - 1 : columna;
+  const fila = filaFenotipo !== undefined ? filaFenotipo : dano ? fase - 3 : porCalidad ? fase - 7 : fase - 1;
   const hojaPot = hojaMaceta(maceta);
 
   return (

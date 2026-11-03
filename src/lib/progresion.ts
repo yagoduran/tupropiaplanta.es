@@ -121,6 +121,7 @@ export const TITULOS: { categoria: string; titulos: Titulo[] }[] = [
       { id: "curioso", nombre: "Curioso de la genética", requisito: "Haz tu primer cruce" },
       { id: "genetista", nombre: "Genetista", requisito: "Haz 50 cruces" },
       { id: "creador", nombre: "Creador de variedades", requisito: "Descubre 10 híbridos" },
+      { id: "cepas", nombre: "Coleccionista de cepas", requisito: "Descubre las 16 variedades del libro de cepas" },
     ],
   },
   {
