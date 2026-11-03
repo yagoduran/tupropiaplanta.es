@@ -20,6 +20,7 @@ const OPCIONES_MENU = [
   ["inventario", "Inventario"],
   ["estadisticas", "Estadísticas"],
   ["coleccion", "Colección"],
+  ["fichas", "Variedades"],
   ["titulos", "Títulos y marcos"],
   ["misiones", "Misiones"],
   ["encargos", "Móvil"],

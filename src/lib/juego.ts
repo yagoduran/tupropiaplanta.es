@@ -20,6 +20,7 @@ export type PantallaJuego =
   | "inventario"
   | "estadisticas"
   | "coleccion"
+  | "fichas"
   | "titulos"
   | "desafios"
   | "armario"

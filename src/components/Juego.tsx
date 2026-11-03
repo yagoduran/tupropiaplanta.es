@@ -165,6 +165,7 @@ import { Plaga } from "./Plaga";
 import { Decoracion } from "./Decoracion";
 import { Logros } from "./Logros";
 import { Coleccion } from "./Coleccion";
+import { Fichas } from "./Fichas";
 import { Desafios } from "./Desafios";
 import { Estadisticas } from "./Estadisticas";
 import { Inventario } from "./Inventario";
@@ -497,6 +498,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "inventario" ||
       id === "estadisticas" ||
       id === "coleccion" ||
+      id === "fichas" ||
       id === "titulos" ||
       id === "desafios" ||
       id === "armario" ||
@@ -1383,6 +1385,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           <Estadisticas datos={estadisticas} />
         ) : pantalla === "coleccion" ? (
           <Coleccion datos={progresion} ocupado={enCurso} alReclamar={reclamarPremioColeccion} />
+        ) : pantalla === "fichas" ? (
+          <Fichas nivel={perfil.nivel} />
         ) : pantalla === "prestigio" ? (
           <Prestigio datos={prestigio} ocupado={enCurso} alComprar={comprarBono} alRenacer={renacerAhora} />
         ) : pantalla === "laboratorio" ? (
