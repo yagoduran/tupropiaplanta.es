@@ -634,15 +634,24 @@ async function accionProcesado(funcion: string, args: Record<string, unknown>): 
   if (error || !data) return fallo(error?.message);
   return data as RespuestaAccion;
 }
-export const anadirReceta = (receta: string) => accionProcesado("tpp_procesado_anadir", { p_receta: receta });
-export const quitarReceta = (puesto: string, idx: number) =>
-  accionProcesado("tpp_procesado_quitar", { p_puesto: puesto, p_idx: idx });
-export const recogerPuesto = (puesto: string) => accionProcesado("tpp_procesado_recoger", { p_puesto: puesto });
-export const venderProcesado = (producto: string, cantidad: number) =>
-  accionProcesado("tpp_procesado_vender", { p_producto: producto, p_cantidad: cantidad });
-export const comprarMasa = (masa: string, cantidad: number) =>
-  accionProcesado("tpp_procesado_comprar_masa", { p_masa: masa, p_cantidad: cantidad });
-export const entregarEncargoEspecial = (clave: string) => accionProcesado("tpp_procesado_entregar", { p_clave: clave });
+export async function anadirReceta(receta: string): Promise<Resultado> {
+  return accionProcesado("tpp_procesado_anadir", { p_receta: receta });
+}
+export async function quitarReceta(puesto: string, idx: number): Promise<Resultado> {
+  return accionProcesado("tpp_procesado_quitar", { p_puesto: puesto, p_idx: idx });
+}
+export async function recogerPuesto(puesto: string): Promise<Resultado> {
+  return accionProcesado("tpp_procesado_recoger", { p_puesto: puesto });
+}
+export async function venderProcesado(producto: string, cantidad: number): Promise<Resultado> {
+  return accionProcesado("tpp_procesado_vender", { p_producto: producto, p_cantidad: cantidad });
+}
+export async function comprarMasa(masa: string, cantidad: number): Promise<Resultado> {
+  return accionProcesado("tpp_procesado_comprar_masa", { p_masa: masa, p_cantidad: cantidad });
+}
+export async function entregarEncargoEspecial(clave: string): Promise<Resultado> {
+  return accionProcesado("tpp_procesado_entregar", { p_clave: clave });
+}
 
 export const obtenerArmario = async () => llamar<EstadoArmario>("tpp_armario");
 export async function accionArmario(accion: string, valor: string): Promise<Resultado> {
