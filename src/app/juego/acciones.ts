@@ -11,6 +11,7 @@ import type { DatosSecado } from "@/lib/secado";
 import type { DatosVuelta } from "@/lib/vuelta";
 import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
 import type { DatosEventos, DatosPase } from "@/lib/temporada";
+import type { DatosClientes } from "@/lib/clientes";
 import type { DatosMercadoSemanal } from "@/lib/mercadoSemanal";
 import type { DatosAmigos, DatosRegalos, DatosVisita, PerfilPublicoDatos, Resultado as Jugadores } from "@/lib/amigos";
 import type { DatosMercado } from "@/lib/mercado";
@@ -229,6 +230,21 @@ export const obtenerEventos = async () => llamar<DatosEventos>("tpp_evento");
 
 /** Mercado semanal: cambios de la semana, últimas 8 semanas y gramos guardados. */
 export const obtenerMercadoSemanal = async () => llamar<DatosMercadoSemanal>("tpp_mercado_semanal");
+
+/** Clientes con historia y reputación (8i). */
+export const obtenerClientes = async () => llamar<DatosClientes>("tpp_clientes");
+export async function empezarHistoria(clave: string): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_empezar_historia", { p_clave: clave });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+export async function entregarHistoria(clave: string): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_entregar_historia", { p_clave: clave });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
 export const obtenerPase = async () => llamar<DatosPase>("tpp_pase");
 
 type RespuestaPase = (RespuestaAccion & Partial<DatosPase>) | { ok: false; error: string };

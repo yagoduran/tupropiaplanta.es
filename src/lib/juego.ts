@@ -39,6 +39,7 @@ export type PantallaJuego =
   | "pase"
   | "mercado"
   | "mercado_semanal"
+  | "clientes"
   | "abonos"
   | "avisos"
   | "secado"
@@ -239,6 +240,11 @@ export const ESPERA_TOTAL: Record<Accion, number> = {
 
 export const MENSAJES_ERROR: Record<string, string> = {
   espera: "Todavía no puedes repetir eso. Espera un poco.",
+  limite_historias: "Ya llevas todas las historias que puedes a la vez. Termina una o sube de rango.",
+  faltan_requisitos: "Todavía no cumples lo que pide este capítulo.",
+  historia_sin_empezar: "Primero tienes que empezar esa historia.",
+  historia_terminada: "Esa historia ya está terminada.",
+  historia_desconocida: "Esa historia no existe.",
   sin_gramos: "No tienes gramos de esa variedad.",
   fase_insuficiente: "Tu planta aún no está lista para eso.",
   sin_planta: "No tienes ninguna planta. Planta una semilla.",

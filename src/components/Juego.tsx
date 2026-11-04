@@ -23,6 +23,9 @@ import {
   obtenerAmigos,
   obtenerEventos,
   obtenerMercadoSemanal,
+  obtenerClientes,
+  empezarHistoria,
+  entregarHistoria,
   obtenerPase,
   reclamarPase,
   comprarPase,
@@ -144,10 +147,12 @@ import type { DatosEncargos } from "@/lib/encargos";
 import { Amigos } from "./Amigos";
 import { Visita } from "./Visita";
 import { Eventos } from "./Eventos";
+import { Clientes } from "./Clientes";
 import { MercadoSemanal } from "./MercadoSemanal";
 import { Pase } from "./Pase";
 import type { DatosEventos, DatosPase } from "@/lib/temporada";
 import type { DatosMercadoSemanal } from "@/lib/mercadoSemanal";
+import type { DatosClientes } from "@/lib/clientes";
 import { Regalo } from "./Regalo";
 import { Mercado } from "./Mercado";
 import type { DatosMercado } from "@/lib/mercado";
@@ -252,6 +257,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [regaloError, setRegaloError] = useState<string | null>(null);
   const [eventos, setEventos] = useState<DatosEventos | null>(null);
   const [mercadoSemanal, setMercadoSemanal] = useState<DatosMercadoSemanal | null>(null);
+  const [clientes, setClientes] = useState<DatosClientes | null>(null);
   const [pase, setPase] = useState<DatosPase | null>(null);
   const [vistaDe, setVistaDe] = useState("");
   const [visita, setVisita] = useState<DatosVisita | null>(null);
@@ -523,6 +529,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "eventos" ||
       id === "mercado" ||
       id === "mercado_semanal" ||
+      id === "clientes" ||
       id === "pase" ||
       id === "laboratorio" ||
       id === "prestigio" ||
@@ -558,6 +565,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         obtenerEventos()
           .then(setEventos)
           .catch(() => setEventos(null));
+      if (id === "clientes")
+        obtenerClientes()
+          .then((r) => setClientes(r && { ...r, recibido: Date.now() }))
+          .catch(() => setClientes(null));
       if (id === "mercado_semanal") {
         obtenerMercadoSemanal()
           .then((r) => setMercadoSemanal(r && { ...r, recibido: Date.now() }))
@@ -708,6 +719,29 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         obtenerMercadoSemanal()
           .then((m) => setMercadoSemanal(m && { ...m, recibido: Date.now() }))
           .catch(() => {});
+    });
+  };
+
+  const recargarClientes = () =>
+    obtenerClientes()
+      .then((r) => setClientes(r && { ...r, recibido: Date.now() }))
+      .catch(() => {});
+
+  const empezarLaHistoria = (clave: string) => {
+    ejecutar(async () => {
+      const r = await empezarHistoria(clave);
+      sonar(r.ok ? "clic" : "error");
+      tratar(r, { texto: "Historia empezada", icono: "logros" });
+      await recargarClientes();
+    });
+  };
+
+  const entregarLaHistoria = (clave: string) => {
+    ejecutar(async () => {
+      const r = await entregarHistoria(clave);
+      sonar(r.ok ? "cofre" : "error");
+      tratar(r, { texto: "¡Capítulo entregado!", icono: "logros" });
+      await recargarClientes();
     });
   };
 
@@ -1572,6 +1606,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           />
         ) : pantalla === "eventos" ? (
           <Eventos datos={eventos} />
+        ) : pantalla === "clientes" ? (
+          <Clientes datos={clientes} ocupado={enCurso} alEmpezar={empezarLaHistoria} alEntregar={entregarLaHistoria} />
         ) : pantalla === "mercado_semanal" ? (
           <MercadoSemanal
             datos={mercadoSemanal}
