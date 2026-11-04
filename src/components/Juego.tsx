@@ -26,6 +26,8 @@ import {
   obtenerClientes,
   obtenerNegro,
   obtenerProcesado,
+  obtenerArmario,
+  accionArmario,
   anadirReceta,
   quitarReceta,
   recogerPuesto,
@@ -164,6 +166,7 @@ import type { DatosEventos, DatosPase } from "@/lib/temporada";
 import type { DatosMercadoSemanal } from "@/lib/mercadoSemanal";
 import type { DatosClientes, DatosNegro } from "@/lib/clientes";
 import type { DatosProcesado, Puesto } from "@/lib/procesado";
+import type { EstadoArmario } from "@/lib/armario";
 import { MesaProcesado } from "./MesaProcesado";
 import { Regalo } from "./Regalo";
 import { Mercado } from "./Mercado";
@@ -272,6 +275,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [clientes, setClientes] = useState<DatosClientes | null>(null);
   const [negro, setNegro] = useState<DatosNegro | null>(null);
   const [procesado, setProcesado] = useState<DatosProcesado | null>(null);
+  const [armario, setArmario] = useState<EstadoArmario | null>(null);
   const [pase, setPase] = useState<DatosPase | null>(null);
   const [vistaDe, setVistaDe] = useState("");
   const [visita, setVisita] = useState<DatosVisita | null>(null);
@@ -588,6 +592,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           .then((r) => setNegro(r && { ...r, recibido: Date.now() }))
           .catch(() => setNegro(null));
       }
+      if (id === "armario")
+        obtenerArmario()
+          .then(setArmario)
+          .catch(() => setArmario(null));
       if (id === "procesado")
         obtenerProcesado()
           .then((r) => setProcesado(r && { ...r, recibido: Date.now() }))
@@ -1231,6 +1239,19 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       const r = await comprarMejora(rama);
       sonar(r.ok ? "comprar" : "compra-rechazada");
       tratar(r, { texto: "¡Mejora comprada!", icono: "tienda" });
+      await obtenerArmario().then(setArmario);
+    });
+  };
+
+  const accionDelArmario = (accion: string, valor: string) => {
+    ejecutar(async () => {
+      const r = await accionArmario(accion, valor);
+      sonar(r.ok ? (accion === "luz_comprar" ? "comprar" : "pestana") : "compra-rechazada");
+      tratar(r, {
+        texto: accion === "luz_comprar" ? "¡Luz comprada!" : accion === "luz_equipar" ? "Luz cambiada." : "Hecho.",
+        icono: "luz",
+      });
+      await obtenerArmario().then(setArmario);
     });
   };
 
@@ -1812,7 +1833,17 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         ) : pantalla === "maestria" ? (
           <Maestria datos={maestria} />
         ) : pantalla === "armario" ? (
-          <Armario perfil={perfil} ocupado={enCurso} alComprar={mejorar} />
+          <Armario
+            perfil={perfil}
+            estado={armario}
+            ocupado={enCurso}
+            alComprar={mejorar}
+            alAccion={accionDelArmario}
+            alPulsarSitio={(s) => {
+              elegirPantalla(s.vida === "viva" ? "cultivo" : "semillas");
+              cambiarHueco(s.hueco);
+            }}
+          />
         ) : pantalla === "habitaciones" ? (
           <>
             <Hogar
@@ -1822,6 +1853,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
                 elegirPantalla(destino);
                 cambiarHueco(hueco);
               }}
+              alAbrirArmario={() => elegirPantalla("armario")}
               alMover={moverPlantaA}
               alDesbloquear={desbloquearHabitacion}
             />

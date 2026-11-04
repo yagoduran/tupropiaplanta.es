@@ -76,7 +76,8 @@ export function avisosArmario(e: EstadoArmario, plagas: number): string[] {
   const l: string[] = [];
   if (e.clima.calor) l.push(`Hace demasiado calor (${e.clima.temp} °C). Enciende el extractor o abre las puertas.`);
   if (e.clima.frio) l.push(`Hace frío (${e.clima.temp} °C). Cierra las puertas o cambia a una luz más potente.`);
-  if (e.clima.humedo) l.push(`Humedad alta (${e.clima.hum} %): riesgo de hongos. Enciende el extractor o el ventilador.`);
+  if (e.clima.humedo)
+    l.push(`Humedad alta (${e.clima.hum} %): riesgo de hongos. Enciende el extractor o el ventilador.`);
   if (plagas > 0) l.push(plagas === 1 ? "Hay una planta con plaga." : `Hay ${plagas} plantas con plaga.`);
   if (e.clima.olor >= 2) l.push("Se nota el olor desde fuera. Mejora el extractor o cierra las puertas.");
   return l;

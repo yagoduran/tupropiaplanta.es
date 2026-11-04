@@ -1,0 +1,334 @@
+.escena {
+  --k: 3;
+  position: relative;
+  align-self: center;
+  max-width: 100%;
+  image-rendering: pixelated;
+}
+
+.pieza {
+  position: absolute;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.cuerpo {
+  position: absolute;
+  left: 0;
+  width: 100%;
+}
+
+.interior {
+  position: absolute;
+  left: calc(16px * var(--k));
+  top: calc(16px * var(--k));
+  overflow: hidden;
+  background: repeating-linear-gradient(
+    90deg,
+    #dfe5e8 0,
+    #dfe5e8 calc(6px * var(--k)),
+    #c9d2d7 calc(6px * var(--k)),
+    #c9d2d7 calc(12px * var(--k))
+  );
+}
+
+.marco {
+  position: absolute;
+  inset: 0;
+  border-style: solid;
+  border-image: url(/assets/armario/tpp-armario-marco-16-1x.png) 16 repeat;
+  pointer-events: none;
+}
+
+.balda {
+  position: absolute;
+  left: 0;
+}
+
+.bandeja {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: #3a2f46;
+  border-top: calc(2px * var(--k)) solid #1c1626;
+}
+
+.lectura {
+  position: absolute;
+  font-family: var(--fuente-pixel);
+  font-size: calc(4px * var(--k));
+  line-height: 1;
+  color: #c9f26b;
+  pointer-events: none;
+}
+
+.ranura {
+  position: absolute;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.ranura:disabled {
+  cursor: default;
+}
+
+.ranura:focus-visible {
+  outline: 3px solid #e0b43a;
+  outline-offset: -3px;
+}
+
+.plaga {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: calc(10px * var(--k));
+  height: calc(10px * var(--k));
+  font-family: var(--fuente-pixel);
+  font-size: calc(6px * var(--k));
+  font-weight: 700;
+  color: #1c1626;
+  background: #f7b072;
+  border: calc(1px * var(--k)) solid #1c1626;
+  pointer-events: none;
+}
+
+.tinte {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.puerta {
+  position: absolute;
+  inset: 0;
+  border-style: solid;
+  border-image: url(/assets/armario/tpp-armario-puerta-16-1x.png) 16 fill repeat;
+}
+
+.juntaLuz {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 1px);
+  background: #ffe9a8;
+  box-shadow: 0 0 6px #ffe9a8;
+}
+
+/* Pantalla */
+.contenedor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  width: 100%;
+}
+
+.cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--gap);
+}
+
+.titulo {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-title);
+  font-weight: 700;
+  line-height: 1;
+  color: #f6eed6;
+}
+
+.resumen {
+  font-size: var(--f-small);
+  color: #f6eed6;
+}
+
+.aviso {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: calc(var(--u) * 3) calc(var(--u) * 4);
+  font-size: var(--f-small);
+  color: #1c1626;
+  background: #f7b072;
+  border: calc(var(--u) * 2) solid #1c1626;
+}
+
+.avisoCuenta {
+  margin-left: auto;
+  font-family: var(--fuente-pixel);
+  white-space: nowrap;
+}
+
+.avisoBoton {
+  min-height: 36px;
+  padding: 0 10px;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-small);
+  color: #1c1626;
+  background: #f6eed6;
+  border: 2px solid #1c1626;
+  cursor: pointer;
+}
+
+.estadisticas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--gap);
+}
+
+.dato {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: calc(var(--u) * 3);
+  font-size: var(--f-small);
+  color: #1c1626;
+}
+
+.datoCab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.75;
+}
+
+.datoValor {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+  font-weight: 700;
+}
+
+.datoMal {
+  color: #b3261e;
+}
+
+.icono {
+  display: inline-block;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  background: url(/assets/armario/tpp-armario-iconos-16-1x.png) no-repeat;
+  background-size: 256px 16px;
+  image-rendering: pixelated;
+  transform: scale(1.5);
+  transform-origin: left center;
+  margin-right: 8px;
+}
+
+.equipo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--gap);
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  padding: calc(var(--u) * 4);
+  color: #1c1626;
+}
+
+.subtitulo {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+  font-weight: 700;
+}
+
+.interruptores {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.interruptor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: calc(var(--u) * 2) calc(var(--u) * 3) calc(var(--u) * 3);
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-small);
+  font-weight: 700;
+  color: #1c1626;
+  cursor: pointer;
+}
+
+.interruptor:disabled,
+.luzBoton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.luces {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.luzFila {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--f-small);
+}
+
+.luzMiniatura {
+  width: 48px;
+  height: 48px;
+  overflow: hidden;
+  background: #3a2f46;
+  border: 2px solid #1c1626;
+}
+
+.luzMiniatura > span {
+  display: block;
+  width: 64px;
+  height: 64px;
+  background: url(/assets/armario/tpp-armario-luces-64-1x.png) no-repeat;
+  background-size: 192px 256px;
+  image-rendering: pixelated;
+  transform: translate(-8px, -4px);
+}
+
+.luzNombre {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.luzBoton {
+  min-height: 44px;
+  padding: calc(var(--u) * 2) calc(var(--u) * 4) calc(var(--u) * 3);
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-small);
+  font-weight: 700;
+  color: #1c1626;
+  cursor: pointer;
+}
+
+@media (max-width: 1039px) {
+  .escena {
+    --k: 2;
+  }
+
+  .interruptores {
+    grid-template-columns: 1fr;
+  }
+
+  .luzFila {
+    grid-template-columns: 48px minmax(0, 1fr);
+  }
+
+  .luzFila > :last-child {
+    grid-column: 1 / -1;
+  }
+}
