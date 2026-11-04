@@ -1921,6 +1921,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             ocupado={enCurso}
             alElegirHueco={cambiarHueco}
             alAbrir={elegirPantalla}
+            misHabitaciones={perfil.casa.habitaciones}
+            alIrAHabitacion={irAHabitacion}
           >
             <SelectorHuecos
               huecos={perfil.huecos}

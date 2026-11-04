@@ -81,3 +81,41 @@
 .lienzo div {
   background-repeat: no-repeat;
 }
+
+.habitaciones {
+  position: absolute;
+  right: calc(var(--u) * 4);
+  bottom: calc(var(--u) * 4);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 2);
+  padding: calc(var(--u) * 2);
+  color: #f6eed6;
+  background: #1c1626;
+  border: calc(var(--u)) solid #f6eed6;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+  font-weight: 700;
+}
+
+.nombreHab {
+  min-width: 7ch;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.flecha {
+  min-width: 44px;
+  min-height: 44px;
+  color: #1c1626;
+  background: #f6eed6;
+  border: calc(var(--u)) solid #1c1626;
+  font: inherit;
+  cursor: pointer;
+}
+
+.flecha:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
