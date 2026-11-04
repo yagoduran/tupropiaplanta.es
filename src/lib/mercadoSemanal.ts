@@ -68,11 +68,7 @@ export const NOTICIAS: Record<string, [number, string, string]> = {
   ],
   cristal: [7, "Feria de coleccionistas en el centro.", "Cristal Helado. Pago bastante más que el mes pasado."],
   clasica: [0, "Fiestas del barrio con verbena en la plaza.", "Con las fiestas todo el mundo quiere la de siempre."],
-  aurora: [
-    8,
-    "Exposición de arte en la nave de la estación.",
-    "Los artistas solo hablan de Aurora esta semana.",
-  ],
+  aurora: [8, "Exposición de arte en la nave de la estación.", "Los artistas solo hablan de Aurora esta semana."],
   "sol-medianoche": [11, "Gira de conciertos de rock por la provincia.", "Para la gira, Sol de Medianoche. Mucha."],
   "menta-nocturna": [
     4,
@@ -96,7 +92,8 @@ export const NOTICIA_GENERICA: [number, string, string] = [12, "Rumores en el ba
 /** Barra del gráfico de semanas: 60 % = media altura. Sin cambio, una raya dorada de 2 px. */
 export function barra(p: number | undefined, actual: boolean, alto: number) {
   const mitad = alto / 2;
-  if (p === undefined || p === 0) return { arriba: mitad - 1, alto: 2, color: p === undefined ? "transparent" : "#d9a43a" };
+  if (p === undefined || p === 0)
+    return { arriba: mitad - 1, alto: 2, color: p === undefined ? "transparent" : "#d9a43a" };
   const h = Math.max(2, Math.round(Math.min(1, Math.abs(p) / 60) * mitad));
   return {
     arriba: p > 0 ? mitad - h : mitad,
