@@ -253,3 +253,12 @@ export const COL_QUIETO = 0;
 export const COL_CAMINAR = [1, 2, 3, 4];
 export const COL_ACCION = { regar: 5, abonar: 7, cosechar: 9 } as const;
 export type AccionAvatar = keyof typeof COL_ACCION;
+
+/** ¿Este mueble, al dibujarse delante, tapa a una planta que está detrás? */
+export function tapaPlanta(mu: Casilla, planta: Casilla): boolean {
+  if (profundidad(mu.x, mu.y) <= profundidad(planta.x, planta.y)) return false;
+  const m = esquina(mu.x, mu.y);
+  const p = centro(planta.x, planta.y);
+  // Zona que ocupa de verdad cada dibujo (sin el aire transparente de la hoja).
+  return m.x < p.x + 12 && p.x - 12 < m.x + 48 && m.y - 72 < p.y + 4 && p.y - 44 < m.y + 24;
+}

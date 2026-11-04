@@ -1922,6 +1922,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             alElegirHueco={cambiarHueco}
             alAbrir={elegirPantalla}
             misHabitaciones={perfil.casa.habitaciones}
+            alAbrirPlanta={() => setVista("cultivo")}
             alIrAHabitacion={(id) =>
               perfil.casa.habitaciones.includes(id) ? irAHabitacion(id) : elegirPantalla("habitaciones")
             }
