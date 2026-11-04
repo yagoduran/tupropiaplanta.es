@@ -50,7 +50,7 @@ export interface DatosEncargos {
   siguiente_en: number | null;
   /** Calidad media (en estrellas) de los gramos guardados de cada variedad. */
   calidad?: Record<string, number>;
-  /** Reputación (0 a 100) con cada cliente, por índice. Sin dato es 50. */
+  /** Reputación (0 a 1.000) con cada cliente, por índice. Sin dato es 500. */
   reputacion?: Record<string, number>;
   /** Últimos encargos entregados o caducados. */
   historial?: EncargoHistorial[];
