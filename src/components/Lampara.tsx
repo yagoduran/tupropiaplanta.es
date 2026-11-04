@@ -8,7 +8,7 @@ const FOTOGRAMAS = 4;
 const FOTOGRAMA_MS = 220;
 
 // Fila de cada luz en la hoja de luces: la columna 0 es apagada y de la 1 a la 4 está encendida.
-const FILA_LUZ: Record<string, number> = { bombilla: 0, fluorescente: 1, led: 2, led_pro: 3 };
+const FILA_LUZ: Record<string, number> = { barra_led: 0, panel_led: 2, hps: 1, quantum: 3 };
 
 /** Lámpara de la escena según la luz equipada: encendida y animada, o apagada (de noche). */
 export function Lampara({ luz, apagada = false }: { luz: string; apagada?: boolean }) {
