@@ -196,6 +196,7 @@ import { Fichas } from "./Fichas";
 import { Desafios } from "./Desafios";
 import { Estadisticas } from "./Estadisticas";
 import { Inventario } from "./Inventario";
+import { InventarioRapido } from "./InventarioRapido";
 import { Hogar } from "./Hogar";
 import { MisPlantas } from "./MisPlantas";
 import { Perfil } from "./Perfil";
@@ -248,6 +249,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [anuncioRecuperar, setAnuncioRecuperar] = useState(false);
   const [regando, setRegando] = useState(false);
   const [vista, setVista] = useState<"casa" | "cultivo">("casa");
+  const [invRapido, setInvRapido] = useState(false);
   const casaIso = useRef<CasaIsoApi>(null);
   const [cofre, setCofre] = useState<PremioCofre | null>(null);
   const [roboVisto, setRoboVisto] = useState<string | null>(null);
@@ -1416,6 +1418,30 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     </button>
   );
 
+  const botonInventario = (
+    <button
+      type="button"
+      className={styles.vista}
+      style={{ ...marco("boton_secundario", "var(--u)"), top: "calc(var(--u) * 16)" }}
+      aria-expanded={invRapido}
+      onClick={() => setInvRapido((v) => !v)}
+    >
+      Inventario
+    </button>
+  );
+  const panelInventario = invRapido ? (
+    <InventarioRapido
+      perfil={perfil}
+      ocupado={enCurso}
+      alVender={venderAlmacen}
+      alAbrirCompleto={() => {
+        setInvRapido(false);
+        elegirPantalla("inventario");
+      }}
+      alCerrar={() => setInvRapido(false)}
+    />
+  ) : null;
+
   const superpuestos = (
     <>
       {aviso ? (
@@ -1937,6 +1963,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             />
             {superpuestos}
             {botonVista}
+            {botonInventario}
+            {panelInventario}
           </CasaIso>
         ) : (
           <Escena luz={perfil.equipo.luz} habitacion={perfil.casa.habitacion}>
@@ -1975,6 +2003,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             )}
             {superpuestos}
             {botonVista}
+            {botonInventario}
+            {panelInventario}
           </Escena>
         )
       }
