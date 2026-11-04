@@ -78,7 +78,7 @@ export function SelectorHuecos({ huecos, ocupado, alElegir, alAmpliar, maceta, h
               aria-label={`Hueco ${h.sitio}${aviso ? ", necesita atención" : ""}`}
               onClick={() => alElegir(h.hueco)}
             >
-              <MiniPlanta variedad={h.variedad} fase={h.fase} vida={h.vida} maceta={maceta} />
+              <MiniPlanta variedad={h.variedad} fase={h.fase} vida={h.vida} maceta={h.maceta ?? maceta} />
               {h.sitio}
               {aviso && <span className={styles.huecoAviso} aria-hidden />}
             </button>
