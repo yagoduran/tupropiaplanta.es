@@ -1,8 +1,18 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { marco, type IdIcono } from "@/lib/diseno";
 import { Icono } from "./Icono";
 import styles from "./juego.module.css";
 
-/** Aviso sobre la escena, por ejemplo "¡Tu planta necesita agua!". */
+/** Segundos que se ve un aviso antes de esconderse solo. */
+const SEGUNDOS_VISIBLE = 8;
+
+/**
+ * Aviso sobre la escena, por ejemplo "¡Tu planta necesita agua!".
+ * Se esconde a los 8 segundos o al tocarlo, y solo vuelve a salir si cambia el texto
+ * (o si quien lo usa le cambia la `key`, por ejemplo al cambiar de planta).
+ */
 export function Bocadillo({
   texto,
   icono = "agua",
@@ -13,9 +23,18 @@ export function Bocadillo({
   /** Columna de `tpp-avisos-causa-1x.png`: si se da, sustituye al icono. */
   columnaAviso?: number;
 }) {
+  const [ocultoDe, setOcultoDe] = useState<string | null>(null);
+
+  useEffect(() => {
+    const t = setTimeout(() => setOcultoDe(texto), SEGUNDOS_VISIBLE * 1000);
+    return () => clearTimeout(t);
+  }, [texto]);
+
+  if (ocultoDe === texto) return null;
+
   const estilo = marco("bocadillo", "var(--u)");
   return (
-    <div className={styles.bocadillo} role="status">
+    <div className={styles.bocadillo} role="status" onClick={() => setOcultoDe(texto)}>
       <div className={styles.bocadilloCaja} style={estilo}>
         {columnaAviso === undefined ? (
           <Icono id={icono} />

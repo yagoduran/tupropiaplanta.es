@@ -531,6 +531,7 @@
 }
 
 .bocadillo {
+  cursor: pointer;
   position: absolute;
   left: min(calc(58px * var(--s)), calc(96px * var(--s) - max(200px, calc(34px * var(--s))) - 2 * var(--u)));
   top: calc(9px * var(--s));

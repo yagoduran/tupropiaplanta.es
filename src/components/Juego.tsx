@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState, useTransition } from "react";
 import {
   borrarDatosDelJuego,
   guardarAjustes,
@@ -1444,40 +1444,42 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
 
   const superpuestos = (
     <>
-      {aviso ? (
-        <Bocadillo texto={aviso.texto} icono={aviso.icono} />
-      ) : plaga && producto ? (
-        <Bocadillo
-          texto={`${PLAGAS[plaga.tipo].aviso} Trátala con ${TRATAMIENTOS[producto].toLowerCase()}.`}
-          icono="aviso"
-        />
-      ) : causaAviso && viva ? (
-        <Bocadillo texto={`${causaAviso.titulo} ${causaAviso.evitar}`} columnaAviso={causaAviso.columna} />
-      ) : planta?.sexo === "macho" && viva ? (
-        <Bocadillo texto={`${CAUSAS.macho.titulo} ${CAUSAS.macho.evitar}`} columnaAviso={CAUSAS.macho.columna} />
-      ) : sedienta ? (
-        <Bocadillo texto="¡Tu planta necesita agua!" />
-      ) : avisoSensor ? (
-        <Bocadillo texto={avisoSensor} icono="aviso" />
-      ) : planta?.desafio && planta.vida === "cosechada" ? (
-        <Bocadillo
-          texto={`¡Desafío completado! ${(planta.desafio.puntos ?? 0).toLocaleString("es-ES")} puntos`}
-          icono="moneda"
-        />
-      ) : planta?.desafio && planta.vida === "muerta" ? (
-        <Bocadillo texto="Desafío fallido. Puedes probar otro o volver a tu cultivo." icono="aviso" />
-      ) : !planta ? (
-        <Bocadillo texto="Este hueco está vacío. ¡Planta una semilla!" />
-      ) : planta?.vida === "muerta" ? (
-        causaAviso ? (
+      <Fragment key={perfil.huecos.activo}>
+        {aviso ? (
+          <Bocadillo texto={aviso.texto} icono={aviso.icono} />
+        ) : plaga && producto ? (
           <Bocadillo
-            texto={`Tu planta ha muerto. ${causaAviso.titulo} ${causaAviso.evitar}`}
-            columnaAviso={causaAviso.columna}
+            texto={`${PLAGAS[plaga.tipo].aviso} Trátala con ${TRATAMIENTOS[producto].toLowerCase()}.`}
+            icono="aviso"
           />
-        ) : (
-          <Bocadillo texto="Tu planta ha muerto..." icono="aviso" />
-        )
-      ) : null}
+        ) : causaAviso && viva ? (
+          <Bocadillo texto={`${causaAviso.titulo} ${causaAviso.evitar}`} columnaAviso={causaAviso.columna} />
+        ) : planta?.sexo === "macho" && viva ? (
+          <Bocadillo texto={`${CAUSAS.macho.titulo} ${CAUSAS.macho.evitar}`} columnaAviso={CAUSAS.macho.columna} />
+        ) : sedienta ? (
+          <Bocadillo texto="¡Tu planta necesita agua!" />
+        ) : avisoSensor ? (
+          <Bocadillo texto={avisoSensor} icono="aviso" />
+        ) : planta?.desafio && planta.vida === "cosechada" ? (
+          <Bocadillo
+            texto={`¡Desafío completado! ${(planta.desafio.puntos ?? 0).toLocaleString("es-ES")} puntos`}
+            icono="moneda"
+          />
+        ) : planta?.desafio && planta.vida === "muerta" ? (
+          <Bocadillo texto="Desafío fallido. Puedes probar otro o volver a tu cultivo." icono="aviso" />
+        ) : !planta ? (
+          <Bocadillo texto="Este hueco está vacío. ¡Planta una semilla!" />
+        ) : planta?.vida === "muerta" ? (
+          causaAviso ? (
+            <Bocadillo
+              texto={`Tu planta ha muerto. ${causaAviso.titulo} ${causaAviso.evitar}`}
+              columnaAviso={causaAviso.columna}
+            />
+          ) : (
+            <Bocadillo texto="Tu planta ha muerto..." icono="aviso" />
+          )
+        ) : null}
+      </Fragment>
       {plaga && producto && (
         <button
           type="button"
