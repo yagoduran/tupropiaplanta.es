@@ -12,6 +12,7 @@ import type { DatosVuelta } from "@/lib/vuelta";
 import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
 import type { DatosEventos, DatosPase } from "@/lib/temporada";
 import type { DatosClientes, DatosNegro } from "@/lib/clientes";
+import type { EstadoArmario } from "@/lib/armario";
 import type { DatosProcesado } from "@/lib/procesado";
 import type { DatosMercadoSemanal } from "@/lib/mercadoSemanal";
 import type { DatosAmigos, DatosRegalos, DatosVisita, PerfilPublicoDatos, Resultado as Jugadores } from "@/lib/amigos";
@@ -642,3 +643,11 @@ export const venderProcesado = (producto: string, cantidad: number) =>
 export const comprarMasa = (masa: string, cantidad: number) =>
   accionProcesado("tpp_procesado_comprar_masa", { p_masa: masa, p_cantidad: cantidad });
 export const entregarEncargoEspecial = (clave: string) => accionProcesado("tpp_procesado_entregar", { p_clave: clave });
+
+export const obtenerArmario = async () => llamar<EstadoArmario>("tpp_armario");
+export async function accionArmario(accion: string, valor: string): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_armario_accion", { p_accion: accion, p_valor: valor });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
