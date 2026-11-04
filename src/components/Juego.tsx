@@ -1921,6 +1921,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             ocupado={enCurso}
             alElegirHueco={cambiarHueco}
             alAbrir={elegirPantalla}
+            misHabitaciones={perfil.casa.habitaciones}
+            alIrAHabitacion={(id) =>
+              perfil.casa.habitaciones.includes(id) ? irAHabitacion(id) : elegirPantalla("habitaciones")
+            }
           >
             <SelectorHuecos
               huecos={perfil.huecos}

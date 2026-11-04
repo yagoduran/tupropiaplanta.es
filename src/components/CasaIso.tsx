@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useImperativeHandle, useRef, useState, type ReactNode, type Ref } from "react";
-import { HABITACION_POR_ID } from "@/lib/casa";
+import { HABITACIONES, HABITACION_POR_ID } from "@/lib/casa";
 import {
   ALTO,
   ANCHO,
@@ -13,6 +13,7 @@ import {
   PASOS,
   SALIDA,
   SITIOS,
+  VISTA,
   camino,
   centro,
   claveCasilla,
@@ -44,6 +45,9 @@ interface Props {
   ocupado: boolean;
   alElegirHueco: (hueco: number) => void;
   alAbrir: (pantalla: PantallaJuego) => void;
+  /** Habitaciones que tiene el jugador y cambio de habitación. */
+  misHabitaciones: string[];
+  alIrAHabitacion: (id: string) => void;
   ref?: Ref<CasaIsoApi>;
   /** Avisos y botones que van por encima de la casa. */
   children?: ReactNode;
@@ -85,7 +89,18 @@ function Sprite({ hoja, w, h, col, fila, x, y, z, suave, opacidad }: PropsSprite
 const BURBUJA = { aviso: 0, agua: 1, plaga: 2, cosechar: 3, encargo: 4, tienda: 5, ordenador: 6 } as const;
 
 /** La casa en isométrico: el jugador camina por la habitación y toca plantas y muebles. */
-export function CasaIso({ habitacion, huecos, avatar, ocupado, alElegirHueco, alAbrir, ref, children }: Props) {
+export function CasaIso({
+  habitacion,
+  huecos,
+  avatar,
+  ocupado,
+  alElegirHueco,
+  alAbrir,
+  misHabitaciones,
+  alIrAHabitacion,
+  ref,
+  children,
+}: Props) {
   const hab = HABITACION_POR_ID[habitacion];
   const plano = diseno(habitacion);
   const fuera = !!hab?.fuera;
@@ -131,9 +146,7 @@ export function CasaIso({ habitacion, huecos, avatar, ocupado, alElegirHueco, al
     const medir = () => {
       const w = el.clientWidth;
       const h = el.clientHeight;
-      let escala = Math.min(w / ANCHO, h / ALTO);
-      if (escala >= 1) escala = Math.floor(escala);
-      setK(Math.max(0.1, escala));
+      setK(Math.max(0.1, Math.min(w / VISTA.w, h / VISTA.h)));
       setCaja({ w, h });
     };
     medir();
@@ -247,6 +260,11 @@ export function CasaIso({ habitacion, huecos, avatar, ocupado, alElegirHueco, al
   const colAvatar = anim ? COL_ACCION[anim] + fotograma : caminando ? COL_CAMINAR[tick % 4] : 0;
   const cp = centro(previo.x, previo.y);
 
+  const orden = HABITACIONES.filter((r) => misHabitaciones.includes(r.id));
+  const posActual = orden.findIndex((r) => r.id === habitacion);
+  const anterior = orden.length > 1 && posActual >= 0 ? orden[(posActual - 1 + orden.length) % orden.length] : null;
+  const siguiente = orden.length > 1 && posActual >= 0 ? orden[(posActual + 1) % orden.length] : null;
+
   const celdas: Casilla[] = [];
   for (let x = 0; x < COLS; x++) for (let y = 0; y < FILAS; y++) celdas.push({ x, y });
 
@@ -261,8 +279,8 @@ export function CasaIso({ habitacion, huecos, avatar, ocupado, alElegirHueco, al
           width: ANCHO,
           height: ALTO,
           transform: `scale(${k})`,
-          left: (caja.w - ANCHO * k) / 2,
-          top: (caja.h - ALTO * k) / 2,
+          left: (caja.w - VISTA.w * k) / 2 - VISTA.x * k,
+          top: (caja.h - VISTA.h * k) / 2 - VISTA.y * k,
         }}
       >
         {/* Paredes de fondo */}
@@ -418,7 +436,7 @@ export function CasaIso({ habitacion, huecos, avatar, ocupado, alElegirHueco, al
                   style={{ left: v.x + 16 - 16, top: v.y - 40, width: 32, height: 48, zIndex: z + 1 }}
                   onClick={() => {
                     if (ultima.current.ocupado) return;
-                    irJunto(mu, () => mu.abre && alAbrir(mu.abre));
+                    irJunto(mu, () => (mu.va ? alIrAHabitacion(mu.va) : mu.abre && alAbrir(mu.abre)));
                   }}
                 />
               )}
@@ -530,6 +548,31 @@ export function CasaIso({ habitacion, huecos, avatar, ocupado, alElegirHueco, al
           <Semillita expresion={expresion} cuadro={quieto ? Math.floor(tick / 5) % 2 : fotograma} tamano="32px" />
         </div>
       </div>
+      {anterior && siguiente && (
+        <nav className={styles.habitaciones} aria-label="Cambiar de habitación">
+          <button
+            type="button"
+            className={styles.flecha}
+            disabled={ocupado}
+            aria-label={`Ir a ${anterior.nombre}`}
+            title={anterior.nombre}
+            onClick={() => alIrAHabitacion(anterior.id)}
+          >
+            ◀
+          </button>
+          <span className={styles.nombreHab}>{hab?.nombre ?? habitacion}</span>
+          <button
+            type="button"
+            className={styles.flecha}
+            disabled={ocupado}
+            aria-label={`Ir a ${siguiente.nombre}`}
+            title={siguiente.nombre}
+            onClick={() => alIrAHabitacion(siguiente.id)}
+          >
+            ▶
+          </button>
+        </nav>
+      )}
       {children}
     </div>
   );
