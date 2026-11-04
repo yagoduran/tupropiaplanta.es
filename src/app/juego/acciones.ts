@@ -11,7 +11,7 @@ import type { DatosSecado } from "@/lib/secado";
 import type { DatosVuelta } from "@/lib/vuelta";
 import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
 import type { DatosEventos, DatosPase } from "@/lib/temporada";
-import type { DatosClientes } from "@/lib/clientes";
+import type { DatosClientes, DatosNegro } from "@/lib/clientes";
 import type { DatosMercadoSemanal } from "@/lib/mercadoSemanal";
 import type { DatosAmigos, DatosRegalos, DatosVisita, PerfilPublicoDatos, Resultado as Jugadores } from "@/lib/amigos";
 import type { DatosMercado } from "@/lib/mercado";
@@ -242,6 +242,19 @@ export async function empezarHistoria(clave: string): Promise<Resultado> {
 export async function entregarHistoria(clave: string): Promise<Resultado> {
   const supabase = await crearClienteServidor();
   const { data, error } = await supabase.rpc("tpp_entregar_historia", { p_clave: clave });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+export const obtenerNegro = async () => llamar<DatosNegro>("tpp_negro");
+export async function comprarNegro(id: string): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_negro_comprar", { p_id: id });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+export async function resolverInspeccion(opcion: string): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_negro_inspeccion", { p_opcion: opcion });
   if (error || !data) return fallo(error?.message);
   return data as RespuestaAccion;
 }

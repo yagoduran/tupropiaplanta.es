@@ -240,6 +240,13 @@ export const ESPERA_TOTAL: Record<Accion, number> = {
 
 export const MENSAJES_ERROR: Record<string, string> = {
   espera: "Todavía no puedes repetir eso. Espera un poco.",
+  negro_bloqueado: "El Topo todavía no sabe quién eres.",
+  negro_cerrado: "El Topo está cerrado por el registro.",
+  inspeccion_pendiente: "Primero tienes que resolver la inspección.",
+  sin_inspeccion: "No hay ninguna inspección.",
+  sin_maceta_doble: "No tienes la maceta de doble fondo.",
+  objeto_no_disponible: "Ese objeto no se vende esta semana.",
+  negro_agotado: "Ya no quedan existencias de eso esta semana.",
   limite_historias: "Ya llevas todas las historias que puedes a la vez. Termina una o sube de rango.",
   faltan_requisitos: "Todavía no cumples lo que pide este capítulo.",
   historia_sin_empezar: "Primero tienes que empezar esa historia.",

@@ -24,6 +24,9 @@ import {
   obtenerEventos,
   obtenerMercadoSemanal,
   obtenerClientes,
+  obtenerNegro,
+  comprarNegro,
+  resolverInspeccion,
   empezarHistoria,
   entregarHistoria,
   obtenerPase,
@@ -152,7 +155,7 @@ import { MercadoSemanal } from "./MercadoSemanal";
 import { Pase } from "./Pase";
 import type { DatosEventos, DatosPase } from "@/lib/temporada";
 import type { DatosMercadoSemanal } from "@/lib/mercadoSemanal";
-import type { DatosClientes } from "@/lib/clientes";
+import type { DatosClientes, DatosNegro } from "@/lib/clientes";
 import { Regalo } from "./Regalo";
 import { Mercado } from "./Mercado";
 import type { DatosMercado } from "@/lib/mercado";
@@ -258,6 +261,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [eventos, setEventos] = useState<DatosEventos | null>(null);
   const [mercadoSemanal, setMercadoSemanal] = useState<DatosMercadoSemanal | null>(null);
   const [clientes, setClientes] = useState<DatosClientes | null>(null);
+  const [negro, setNegro] = useState<DatosNegro | null>(null);
   const [pase, setPase] = useState<DatosPase | null>(null);
   const [vistaDe, setVistaDe] = useState("");
   const [visita, setVisita] = useState<DatosVisita | null>(null);
@@ -565,10 +569,14 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         obtenerEventos()
           .then(setEventos)
           .catch(() => setEventos(null));
-      if (id === "clientes")
+      if (id === "clientes") {
         obtenerClientes()
           .then((r) => setClientes(r && { ...r, recibido: Date.now() }))
           .catch(() => setClientes(null));
+        obtenerNegro()
+          .then((r) => setNegro(r && { ...r, recibido: Date.now() }))
+          .catch(() => setNegro(null));
+      }
       if (id === "mercado_semanal") {
         obtenerMercadoSemanal()
           .then((r) => setMercadoSemanal(r && { ...r, recibido: Date.now() }))
@@ -742,6 +750,29 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       sonar(r.ok ? "cofre" : "error");
       tratar(r, { texto: "¡Capítulo entregado!", icono: "logros" });
       await recargarClientes();
+    });
+  };
+
+  const recargarNegro = () =>
+    obtenerNegro()
+      .then((r) => setNegro(r && { ...r, recibido: Date.now() }))
+      .catch(() => {});
+
+  const comprarEnNegro = (id: string) => {
+    ejecutar(async () => {
+      const r = await comprarNegro(id);
+      sonar(r.ok ? "comprar" : "compra-rechazada");
+      tratar(r, { texto: "Comprado. Guárdalo bien.", icono: "tienda" });
+      await recargarNegro();
+    });
+  };
+
+  const resolverLaInspeccion = (opcion: "multa" | "esconder" | "registrar") => {
+    ejecutar(async () => {
+      const r = await resolverInspeccion(opcion);
+      sonar(r.ok ? "clic" : "error");
+      tratar(r, { texto: "Inspección resuelta", icono: "aviso" });
+      await recargarNegro();
     });
   };
 
@@ -1607,7 +1638,16 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         ) : pantalla === "eventos" ? (
           <Eventos datos={eventos} />
         ) : pantalla === "clientes" ? (
-          <Clientes datos={clientes} ocupado={enCurso} alEmpezar={empezarLaHistoria} alEntregar={entregarLaHistoria} />
+          <Clientes
+            datos={clientes}
+            negro={negro}
+            monedas={perfil.monedas}
+            ocupado={enCurso}
+            alEmpezar={empezarLaHistoria}
+            alEntregar={entregarLaHistoria}
+            alComprarNegro={comprarEnNegro}
+            alInspeccion={resolverLaInspeccion}
+          />
         ) : pantalla === "mercado_semanal" ? (
           <MercadoSemanal
             datos={mercadoSemanal}

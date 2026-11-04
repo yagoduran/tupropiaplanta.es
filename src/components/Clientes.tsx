@@ -4,90 +4,38 @@ import { useEffect, useState } from "react";
 import {
   CLIENTES_HISTORIA,
   etiquetasCapitulo,
-  ICONO_ECO,
   RANGOS_CLIENTE,
   RANGOS_GLOBALES,
   rangoCliente,
   rangoGlobal,
   type DatosClientes,
+  type DatosNegro,
   type HistoriaEstado,
 } from "@/lib/clientes";
 import { CLIENTES } from "@/lib/encargos";
 import { cuentaAtras } from "@/lib/mercadoSemanal";
 import { marco } from "@/lib/diseno";
 import { VARIEDAD_POR_ID } from "@/lib/variedades";
+import { IconoEco, IconoRango, Retrato } from "./EcoSprites";
+import { MercadoNegro } from "./MercadoNegro";
 import styles from "./clientes.module.css";
 
 interface Props {
   datos: DatosClientes | null;
+  negro: DatosNegro | null;
+  monedas: number;
+  alComprarNegro: (id: string) => void;
+  alInspeccion: (opcion: "multa" | "esconder" | "registrar") => void;
   ocupado: boolean;
   alEmpezar: (clave: string) => void;
   alEntregar: (clave: string) => void;
 }
 
-type Pestana = "clientes" | "reputacion";
+type Pestana = "clientes" | "reputacion" | "negro";
 type Subpestana = "ficha" | "cadena";
 
 const miles = (n: number) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 const nombreDe = (id: string) => VARIEDAD_POR_ID[id]?.nombre ?? id;
-
-function IconoEco({ id, k = 2 }: { id: keyof typeof ICONO_ECO; k?: number }) {
-  const f = (n: number) => `${n * k}px`;
-  return (
-    <span
-      className="pixel"
-      aria-hidden
-      style={{
-        display: "block",
-        flex: "none",
-        width: f(16),
-        height: f(16),
-        backgroundImage: "url(/assets/economia/tpp-eco-iconos-16-1x.png)",
-        backgroundSize: `${f(256)} ${f(16)}`,
-        backgroundPosition: `${f(-ICONO_ECO[id] * 16)} 0`,
-      }}
-    />
-  );
-}
-
-function IconoRango({ n, k = 2 }: { n: number; k?: number }) {
-  const f = (v: number) => `${v * k}px`;
-  return (
-    <span
-      className="pixel"
-      aria-hidden
-      style={{
-        display: "block",
-        flex: "none",
-        width: f(16),
-        height: f(16),
-        backgroundImage: "url(/assets/economia/tpp-eco-rangos-16-1x.png)",
-        backgroundSize: `${f(80)} ${f(16)}`,
-        backgroundPosition: `${f(-n * 16)} 0`,
-      }}
-    />
-  );
-}
-
-function Retrato({ n, k = 2 }: { n: number; k?: number }) {
-  const f = (v: number) => `${v * k}px`;
-  return (
-    <span
-      className="pixel"
-      role="img"
-      aria-hidden
-      style={{
-        display: "block",
-        flex: "none",
-        width: f(32),
-        height: f(32),
-        backgroundImage: "url(/assets/economia/tpp-eco-retratos-1x.png)",
-        backgroundSize: `${f(192)} ${f(32)}`,
-        backgroundPosition: `${f(-n * 32)} 0`,
-      }}
-    />
-  );
-}
 
 /** Barra de reputación con marcas en cada rango. */
 function BarraRep({ valor, maximo, marcas }: { valor: number; maximo: number; marcas: readonly number[] }) {
@@ -104,7 +52,16 @@ function BarraRep({ valor, maximo, marcas }: { valor: number; maximo: number; ma
 }
 
 /** Pantalla de clientes con historia y reputación (8i, parte A). */
-export function Clientes({ datos, ocupado, alEmpezar, alEntregar }: Props) {
+export function Clientes({
+  datos,
+  negro,
+  monedas,
+  ocupado,
+  alEmpezar,
+  alEntregar,
+  alComprarNegro,
+  alInspeccion,
+}: Props) {
   const [pestana, setPestana] = useState<Pestana>("clientes");
   const [sub, setSub] = useState<Subpestana>("ficha");
   const [elegido, setElegido] = useState("raiz");
@@ -409,6 +366,7 @@ export function Clientes({ datos, ocupado, alEmpezar, alEntregar }: Props) {
           [
             ["clientes", "Clientes", "historia"],
             ["reputacion", "Reputación", "reputacion"],
+            ["negro", "Mercado negro", "mercado_negro"],
           ] as const
         ).map(([k, l, ic]) => (
           <button
@@ -425,7 +383,19 @@ export function Clientes({ datos, ocupado, alEmpezar, alEntregar }: Props) {
           </button>
         ))}
       </div>
-      {pestana === "clientes" ? pestanaClientes : pestanaReputacion}
+      {pestana === "clientes" ? (
+        pestanaClientes
+      ) : pestana === "reputacion" ? (
+        pestanaReputacion
+      ) : (
+        <MercadoNegro
+          datos={negro}
+          monedas={monedas}
+          ocupado={ocupado}
+          alComprar={alComprarNegro}
+          alInspeccion={alInspeccion}
+        />
+      )}
     </div>
   );
 }

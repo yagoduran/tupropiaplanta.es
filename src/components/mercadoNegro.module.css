@@ -1,0 +1,171 @@
+.contenedor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  width: 100%;
+}
+
+.texto {
+  font-size: var(--f-small);
+  line-height: 1.4;
+  color: #1c1626;
+}
+
+.textoClaro {
+  font-size: var(--f-small);
+  color: #f6eed6;
+}
+
+.cab {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cerrado,
+.topo,
+.sospecha,
+.inspeccion {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: calc(var(--u) * 4);
+  color: #1c1626;
+}
+
+.cerrado,
+.topo {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.barra {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 14px;
+  background: #f6eed6;
+  border: 2px solid #1c1626;
+}
+
+.relleno {
+  position: absolute;
+  inset: 0 auto 0 0;
+}
+
+.opciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.accion {
+  padding: calc(var(--u) * 3) calc(var(--u) * 4) calc(var(--u) * 4);
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-small);
+  font-weight: 700;
+  color: #1c1626;
+  text-align: left;
+  cursor: pointer;
+}
+
+.accion:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.cuerpo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: var(--gap);
+  align-items: start;
+}
+
+.lista,
+.guardados {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.fila {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) 40px 80px;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  text-align: left;
+  color: #1c1626;
+  cursor: pointer;
+}
+
+.nombre {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  font-size: var(--f-small);
+}
+
+.riesgo {
+  display: flex;
+  gap: 2px;
+}
+
+.punto {
+  display: block;
+  width: 8px;
+  height: 8px;
+  background: #e04a3a;
+}
+
+.detalle {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: calc(var(--u) * 4);
+  color: #1c1626;
+}
+
+.escondite {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: calc(var(--u) * 4);
+  color: #1c1626;
+}
+
+.guardados {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.guardado {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  font-size: var(--f-small);
+  background: #f6eed6;
+  border: 2px solid #1c1626;
+}
+
+@media (max-width: 1039px) {
+  .cuerpo {
+    grid-template-columns: 1fr;
+  }
+
+  .accion {
+    min-height: 48px;
+  }
+
+  .fila {
+    grid-template-columns: 48px minmax(0, 1fr) 36px 70px;
+  }
+}

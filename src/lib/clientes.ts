@@ -144,3 +144,44 @@ export function etiquetasCapitulo(c: Capitulo): { icono: keyof typeof ICONO_ECO;
   if (c.top) r.push({ icono: "vip", texto: "Top Shelf" });
   return r;
 }
+
+/** Mercado negro de El Topo (8i, parte B). */
+export interface ObjetoNegro {
+  id: string;
+  n: string;
+  tipo: string;
+  d: string;
+  precio: number;
+  riesgo: number;
+  stock: number;
+  quedan: number;
+}
+
+export interface DatosNegro {
+  abierto: boolean;
+  /** Sospecha de 0 a 100. */
+  sospecha: number;
+  inspeccion: boolean;
+  /** Segundos que faltan para que El Topo vuelva a abrir (0 = abierto). */
+  cerrado: number;
+  /** Segundos de bolsa antiolor que quedan. */
+  antiolor: number;
+  /** Segundos que faltan para que cambie la oferta (lunes a las 00:00). */
+  queda: number;
+  objetos: ObjetoNegro[];
+  /** Objetos guardados en el escondite. */
+  escondite: Record<string, number>;
+  recibido?: number;
+}
+
+/** Hoja de objetos del mercado negro (8 × 1), en este orden. */
+export const ORDEN_NEGRO = [
+  "semilla-sombra",
+  "semilla-eclipse",
+  "semilla-relampago",
+  "lampara-pirata",
+  "abono-volcanico",
+  "bolsa-antiolor",
+  "radio-porteria",
+  "maceta-doble",
+] as const;
