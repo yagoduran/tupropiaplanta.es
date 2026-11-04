@@ -37,6 +37,10 @@ interface Estado {
   falta: number;
   cantidad: number;
   consumible: boolean;
+  /** Se compra por unidades (consumibles y macetas). */
+  porUnidades: boolean;
+  /** Poner una unidad que ya tienes (macetas). */
+  poner?: () => void;
   gratis: boolean;
 }
 
@@ -49,7 +53,9 @@ function estadoDe(objeto: ObjetoTienda, perfil: PerfilJuego, { alComprar, alEqui
   const cantidad = inventario[objeto.id] ?? 0;
   const lo_tiene = gratis || cantidad > 0;
   const bloqueado = nivel < objeto.nivel;
-  const falta = objeto.precio * (consumible ? unidades : 1) - monedas;
+  const maceta = objeto.tipo === "maceta" && !gratis;
+  const porUnidades = consumible || maceta;
+  const falta = objeto.precio * (porUnidades ? unidades : 1) - monedas;
   const puesto =
     objeto.tipo === "maceta"
       ? equipo.maceta === objeto.id
@@ -62,7 +68,7 @@ function estadoDe(objeto: ObjetoTienda, perfil: PerfilJuego, { alComprar, alEqui
   let etiqueta: Estado["etiqueta"] = null;
   let principal: Estado["principal"];
 
-  if (!consumible && lo_tiene) {
+  if (!porUnidades && lo_tiene) {
     if (objeto.tipo === "herramienta") {
       etiqueta = { texto: "Tuya", fondo: "#c9f26b", color: "#1c1626" };
       principal = { texto: "La tienes", estilo: "apagado" };
@@ -85,11 +91,20 @@ function estadoDe(objeto: ObjetoTienda, perfil: PerfilJuego, { alComprar, alEqui
   } else if (falta > 0) {
     principal = { texto: "Te faltan", numero: miles(falta), estilo: "apagado" };
   } else {
-    principal = { texto: "Comprar", estilo: "boton", accion: () => alComprar(objeto.id, consumible ? unidades : 1) };
+    principal = { texto: "Comprar", estilo: "boton", accion: () => alComprar(objeto.id, porUnidades ? unidades : 1) };
   }
-  if (consumible && cantidad > 0) etiqueta = { texto: `Tienes ${cantidad}`, fondo: "#ffffff", color: "#1c1626" };
+  if (porUnidades && cantidad > 0) {
+    etiqueta = {
+      texto: puesto ? `En uso · ${cantidad} más` : `Tienes ${cantidad}`,
+      fondo: "#ffffff",
+      color: "#1c1626",
+    };
+  } else if (maceta && puesto) {
+    etiqueta = { texto: "En uso", fondo: "#c9f26b", color: "#1c1626" };
+  }
+  const poner = maceta && cantidad > 0 ? () => alEquipar(objeto.id) : undefined;
 
-  return { etiqueta, principal, bloqueado, lo_tiene, falta, cantidad, consumible, gratis };
+  return { etiqueta, principal, bloqueado, lo_tiene, falta, cantidad, consumible, porUnidades, poner, gratis };
 }
 
 const rareza = (id: Rareza) => RAREZAS.find((r) => r.id === id)!;
@@ -153,12 +168,12 @@ function Detalle({
   const secundario = marco("boton_secundario", "var(--u)");
   const apagado = marco("boton_desactivado", "var(--u)");
   const r = rareza(rarezaDe(objeto));
-  const { principal, bloqueado, lo_tiene, falta, cantidad, consumible, gratis } = estado;
+  const { principal, bloqueado, lo_tiene, falta, cantidad, consumible, porUnidades, poner, gratis } = estado;
   const estiloBoton = { boton, secundario, apagado }[principal.estilo];
   const oculto = bloqueado && !lo_tiene;
   const puedeUsar = consumible && cantidad > 0 && objeto.categoria !== "fertilizantes";
-  const selector = consumible && !oculto && !gratis && objeto.precio > 0;
-  const total = objeto.precio * (consumible ? unidades : 1);
+  const selector = porUnidades && !oculto && !gratis && objeto.precio > 0;
+  const total = objeto.precio * (porUnidades ? unidades : 1);
 
   return (
     <div className={styles.velo} onClick={alCerrar}>
@@ -212,7 +227,7 @@ function Detalle({
           </div>
         )}
         <div className={styles.modalTotal}>
-          <span>{lo_tiene && !consumible ? "Precio" : "Total"}</span>
+          <span>{lo_tiene && !porUnidades ? "Precio" : "Total"}</span>
           <span
             className={styles.precio}
             style={{ color: falta > 0 && !lo_tiene && !bloqueado ? "#b9512a" : undefined }}
@@ -237,6 +252,20 @@ function Detalle({
               }}
             >
               Usar
+            </button>
+          )}
+          {poner && (
+            <button
+              type="button"
+              className={styles.boton}
+              style={{ ...secundario, color: "#1c1626" }}
+              disabled={ocupado}
+              onClick={() => {
+                poner();
+                alCerrar();
+              }}
+            >
+              Poner en el hueco activo
             </button>
           )}
           <button

@@ -166,6 +166,8 @@ export interface HuecosJuego {
     nutrientes: number | null;
     luz: number | null;
     salud: number | null;
+    /** Maceta puesta en este hueco. */
+    maceta?: string;
   }[];
 }
 
@@ -350,6 +352,7 @@ export const MENSAJES_ERROR: Record<string, string> = {
   anuncios_agotados: "Hoy ya no quedan más ayudas. Vuelve mañana.",
   diaria_ya_reclamada: "Hoy ya has recogido tu regalo. Vuelve mañana.",
   no_lo_tienes: "Todavía no tienes ese objeto.",
+  hueco_no_valido: "Ese hueco no existe todavía.",
   sin_existencias: "No te quedan unidades. Compra más en la tienda.",
   fase_incorrecta: "Ese abono no sirve en la fase actual de tu planta.",
   ya_aplicado: "Tu planta ya tiene ese mejorador.",
