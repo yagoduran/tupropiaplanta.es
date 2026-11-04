@@ -436,7 +436,7 @@ export function CasaIso({
                   style={{ left: v.x + 16 - 16, top: v.y - 40, width: 32, height: 48, zIndex: z + 1 }}
                   onClick={() => {
                     if (ultima.current.ocupado) return;
-                    irJunto(mu, () => mu.abre && alAbrir(mu.abre));
+                    irJunto(mu, () => (mu.va ? alIrAHabitacion(mu.va) : mu.abre && alAbrir(mu.abre)));
                   }}
                 />
               )}

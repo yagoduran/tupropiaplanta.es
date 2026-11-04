@@ -70,6 +70,8 @@ export interface Mueble {
   abre?: PantallaJuego;
   /** Se puede pisar (alfombra). */
   pisable?: boolean;
+  /** Habitación a la que lleva al llegar (escaleras). */
+  va?: string;
 }
 
 export interface DisenoHabitacion {
@@ -89,6 +91,12 @@ const m = (sprite: number, x: number, y: number, nombre: string, abre?: Pantalla
   pisable,
 });
 
+/** Escalera: al llegar a ella pasas a otra habitación. */
+const escalera = (sprite: number, x: number, y: number, nombre: string, va: string): Mueble => ({
+  ...m(sprite, x, y, nombre),
+  va,
+});
+
 export const DISENOS: Record<string, DisenoHabitacion> = {
   armario: {
     suelo: 4,
@@ -97,6 +105,7 @@ export const DISENOS: Record<string, DisenoHabitacion> = {
       m(MUEBLE.armario, 0, 1, "Armario de cultivo", "armario"),
       m(MUEBLE.estanteria, 0, 4, "Estantería"),
       m(MUEBLE.lampara, 5, 0, "Lámpara"),
+      escalera(MUEBLE.sube, 3, 0, "Escalera a la azotea", "azotea"),
     ],
   },
   salon: {
@@ -121,6 +130,8 @@ export const DISENOS: Record<string, DisenoHabitacion> = {
       m(MUEBLE.encimera, 1, 0, "Encimera"),
       m(MUEBLE.mesa, 4, 3, "Mesa"),
       m(MUEBLE.silla, 5, 3, "Silla"),
+      escalera(MUEBLE.sube, 1, 0, "Escalera al armario", "armario"),
+      escalera(MUEBLE.baja, 1, 5, "Escalera al sótano", "sotano"),
     ],
   },
   dormitorio: {
@@ -164,13 +175,18 @@ export const DISENOS: Record<string, DisenoHabitacion> = {
     muebles: [
       m(MUEBLE.estanteria, 0, 1, "Estantería"),
       m(MUEBLE.estanteria, 0, 2, "Estantería"),
-      m(MUEBLE.sube, 1, 0, "Escalera"),
+      escalera(MUEBLE.sube, 1, 0, "Escalera al salón", "salon"),
     ],
   },
   azotea: {
     suelo: 4,
     pared: 3,
-    muebles: [m(MUEBLE.tumbona, 0, 5, "Tumbona"), m(MUEBLE.lampara, 5, 0, "Lámpara"), m(MUEBLE.mesa, 0, 0, "Mesa")],
+    muebles: [
+      m(MUEBLE.tumbona, 0, 5, "Tumbona"),
+      m(MUEBLE.lampara, 5, 0, "Lámpara"),
+      m(MUEBLE.mesa, 0, 0, "Mesa"),
+      escalera(MUEBLE.baja, 1, 0, "Escalera al armario", "armario"),
+    ],
   },
 };
 
