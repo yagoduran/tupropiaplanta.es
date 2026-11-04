@@ -9,6 +9,8 @@ export const OY = 96;
 /** Tamaño del lienzo (px de arte a 1×). */
 export const ANCHO = (COLS + FILAS) * 16 + 64;
 export const ALTO = (COLS + FILAS) * 8 + OY + 24;
+/** Zona del lienzo que se ve de verdad (sin el margen vacío): así la casa se amplía más. */
+export const VISTA = { x: 40, y: 24, w: 208, h: 180 };
 
 /** Esquina superior izquierda del recuadro de la casilla. */
 export const esquina = (x: number, y: number) => ({ x: (x - y) * 16 + OX, y: (x + y) * 8 + OY });

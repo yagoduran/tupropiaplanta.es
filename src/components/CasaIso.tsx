@@ -13,6 +13,7 @@ import {
   PASOS,
   SALIDA,
   SITIOS,
+  VISTA,
   camino,
   centro,
   claveCasilla,
@@ -131,9 +132,7 @@ export function CasaIso({ habitacion, huecos, avatar, ocupado, alElegirHueco, al
     const medir = () => {
       const w = el.clientWidth;
       const h = el.clientHeight;
-      let escala = Math.min(w / ANCHO, h / ALTO);
-      if (escala >= 1) escala = Math.floor(escala);
-      setK(Math.max(0.1, escala));
+      setK(Math.max(0.1, Math.min(w / VISTA.w, h / VISTA.h)));
       setCaja({ w, h });
     };
     medir();
@@ -261,8 +260,8 @@ export function CasaIso({ habitacion, huecos, avatar, ocupado, alElegirHueco, al
           width: ANCHO,
           height: ALTO,
           transform: `scale(${k})`,
-          left: (caja.w - ANCHO * k) / 2,
-          top: (caja.h - ALTO * k) / 2,
+          left: (caja.w - VISTA.w * k) / 2 - VISTA.x * k,
+          top: (caja.h - VISTA.h * k) / 2 - VISTA.y * k,
         }}
       >
         {/* Paredes de fondo */}
