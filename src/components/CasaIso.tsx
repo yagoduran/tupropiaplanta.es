@@ -21,6 +21,7 @@ import {
   esquina,
   mirar,
   profundidad,
+  tapaPlanta,
   type AccionAvatar,
   type AvatarCasa,
   type Casilla,
@@ -48,6 +49,8 @@ interface Props {
   /** Habitaciones que tiene el jugador y cambio de habitación. */
   misHabitaciones: string[];
   alIrAHabitacion: (id: string) => void;
+  /** Se llega a una planta tocándola: se abre su vista de cerca. */
+  alAbrirPlanta: () => void;
   ref?: Ref<CasaIsoApi>;
   /** Avisos y botones que van por encima de la casa. */
   children?: ReactNode;
@@ -98,6 +101,7 @@ export function CasaIso({
   alAbrir,
   misHabitaciones,
   alIrAHabitacion,
+  alAbrirPlanta,
   ref,
   children,
 }: Props) {
@@ -227,7 +231,7 @@ export function CasaIso({
         junto = c;
       }
     }
-    if (!mejor || !junto) return;
+    if (!mejor || !junto) return alLlegar();
     const termina = () => {
       setDir(mirar(posRef.current, objetivo));
       alLlegar();
@@ -415,6 +419,7 @@ export function CasaIso({
         {plano.muebles.map((mu, i) => {
           const v = esquina(mu.x, mu.y);
           const z = mu.pisable ? 15 : profundidad(mu.x, mu.y) + 5;
+          const tapa = !mu.pisable && plantas.some((p) => p.h.vida !== "vacio" && tapaPlanta(mu, p.c));
           return (
             <div key={`m${i}`} className={styles.grupo}>
               <Sprite
@@ -426,6 +431,7 @@ export function CasaIso({
                 x={v.x + 16 - 24}
                 y={v.y - 72}
                 z={z}
+                opacidad={tapa ? 0.35 : undefined}
               />
               {!mu.pisable && (
                 <button
@@ -511,11 +517,11 @@ export function CasaIso({
                 type="button"
                 className={styles.zona}
                 aria-label={`Planta del sitio ${h.sitio}`}
-                style={{ left: cc.x - 14, top: cc.y - 40, width: 28, height: 44, zIndex: z + 1 }}
+                style={{ left: cc.x - 14, top: cc.y - 40, width: 28, height: 44, zIndex: 2000 + z }}
                 onClick={() => {
                   if (ultima.current.ocupado) return;
                   if (!activa) alElegirHueco(h.hueco);
-                  irJunto(casilla, () => undefined);
+                  irJunto(casilla, alAbrirPlanta);
                 }}
               />
             </div>
