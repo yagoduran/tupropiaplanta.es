@@ -22,6 +22,7 @@ import {
   entregarEncargo,
   obtenerAmigos,
   obtenerEventos,
+  obtenerMercadoSemanal,
   obtenerPase,
   reclamarPase,
   comprarPase,
@@ -143,8 +144,10 @@ import type { DatosEncargos } from "@/lib/encargos";
 import { Amigos } from "./Amigos";
 import { Visita } from "./Visita";
 import { Eventos } from "./Eventos";
+import { MercadoSemanal } from "./MercadoSemanal";
 import { Pase } from "./Pase";
 import type { DatosEventos, DatosPase } from "@/lib/temporada";
+import type { DatosMercadoSemanal } from "@/lib/mercadoSemanal";
 import { Regalo } from "./Regalo";
 import { Mercado } from "./Mercado";
 import type { DatosMercado } from "@/lib/mercado";
@@ -248,6 +251,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [regaloEnviado, setRegaloEnviado] = useState<TipoRegalo | null>(null);
   const [regaloError, setRegaloError] = useState<string | null>(null);
   const [eventos, setEventos] = useState<DatosEventos | null>(null);
+  const [mercadoSemanal, setMercadoSemanal] = useState<DatosMercadoSemanal | null>(null);
   const [pase, setPase] = useState<DatosPase | null>(null);
   const [vistaDe, setVistaDe] = useState("");
   const [visita, setVisita] = useState<DatosVisita | null>(null);
@@ -518,6 +522,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "amigos" ||
       id === "eventos" ||
       id === "mercado" ||
+      id === "mercado_semanal" ||
       id === "pase" ||
       id === "laboratorio" ||
       id === "prestigio" ||
@@ -553,6 +558,12 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         obtenerEventos()
           .then(setEventos)
           .catch(() => setEventos(null));
+      if (id === "mercado_semanal") {
+        obtenerMercadoSemanal()
+          .then((r) => setMercadoSemanal(r && { ...r, recibido: Date.now() }))
+          .catch(() => setMercadoSemanal(null));
+        cargarEncargos().catch(() => setEncargos(null));
+      }
       if (id === "mercado") {
         setMercadoError(null);
         obtenerMercado()
@@ -693,6 +704,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       sonar(r.ok ? "comprar" : "error");
       const monedas = "recompensa" in r ? (r.recompensa ?? 0) : 0;
       tratar(r, { texto: `Vendidos ${gramos ?? "todos los"} g: +${monedas} monedas`, icono: "moneda" });
+      if (r.ok)
+        obtenerMercadoSemanal()
+          .then((m) => setMercadoSemanal(m && { ...m, recibido: Date.now() }))
+          .catch(() => {});
     });
   };
 
@@ -1557,6 +1572,15 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           />
         ) : pantalla === "eventos" ? (
           <Eventos datos={eventos} />
+        ) : pantalla === "mercado_semanal" ? (
+          <MercadoSemanal
+            datos={mercadoSemanal}
+            encargos={encargos}
+            monedas={perfil.monedas}
+            ocupado={enCurso}
+            alVender={venderAlmacen}
+            alIrAEncargos={() => elegirPantalla("encargos")}
+          />
         ) : pantalla === "mercado" ? (
           <Mercado
             datos={mercado}

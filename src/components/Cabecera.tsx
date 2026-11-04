@@ -28,6 +28,7 @@ const OPCIONES_MENU = [
   ["pase", "Pase de temporada"],
   ["amigos", "Amigos"],
   ["mercado", "Mercado"],
+  ["mercado_semanal", "Mercado semanal"],
   ["desafios", "Desafíos"],
   ["armario", "Mejoras del armario"],
   ["secado", "Secado y curado"],

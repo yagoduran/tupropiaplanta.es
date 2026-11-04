@@ -38,6 +38,7 @@ export type PantallaJuego =
   | "eventos"
   | "pase"
   | "mercado"
+  | "mercado_semanal"
   | "abonos"
   | "avisos"
   | "secado"
