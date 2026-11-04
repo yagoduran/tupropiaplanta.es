@@ -25,6 +25,13 @@ import {
   obtenerMercadoSemanal,
   obtenerClientes,
   obtenerNegro,
+  obtenerProcesado,
+  anadirReceta,
+  quitarReceta,
+  recogerPuesto,
+  venderProcesado,
+  comprarMasa,
+  entregarEncargoEspecial,
   comprarNegro,
   resolverInspeccion,
   empezarHistoria,
@@ -156,6 +163,8 @@ import { Pase } from "./Pase";
 import type { DatosEventos, DatosPase } from "@/lib/temporada";
 import type { DatosMercadoSemanal } from "@/lib/mercadoSemanal";
 import type { DatosClientes, DatosNegro } from "@/lib/clientes";
+import type { DatosProcesado, Puesto } from "@/lib/procesado";
+import { MesaProcesado } from "./MesaProcesado";
 import { Regalo } from "./Regalo";
 import { Mercado } from "./Mercado";
 import type { DatosMercado } from "@/lib/mercado";
@@ -262,6 +271,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [mercadoSemanal, setMercadoSemanal] = useState<DatosMercadoSemanal | null>(null);
   const [clientes, setClientes] = useState<DatosClientes | null>(null);
   const [negro, setNegro] = useState<DatosNegro | null>(null);
+  const [procesado, setProcesado] = useState<DatosProcesado | null>(null);
   const [pase, setPase] = useState<DatosPase | null>(null);
   const [vistaDe, setVistaDe] = useState("");
   const [visita, setVisita] = useState<DatosVisita | null>(null);
@@ -534,6 +544,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "mercado" ||
       id === "mercado_semanal" ||
       id === "clientes" ||
+      id === "procesado" ||
       id === "pase" ||
       id === "laboratorio" ||
       id === "prestigio" ||
@@ -577,6 +588,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           .then((r) => setNegro(r && { ...r, recibido: Date.now() }))
           .catch(() => setNegro(null));
       }
+      if (id === "procesado")
+        obtenerProcesado()
+          .then((r) => setProcesado(r && { ...r, recibido: Date.now() }))
+          .catch(() => setProcesado(null));
       if (id === "mercado_semanal") {
         obtenerMercadoSemanal()
           .then((r) => setMercadoSemanal(r && { ...r, recibido: Date.now() }))
@@ -624,7 +639,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         obtenerProgresion()
           .then(setProgresion)
           .catch(() => setProgresion(null));
-      if (id === "perfil" || id === "plantas" || id === "inventario")
+      if (id === "perfil" || id === "plantas" || id === "cultivo")
         obtenerMiPerfil()
           .then(setDatosPerfil)
           .catch(() => setDatosPerfil(null));
@@ -766,6 +781,38 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       await recargarNegro();
     });
   };
+
+  const recargarProcesado = () =>
+    obtenerProcesado()
+      .then((r) => setProcesado(r && { ...r, recibido: Date.now() }))
+      .catch(() => {});
+
+  const accionProcesar = (
+    llamar: () => ReturnType<typeof anadirReceta>,
+    sonido: Efecto,
+    texto: string,
+    icono: IdIcono,
+  ) => {
+    ejecutar(async () => {
+      const r = await llamar();
+      sonar(r.ok ? sonido : "error");
+      tratar(r, { texto, icono });
+      await recargarProcesado();
+    });
+  };
+
+  const anadirALaCola = (receta: string) =>
+    accionProcesar(() => anadirReceta(receta), "clic", "Añadido a la cola", "cultivo");
+  const quitarDeLaCola = (puesto: Puesto, idx: number) =>
+    accionProcesar(() => quitarReceta(puesto, idx), "clic", "Quitado de la cola", "cultivo");
+  const recogerDelPuesto = (puesto: Puesto) =>
+    accionProcesar(() => recogerPuesto(puesto), "cofre", "Recogido", "cultivo");
+  const venderElProcesado = (producto: string, cantidad: number) =>
+    accionProcesar(() => venderProcesado(producto, cantidad), "comprar", "Vendido", "tienda");
+  const comprarLaMasa = (masa: string, cantidad: number) =>
+    accionProcesar(() => comprarMasa(masa, cantidad), "comprar", "Comprado", "tienda");
+  const entregarElEncargoEspecial = (clave: string) =>
+    accionProcesar(() => entregarEncargoEspecial(clave), "cofre", "¡Encargo entregado!", "logros");
 
   const resolverLaInspeccion = (opcion: "multa" | "esconder" | "registrar") => {
     ejecutar(async () => {
@@ -1647,6 +1694,18 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             alEntregar={entregarLaHistoria}
             alComprarNegro={comprarEnNegro}
             alInspeccion={resolverLaInspeccion}
+          />
+        ) : pantalla === "procesado" ? (
+          <MesaProcesado
+            datos={procesado}
+            monedas={perfil.monedas}
+            ocupado={enCurso}
+            alAnadir={anadirALaCola}
+            alQuitar={quitarDeLaCola}
+            alRecoger={recogerDelPuesto}
+            alVender={venderElProcesado}
+            alComprarMasa={comprarLaMasa}
+            alEntregar={entregarElEncargoEspecial}
           />
         ) : pantalla === "mercado_semanal" ? (
           <MercadoSemanal

@@ -40,6 +40,7 @@ export type PantallaJuego =
   | "mercado"
   | "mercado_semanal"
   | "clientes"
+  | "procesado"
   | "abonos"
   | "avisos"
   | "secado"
@@ -247,6 +248,14 @@ export const MENSAJES_ERROR: Record<string, string> = {
   sin_maceta_doble: "No tienes la maceta de doble fondo.",
   objeto_no_disponible: "Ese objeto no se vende esta semana.",
   negro_agotado: "Ya no quedan existencias de eso esta semana.",
+  receta_desconocida: "Esa receta no existe.",
+  cola_llena: "La cola de ese puesto está llena (3 recetas).",
+  faltan_ingredientes: "Te faltan ingredientes para esa receta.",
+  no_se_puede_quitar: "Solo se pueden quitar las recetas que esperan, no la que está en marcha.",
+  puesto_vacio: "Ese puesto está vacío.",
+  aun_procesando: "Todavía se está procesando.",
+  cantidad_invalida: "Esa cantidad no vale.",
+  encargo_hecho: "Ya entregaste ese encargo esta semana.",
   limite_historias: "Ya llevas todas las historias que puedes a la vez. Termina una o sube de rango.",
   faltan_requisitos: "Todavía no cumples lo que pide este capítulo.",
   historia_sin_empezar: "Primero tienes que empezar esa historia.",

@@ -30,6 +30,7 @@ const OPCIONES_MENU = [
   ["mercado", "Mercado"],
   ["mercado_semanal", "Mercado semanal"],
   ["clientes", "Clientes y reputación"],
+  ["procesado", "Mesa de procesado"],
   ["desafios", "Desafíos"],
   ["armario", "Mejoras del armario"],
   ["secado", "Secado y curado"],
