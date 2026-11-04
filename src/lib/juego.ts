@@ -38,6 +38,9 @@ export type PantallaJuego =
   | "eventos"
   | "pase"
   | "mercado"
+  | "mercado_semanal"
+  | "clientes"
+  | "procesado"
   | "abonos"
   | "avisos"
   | "secado"
@@ -238,6 +241,26 @@ export const ESPERA_TOTAL: Record<Accion, number> = {
 
 export const MENSAJES_ERROR: Record<string, string> = {
   espera: "Todavía no puedes repetir eso. Espera un poco.",
+  negro_bloqueado: "El Topo todavía no sabe quién eres.",
+  negro_cerrado: "El Topo está cerrado por el registro.",
+  inspeccion_pendiente: "Primero tienes que resolver la inspección.",
+  sin_inspeccion: "No hay ninguna inspección.",
+  sin_maceta_doble: "No tienes la maceta de doble fondo.",
+  objeto_no_disponible: "Ese objeto no se vende esta semana.",
+  negro_agotado: "Ya no quedan existencias de eso esta semana.",
+  receta_desconocida: "Esa receta no existe.",
+  cola_llena: "La cola de ese puesto está llena (3 recetas).",
+  faltan_ingredientes: "Te faltan ingredientes para esa receta.",
+  no_se_puede_quitar: "Solo se pueden quitar las recetas que esperan, no la que está en marcha.",
+  puesto_vacio: "Ese puesto está vacío.",
+  aun_procesando: "Todavía se está procesando.",
+  cantidad_invalida: "Esa cantidad no vale.",
+  encargo_hecho: "Ya entregaste ese encargo esta semana.",
+  limite_historias: "Ya llevas todas las historias que puedes a la vez. Termina una o sube de rango.",
+  faltan_requisitos: "Todavía no cumples lo que pide este capítulo.",
+  historia_sin_empezar: "Primero tienes que empezar esa historia.",
+  historia_terminada: "Esa historia ya está terminada.",
+  historia_desconocida: "Esa historia no existe.",
   sin_gramos: "No tienes gramos de esa variedad.",
   fase_insuficiente: "Tu planta aún no está lista para eso.",
   sin_planta: "No tienes ninguna planta. Planta una semilla.",
@@ -268,6 +291,9 @@ export const MENSAJES_ERROR: Record<string, string> = {
   sin_cruce: "No hay ningún cruce en marcha.",
   nombre_invalido: "El nombre solo puede tener letras y espacios (hasta 20).",
   huecos_automaticos: "Los huecos ahora llegan con las habitaciones y la mejora de capacidad.",
+  luz_no_tienes: "Todavía no has comprado esa luz.",
+  ya_la_tienes: "Ya tienes esa luz.",
+  accion_desconocida: "Esa acción no existe.",
   mejora_comprada: "Ya tienes todos los niveles de esa mejora.",
   habitacion_no_tuya: "Primero tienes que desbloquear esa habitación.",
   mejora_desconocida: "Esa mejora no existe.",

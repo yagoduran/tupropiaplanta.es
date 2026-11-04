@@ -11,6 +11,10 @@ import type { DatosSecado } from "@/lib/secado";
 import type { DatosVuelta } from "@/lib/vuelta";
 import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
 import type { DatosEventos, DatosPase } from "@/lib/temporada";
+import type { DatosClientes, DatosNegro } from "@/lib/clientes";
+import type { EstadoArmario } from "@/lib/armario";
+import type { DatosProcesado } from "@/lib/procesado";
+import type { DatosMercadoSemanal } from "@/lib/mercadoSemanal";
 import type { DatosAmigos, DatosRegalos, DatosVisita, PerfilPublicoDatos, Resultado as Jugadores } from "@/lib/amigos";
 import type { DatosMercado } from "@/lib/mercado";
 import type { Libro, RespuestaCruce } from "@/lib/cruces";
@@ -225,6 +229,37 @@ export const cobrarOferta = async (id: number) => llamarMercado("tpp_mercado_cob
 
 /** Eventos de temporada. */
 export const obtenerEventos = async () => llamar<DatosEventos>("tpp_evento");
+
+/** Mercado semanal: cambios de la semana, últimas 8 semanas y gramos guardados. */
+export const obtenerMercadoSemanal = async () => llamar<DatosMercadoSemanal>("tpp_mercado_semanal");
+
+/** Clientes con historia y reputación (8i). */
+export const obtenerClientes = async () => llamar<DatosClientes>("tpp_clientes");
+export async function empezarHistoria(clave: string): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_empezar_historia", { p_clave: clave });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+export async function entregarHistoria(clave: string): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_entregar_historia", { p_clave: clave });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+export const obtenerNegro = async () => llamar<DatosNegro>("tpp_negro");
+export async function comprarNegro(id: string): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_negro_comprar", { p_id: id });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+export async function resolverInspeccion(opcion: string): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_negro_inspeccion", { p_opcion: opcion });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
 export const obtenerPase = async () => llamar<DatosPase>("tpp_pase");
 
 type RespuestaPase = (RespuestaAccion & Partial<DatosPase>) | { ok: false; error: string };
@@ -590,4 +625,29 @@ export async function reclamarTrofeo(id: string): Promise<(Libro & { ok: boolean
   const { data, error } = await supabase.rpc("tpp_reclamar_trofeo", { p_id: id });
   if (error || !data) return null;
   return data as Libro & { ok: boolean; error?: string };
+}
+
+export const obtenerProcesado = async () => llamar<DatosProcesado>("tpp_procesado");
+async function accionProcesado(funcion: string, args: Record<string, unknown>): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc(funcion, args);
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+export const anadirReceta = (receta: string) => accionProcesado("tpp_procesado_anadir", { p_receta: receta });
+export const quitarReceta = (puesto: string, idx: number) =>
+  accionProcesado("tpp_procesado_quitar", { p_puesto: puesto, p_idx: idx });
+export const recogerPuesto = (puesto: string) => accionProcesado("tpp_procesado_recoger", { p_puesto: puesto });
+export const venderProcesado = (producto: string, cantidad: number) =>
+  accionProcesado("tpp_procesado_vender", { p_producto: producto, p_cantidad: cantidad });
+export const comprarMasa = (masa: string, cantidad: number) =>
+  accionProcesado("tpp_procesado_comprar_masa", { p_masa: masa, p_cantidad: cantidad });
+export const entregarEncargoEspecial = (clave: string) => accionProcesado("tpp_procesado_entregar", { p_clave: clave });
+
+export const obtenerArmario = async () => llamar<EstadoArmario>("tpp_armario");
+export async function accionArmario(accion: string, valor: string): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_armario_accion", { p_accion: accion, p_valor: valor });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
 }

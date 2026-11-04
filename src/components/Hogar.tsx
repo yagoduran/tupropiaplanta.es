@@ -6,7 +6,6 @@ import { calidadPrevista } from "@/lib/calidad";
 import { FASES, marco } from "@/lib/diseno";
 import type { PantallaJuego, PerfilJuego } from "@/lib/juego";
 import { RAREZAS, VARIEDAD_POR_ID, hojaDe } from "@/lib/variedades";
-import { ArmarioCultivo } from "./ArmarioCultivo";
 import { Estrellas } from "./Estrellas";
 import { Icono } from "./Icono";
 import { IconoHogar } from "./IconoHogar";
@@ -16,6 +15,7 @@ interface Props {
   perfil: PerfilJuego;
   ocupado: boolean;
   alIrAHueco: (hueco: number, destino: PantallaJuego) => void;
+  alAbrirArmario: () => void;
   alMover: (desde: number, hacia: number) => void;
   alDesbloquear: (id: string) => void;
 }
@@ -54,7 +54,7 @@ function Barra({ nombre, valor, color }: { nombre: string; valor: number; color:
 }
 
 /** El hogar en corte: todas las habitaciones con sus plantas, y un modo para moverlas. */
-export function Hogar({ perfil, ocupado, alIrAHueco, alMover, alDesbloquear }: Props) {
+export function Hogar({ perfil, ocupado, alIrAHueco, alAbrirArmario, alMover, alDesbloquear }: Props) {
   const [planta, setPlanta] = useState<Habitacion["planta"]>(HABITACION_POR_ID[perfil.casa.habitacion]?.planta ?? "p1");
   const [editando, setEditando] = useState(false);
   const [origen, setOrigen] = useState<number | null>(null);
@@ -277,7 +277,14 @@ export function Hogar({ perfil, ocupado, alIrAHueco, alMover, alDesbloquear }: P
         ))}
       </div>
 
-      <ArmarioCultivo sitios={deHabitacion("armario")} maceta={perfil.equipo.maceta} alPulsar={pulsar} />
+      <section className={styles.armario} aria-label="Armario de cultivo">
+        <div className={styles.armarioCabeza}>
+          <strong className={styles.armarioTitulo}>Armario de cultivo</strong>
+          <button type="button" className={styles.boton} style={boton} onClick={alAbrirArmario}>
+            Abrir el armario
+          </button>
+        </div>
+      </section>
 
       {fichaSitio && !editando && (
         <div className={styles.velo} onClick={() => setFicha(null)}>

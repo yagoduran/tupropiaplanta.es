@@ -9,25 +9,59 @@ export interface NivelMejora {
 }
 
 export interface RamaMejoras {
-  id: "vent" | "riego" | "sens" | "luz" | "seg" | "cap";
+  id: "cap" | "aisl" | "ext" | "riego" | "sens" | "seg";
   nombre: string;
   icono: IdIcono;
-  niveles: [NivelMejora, NivelMejora, NivelMejora];
+  niveles: NivelMejora[];
 }
 
 export const RAMAS: RamaMejoras[] = [
   {
-    id: "vent",
-    nombre: "Ventilación",
+    id: "cap",
+    nombre: "Capacidad",
+    icono: "cultivo",
+    niveles: [
+      { nombre: "Estante extra", texto: "+1 hueco de cultivo.", precio: 2000, nivel: 10 },
+      { nombre: "Doble estante", texto: "+2 huecos de cultivo en total.", precio: 5000, nivel: 18 },
+      { nombre: "Armario grande", texto: "+3 huecos de cultivo en total.", precio: 12000, nivel: 32 },
+    ],
+  },
+  {
+    id: "aisl",
+    nombre: "Aislamiento",
+    icono: "temperatura",
+    niveles: [
+      {
+        nombre: "Paredes forradas",
+        texto: "La temperatura oscila ±2 °C y +3 % de crecimiento.",
+        precio: 1500,
+        nivel: 6,
+      },
+      {
+        nombre: "Aislamiento térmico",
+        texto: "Oscila ±1 °C, +6 % de crecimiento y huele un poco menos.",
+        precio: 4000,
+        nivel: 16,
+      },
+      {
+        nombre: "Cámara sellada",
+        texto: "Temperatura estable, +9 % de crecimiento y el bono de monedas al cosechar.",
+        precio: 9000,
+        nivel: 26,
+      },
+    ],
+  },
+  {
+    id: "ext",
+    nombre: "Extractor con filtro",
     icono: "luz",
     niveles: [
-      { nombre: "Ventilador de clip", texto: "Mueve el aire: −5 % de hongos.", precio: 500, nivel: 5 },
-      { nombre: "Extractor", texto: "Renueva el aire del armario: −10 % de hongos.", precio: 1500, nivel: 12 },
+      { nombre: "Filtro de carbón", texto: "El olor baja 2 niveles y hay menos hongos.", precio: 3000, nivel: 10 },
       {
-        nombre: "Ventilación inteligente",
-        texto: "Se ajusta sola: −20 % de hongos y la salud se recupera un 5 % más rápido.",
-        precio: 4000,
-        nivel: 20,
+        nombre: "Extractor turbo",
+        texto: "−4 °C y −18 % de humedad con el extractor encendido; aún menos hongos.",
+        precio: 8000,
+        nivel: 22,
       },
     ],
   },
@@ -62,21 +96,6 @@ export const RAMAS: RamaMejoras[] = [
     ],
   },
   {
-    id: "luz",
-    nombre: "Iluminación",
-    icono: "luz",
-    niveles: [
-      { nombre: "Lámpara LED", texto: "+5 % de velocidad de crecimiento.", precio: 700, nivel: 7 },
-      { nombre: "Panel LED", texto: "+10 % de crecimiento y menos calor.", precio: 2200, nivel: 14 },
-      {
-        nombre: "LED de espectro completo",
-        texto: "+20 % de crecimiento y +5 % de monedas al cosechar.",
-        precio: 7000,
-        nivel: 28,
-      },
-    ],
-  },
-  {
     id: "seg",
     nombre: "Seguridad",
     icono: "aviso",
@@ -89,16 +108,6 @@ export const RAMAS: RamaMejoras[] = [
       },
       { nombre: "Alarma", texto: "Los robos son cuatro veces menos probables.", precio: 3000, nivel: 20 },
       { nombre: "Caja fuerte", texto: "Ya no te pueden robar mientras no estás.", precio: 7500, nivel: 30 },
-    ],
-  },
-  {
-    id: "cap",
-    nombre: "Capacidad",
-    icono: "cultivo",
-    niveles: [
-      { nombre: "Estante extra", texto: "+1 hueco de cultivo.", precio: 1000, nivel: 10 },
-      { nombre: "Doble estante", texto: "+2 huecos de cultivo en total.", precio: 3500, nivel: 18 },
-      { nombre: "Armario grande", texto: "+3 huecos de cultivo en total.", precio: 8000, nivel: 32 },
     ],
   },
 ];

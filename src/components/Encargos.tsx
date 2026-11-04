@@ -79,7 +79,7 @@ export function Encargos({ datos, ocupado, alEntregar, alAceptar, alRechazar }: 
     const miCalidad = Math.round(datos.calidad?.[x.variedad] ?? 3);
     const hayCalidad = !x.q || miCalidad >= x.q;
     const listo = hayGramos && hayCalidad;
-    const reputacion = x.cliente !== undefined ? (datos.reputacion?.[String(x.cliente)] ?? 50) : null;
+    const reputacion = x.cliente !== undefined ? (datos.reputacion?.[String(x.cliente)] ?? 500) : null;
     const cliente = x.cliente !== undefined ? CLIENTES[x.cliente] : undefined;
     return (
       <div className={styles.detalle} style={panel}>
@@ -142,8 +142,12 @@ export function Encargos({ datos, ocupado, alEntregar, alAceptar, alRechazar }: 
         </div>
         {reputacion !== null && (
           <p className={styles.texto}>
-            Reputación con {x.remite}: <strong>{reputacion}/100</strong>
-            {reputacion >= 75 ? " · Cliente fijo: paga un 10 % más." : ""}
+            Reputación con {x.remite}: <strong>{reputacion}/1.000</strong>
+            {reputacion >= 1000
+              ? " · VIP: paga un 20 % más."
+              : reputacion >= 300
+                ? " · Habitual: paga un 5 % más."
+                : ""}
           </p>
         )}
         <div className={styles.relojes}>

@@ -1,0 +1,523 @@
+.contenedor {
+  --ik: 2;
+  --kc: 3;
+  --bw: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  width: 100%;
+}
+
+.cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap);
+}
+
+.titulo {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-title);
+  font-weight: 700;
+  line-height: 1;
+  color: #f6eed6;
+  margin-right: auto;
+}
+
+.reloj,
+.monedero {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-small);
+  color: #1c1626;
+  background: #f6eed6;
+  border: 2px solid #1c1626;
+}
+
+.monedero {
+  background: #f4d36a;
+  font-weight: 700;
+}
+
+.texto {
+  font-size: var(--f-small);
+  line-height: 1.4;
+  color: #f6eed6;
+}
+
+.pestanas {
+  display: flex;
+  gap: var(--tab-gap);
+}
+
+.pestana {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: calc(var(--u) * 3) calc(var(--u) * 3) calc(var(--u) * 4);
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-tab);
+  font-weight: 700;
+  color: #f6eed6;
+  cursor: pointer;
+}
+
+.pestana[aria-selected="true"] {
+  color: #1c1626;
+}
+
+.subtituloClaro {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+  font-weight: 700;
+  color: #f6eed6;
+}
+
+.subtitulo {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+  font-weight: 700;
+  color: #5f3c26;
+}
+
+/* Cartel */
+.cartel {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: calc(var(--u) * 5);
+  align-items: center;
+  padding: calc(var(--u) * 4);
+  color: #1c1626;
+}
+
+.cartelCliente {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  font-size: var(--f-small);
+}
+
+.cartelCliente span:last-child {
+  opacity: 0.75;
+}
+
+.cartelTexto {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.cartelTexto .texto {
+  color: #1c1626;
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--f-small);
+  font-weight: 700;
+  color: #5f3c26;
+}
+
+.cartelTitulo {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-title);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.cita {
+  align-self: flex-start;
+  max-width: 520px;
+  padding: 8px 10px;
+  font-size: var(--f-small);
+  line-height: 1.4;
+  background: #ffffff;
+  border: 3px solid #1c1626;
+}
+
+.baja {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--f-small);
+  color: #b9512a;
+}
+
+.cartelVariedad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.precioCartel {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-small);
+}
+
+/* Chips */
+.chip,
+.chipGrande {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-small);
+  font-weight: 700;
+  color: #1c1626;
+  border: 2px solid #1c1626;
+  white-space: nowrap;
+}
+
+.chipGrande {
+  gap: 6px;
+  padding: 4px 10px;
+  font-size: var(--f-stat);
+}
+
+/* Controles */
+.controles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--gap);
+}
+
+.segmentos {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.etiquetaOrden {
+  font-size: var(--f-small);
+  color: #f6eed6;
+}
+
+.segmento {
+  padding: calc(var(--u) * 2) calc(var(--u) * 4) calc(var(--u) * 3);
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-small);
+  font-weight: 700;
+  color: #1c1626;
+  cursor: pointer;
+}
+
+/* Lista y detalle */
+.cuerpo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: var(--gap);
+  align-items: start;
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.fila {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) 70px 80px 104px 80px;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 10px;
+  text-align: left;
+  color: #1c1626;
+  cursor: pointer;
+}
+
+.cajaCosecha {
+  display: block;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  overflow: hidden;
+}
+
+.nombre {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-small);
+}
+
+.etiqueta {
+  padding: 0 6px;
+  font-size: calc(var(--f-small) * 0.85);
+  border: 2px solid #1c1626;
+}
+
+.base {
+  font-size: var(--f-small);
+  opacity: 0.7;
+  text-decoration: line-through;
+}
+
+.ahora {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-small);
+}
+
+.grafico {
+  position: relative;
+  display: flex;
+  gap: 2px;
+  width: 100%;
+}
+
+.cero {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(28, 22, 38, 0.25);
+}
+
+.barra {
+  position: relative;
+  flex: none;
+  display: block;
+  align-self: flex-start;
+}
+
+.detalle {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: calc(var(--u) * 4);
+  color: #1c1626;
+}
+
+.detalleCab {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.detalleCab > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.detalleCab .texto {
+  color: #1c1626;
+}
+
+.etiquetasSemanas {
+  display: flex;
+  justify-content: space-between;
+  font-size: calc(var(--f-small) * 0.8);
+  opacity: 0.7;
+}
+
+.datos {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  font-size: var(--f-small);
+}
+
+.datos div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.datos dt {
+  opacity: 0.75;
+}
+
+.datos dd {
+  margin: 0;
+  font-weight: 700;
+}
+
+/* Venta */
+.ventas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--gap);
+}
+
+.venta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: calc(var(--u) * 4);
+  color: #1c1626;
+}
+
+.ventaCab {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ventaCab > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-small);
+}
+
+.estrellas {
+  color: #d9a43a;
+}
+
+.precioVenta {
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-small);
+}
+
+.nota {
+  padding: 6px 8px;
+  font-size: calc(var(--f-small) * 0.9);
+  line-height: 1.35;
+  color: #1c1626;
+}
+
+.botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.accion,
+.accionAncha {
+  flex: 1;
+  padding: calc(var(--u) * 3) calc(var(--u) * 3) calc(var(--u) * 4);
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-small);
+  font-weight: 700;
+  color: #1c1626;
+  cursor: pointer;
+}
+
+.accion:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.accionAncha {
+  flex: none;
+  align-self: flex-start;
+}
+
+/* Encargos */
+.encargos {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.encargo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: calc(var(--u) * 3) calc(var(--u) * 4);
+  color: #1c1626;
+}
+
+.encargoTexto {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  font-size: var(--f-small);
+}
+
+.encargoTexto .nota {
+  align-self: flex-start;
+  padding: 2px 6px;
+  background: #f6eed6;
+}
+
+.encargoPrecio {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-small);
+}
+
+.encargoPrecio s {
+  opacity: 0.6;
+}
+
+@media (max-width: 1039px) {
+  .contenedor {
+    --ik: 1;
+    --kc: 2;
+    --bw: 6px;
+  }
+
+  .cartel {
+    grid-template-columns: auto 1fr;
+  }
+
+  .cartelVariedad {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .cartelTitulo {
+    font-size: calc(var(--f-title) * 0.75);
+  }
+
+  .cuerpo {
+    grid-template-columns: 1fr;
+  }
+
+  .fila {
+    grid-template-columns: 40px minmax(0, 1fr) 62px 74px;
+    gap: 6px;
+  }
+
+  .fila .base,
+  .fila .ahora {
+    display: none;
+  }
+
+  .segmento {
+    min-height: 44px;
+  }
+
+  .accion {
+    min-height: 48px;
+  }
+
+  .pestana {
+    font-size: var(--f-small);
+  }
+}

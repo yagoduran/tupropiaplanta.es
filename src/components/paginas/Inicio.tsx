@@ -58,7 +58,7 @@ export function Inicio() {
         </div>
         <div className={`juego ${styles.vista}`} style={{ "--s": 4 } as CSSProperties} aria-hidden>
           <section className={juego.escena} style={{ outline: "none" }}>
-            <Escena hora="dia" luz="bombilla">
+            <Escena hora="dia" luz="barra_led">
               <Planta fase={3} estado="sana" maceta="maceta_terracota" />
             </Escena>
           </section>
