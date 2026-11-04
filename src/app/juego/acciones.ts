@@ -11,6 +11,7 @@ import type { DatosSecado } from "@/lib/secado";
 import type { DatosVuelta } from "@/lib/vuelta";
 import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
 import type { DatosEventos, DatosPase } from "@/lib/temporada";
+import type { DatosMercadoSemanal } from "@/lib/mercadoSemanal";
 import type { DatosAmigos, DatosRegalos, DatosVisita, PerfilPublicoDatos, Resultado as Jugadores } from "@/lib/amigos";
 import type { DatosMercado } from "@/lib/mercado";
 import type { Libro, RespuestaCruce } from "@/lib/cruces";
@@ -225,6 +226,9 @@ export const cobrarOferta = async (id: number) => llamarMercado("tpp_mercado_cob
 
 /** Eventos de temporada. */
 export const obtenerEventos = async () => llamar<DatosEventos>("tpp_evento");
+
+/** Mercado semanal: cambios de la semana, últimas 8 semanas y gramos guardados. */
+export const obtenerMercadoSemanal = async () => llamar<DatosMercadoSemanal>("tpp_mercado_semanal");
 export const obtenerPase = async () => llamar<DatosPase>("tpp_pase");
 
 type RespuestaPase = (RespuestaAccion & Partial<DatosPase>) | { ok: false; error: string };

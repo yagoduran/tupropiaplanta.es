@@ -11,6 +11,10 @@ export interface Encargo {
   /** Gramos que pide. */
   g: number;
   monedas: number;
+  /** Recompensa sin el mercado de la semana (solo en encargos nuevos desde 8h). */
+  monedas_base?: number;
+  /** Cambio (%) de esa variedad en el mercado cuando llegó el encargo. La recompensa se movió la mitad. */
+  mercado?: number;
   xp: number;
   /** Gramos de esa variedad que tiene el jugador. */
   tengo: number;
