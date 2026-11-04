@@ -12,6 +12,7 @@ import type { DatosVuelta } from "@/lib/vuelta";
 import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
 import type { DatosEventos, DatosPase } from "@/lib/temporada";
 import type { DatosClientes, DatosNegro } from "@/lib/clientes";
+import type { DatosProcesado } from "@/lib/procesado";
 import type { DatosMercadoSemanal } from "@/lib/mercadoSemanal";
 import type { DatosAmigos, DatosRegalos, DatosVisita, PerfilPublicoDatos, Resultado as Jugadores } from "@/lib/amigos";
 import type { DatosMercado } from "@/lib/mercado";
@@ -624,3 +625,20 @@ export async function reclamarTrofeo(id: string): Promise<(Libro & { ok: boolean
   if (error || !data) return null;
   return data as Libro & { ok: boolean; error?: string };
 }
+
+export const obtenerProcesado = async () => llamar<DatosProcesado>("tpp_procesado");
+async function accionProcesado(funcion: string, args: Record<string, unknown>): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc(funcion, args);
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+export const anadirReceta = (receta: string) => accionProcesado("tpp_procesado_anadir", { p_receta: receta });
+export const quitarReceta = (puesto: string, idx: number) =>
+  accionProcesado("tpp_procesado_quitar", { p_puesto: puesto, p_idx: idx });
+export const recogerPuesto = (puesto: string) => accionProcesado("tpp_procesado_recoger", { p_puesto: puesto });
+export const venderProcesado = (producto: string, cantidad: number) =>
+  accionProcesado("tpp_procesado_vender", { p_producto: producto, p_cantidad: cantidad });
+export const comprarMasa = (masa: string, cantidad: number) =>
+  accionProcesado("tpp_procesado_comprar_masa", { p_masa: masa, p_cantidad: cantidad });
+export const entregarEncargoEspecial = (clave: string) => accionProcesado("tpp_procesado_entregar", { p_clave: clave });
