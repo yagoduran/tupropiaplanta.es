@@ -6,6 +6,7 @@ import {
   ALTO,
   ANCHO,
   COLS,
+  DECO_SALON,
   COL_ACCION,
   COL_CAMINAR,
   FILAS,
@@ -51,6 +52,8 @@ interface Props {
   alIrAHabitacion: (id: string) => void;
   /** Se llega a una planta tocándola: se abre su vista de cerca. */
   alAbrirPlanta: () => void;
+  /** Decoración colocada: la que tiene dibujo se ve en el salón. */
+  decoracion?: string[];
   ref?: Ref<CasaIsoApi>;
   /** Avisos y botones que van por encima de la casa. */
   children?: ReactNode;
@@ -102,6 +105,7 @@ export function CasaIso({
   misHabitaciones,
   alIrAHabitacion,
   alAbrirPlanta,
+  decoracion,
   ref,
   children,
 }: Props) {
@@ -138,6 +142,9 @@ export function CasaIso({
 
   const bloqueadas = new Set<string>();
   for (const mu of plano.muebles) if (!mu.pisable) bloqueadas.add(claveCasilla(mu));
+  const decos =
+    habitacion === "salon" ? (decoracion ?? []).flatMap((id) => (DECO_SALON[id] ? [DECO_SALON[id]] : [])) : [];
+  for (const d of decos) if (!d.pared) bloqueadas.add(claveCasilla(d));
   for (const p of plantas) bloqueadas.add(claveCasilla(p.c));
   const ultima = useRef({ bloqueadas, plantas, activo: huecos.activo, ocupado });
   useEffect(() => {
@@ -447,6 +454,27 @@ export function CasaIso({
                 />
               )}
             </div>
+          );
+        })}
+
+        {/* Decoración comprada */}
+        {decos.map((d) => {
+          const v = esquina(d.x, d.y);
+          return (
+            <div
+              key={`d${d.fila}`}
+              className={`pixel ${styles.deco}`}
+              role="img"
+              aria-label={d.nombre}
+              title={d.nombre}
+              style={{
+                left: d.pared === "izquierda" ? v.x - 32 : d.pared ? v.x : v.x - 16,
+                top: d.pared ? v.y - 56 : v.y - 40,
+                zIndex: d.pared ? 11 : profundidad(d.x, d.y) + 5,
+                backgroundPositionY: -d.fila * 64,
+                transform: d.pared === "izquierda" ? "scaleX(-1)" : undefined,
+              }}
+            />
           );
         })}
 

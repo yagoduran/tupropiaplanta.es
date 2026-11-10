@@ -190,6 +190,33 @@ export const DISENOS: Record<string, DisenoHabitacion> = {
   },
 };
 
+/**
+ * Decoración comprada que se ve en el salón. `fila` es la de la hoja `tpp-deco-objetos-64` (2 fotogramas por fila).
+ * En el suelo ocupa una casilla; en la pared, `pared` dice el tramo (derecha: fila y = 0; izquierda: columna x = 0).
+ */
+export interface DecoIso {
+  fila: number;
+  x: number;
+  y: number;
+  pared?: "derecha" | "izquierda";
+  nombre: string;
+}
+
+export const DECO_SALON: Record<string, DecoIso> = {
+  gato: { fila: 14, x: 5, y: 3, nombre: "Gato" },
+  radio: { fila: 15, x: 1, y: 0, nombre: "Radio" },
+  planta_adorno: { fila: 9, x: 0, y: 5, nombre: "Planta de adorno" },
+  lampara_lava: { fila: 12, x: 0, y: 2, nombre: "Lámpara de lava" },
+  puf: { fila: 17, x: 0, y: 1, nombre: "Puf" },
+  acuario: { fila: 16, x: 5, y: 4, nombre: "Acuario" },
+  lampara_pie: { fila: 13, x: 1, y: 5, nombre: "Lámpara de pie" },
+  poster: { fila: 0, x: 3, y: 0, pared: "derecha", nombre: "Póster" },
+  banderines: { fila: 4, x: 1, y: 0, pared: "derecha", nombre: "Banderines" },
+  cuadro: { fila: 1, x: 0, y: 2, pared: "izquierda", nombre: "Cuadro" },
+  figura_semillita: { fila: 2, x: 0, y: 4, pared: "izquierda", nombre: "Semillita" },
+  neon_tpp: { fila: 5, x: 0, y: 5, pared: "izquierda", nombre: "Letrero TPP" },
+};
+
 export const diseno = (habitacion: string): DisenoHabitacion => DISENOS[habitacion] ?? DISENOS.armario;
 
 /** Fila de la hoja de plantas isométricas por hoja de sprites de la variedad. */

@@ -119,3 +119,29 @@
   opacity: 0.6;
   cursor: wait;
 }
+
+/* Decoración comprada: 2 fotogramas de 64 px que se alternan. */
+.deco {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  background-image: url(/assets/deco/tpp-deco-objetos-64-1x.png);
+  background-repeat: no-repeat;
+  animation: decoParpadeo 1.2s steps(1) infinite;
+  pointer-events: none;
+}
+
+@keyframes decoParpadeo {
+  0% {
+    background-position-x: 0;
+  }
+  50% {
+    background-position-x: -64px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deco {
+    animation: none;
+  }
+}

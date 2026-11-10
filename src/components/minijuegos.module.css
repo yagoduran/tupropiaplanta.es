@@ -1,0 +1,219 @@
+.capa {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  background: rgba(28, 22, 38, 0.76);
+  color: #1c1626;
+}
+
+.caja {
+  box-sizing: border-box;
+  width: min(100%, 420px);
+  max-height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap);
+  padding: calc(var(--u) * 5);
+}
+
+.titulo {
+  margin: 0;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-title);
+  text-align: center;
+}
+
+.icono {
+  display: grid;
+  place-items: center;
+}
+
+.texto,
+.premio,
+.riesgo {
+  margin: 0;
+  text-align: center;
+}
+
+.premio {
+  padding: 6px 10px;
+  background: #f2ec9a;
+  border: 2px solid #1c1626;
+}
+
+.riesgo {
+  padding: 6px 10px;
+  background: #fbe0c8;
+  border: 2px solid #1c1626;
+}
+
+.botones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gap);
+}
+
+.boton {
+  min-height: 48px;
+  padding: calc(var(--u) * 2) calc(var(--u) * 6);
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-btn);
+  color: #1c1626;
+  cursor: pointer;
+}
+
+.boton:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.estrellas {
+  margin: 0;
+  font-size: 44px;
+  line-height: 1;
+  color: #d9a43a;
+  letter-spacing: 6px;
+}
+
+.partida {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.marcador {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--fuente-pixel);
+}
+
+.fila {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.etiqueta {
+  font-size: 14px;
+}
+
+.barra {
+  position: relative;
+  height: 18px;
+  background: #ffffff;
+  border: 3px solid #1c1626;
+  overflow: hidden;
+}
+
+.barra > span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.barraTiempo {
+  background: #5fb6e8;
+}
+
+.barraNutrientes {
+  background: #d9a43a;
+}
+
+.ventana {
+  background: #f4d36a;
+}
+
+.marca {
+  width: 3px;
+  background: #1c1626;
+}
+
+.controles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.control {
+  min-height: 56px;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-btn);
+  color: #1c1626;
+  cursor: pointer;
+}
+
+/* Zona de la poda: 112 × 136 px de arte, ampliada. */
+.zona {
+  --z: 2.4;
+  align-self: center;
+  width: calc(112px * var(--z));
+  height: calc(136px * var(--z));
+  background: #efe3c6;
+  border: 3px solid #1c1626;
+  overflow: hidden;
+}
+
+.lienzo {
+  position: relative;
+  width: 112px;
+  height: 136px;
+  transform: scale(var(--z));
+  transform-origin: 0 0;
+}
+
+.lienzo button {
+  position: absolute;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.tramo,
+.maceta,
+.punta {
+  position: absolute;
+  left: 40px;
+}
+
+.punta {
+  top: -8px;
+  z-index: 2;
+}
+
+.maceta {
+  top: 106px;
+}
+
+.tallo {
+  left: 52px;
+  top: 14px;
+  width: 8px;
+  height: 92px;
+  z-index: 2;
+}
+
+.hoja {
+  z-index: 3;
+  width: 32px;
+  height: 32px;
+}
+
+.hoja:disabled {
+  cursor: default;
+}
+
+@media (min-width: 700px) {
+  .zona {
+    --z: 3;
+  }
+}

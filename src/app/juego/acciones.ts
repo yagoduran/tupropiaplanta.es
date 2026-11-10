@@ -490,6 +490,22 @@ export async function verRobo(): Promise<void> {
   await supabase.rpc("tpp_ver_robo");
 }
 
+export async function verMulta(): Promise<void> {
+  const supabase = await crearClienteServidor();
+  await supabase.rpc("tpp_ver_multa");
+}
+
+/** Resultado de un minijuego de cuidado (poda o lavado de raíces): de 0 a 3 estrellas. */
+export async function jugarMinijuego(tipo: "poda" | "lavado", estrellas: number): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_minijuego", {
+    p_tipo: tipo,
+    p_estrellas: Math.max(0, Math.min(3, Math.floor(estrellas))),
+  });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
 /** Da la ayuda extra tras ver el anuncio: monedas y sin esperas. */
 export async function verAnuncio(): Promise<Resultado> {
   const supabase = await crearClienteServidor();
