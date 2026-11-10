@@ -895,6 +895,32 @@ export const CATALOGO: ObjetoTienda[] = [
     rareza: "epica",
   },
   {
+    id: "ambientador",
+    categoria: "herramientas",
+    tipo: "consumible",
+    uso: "casa",
+    nombre: "Ambientador",
+    efecto: "Quita 20 puntos de sospecha vecinal. Uno cada 6 horas.",
+    precio: 80,
+    nivel: 3,
+    celda: [13, 4],
+    hoja: "nuevos",
+    rareza: "comun",
+  },
+  {
+    id: "micro_dorado",
+    categoria: "decoracion",
+    tipo: "decoracion",
+    nombre: "Micro dorado",
+    efecto: "Regalo de MC Raíz al terminar su historia: +3 de ánimo (+3 % de experiencia).",
+    precio: -1,
+    nivel: 1,
+    celda: [6, 4],
+    hoja: "nuevos",
+    exclusivo: true,
+    rareza: "legendaria",
+  },
+  {
     id: "abono_casero",
     categoria: "fertilizantes",
     tipo: "consumible",
@@ -991,3 +1017,9 @@ export const OBJETO_POR_ID = Object.fromEntries(CATALOGO.map((o) => [o.id, o])) 
 /** Cómo se usa un consumible: los abonos van sobre la planta salvo que digan otra cosa. */
 export const usoDe = (o: ObjetoTienda): "planta" | "casa" | "plaga" | null =>
   o.tipo !== "consumible" ? null : (o.uso ?? "planta");
+
+/** Precio de un objeto con los descuentos de reputación del jugador. Tiene que coincidir con `tpp.descuento_tienda`. */
+export function precioCon(o: ObjetoTienda, d?: { tienda: number; macetas: number }): number {
+  if (!d || o.precio <= 0) return o.precio;
+  return Math.round(o.precio * (o.tipo === "maceta" ? d.macetas : d.tienda));
+}

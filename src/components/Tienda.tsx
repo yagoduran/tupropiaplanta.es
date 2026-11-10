@@ -7,6 +7,7 @@ import {
   CATALOGO,
   CATEGORIAS,
   RAREZAS,
+  precioCon,
   rarezaDe,
   usoDe,
   type CategoriaTienda,
@@ -297,9 +298,15 @@ export function Tienda(props: Props) {
   const activa = marco("pestana_activa", "var(--u)");
   const acciones = { alComprar: props.alComprar, alEquipar: props.alEquipar, alUsar: props.alUsar };
 
-  const deCategoria = CATALOGO.filter((o) => o.categoria === categoria && !o.exclusivo);
+  // Precios con el descuento de reputación del jugador; la rareza se fija antes para que no cambie con el precio.
+  const descuentos = props.perfil.descuentos;
+  const catalogo = CATALOGO.map((o) => ({ ...o, rareza: rarezaDe(o), precio: precioCon(o, descuentos) }));
+  const rebaja = descuentos
+    ? Math.round((1 - (categoria === "macetas" ? descuentos.macetas : descuentos.tienda)) * 100)
+    : 0;
+  const deCategoria = catalogo.filter((o) => o.categoria === categoria && !o.exclusivo);
   const visibles = filtro ? deCategoria.filter((o) => rarezaDe(o) === filtro) : deCategoria;
-  const objetoAbierto = abierto ? CATALOGO.find((o) => o.id === abierto) : undefined;
+  const objetoAbierto = abierto ? catalogo.find((o) => o.id === abierto) : undefined;
 
   return (
     <div className={styles.contenedor}>
@@ -312,6 +319,12 @@ export function Tienda(props: Props) {
           </p>
         )}
       </div>
+      {rebaja > 0 && (
+        <p className={styles.aviso} role="note">
+          <Icono id="moneda" />
+          <span>Tu reputación te da un {rebaja} % de descuento en esta sección.</span>
+        </p>
+      )}
       <div className={styles.categorias} role="tablist" aria-label="Categorías">
         {CATEGORIAS.map((c) => (
           <button

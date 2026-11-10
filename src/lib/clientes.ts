@@ -98,8 +98,8 @@ export const RANGOS_CLIENTE = [
   { nombre: "Desconocido", desde: 0, nota: "Todavía no te conoce." },
   { nombre: "Conocido", desde: 100, nota: "Cuenta su historia." },
   { nombre: "Habitual", desde: 300, nota: "Paga un 5 % más." },
-  { nombre: "De confianza", desde: 600, nota: "Capítulos especiales y un 10 % menos en su objeto." },
-  { nombre: "VIP", desde: 1000, nota: "Paga ×1,2 y te da un objeto único." },
+  { nombre: "De confianza", desde: 600, nota: "Sigue pagando un 5 % más y confía en ti para lo difícil." },
+  { nombre: "VIP", desde: 1000, nota: "Paga ×1,2. Al terminar su historia te hace un regalo." },
 ] as const;
 
 export const RANGOS_GLOBALES = [
@@ -107,7 +107,7 @@ export const RANGOS_GLOBALES = [
   { nombre: "Cultivador del barrio", desde: 500, nota: "Dos historias a la vez." },
   { nombre: "Conocido en la calle", desde: 1500, nota: "Se abre el mercado negro." },
   { nombre: "Referente", desde: 3000, nota: "10 % de descuento en la tienda." },
-  { nombre: "Leyenda", desde: 6000, nota: "Llega La Condesa y la semilla «Corona»." },
+  { nombre: "Leyenda", desde: 6000, nota: "Llega La Condesa y te regala la semilla de Aurora." },
 ] as const;
 
 export const rangoCliente = (p: number) => RANGOS_CLIENTE.findLastIndex((r) => p >= r.desde);

@@ -89,6 +89,8 @@ import {
   venderGramos,
   cosechaPendiente,
   verRobo,
+  verMulta,
+  jugarMinijuego,
   verAnuncio,
   recuperarPlanta,
   elegirHueco,
@@ -121,6 +123,8 @@ import {
 import { tamanoPlanta } from "@/lib/crecimiento";
 import { LOGRO_POR_ID } from "@/lib/logros";
 import { PLAGAS, TRATAMIENTOS } from "@/lib/plagas";
+import { Minijuego, type TipoMinijuego } from "./Minijuegos";
+import { ChipVecinos, Multa } from "./Vecinos";
 import { OBJETO_POR_ID, usoDe } from "@/lib/tienda";
 import type { Efecto } from "@/lib/sonido";
 import type { DatosEstadisticas, DatosPerfil } from "@/lib/perfil";
@@ -255,6 +259,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const casaIso = useRef<CasaIsoApi>(null);
   const [cofre, setCofre] = useState<PremioCofre | null>(null);
   const [roboVisto, setRoboVisto] = useState<string | null>(null);
+  const [multaVista, setMultaVista] = useState<string | null>(null);
+  const [minijuego, setMinijuego] = useState<TipoMinijuego | null>(null);
   const [ranking, setRanking] = useState<DatosRanking | null>(null);
   const [opcionesRanking, setOpcionesRanking] = useState<OpcionesRanking>({
     ambito: "mundial",
@@ -1429,6 +1435,28 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       Inventario
     </button>
   );
+  const botonVecinos =
+    perfil.vecinos && (perfil.vecinos.sospecha > 0 || perfil.vecinos.olor > 0) ? (
+      <ChipVecinos
+        vecinos={perfil.vecinos}
+        ambientadores={perfil.inventario.ambientador ?? 0}
+        ocupado={enCurso}
+        clase={styles.vista}
+        estilo={{ top: "calc(var(--u) * 28)" }}
+        alUsarAmbientador={() => usar("ambientador")}
+        alIrATienda={() => elegirPantalla("tienda")}
+        alIrAMejoras={() => elegirPantalla("armario")}
+      />
+    ) : null;
+  // Minijuego de cuidado disponible para la planta activa: poda (fases 3 a 5, una vez por fase) o lavado (fase 7).
+  const minijuegoListo: TipoMinijuego | null =
+    planta && viva && !planta.desafio && !plaga
+      ? planta.fase >= 3 && planta.fase <= 5 && planta.extras?.[`poda_f${planta.fase}` as "poda_f3"] === undefined
+        ? "poda"
+        : planta.fase === 7 && planta.extras?.lavado === undefined
+          ? "lavado"
+          : null
+      : null;
   const panelInventario = invRapido ? (
     <InventarioRapido
       perfil={perfil}
@@ -1501,6 +1529,17 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           {tieneProducto
             ? `Tratar con ${TRATAMIENTOS[producto].toLowerCase()}`
             : `Comprar ${TRATAMIENTOS[producto].toLowerCase()}`}
+        </button>
+      )}
+      {minijuegoListo && (
+        <button
+          type="button"
+          className={styles.plantar}
+          style={botonPlantar}
+          disabled={enCurso}
+          onClick={() => setMinijuego(minijuegoListo)}
+        >
+          {minijuegoListo === "poda" ? "✂ Poda de precisión" : "💧 Lavado de raíces"}
         </button>
       )}
       {!planta && (
@@ -1645,6 +1684,29 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             alCerrar={() => {
               setAnuncioAbierto(false);
               setAnuncioRecuperar(false);
+            }}
+          />
+        ) : minijuego && planta ? (
+          <Minijuego
+            tipo={minijuego}
+            fase={planta.fase}
+            ocupado={enCurso}
+            alTerminar={(estrellas) => {
+              const tipo = minijuego;
+              ejecutar(async () => {
+                const r = await jugarMinijuego(tipo, estrellas);
+                sonar(r.ok && estrellas > 0 ? "clic" : "error");
+                tratar(r);
+              });
+            }}
+            alCerrar={() => setMinijuego(null)}
+          />
+        ) : perfil.vecinos?.multa && perfil.vecinos.multa.en !== multaVista ? (
+          <Multa
+            monedas={perfil.vecinos.multa.monedas}
+            alCerrar={() => {
+              setMultaVista(perfil.vecinos?.multa?.en ?? null);
+              verMulta();
             }}
           />
         ) : perfil.robo && perfil.robo.en !== roboVisto ? (
@@ -1957,6 +2019,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             habitacion={perfil.casa.habitacion}
             huecos={perfil.huecos}
             avatar={avatarCasa}
+            decoracion={perfil.equipo.decoracion}
             ocupado={enCurso}
             alElegirHueco={cambiarHueco}
             alAbrir={elegirPantalla}
@@ -1977,6 +2040,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             {superpuestos}
             {botonVista}
             {botonInventario}
+            {botonVecinos}
             {panelInventario}
           </CasaIso>
         ) : (
@@ -2017,6 +2081,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             {superpuestos}
             {botonVista}
             {botonInventario}
+            {botonVecinos}
             {panelInventario}
           </Escena>
         )

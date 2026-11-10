@@ -140,12 +140,27 @@ export interface PerfilJuego {
   casa: DatosCasa;
   /** Ánimo de la casa (decoración colocada): cada punto es +1 % de experiencia. */
   animo?: number;
+  /** Multiplicadores de precio en la tienda por reputación (1 = sin descuento). */
+  descuentos?: { tienda: number; macetas: number };
+  vecinos?: VecinosJuego;
   /** Multiplicador de experiencia de cuidados y cosechas. */
   xp_mult?: number;
   /** Efectos temporales activos en la casa (eventos, objetos usados). */
   efectos?: EfectoCasa[];
   /** Robo que el jugador aún no ha visto. */
   robo?: { monedas: number; en: string } | null;
+}
+
+/** Sospecha de los vecinos por el olor de las plantas. */
+export interface VecinosJuego {
+  /** De 0 a 100. */
+  sospecha: number;
+  /** Puntos de olor por hora (la sospecha sube olor − 1). */
+  olor: number;
+  /** Multa que el jugador aún no ha visto. */
+  multa: { monedas: number; en: string } | null;
+  /** Segundos que faltan para poder usar otro ambientador. */
+  ambientador: number;
 }
 
 export interface EfectoCasa {
@@ -235,7 +250,17 @@ export interface PlantaJuego {
   /** Segundos que faltan para poder repetir cada acción. */
   esperas: Partial<Record<Accion, number>>;
   /** Potenciadores ya aplicados a esta planta (raíces, PK). */
-  extras?: { raices?: boolean; pk?: boolean };
+  extras?: {
+    raices?: boolean;
+    pk?: boolean;
+    /** Estrellas de la poda de precisión en cada fase y del lavado de raíces. */
+    poda_f3?: number;
+    poda_f4?: number;
+    poda_f5?: number;
+    lavado?: number;
+    /** Momento (epoch en segundos) hasta el que dura el estrés por una poda fallida. */
+    estres?: number;
+  };
   /** Solo cuando está lista: minutos que lleva sin cosechar y minutos de la ventana de mejor calidad. */
   madurez?: { pasada: number; ventana: number } | null;
   /** Plaga o hongo que sufre ahora, si lo hay. */
@@ -309,6 +334,8 @@ export const MENSAJES_ERROR: Record<string, string> = {
   historia_sin_empezar: "Primero tienes que empezar esa historia.",
   historia_terminada: "Esa historia ya está terminada.",
   historia_desconocida: "Esa historia no existe.",
+  ambientador_espera: "Solo puedes usar un ambientador cada 6 horas.",
+  historia_bloqueada: "La Condesa solo trata con leyendas del barrio.",
   sin_gramos: "No tienes gramos de esa variedad.",
   fase_insuficiente: "Tu planta aún no está lista para eso.",
   sin_planta: "No tienes ninguna planta. Planta una semilla.",
