@@ -87,7 +87,7 @@ export const RAMAS: RamaMejoras[] = [
     niveles: [
       {
         nombre: "Termómetro digital",
-        texto: "Muestra la temperatura exacta y avisa si pasa de 30 °C.",
+        texto: "Muestra la temperatura exacta y avisa si se sale del rango ideal de la variedad.",
         precio: 800,
         nivel: 8,
       },
@@ -177,7 +177,7 @@ export const HABITACIONES: Habitacion[] = [
     base: 10,
     precio: 0,
     nivel: 1,
-    descripcion: "Luz de ventana por la mañana.",
+    descripcion: "Luz de ventana por la mañana: la luz de tus plantas baja un 10 % más despacio.",
     escena: null,
     pared: "#efe3c6",
     suelo: "#8a5a2e",
@@ -275,7 +275,8 @@ export const HABITACIONES: Habitacion[] = [
     base: 70,
     precio: 5000,
     nivel: 15,
-    descripcion: "Apenas entra luz por el ventanuco: controlas la luz con lámparas. −10 % de plagas.",
+    descripcion:
+      "Fresco y oscuro: 4 °C menos que el resto de la casa y −10 % de plagas. Ideal para variedades de frío.",
     escena: "/assets/escena/escena-sotano-1x.png",
     pared: "#5f3c26",
     suelo: "#3a2418",

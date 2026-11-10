@@ -140,6 +140,8 @@ export interface PerfilJuego {
   casa: DatosCasa;
   /** Ánimo de la casa (decoración colocada): cada punto es +1 % de experiencia. */
   animo?: number;
+  /** Multiplicadores de precio en la tienda por reputación (1 = sin descuento). */
+  descuentos?: { tienda: number; macetas: number };
   /** Multiplicador de experiencia de cuidados y cosechas. */
   xp_mult?: number;
   /** Efectos temporales activos en la casa (eventos, objetos usados). */
@@ -309,6 +311,7 @@ export const MENSAJES_ERROR: Record<string, string> = {
   historia_sin_empezar: "Primero tienes que empezar esa historia.",
   historia_terminada: "Esa historia ya está terminada.",
   historia_desconocida: "Esa historia no existe.",
+  historia_bloqueada: "La Condesa solo trata con leyendas del barrio.",
   sin_gramos: "No tienes gramos de esa variedad.",
   fase_insuficiente: "Tu planta aún no está lista para eso.",
   sin_planta: "No tienes ninguna planta. Planta una semilla.",
