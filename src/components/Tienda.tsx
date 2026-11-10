@@ -8,6 +8,7 @@ import {
   CATEGORIAS,
   RAREZAS,
   rarezaDe,
+  usoDe,
   type CategoriaTienda,
   type ObjetoTienda,
   type Rareza,
@@ -171,7 +172,8 @@ function Detalle({
   const { principal, bloqueado, lo_tiene, falta, cantidad, consumible, porUnidades, poner, gratis } = estado;
   const estiloBoton = { boton, secundario, apagado }[principal.estilo];
   const oculto = bloqueado && !lo_tiene;
-  const puedeUsar = consumible && cantidad > 0 && objeto.categoria !== "fertilizantes";
+  const uso = usoDe(objeto);
+  const puedeUsar = consumible && cantidad > 0 && (uso === "casa" || uso === "plaga");
   const selector = porUnidades && !oculto && !gratis && objeto.precio > 0;
   const total = objeto.precio * (porUnidades ? unidades : 1);
 
@@ -197,7 +199,6 @@ function Detalle({
             <p className={styles.modalEfecto}>
               {oculto ? `Se abre al llegar al nivel ${objeto.nivel}.` : objeto.efecto}
             </p>
-            {objeto.pronto && !oculto && <p className={styles.pronto}>Efecto próximamente: ya puedes tenerlo.</p>}
           </div>
         </div>
         {selector && (

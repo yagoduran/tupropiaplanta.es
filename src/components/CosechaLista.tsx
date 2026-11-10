@@ -76,6 +76,7 @@ export function CosechaLista({ cosecha, ocupado, libres, alElegir }: Props) {
         </span>
       ),
     },
+    ...(cosecha.pasada ? [{ nombre: "Aviso", valor: "Se pasó de su ventana de cosecha: ha perdido calidad." }] : []),
     { nombre: "Monedas", valor: `+${cosecha.monedas}` },
     { nombre: "Experiencia", valor: `+${cosecha.xp} XP` },
   ];
