@@ -2,7 +2,7 @@
 
 import { marco, type IdIcono } from "@/lib/diseno";
 import type { PerfilJuego, PlantaJuego } from "@/lib/juego";
-import { CATALOGO } from "@/lib/tienda";
+import { CATALOGO, usoDe } from "@/lib/tienda";
 import { Icono } from "./Icono";
 import { IconoObjeto } from "./IconoObjeto";
 import styles from "./abonos.module.css";
@@ -22,6 +22,12 @@ const FASES: Record<string, { texto: string; desde: number; hasta: number }> = {
   fert_crecimiento: { texto: "Ideal en crecimiento (fases 4 y 5).", desde: 4, hasta: 5 },
   fert_floracion: { texto: "Ideal en floración (fases 6 y 7).", desde: 6, hasta: 7 },
   fert_mejorador: { texto: "Una vez por planta, en cualquier fase.", desde: 1, hasta: 8 },
+  crecimiento_plus: { texto: "Solo en crecimiento (fases 4 y 5).", desde: 4, hasta: 5 },
+  floracion_plus: { texto: "Solo en floración (fases 6 y 7).", desde: 6, hasta: 7 },
+  pk_booster: { texto: "Solo en floración (fases 6 y 7). Una vez por planta.", desde: 6, hasta: 7 },
+  raices: { texto: "Solo en plántula (fases 1 a 3). Una vez por planta.", desde: 1, hasta: 3 },
+  relampago: { texto: "Solo en plántula (fases 1 a 3) y si la planta no tiene ya un fenotipo.", desde: 1, hasta: 3 },
+  bioestimulante: { texto: "Una vez por planta, en cualquier fase.", desde: 1, hasta: 8 },
 };
 
 export function Abonos({ perfil, planta, ocupado, aviso, alUsar, alTienda }: Props) {
@@ -29,7 +35,7 @@ export function Abonos({ perfil, planta, ocupado, aviso, alUsar, alTienda }: Pro
   const boton = marco("boton", "var(--u)");
   const apagado = marco("boton_desactivado", "var(--u)");
   const viva = !!planta && planta.vida === "viva";
-  const abonos = CATALOGO.filter((o) => o.categoria === "fertilizantes" && (perfil.inventario[o.id] ?? 0) > 0);
+  const abonos = CATALOGO.filter((o) => usoDe(o) === "planta" && (perfil.inventario[o.id] ?? 0) > 0);
 
   return (
     <div className={styles.contenedor}>
@@ -61,7 +67,7 @@ export function Abonos({ perfil, planta, ocupado, aviso, alUsar, alTienda }: Pro
             const activo = viva && !fueraDeFase && !ocupado;
             return (
               <article key={o.id} className={styles.tarjeta} style={tarjeta}>
-                <IconoObjeto celda={o.celda} />
+                <IconoObjeto celda={o.celda} hoja={o.hoja} />
                 <div className={styles.datos}>
                   <h3 className={styles.nombre}>{o.nombre}</h3>
                   <p className={styles.texto}>{o.efecto}</p>

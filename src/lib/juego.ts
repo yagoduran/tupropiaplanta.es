@@ -1,3 +1,4 @@
+import { FICHA_POR_ID } from "./fichas";
 import type { DatosCasa } from "./casa";
 import type { AvatarCasa } from "./casaIso";
 import type { HibridoPropio } from "./variedades";
@@ -137,8 +138,47 @@ export interface PerfilJuego {
   misiones_listas: number;
   /** Habitación y mejoras del armario. */
   casa: DatosCasa;
+  /** Ánimo de la casa (decoración colocada): cada punto es +1 % de experiencia. */
+  animo?: number;
+  /** Multiplicador de experiencia de cuidados y cosechas. */
+  xp_mult?: number;
+  /** Efectos temporales activos en la casa (eventos, objetos usados). */
+  efectos?: EfectoCasa[];
   /** Robo que el jugador aún no ha visto. */
   robo?: { monedas: number; en: string } | null;
+}
+
+export interface EfectoCasa {
+  k: "calor" | "crec" | "agua" | "ventas" | "plaga";
+  v: number;
+  /** Segundos que le quedan. */
+  resta: number;
+}
+
+/** Texto corto de un efecto temporal: «Crecimiento +15 %», «Calor +6 °C»... */
+export function textoEfecto(e: EfectoCasa): { texto: string; bueno: boolean } {
+  const pct = Math.round((e.v - 1) * 100);
+  const signo = pct > 0 ? "+" : "−";
+  switch (e.k) {
+    case "calor":
+      return { texto: `${e.v > 0 ? "Calor +" : "Fresco −"}${Math.abs(e.v)} °C`, bueno: e.v < 0 };
+    case "crec":
+      return { texto: `Crecimiento ${signo}${Math.abs(pct)} %`, bueno: pct > 0 };
+    case "agua":
+      return { texto: `Gasto de agua ×${e.v}`, bueno: e.v < 1 };
+    case "ventas":
+      return { texto: `Ventas ${signo}${Math.abs(pct)} %`, bueno: pct > 0 };
+    default:
+      return { texto: `Plagas ${signo}${Math.abs(pct)} %`, bueno: pct < 0 };
+  }
+}
+
+/** «2 d 3 h», «5 h 20 min», «12 min». */
+export function duracionCorta(segundos: number): string {
+  const m = Math.max(1, Math.round(segundos / 60));
+  if (m >= 1440) return `${Math.floor(m / 1440)} d ${Math.floor((m % 1440) / 60)} h`;
+  if (m >= 60) return `${Math.floor(m / 60)} h ${m % 60} min`;
+  return `${m} min`;
 }
 
 /** Número de hueco reservado para la planta del desafío. Tiene que coincidir con la base de datos. */
@@ -194,6 +234,10 @@ export interface PlantaJuego {
   segundos_vida: number;
   /** Segundos que faltan para poder repetir cada acción. */
   esperas: Partial<Record<Accion, number>>;
+  /** Potenciadores ya aplicados a esta planta (raíces, PK). */
+  extras?: { raices?: boolean; pk?: boolean };
+  /** Solo cuando está lista: minutos que lleva sin cosechar y minutos de la ventana de mejor calidad. */
+  madurez?: { pasada: number; ventana: number } | null;
   /** Plaga o hongo que sufre ahora, si lo hay. */
   plaga: PlagaJuego | null;
   /** Si es la planta de un desafío: cuál, segundos que quedan y puntos conseguidos al cosechar. */
@@ -213,6 +257,8 @@ export interface CosechaPendiente {
   xp: number;
   /** De 1 a 5 estrellas, según la salud de la planta. */
   calidad: number;
+  /** Se cosechó fuera de su ventana: ha perdido calidad. */
+  pasada?: boolean;
   /** Días que ha tardado en crecer. */
   dias: number;
   /** Estado de la planta al cosechar (1 a 5), para «Qué ha influido». */
@@ -354,8 +400,8 @@ export const MENSAJES_ERROR: Record<string, string> = {
   no_lo_tienes: "Todavía no tienes ese objeto.",
   hueco_no_valido: "Ese hueco no existe todavía.",
   sin_existencias: "No te quedan unidades. Compra más en la tienda.",
-  fase_incorrecta: "Ese abono no sirve en la fase actual de tu planta.",
-  ya_aplicado: "Tu planta ya tiene ese mejorador.",
+  fase_incorrecta: "Eso no sirve en la fase actual de tu planta.",
+  ya_aplicado: "Tu planta ya tiene ese potenciador.",
   sesion: "Tu sesión ha caducado. Vuelve a entrar.",
   red: "No se ha podido conectar. Inténtalo de nuevo.",
 };
@@ -368,6 +414,12 @@ export function formatoVida(segundos: number): string {
 }
 
 const coma = (n: number) => String(n).replace(".", ",");
+
+/** Rango de temperatura en el que una variedad crece a su ritmo (el de su ficha). Fuera de él, más despacio. */
+export function temperaturaIdeal(variedad: string): { min: number; max: number } {
+  const f = FICHA_POR_ID[variedad];
+  return f ? { min: f.tMin, max: f.tMax } : { min: 18, max: 26 };
+}
 
 /** Herramientas de medida del jugador: sin ellas, la temperatura y el pH se ven como "?". */
 export interface Medidas {
@@ -384,6 +436,7 @@ export function medidoresDe(p: PlantaJuego, medidas: Medidas = { termometro: tru
     tono: tonoPorPorcentaje(valor),
     ...extra,
   });
+  const ideal = temperaturaIdeal(p.variedad);
   return [
     m("agua", "Agua", p.agua, `${Math.round(p.agua)}%`),
     m("nutrientes", "Nutrientes", p.nutrientes, `${Math.round(p.nutrientes)}%`, { nombreCorto: "Nutr." }),
@@ -392,8 +445,12 @@ export function medidoresDe(p: PlantaJuego, medidas: Medidas = { termometro: tru
       ? m(
           "temperatura",
           "Temperatura",
-          p.temperatura >= 20 && p.temperatura <= 28 ? 100 : p.temperatura >= 18 && p.temperatura <= 30 ? 50 : 20,
-          `${p.temperatura} °C`,
+          p.temperatura >= ideal.min && p.temperatura <= ideal.max
+            ? 100
+            : p.temperatura >= ideal.min - 1 && p.temperatura <= ideal.max + 1
+              ? 50
+              : 20,
+          `${p.temperatura} °C (ideal ${ideal.min}–${ideal.max})`,
           {
             nombreCorto: "Temp.",
             valorCorto: `${p.temperatura}°`,

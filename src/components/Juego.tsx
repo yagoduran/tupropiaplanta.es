@@ -85,7 +85,6 @@ import {
   obtenerSecado,
   obtenerEventosVuelta,
   decidirEvento,
-  usarAbonoCasero,
   cerrarEventosVuelta,
   venderGramos,
   cosechaPendiente,
@@ -105,8 +104,10 @@ import { fijarVolumenEfectos, sonar } from "@/lib/sonido";
 import {
   HUECO_DESAFIO,
   MENSAJES_ERROR,
+  duracionCorta,
   formatoVida,
   medidoresDe,
+  temperaturaIdeal,
   type Accion,
   type TipoSemilla,
   type AjustesJuego,
@@ -120,6 +121,7 @@ import {
 import { tamanoPlanta } from "@/lib/crecimiento";
 import { LOGRO_POR_ID } from "@/lib/logros";
 import { PLAGAS, TRATAMIENTOS } from "@/lib/plagas";
+import { OBJETO_POR_ID, usoDe } from "@/lib/tienda";
 import type { Efecto } from "@/lib/sonido";
 import type { DatosEstadisticas, DatosPerfil } from "@/lib/perfil";
 import type { DatosProgresion } from "@/lib/progresion";
@@ -734,14 +736,6 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     return r.ok && "bonus" in r ? (r.bonus ?? 0) : null;
   };
 
-  const usarElAbonoCasero = () => {
-    ejecutar(async () => {
-      const r = await usarAbonoCasero();
-      sonar(r.ok ? "clic" : "error");
-      tratar(r, { texto: "Abono casero: +15 % de crecimiento 24 h", icono: "tienda" });
-    });
-  };
-
   const venderAlmacen = (variedad: string, gramos: number | null) => {
     ejecutar(async () => {
       const r = await venderGramos(variedad, gramos);
@@ -852,7 +846,11 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const comprar = (id: string, cantidad = 1) =>
     gestionarObjeto(comprarObjeto, id, "¡Compra hecha!", "comprar", undefined, cantidad);
   const equipar = (id: string) => gestionarObjeto(equiparObjeto, id, "Hecho", "clic");
-  const usar = (id: string) => gestionarObjeto(usarObjeto, id, "¡Abono aplicado!", "clic");
+  const usar = (id: string) => {
+    const uso = OBJETO_POR_ID[id] ? usoDe(OBJETO_POR_ID[id]) : null;
+    if (uso === "plaga") return tratarPlaga(id);
+    gestionarObjeto(usarObjeto, id, uso === "casa" ? "¡Hecho! Mira el efecto en tu inventario." : "¡Aplicado!", "clic");
+  };
   const tratarPlaga = (id: string) =>
     gestionarObjeto(usarObjeto, id, "¡Plaga eliminada!", "plaga-eliminada", () => setEfectoTratamiento(true));
 
@@ -1371,16 +1369,18 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   // Avisos de los sensores del armario.
   const avisoSensor =
     planta && viva && !planta.desafio
-      ? sensores >= 1 && planta.temperatura > 30
-        ? "Hace demasiado calor en el armario."
-        : sensores >= 2 && planta.agua > 80 && !plaga
-          ? "Demasiada humedad: cuidado con los hongos."
-          : sensores >= 3 &&
-              planta.fase >= 3 &&
-              !plaga &&
-              (planta.agua < 40 || planta.nutrientes < 30 || planta.luz < 30)
-            ? "Tu planta está descuidada: hay riesgo de plagas."
-            : null
+      ? sensores >= 1 && planta.temperatura > temperaturaIdeal(planta.variedad).max + 1
+        ? "Hace demasiado calor para esta variedad: crece más despacio."
+        : sensores >= 1 && planta.temperatura < temperaturaIdeal(planta.variedad).min - 1
+          ? "Hace demasiado frío para esta variedad: crece más despacio."
+          : sensores >= 2 && planta.agua > 80 && !plaga
+            ? "Demasiada humedad: cuidado con los hongos."
+            : sensores >= 3 &&
+                planta.fase >= 3 &&
+                !plaga &&
+                (planta.agua < 40 || planta.nutrientes < 30 || planta.luz < 30)
+              ? "Tu planta está descuidada: hay riesgo de plagas."
+              : null
       : null;
   const vida = planta ? planta.segundos_vida + (viva ? transcurrido : 0) : 0;
   const causaAviso = planta?.causa && !plaga ? CAUSAS[planta.causa] : null;
@@ -1458,6 +1458,15 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           <Bocadillo texto={`${CAUSAS.macho.titulo} ${CAUSAS.macho.evitar}`} columnaAviso={CAUSAS.macho.columna} />
         ) : sedienta ? (
           <Bocadillo texto="¡Tu planta necesita agua!" />
+        ) : viva && planta?.madurez && !planta.desafio ? (
+          planta.madurez.pasada > planta.madurez.ventana ? (
+            <Bocadillo texto="Tu planta se está pasando: ha perdido calidad. ¡Coséchala ya!" icono="aviso" />
+          ) : (
+            <Bocadillo
+              texto={`Lista para cosechar. Mejor calidad durante ${duracionCorta((planta.madurez.ventana - planta.madurez.pasada) * 60)} más.`}
+              icono="moneda"
+            />
+          )
         ) : avisoSensor ? (
           <Bocadillo texto={avisoSensor} icono="aviso" />
         ) : planta?.desafio && planta.vida === "cosechada" ? (
@@ -1707,7 +1716,9 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             alAmpliar={() => elegirPantalla("habitaciones")}
             alIrATienda={() => elegirPantalla("tienda")}
             alVender={venderAlmacen}
-            alUsarAbonoCasero={usarElAbonoCasero}
+            alUsar={usar}
+            alEquipar={equipar}
+            alIrAAbonos={() => elegirPantalla("abonos")}
             alIrAEncargos={() => elegirPantalla("encargos")}
           />
         ) : pantalla === "estadisticas" ? (
