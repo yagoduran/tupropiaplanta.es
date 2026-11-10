@@ -1462,6 +1462,12 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       perfil={perfil}
       ocupado={enCurso}
       alVender={venderAlmacen}
+      alUsar={usar}
+      alEquipar={equipar}
+      alIrAAbonos={() => {
+        setInvRapido(false);
+        elegirPantalla("abonos");
+      }}
       alAbrirCompleto={() => {
         setInvRapido(false);
         elegirPantalla("inventario");
