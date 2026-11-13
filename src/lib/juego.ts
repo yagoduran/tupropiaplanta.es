@@ -1,4 +1,5 @@
 import { FICHA_POR_ID } from "./fichas";
+import type { MapaDeco } from "./casaIso";
 import type { DatosCasa } from "./casa";
 import type { AvatarCasa } from "./casaIso";
 import type { HibridoPropio } from "./variedades";
@@ -103,6 +104,8 @@ export interface EquipoJuego {
   maceta: string;
   luz: string;
   decoracion: string[];
+  /** Dónde puso el jugador cada objeto del salón; si falta, va a su sitio de salida. */
+  deco_pos?: MapaDeco;
 }
 
 export interface PerfilJuego {
@@ -335,6 +338,8 @@ export const MENSAJES_ERROR: Record<string, string> = {
   historia_terminada: "Esa historia ya está terminada.",
   historia_desconocida: "Esa historia no existe.",
   ambientador_espera: "Solo puedes usar un ambientador cada 6 horas.",
+  deco_invalida: "Esa decoración no se puede colocar así.",
+  deco_ocupada: "Ese sitio ya está ocupado.",
   historia_bloqueada: "La Condesa solo trata con leyendas del barrio.",
   sin_gramos: "No tienes gramos de esa variedad.",
   fase_insuficiente: "Tu planta aún no está lista para eso.",

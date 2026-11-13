@@ -145,3 +145,66 @@
     animation: none;
   }
 }
+
+/* Modo editar decoración */
+.decoSel {
+  translate: 0 -4px;
+  opacity: 0.65;
+}
+
+.tramo {
+  width: 24px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid #1c1626;
+  z-index: 3000;
+  cursor: pointer;
+}
+
+.tramo:disabled {
+  cursor: not-allowed;
+}
+
+.editor {
+  position: absolute;
+  left: calc(var(--u) * 4);
+  right: calc(var(--u) * 4);
+  bottom: calc(var(--u) * 4);
+  z-index: 3500;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 2);
+  padding: calc(var(--u) * 2);
+  color: #f6eed6;
+  background: #1c1626;
+  border: calc(var(--u)) solid #f6eed6;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+}
+
+.editorTexto {
+  margin: 0;
+  min-height: 1.2em;
+}
+
+.bandeja {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--u) * 2);
+}
+
+.botonEd {
+  min-height: 44px;
+  padding: 0 calc(var(--u) * 3);
+  color: #1c1626;
+  background: #f6eed6;
+  border: calc(var(--u)) solid #1c1626;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.botonEd:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

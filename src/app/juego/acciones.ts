@@ -506,6 +506,16 @@ export async function jugarMinijuego(tipo: "poda" | "lavado", estrellas: number)
   return data as RespuestaAccion;
 }
 
+/** Guarda dónde puso el jugador cada objeto de decoración del salón. */
+export async function guardarDecoracion(
+  items: { id: string; x: number; y?: number; r?: number; p?: string }[],
+): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_guardar_deco", { p_items: items });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
 /** Da la ayuda extra tras ver el anuncio: monedas y sin esperas. */
 export async function verAnuncio(): Promise<Resultado> {
   const supabase = await crearClienteServidor();

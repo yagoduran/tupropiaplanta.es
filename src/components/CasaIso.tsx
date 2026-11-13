@@ -18,11 +18,22 @@ import {
   camino,
   centro,
   claveCasilla,
+  colocarDeco,
   diseno,
   esquina,
   mirar,
+  pasoLibre,
+  ponerNueva,
+  posDeTramo,
+  posParaGuardar,
   profundidad,
+  sitioLibre,
   tapaPlanta,
+  tramoDe,
+  tramoVentana,
+  type DecoColocada,
+  type DecoIso,
+  type MapaDeco,
   type AccionAvatar,
   type AvatarCasa,
   type Casilla,
@@ -38,6 +49,8 @@ const RUTA = "/assets/casa-iso/";
 export interface CasaIsoApi {
   /** El avatar va junto a la planta elegida y hace la acción. */
   animar: (tipo: AccionAvatar) => void;
+  /** Abre el modo editar de la decoración del salón. */
+  editarDeco: () => void;
 }
 
 interface Props {
@@ -54,6 +67,14 @@ interface Props {
   alAbrirPlanta: () => void;
   /** Decoración colocada: la que tiene dibujo se ve en el salón. */
   decoracion?: string[];
+  /** Dónde puso el jugador cada objeto (`equipo.deco_pos`). */
+  decoPos?: MapaDeco;
+  /** Objetos de decoración que tiene el jugador, puestos o no. */
+  decoTengo?: string[];
+  /** Guarda lo colocado en el modo editar. Dice si salió bien. */
+  alGuardarDeco?: (items: ReturnType<typeof posParaGuardar>) => Promise<boolean>;
+  /** Avisa de que se entra o se sale del modo editar. */
+  alEditarDeco?: (editando: boolean) => void;
   ref?: Ref<CasaIsoApi>;
   /** Avisos y botones que van por encima de la casa. */
   children?: ReactNode;
@@ -106,6 +127,10 @@ export function CasaIso({
   alIrAHabitacion,
   alAbrirPlanta,
   decoracion,
+  decoPos,
+  decoTengo,
+  alGuardarDeco,
+  alEditarDeco,
   ref,
   children,
 }: Props) {
@@ -126,6 +151,11 @@ export function CasaIso({
   const [dormida, setDormida] = useState(false);
   const [hover, setHover] = useState<Casilla | null>(null);
   const [rutaVista, setRutaVista] = useState<Casilla[]>([]);
+  const [editando, setEditando] = useState(false);
+  const [borrador, setBorrador] = useState<DecoColocada[]>([]);
+  const [sel, setSel] = useState<string | null>(null);
+  const [aviso, setAviso] = useState("");
+  const [guardando, setGuardando] = useState(false);
 
   const posRef = useRef<Casilla>(SALIDA);
   const ruta = useRef<Casilla[]>([]);
@@ -142,8 +172,8 @@ export function CasaIso({
 
   const bloqueadas = new Set<string>();
   for (const mu of plano.muebles) if (!mu.pisable) bloqueadas.add(claveCasilla(mu));
-  const decos =
-    habitacion === "salon" ? (decoracion ?? []).flatMap((id) => (DECO_SALON[id] ? [DECO_SALON[id]] : [])) : [];
+  const decos: DecoColocada[] =
+    habitacion !== "salon" ? [] : editando ? borrador : colocarDeco(decoracion ?? [], decoPos);
   for (const d of decos) if (!d.pared) bloqueadas.add(claveCasilla(d));
   for (const p of plantas) bloqueadas.add(claveCasilla(p.c));
   const ultima = useRef({ bloqueadas, plantas, activo: huecos.activo, ocupado });
@@ -246,6 +276,28 @@ export function CasaIso({
     empezar(mejor, termina);
   };
 
+  const alEditarRef = useRef(alEditarDeco);
+  useEffect(() => {
+    alEditarRef.current = alEditarDeco;
+  });
+  // Al irse de la habitación se sale del modo editar.
+  useEffect(() => () => alEditarRef.current?.(false), []);
+
+  const empezarEdicion = () => {
+    if (habitacion !== "salon") return;
+    setBorrador(colocarDeco(decoracion ?? [], decoPos));
+    setSel(null);
+    setAviso("");
+    setEditando(true);
+    alEditarDeco?.(true);
+  };
+  const salirEdicion = () => {
+    setEditando(false);
+    setSel(null);
+    setAviso("");
+    alEditarDeco?.(false);
+  };
+
   useImperativeHandle(ref, () => ({
     animar: (tipo) => {
       const { plantas: pl, activo } = ultima.current;
@@ -253,9 +305,78 @@ export function CasaIso({
       if (!objetivo) return reproducir(tipo);
       irJunto(objetivo, () => reproducir(tipo));
     },
+    editarDeco: empezarEdicion,
   }));
 
+  const elegida = sel ? (borrador.find((d) => d.id === sel) ?? null) : null;
+  const selPared = sel ? !!DECO_SALON[sel]?.pared : false;
+  const sinPoner = (decoTengo ?? []).filter((id) => DECO_SALON[id] && !borrador.some((d) => d.id === id));
+
+  /** Mueve el objeto elegido a un sitio nuevo si cabe. */
+  const colocarEn = (sitio: Pick<DecoIso, "x" | "y" | "pared">) => {
+    if (!sel || !DECO_SALON[sel] || !!DECO_SALON[sel].pared !== !!sitio.pared) return;
+    if (!sitioLibre(borrador, sel, sitio)) {
+      setAviso("Ahí no cabe.");
+      return;
+    }
+    setAviso("");
+    setBorrador((b) => {
+      const previo = b.find((d) => d.id === sel);
+      const nuevo = { ...(previo ?? { ...DECO_SALON[sel], id: sel }), ...sitio, id: sel };
+      return [...b.filter((d) => d.id !== sel), nuevo];
+    });
+  };
+  const girar = () => {
+    if (!elegida) return;
+    if (!elegida.pared) {
+      setBorrador((b) => b.map((d) => (d.id === elegida.id ? { ...d, rot: !d.rot } : d)));
+      return;
+    }
+    const otra = elegida.pared === "derecha" ? "izquierda" : "derecha";
+    const t = tramoDe(elegida);
+    for (const i of [t, 0, 1, 2, 3, 4, 5]) {
+      const sitio = { pared: otra, ...posDeTramo(otra, i) } as const;
+      if (sitioLibre(borrador, elegida.id, sitio)) {
+        setAviso("");
+        setBorrador((b) => b.map((d) => (d.id === elegida.id ? { ...d, ...sitio } : d)));
+        return;
+      }
+    }
+    setAviso("No hay sitio en la otra pared.");
+  };
+  const quitar = () => {
+    if (!sel) return;
+    setBorrador((b) => b.filter((d) => d.id !== sel));
+    setSel(null);
+    setAviso("");
+  };
+  const ponerDeLaBandeja = (id: string) => {
+    const nueva = ponerNueva(borrador, id);
+    if (!nueva) {
+      setAviso("No queda sitio para eso.");
+      return;
+    }
+    setAviso("");
+    setBorrador((b) => [...b, nueva]);
+    setSel(id);
+  };
+  const guardarDeco = async () => {
+    if (!pasoLibre(borrador)) {
+      setAviso("Así taparías el paso: deja un camino libre hasta el ordenador, la tienda y el buzón.");
+      return;
+    }
+    setGuardando(true);
+    const ok = (await alGuardarDeco?.(posParaGuardar(borrador))) ?? false;
+    setGuardando(false);
+    if (ok) salirEdicion();
+    else setAviso("No se ha podido guardar. Prueba otra vez.");
+  };
+
   const pisar = (c: Casilla) => {
+    if (editando) {
+      if (sel && !selPared) colocarEn(c);
+      return;
+    }
     if (ultima.current.ocupado || ultima.current.bloqueadas.has(claveCasilla(c))) return;
     empezar(camino(posRef.current, c, ultima.current.bloqueadas), null);
   };
@@ -409,7 +530,7 @@ export function CasaIso({
             z={12}
           />
         )}
-        {hover && !bloqueadas.has(claveCasilla(hover)) && (
+        {!editando && hover && !bloqueadas.has(claveCasilla(hover)) && (
           <Sprite
             hoja="tpp-iso-suelos-32x16"
             w={32}
@@ -457,24 +578,100 @@ export function CasaIso({
           );
         })}
 
+        {/* Casillas del modo editar: verde si cabe, rojo si no */}
+        {editando &&
+          sel &&
+          !selPared &&
+          celdas.map(({ x, y }) => {
+            const e = esquina(x, y);
+            const cabe = sitioLibre(borrador, sel, { x, y });
+            return (
+              <Sprite
+                key={`e${x},${y}`}
+                hoja="tpp-iso-suelos-32x16"
+                w={32}
+                h={16}
+                col={cabe ? 10 : 11}
+                fila={0}
+                x={e.x}
+                y={e.y}
+                z={13}
+                opacidad={0.8}
+              />
+            );
+          })}
+
+        {/* Tramos de pared del modo editar */}
+        {editando &&
+          sel &&
+          selPared &&
+          (["derecha", "izquierda"] as const).flatMap((pared) =>
+            Array.from({ length: COLS }, (_, i) => {
+              const sitio = { pared, ...posDeTramo(pared, i) };
+              const v = esquina(sitio.x, sitio.y);
+              const ventana = tramoVentana(pared, i);
+              const cabe = sitioLibre(borrador, sel, sitio);
+              return (
+                <button
+                  key={`t${pared}${i}`}
+                  type="button"
+                  className={styles.tramo}
+                  disabled={ventana}
+                  aria-label={`Pared ${pared}, tramo ${i + 1}`}
+                  style={{
+                    left: pared === "derecha" ? v.x + 12 : v.x - 4,
+                    top: v.y - 43,
+                    background: ventana
+                      ? "rgba(28,22,38,0.35)"
+                      : cabe
+                        ? "rgba(116,207,69,0.55)"
+                        : "rgba(224,123,63,0.55)",
+                  }}
+                  onClick={() => colocarEn(sitio)}
+                />
+              );
+            }),
+          )}
+
         {/* Decoración comprada */}
         {decos.map((d) => {
           const v = esquina(d.x, d.y);
+          const levantada = editando && d.id === sel;
           return (
-            <div
-              key={`d${d.fila}`}
-              className={`pixel ${styles.deco}`}
-              role="img"
-              aria-label={d.nombre}
-              title={d.nombre}
-              style={{
-                left: d.pared === "izquierda" ? v.x - 32 : d.pared ? v.x : v.x - 16,
-                top: d.pared ? v.y - 56 : v.y - 40,
-                zIndex: d.pared ? 11 : profundidad(d.x, d.y) + 5,
-                backgroundPositionY: -d.fila * 64,
-                transform: d.pared === "izquierda" ? "scaleX(-1)" : undefined,
-              }}
-            />
+            <div key={`d${d.id}`} className={styles.grupo}>
+              <div
+                className={`pixel ${styles.deco} ${levantada ? styles.decoSel : ""}`}
+                role="img"
+                aria-label={d.nombre}
+                title={d.nombre}
+                style={{
+                  left: d.pared === "izquierda" ? v.x - 32 : d.pared ? v.x : v.x - 16,
+                  top: d.pared ? v.y - 56 : v.y - 40,
+                  zIndex: d.pared ? 60 : profundidad(d.x, d.y) + 5,
+                  backgroundPositionY: -d.fila * 64,
+                  transform: d.pared === "izquierda" || d.rot ? "scaleX(-1)" : undefined,
+                }}
+              />
+              {editando && (
+                <button
+                  type="button"
+                  className={styles.zona}
+                  aria-label={`Elegir ${d.nombre}`}
+                  aria-pressed={levantada}
+                  style={{
+                    left: d.pared === "izquierda" ? v.x - 8 : d.pared ? v.x + 8 : v.x,
+                    top: d.pared ? v.y - 44 : v.y - 30,
+                    width: 32,
+                    height: d.pared ? 40 : 40,
+                    zIndex: 3000,
+                  }}
+                  onClick={() => {
+                    setSel(levantada ? null : d.id);
+                    setAviso("");
+                  }}
+                />
+              )}
+            </div>
           );
         })}
 
@@ -582,7 +779,7 @@ export function CasaIso({
           <Semillita expresion={expresion} cuadro={quieto ? Math.floor(tick / 5) % 2 : fotograma} tamano="32px" />
         </div>
       </div>
-      {anterior && siguiente && (
+      {!editando && anterior && siguiente && (
         <nav className={styles.habitaciones} aria-label="Cambiar de habitación">
           <button
             type="button"
@@ -606,6 +803,41 @@ export function CasaIso({
             ▶
           </button>
         </nav>
+      )}
+      {editando && (
+        <div className={styles.editor} role="toolbar" aria-label="Editar decoración">
+          <p className={styles.editorTexto}>
+            {aviso ||
+              (elegida
+                ? `${elegida.nombre}: toca ${elegida.pared ? "un tramo de pared" : "una casilla"} para moverlo.`
+                : sel
+                  ? ""
+                  : "Toca un objeto para moverlo, girarlo o quitarlo.")}
+          </p>
+          {sinPoner.length > 0 && (
+            <div className={styles.bandeja}>
+              {sinPoner.map((id) => (
+                <button key={id} type="button" className={styles.botonEd} onClick={() => ponerDeLaBandeja(id)}>
+                  ＋ {DECO_SALON[id].nombre}
+                </button>
+              ))}
+            </div>
+          )}
+          <div className={styles.bandeja}>
+            <button type="button" className={styles.botonEd} disabled={!elegida} onClick={girar}>
+              Girar
+            </button>
+            <button type="button" className={styles.botonEd} disabled={!elegida} onClick={quitar}>
+              Quitar
+            </button>
+            <button type="button" className={styles.botonEd} disabled={guardando} onClick={salirEdicion}>
+              Cancelar
+            </button>
+            <button type="button" className={styles.botonEd} disabled={guardando} onClick={guardarDeco}>
+              Guardar cambios
+            </button>
+          </div>
+        </div>
       )}
       {children}
     </div>

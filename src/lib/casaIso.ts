@@ -193,12 +193,15 @@ export const DISENOS: Record<string, DisenoHabitacion> = {
 /**
  * Decoración comprada que se ve en el salón. `fila` es la de la hoja `tpp-deco-objetos-64` (2 fotogramas por fila).
  * En el suelo ocupa una casilla; en la pared, `pared` dice el tramo (derecha: fila y = 0; izquierda: columna x = 0).
+ * Las posiciones de aquí son las de salida: el jugador las cambia en el modo editar.
  */
 export interface DecoIso {
   fila: number;
   x: number;
   y: number;
   pared?: "derecha" | "izquierda";
+  /** Reflejado (solo en el suelo; en la pared girar es cambiar de pared). */
+  rot?: boolean;
   nombre: string;
 }
 
@@ -210,12 +213,143 @@ export const DECO_SALON: Record<string, DecoIso> = {
   puf: { fila: 17, x: 0, y: 1, nombre: "Puf" },
   acuario: { fila: 16, x: 5, y: 4, nombre: "Acuario" },
   lampara_pie: { fila: 13, x: 1, y: 5, nombre: "Lámpara de pie" },
-  poster: { fila: 0, x: 3, y: 0, pared: "derecha", nombre: "Póster" },
+  poster: { fila: 0, x: 5, y: 0, pared: "derecha", nombre: "Póster" },
   banderines: { fila: 4, x: 1, y: 0, pared: "derecha", nombre: "Banderines" },
-  cuadro: { fila: 1, x: 0, y: 2, pared: "izquierda", nombre: "Cuadro" },
+  cuadro: { fila: 1, x: 0, y: 1, pared: "izquierda", nombre: "Cuadro" },
   figura_semillita: { fila: 2, x: 0, y: 4, pared: "izquierda", nombre: "Semillita" },
   neon_tpp: { fila: 5, x: 0, y: 5, pared: "izquierda", nombre: "Letrero TPP" },
 };
+
+/** Lo que guarda el servidor de cada objeto colocado (`equipo.deco_pos`). Suelo: x, y, r. Pared: p ("d" derecha, "i" izquierda) y x = tramo. */
+export interface PosDeco {
+  x: number;
+  y?: number;
+  r?: number;
+  p?: "d" | "i";
+}
+export type MapaDeco = Record<string, PosDeco>;
+
+/** Objeto colocado y listo para dibujar. */
+export interface DecoColocada extends DecoIso {
+  id: string;
+}
+
+/** Los tramos de pared con ventana no admiten objetos. */
+export const VENTANA = { derecha: 3, izquierda: 2 } as const;
+
+const SALON_FIJAS = (() => {
+  const f = new Set<string>();
+  for (const mu of DISENOS.salon.muebles) if (!mu.pisable) f.add(`${mu.x},${mu.y}`);
+  for (const c of SITIOS) f.add(`${c.x},${c.y}`);
+  f.add(`${SALIDA.x},${SALIDA.y}`);
+  return f;
+})();
+
+export const decoEnSuelo = (id: string) => !!DECO_SALON[id] && !DECO_SALON[id].pared;
+/** Casilla del salón que no admite decoración de suelo (mueble, sitio de planta o salida). */
+export const casillaFijaSalon = (x: number, y: number) => SALON_FIJAS.has(`${x},${y}`);
+export const tramoVentana = (pared: "derecha" | "izquierda", i: number) => VENTANA[pared] === i;
+
+/** Tramo de pared como número (0 a 5): en la derecha es la columna; en la izquierda, la fila. */
+export const tramoDe = (d: Pick<DecoIso, "x" | "y" | "pared">) => (d.pared === "izquierda" ? d.y : d.x);
+export const posDeTramo = (pared: "derecha" | "izquierda", i: number) =>
+  pared === "derecha" ? { x: i, y: 0 } : { x: 0, y: i };
+
+/** ¿Está libre ese sitio, sin contar al propio objeto `id`? */
+export function sitioLibre(colocadas: DecoColocada[], id: string, d: Pick<DecoIso, "x" | "y" | "pared">): boolean {
+  if (d.pared) {
+    const t = tramoDe(d);
+    if (t < 0 || t >= COLS || tramoVentana(d.pared, t)) return false;
+    return !colocadas.some((o) => o.id !== id && o.pared === d.pared && tramoDe(o) === t);
+  }
+  if (d.x < 0 || d.y < 0 || d.x >= COLS || d.y >= FILAS || casillaFijaSalon(d.x, d.y)) return false;
+  return !colocadas.some((o) => o.id !== id && !o.pared && o.x === d.x && o.y === d.y);
+}
+
+/** Sitio de salida del objeto o, si está cogido, el primer hueco libre. */
+function huecoPara(fuera: DecoColocada[], id: string): DecoIso | null {
+  const base = DECO_SALON[id];
+  if (!base) return null;
+  const salida: DecoIso = { ...base, rot: false };
+  if (sitioLibre(fuera, id, salida)) return salida;
+  if (base.pared) {
+    for (const pared of ["derecha", "izquierda"] as const) {
+      for (let i = 0; i < COLS; i++) {
+        const c = { ...base, pared, ...posDeTramo(pared, i) };
+        if (sitioLibre(fuera, id, c)) return c;
+      }
+    }
+    return null;
+  }
+  for (let x = 0; x < COLS; x++) {
+    for (let y = 0; y < FILAS; y++) {
+      const c = { ...base, x, y };
+      if (sitioLibre(fuera, id, c)) return c;
+    }
+  }
+  return null;
+}
+
+/** Pone un objeto nuevo en su sitio de salida o en el primer hueco libre. */
+export function ponerNueva(colocadas: DecoColocada[], id: string): DecoColocada | null {
+  const d = huecoPara(colocadas, id);
+  return d ? { ...d, id } : null;
+}
+
+/**
+ * Pone cada objeto en su sitio: el que guardó el jugador, o el de salida. Si ese sitio ya está cogido,
+ * va al primer hueco libre.
+ */
+export function colocarDeco(ids: string[], mapa?: MapaDeco | null): DecoColocada[] {
+  const fuera: DecoColocada[] = [];
+  const guardada = (id: string): DecoIso | null => {
+    const base = DECO_SALON[id];
+    const g = mapa?.[id];
+    if (!g || typeof g.x !== "number") return null;
+    if (base.pared) {
+      const pared = g.p === "i" ? "izquierda" : "derecha";
+      return { ...base, pared, ...posDeTramo(pared, g.x) };
+    }
+    return { ...base, x: g.x, y: g.y ?? 0, rot: g.r === 1 };
+  };
+  for (const id of ids) {
+    if (!DECO_SALON[id]) continue;
+    const g = guardada(id);
+    const d = g && sitioLibre(fuera, id, g) ? g : huecoPara(fuera, id);
+    if (d) fuera.push({ ...d, id });
+  }
+  return fuera;
+}
+
+/** Lo que se manda al servidor al guardar. */
+export function posParaGuardar(colocadas: DecoColocada[]) {
+  return colocadas.map((d) =>
+    d.pared
+      ? { id: d.id, p: d.pared === "izquierda" ? "i" : "d", x: tramoDe(d), y: 0 }
+      : { id: d.id, x: d.x, y: d.y, r: d.rot ? 1 : 0 },
+  );
+}
+
+/**
+ * ¿Se puede llegar andando, desde la salida, a todo lo que se toca en el salón (ordenador, tienda, buzón)
+ * y a las macetas? Si no, la decoración tapa el paso.
+ */
+export function pasoLibre(colocadas: DecoColocada[]): boolean {
+  const bloq = new Set<string>();
+  for (const mu of DISENOS.salon.muebles) if (!mu.pisable) bloq.add(`${mu.x},${mu.y}`);
+  for (const d of colocadas) if (!d.pared) bloq.add(`${d.x},${d.y}`);
+  const objetivos: Casilla[] = [
+    ...DISENOS.salon.muebles.filter((mu) => mu.abre || mu.va),
+    ...SITIOS.map((c) => ({ x: c.x, y: c.y })),
+  ];
+  return objetivos.every((o) =>
+    Object.values(PASOS).some(([dx, dy]) => {
+      const c = { x: o.x + dx, y: o.y + dy };
+      if (c.x < 0 || c.y < 0 || c.x >= COLS || c.y >= FILAS || bloq.has(`${c.x},${c.y}`)) return false;
+      return (c.x === SALIDA.x && c.y === SALIDA.y) || camino(SALIDA, c, bloq).length > 0;
+    }),
+  );
+}
 
 export const diseno = (habitacion: string): DisenoHabitacion => DISENOS[habitacion] ?? DISENOS.armario;
 

@@ -90,6 +90,7 @@ import {
   cosechaPendiente,
   verRobo,
   verMulta,
+  guardarDecoracion,
   jugarMinijuego,
   verAnuncio,
   recuperarPlanta,
@@ -256,6 +257,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [regando, setRegando] = useState(false);
   const [vista, setVista] = useState<"casa" | "cultivo">("casa");
   const [invRapido, setInvRapido] = useState(false);
+  const [editandoDeco, setEditandoDeco] = useState(false);
   const casaIso = useRef<CasaIsoApi>(null);
   const [cofre, setCofre] = useState<PremioCofre | null>(null);
   const [roboVisto, setRoboVisto] = useState<string | null>(null);
@@ -860,6 +862,13 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const tratarPlaga = (id: string) =>
     gestionarObjeto(usarObjeto, id, "¡Plaga eliminada!", "plaga-eliminada", () => setEfectoTratamiento(true));
 
+  const guardarLaDeco = async (items: Parameters<typeof guardarDecoracion>[0]) => {
+    const r = await guardarDecoracion(items);
+    sonar(r.ok ? "clic" : "error");
+    tratar(r, { texto: "Decoración guardada", icono: "tienda" });
+    return r.ok;
+  };
+
   const acariciar = () => {
     acariciarGato().then((r) => {
       if (r.ok) tratar(r);
@@ -1435,6 +1444,18 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       Inventario
     </button>
   );
+  const botonEditarDeco =
+    perfil.casa.habitacion === "salon" ? (
+      <button
+        type="button"
+        className={styles.vista}
+        style={{ ...marco("boton_secundario", "var(--u)"), top: "calc(var(--u) * 40)" }}
+        disabled={enCurso}
+        onClick={() => casaIso.current?.editarDeco()}
+      >
+        Decorar
+      </button>
+    ) : null;
   const botonVecinos =
     perfil.vecinos && (perfil.vecinos.sospecha > 0 || perfil.vecinos.olor > 0) ? (
       <ChipVecinos
@@ -2026,6 +2047,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
             huecos={perfil.huecos}
             avatar={avatarCasa}
             decoracion={perfil.equipo.decoracion}
+            decoPos={perfil.equipo.deco_pos}
+            decoTengo={Object.keys(perfil.inventario).filter((id) => (perfil.inventario[id] ?? 0) > 0)}
+            alGuardarDeco={guardarLaDeco}
+            alEditarDeco={setEditandoDeco}
             ocupado={enCurso}
             alElegirHueco={cambiarHueco}
             alAbrir={elegirPantalla}
@@ -2044,10 +2069,11 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
               habitacion={perfil.casa.habitacion}
             />
             {superpuestos}
-            {botonVista}
-            {botonInventario}
-            {botonVecinos}
-            {panelInventario}
+            {!editandoDeco && botonVista}
+            {!editandoDeco && botonInventario}
+            {!editandoDeco && botonVecinos}
+            {!editandoDeco && botonEditarDeco}
+            {!editandoDeco && panelInventario}
           </CasaIso>
         ) : (
           <Escena luz={perfil.equipo.luz} habitacion={perfil.casa.habitacion}>
