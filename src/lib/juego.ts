@@ -32,6 +32,7 @@ export type PantallaJuego =
   | "laboratorio"
   | "prestigio"
   | "misiones"
+  | "camino"
   | "encargos"
   | "amigos"
   | "visita"

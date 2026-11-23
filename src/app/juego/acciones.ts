@@ -10,6 +10,7 @@ import type { DatosEncargos } from "@/lib/encargos";
 import type { DatosSecado } from "@/lib/secado";
 import type { DatosVuelta } from "@/lib/vuelta";
 import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
+import type { DatosCamino } from "@/lib/camino";
 import type { DatosEventos, DatosPase } from "@/lib/temporada";
 import type { DatosClientes, DatosNegro } from "@/lib/clientes";
 import type { EstadoArmario } from "@/lib/armario";
@@ -294,6 +295,22 @@ export async function obtenerMisiones(): Promise<DatosMisiones | null> {
   const { data, error } = await supabase.rpc("tpp_misiones");
   if (error || !data) return null;
   return data as DatosMisiones;
+}
+
+/** El Camino: capítulos con sus metas y premios. Devuelve null si falla. */
+export async function obtenerCamino(): Promise<DatosCamino | null> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_camino");
+  if (error || !data) return null;
+  return data as DatosCamino;
+}
+
+/** Reclama el premio de un capítulo completado. */
+export async function reclamarCamino(n: number): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_reclamar_camino", { p_n: n });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
 }
 
 /** Reclama el premio de una misión completada. */

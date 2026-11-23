@@ -62,6 +62,7 @@ const GRUPOS: { id: IdGrupo; etiqueta: string; icono: IconoItem; categorias: { t
       {
         titulo: "Metas",
         items: [
+          { destino: "camino", etiqueta: "El Camino", icono: { ui: "nivel" } },
           { destino: "misiones", etiqueta: "Misiones", icono: { nav: "misiones" }, contador: "misiones" },
           { destino: "diaria", etiqueta: "Entrada diaria", icono: { nav: "calendario" }, contador: "diaria" },
           { destino: "logros", etiqueta: "Logros", icono: { ui: "logros" } },
