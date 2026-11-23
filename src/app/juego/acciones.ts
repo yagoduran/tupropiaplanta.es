@@ -11,6 +11,7 @@ import type { DatosSecado } from "@/lib/secado";
 import type { DatosVuelta } from "@/lib/vuelta";
 import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
 import type { DatosObras } from "@/lib/obras";
+import type { DatosNegocio } from "@/lib/negocio";
 import type { DatosCamino } from "@/lib/camino";
 import type { DatosEventos, DatosPase } from "@/lib/temporada";
 import type { DatosClientes, DatosNegro } from "@/lib/clientes";
@@ -318,6 +319,21 @@ export async function reclamarCamino(n: number): Promise<Resultado> {
 export async function reclamarMision(id: string): Promise<Resultado> {
   const supabase = await crearClienteServidor();
   const { data, error } = await supabase.rpc("tpp_reclamar_mision", { p_id: id });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
+/** Perfil de negocio y saturación. Devuelve null si falla. */
+export async function obtenerNegocio(): Promise<DatosNegocio | null> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_negocio");
+  if (error || !data) return null;
+  return data as DatosNegocio;
+}
+
+export async function elegirNegocio(perfil: string): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_elegir_negocio", { p_perfil: perfil });
   if (error || !data) return fallo(error?.message);
   return data as RespuestaAccion;
 }

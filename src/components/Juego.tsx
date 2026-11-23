@@ -64,6 +64,8 @@ import {
   reclamarMision,
   reclamarCofre,
   obtenerObras,
+  obtenerNegocio,
+  elegirNegocio,
   empezarObra,
   acelerarObra,
   obtenerNotificaciones,
@@ -145,6 +147,7 @@ import type { DatosMaestria } from "@/lib/maestria";
 import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
 import type { DatosCamino } from "@/lib/camino";
 import type { DatosObras } from "@/lib/obras";
+import type { DatosNegocio } from "@/lib/negocio";
 import type { DatosPrestigio } from "@/lib/prestigio";
 import type { DatosCruces, Libro, RespuestaCruce } from "@/lib/cruces";
 import { calcularBienvenida, guardarVisita, leerVisita, type Bienvenida as DatosBienvenida } from "@/lib/visita";
@@ -166,6 +169,7 @@ import { Maestria } from "./Maestria";
 import { Misiones } from "./Misiones";
 import { Camino } from "./Camino";
 import { Obras } from "./Obras";
+import { Negocio } from "./Negocio";
 import { Buzon } from "./Buzon";
 import { Encargos } from "./Encargos";
 import { Secado } from "./Secado";
@@ -307,6 +311,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [misiones, setMisiones] = useState<DatosMisiones | null>(null);
   const [camino, setCamino] = useState<DatosCamino | null>(null);
   const [obras, setObras] = useState<DatosObras | null>(null);
+  const [negocio, setNegocio] = useState<DatosNegocio | null>(null);
   const [encargos, setEncargos] = useState<DatosEncargos | null>(null);
   const [secado, setSecado] = useState<DatosSecado | null>(null);
   const [vuelta, setVuelta] = useState<DatosVuelta | null>(null);
@@ -581,6 +586,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "misiones" ||
       id === "camino" ||
       id === "obras" ||
+      id === "negocio" ||
       id === "encargos" ||
       id === "secado" ||
       id === "registro_eventos" ||
@@ -663,6 +669,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           .then(setAmigos)
           .catch(() => setAmigos(null));
       }
+      if (id === "negocio")
+        obtenerNegocio()
+          .then(setNegocio)
+          .catch(() => setNegocio(null));
       if (id === "obras")
         obtenerObras()
           .then(setObras)
@@ -758,6 +768,9 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     });
   };
 
+  const textoDescuento = (r: { ok: boolean } | RespuestaAccion) =>
+    "descuento" in r && r.descuento ? ` (precio −${r.descuento} % por saturación)` : "";
+
   const sacarDelSecado = (id: number, modo: "vender" | "guardar" | "tirar") => {
     ejecutar(async () => {
       const r = await sacarSecado(id, modo);
@@ -767,7 +780,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       tratar(
         r,
         modo === "vender"
-          ? { texto: `Vendida: +${monedas} monedas`, icono: "moneda" }
+          ? { texto: `Vendida: +${monedas} monedas${textoDescuento(r)}`, icono: "moneda" }
           : modo === "guardar"
             ? { texto: "Guardada para los encargos", icono: "tienda" }
             : { texto: "Tirada.", icono: "aviso" },
@@ -786,7 +799,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       const r = await venderGramos(variedad, gramos);
       sonar(r.ok ? "comprar" : "error");
       const monedas = "recompensa" in r ? (r.recompensa ?? 0) : 0;
-      tratar(r, { texto: `Vendidos ${gramos ?? "todos los"} g: +${monedas} monedas`, icono: "moneda" });
+      tratar(r, { texto: `Vendidos ${gramos ?? "todos los"} g: +${monedas} monedas${textoDescuento(r)}`, icono: "moneda" });
       if (r.ok)
         obtenerMercadoSemanal()
           .then((m) => setMercadoSemanal(m && { ...m, recibido: Date.now() }))
@@ -1130,6 +1143,15 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       sonar(r.ok ? "cofre" : "error");
       tratar(r, { texto: "¡Cofre del día abierto! +200 monedas y +50 XP.", icono: "logros" });
       setMisiones(await obtenerMisiones());
+    });
+  };
+
+  const elegirElNegocio = (id: string) => {
+    ejecutar(async () => {
+      const r = await elegirNegocio(id);
+      sonar(r.ok ? "cofre" : "error");
+      tratar(r, { texto: "¡Perfil de negocio elegido!", icono: "logros" });
+      setNegocio(await obtenerNegocio());
     });
   };
 
@@ -2015,6 +2037,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           />
         ) : pantalla === "camino" ? (
           <Camino datos={camino} ocupado={enCurso} alReclamar={reclamarElCapitulo} />
+        ) : pantalla === "negocio" ? (
+          <Negocio datos={negocio} monedas={perfil.monedas} ocupado={enCurso} alElegir={elegirElNegocio} />
         ) : pantalla === "obras" ? (
           <Obras
             datos={obras}

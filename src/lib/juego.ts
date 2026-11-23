@@ -34,6 +34,7 @@ export type PantallaJuego =
   | "misiones"
   | "camino"
   | "obras"
+  | "negocio"
   | "encargos"
   | "amigos"
   | "visita"
@@ -299,6 +300,8 @@ export interface RespuestaAccion extends EstadoJuego {
   ok: boolean;
   error?: string;
   recompensa?: number;
+  /** Al vender gramos: descuento (%) por saturación del mercado. */
+  descuento?: number;
   /** Solo al cosechar: lo que hay que vender o guardar. */
   cosecha?: CosechaPendiente | null;
   /** Monedas ganadas por cuidar la planta. */
@@ -354,6 +357,8 @@ export const MENSAJES_ERROR: Record<string, string> = {
   horario_invalido: "Ese horario de luz no es válido.",
   monedas_insuficientes: "No tienes monedas suficientes.",
   nivel_insuficiente: "Todavía no tienes el nivel necesario.",
+  perfil_invalido: "Ese perfil de negocio no existe.",
+  perfil_ya_elegido: "Ya tienes ese perfil de negocio.",
   obra_en_curso: "Ya hay una obra en marcha. Espera a que termine o acelérala.",
   obra_hecha: "Esa obra ya está terminada.",
   obra_invalida: "Esa obra no existe.",

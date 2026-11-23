@@ -39,6 +39,7 @@ const GRUPOS: { id: IdGrupo; etiqueta: string; icono: IconoItem; categorias: { t
           { destino: "encargos", etiqueta: "Encargos", icono: { nav: "encargos" } },
           { destino: "clientes", etiqueta: "Clientes", icono: { nav: "personal" } },
           { destino: "mercado", etiqueta: "Mercado", icono: { ui: "moneda" } },
+          { destino: "negocio", etiqueta: "Mi negocio", icono: { nav: "personal" } },
           { destino: "mercado_semanal", etiqueta: "Mercado semanal", icono: { nav: "calendario" } },
         ],
       },
