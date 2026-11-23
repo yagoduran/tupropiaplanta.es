@@ -27,6 +27,7 @@ export interface Notificacion {
     | "sed"
     | "plaga"
     | "mision"
+    | "obra"
     | "nivel"
     | "logro"
     | "amigo"
@@ -52,6 +53,7 @@ export const DESTINO_AVISO: Record<Notificacion["tipo"], PantallaJuego> = {
   plaga: "cultivo",
   robo: "cultivo",
   mision: "misiones",
+  obra: "obras",
   nivel: "perfil",
   logro: "logros",
   amigo: "amigos",

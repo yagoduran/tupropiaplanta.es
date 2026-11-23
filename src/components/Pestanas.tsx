@@ -98,6 +98,7 @@ const GRUPOS: { id: IdGrupo; etiqueta: string; icono: IconoItem; categorias: { t
         titulo: "Cultivo y casa",
         items: [
           { destino: "armario", etiqueta: "Armario", icono: { nav: "armario" } },
+          { destino: "obras", etiqueta: "Obras", icono: { nav: "hogar" } },
           { destino: "secado", etiqueta: "Secado", icono: { ui: "tiempo" } },
         ],
       },

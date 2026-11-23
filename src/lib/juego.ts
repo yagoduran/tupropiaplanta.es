@@ -33,6 +33,7 @@ export type PantallaJuego =
   | "prestigio"
   | "misiones"
   | "camino"
+  | "obras"
   | "encargos"
   | "amigos"
   | "visita"
@@ -353,6 +354,12 @@ export const MENSAJES_ERROR: Record<string, string> = {
   horario_invalido: "Ese horario de luz no es válido.",
   monedas_insuficientes: "No tienes monedas suficientes.",
   nivel_insuficiente: "Todavía no tienes el nivel necesario.",
+  obra_en_curso: "Ya hay una obra en marcha. Espera a que termine o acelérala.",
+  obra_hecha: "Esa obra ya está terminada.",
+  obra_invalida: "Esa obra no existe.",
+  sin_obra: "No hay ninguna obra en marcha.",
+  cofre_no_listo: "Primero reclama las misiones diarias.",
+  cofre_abierto: "Ya has abierto el cofre de hoy.",
   sin_plaga: "Tu planta no tiene ninguna plaga.",
   tratamiento_incorrecto: "Ese producto no sirve para esta plaga.",
   huecos_maximos: "Ya tienes todos los huecos de cultivo.",

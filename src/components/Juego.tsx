@@ -63,6 +63,9 @@ import {
   regarVisita,
   reclamarMision,
   reclamarCofre,
+  obtenerObras,
+  empezarObra,
+  acelerarObra,
   obtenerNotificaciones,
   leerNotificaciones,
   obtenerCruces,
@@ -141,6 +144,7 @@ import { DESAFIO_POR_ID, type DatosDesafios } from "@/lib/desafios";
 import type { DatosMaestria } from "@/lib/maestria";
 import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
 import type { DatosCamino } from "@/lib/camino";
+import type { DatosObras } from "@/lib/obras";
 import type { DatosPrestigio } from "@/lib/prestigio";
 import type { DatosCruces, Libro, RespuestaCruce } from "@/lib/cruces";
 import { calcularBienvenida, guardarVisita, leerVisita, type Bienvenida as DatosBienvenida } from "@/lib/visita";
@@ -161,6 +165,7 @@ import { Laboratorio } from "./Laboratorio";
 import { Maestria } from "./Maestria";
 import { Misiones } from "./Misiones";
 import { Camino } from "./Camino";
+import { Obras } from "./Obras";
 import { Buzon } from "./Buzon";
 import { Encargos } from "./Encargos";
 import { Secado } from "./Secado";
@@ -301,6 +306,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
   const [perfilPublico, setPerfilPublico] = useState<PerfilPublicoDatos | null>(null);
   const [misiones, setMisiones] = useState<DatosMisiones | null>(null);
   const [camino, setCamino] = useState<DatosCamino | null>(null);
+  const [obras, setObras] = useState<DatosObras | null>(null);
   const [encargos, setEncargos] = useState<DatosEncargos | null>(null);
   const [secado, setSecado] = useState<DatosSecado | null>(null);
   const [vuelta, setVuelta] = useState<DatosVuelta | null>(null);
@@ -574,6 +580,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       id === "maestria" ||
       id === "misiones" ||
       id === "camino" ||
+      id === "obras" ||
       id === "encargos" ||
       id === "secado" ||
       id === "registro_eventos" ||
@@ -656,6 +663,10 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           .then(setAmigos)
           .catch(() => setAmigos(null));
       }
+      if (id === "obras")
+        obtenerObras()
+          .then(setObras)
+          .catch(() => setObras(null));
       if (id === "camino")
         obtenerCamino()
           .then(setCamino)
@@ -1119,6 +1130,24 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       sonar(r.ok ? "cofre" : "error");
       tratar(r, { texto: "¡Cofre del día abierto! +200 monedas y +50 XP.", icono: "logros" });
       setMisiones(await obtenerMisiones());
+    });
+  };
+
+  const empezarLaObra = (id: string) => {
+    ejecutar(async () => {
+      const r = await empezarObra(id);
+      sonar(r.ok ? "cofre" : "error");
+      tratar(r, { texto: "¡Obra en marcha!", icono: "logros" });
+      setObras(await obtenerObras());
+    });
+  };
+
+  const acelerarLaObra = () => {
+    ejecutar(async () => {
+      const r = await acelerarObra();
+      sonar(r.ok ? "cofre" : "error");
+      tratar(r, { texto: "¡Obra terminada!", icono: "logros" });
+      setObras(await obtenerObras());
     });
   };
 
@@ -1986,6 +2015,19 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           />
         ) : pantalla === "camino" ? (
           <Camino datos={camino} ocupado={enCurso} alReclamar={reclamarElCapitulo} />
+        ) : pantalla === "obras" ? (
+          <Obras
+            datos={obras}
+            monedas={perfil.monedas}
+            ocupado={enCurso}
+            alEmpezar={empezarLaObra}
+            alAcelerar={acelerarLaObra}
+            alTerminar={() => {
+              obtenerObras()
+                .then(setObras)
+                .catch(() => {});
+            }}
+          />
         ) : pantalla === "misiones" ? (
           <Misiones datos={misiones} ocupado={enCurso} alReclamar={reclamarLaMision} alAbrirCofre={abrirElCofre} />
         ) : pantalla === "encargos" ? (

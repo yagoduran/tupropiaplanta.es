@@ -10,6 +10,7 @@ import type { DatosEncargos } from "@/lib/encargos";
 import type { DatosSecado } from "@/lib/secado";
 import type { DatosVuelta } from "@/lib/vuelta";
 import type { DatosMisiones, DatosNotificaciones } from "@/lib/misiones";
+import type { DatosObras } from "@/lib/obras";
 import type { DatosCamino } from "@/lib/camino";
 import type { DatosEventos, DatosPase } from "@/lib/temporada";
 import type { DatosClientes, DatosNegro } from "@/lib/clientes";
@@ -317,6 +318,28 @@ export async function reclamarCamino(n: number): Promise<Resultado> {
 export async function reclamarMision(id: string): Promise<Resultado> {
   const supabase = await crearClienteServidor();
   const { data, error } = await supabase.rpc("tpp_reclamar_mision", { p_id: id });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
+/** Obras de la casa. Devuelve null si falla. */
+export async function obtenerObras(): Promise<DatosObras | null> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_obras");
+  if (error || !data) return null;
+  return data as DatosObras;
+}
+
+export async function empezarObra(id: string): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_empezar_obra", { p_id: id });
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
+export async function acelerarObra(): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_acelerar_obra");
   if (error || !data) return fallo(error?.message);
   return data as RespuestaAccion;
 }
