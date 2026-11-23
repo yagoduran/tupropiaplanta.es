@@ -72,11 +72,11 @@ const PASOS: Paso[] = [
     texto: "Puedes vender en húmedo o secar la cosecha: secada y curada vale más. Prueba «Secar».",
   },
   {
-    titulo: "Encargos",
+    titulo: "Negocio",
     expresion: "senalando",
-    objetivo: "pestana-encargos",
-    pulsa: "Pulsa «Encargos»",
-    texto: "Los clientes te piden gramos de una variedad a cambio de premios. Mira tu primer encargo.",
+    objetivo: "pestana-negocio",
+    pulsa: "Pulsa «Negocio»",
+    texto: "Aquí están los encargos, la tienda, los clientes y el mercado. Los clientes te piden gramos a cambio de premios.",
   },
   {
     titulo: "Hogar",

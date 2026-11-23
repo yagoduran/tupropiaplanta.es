@@ -10,7 +10,7 @@ import { IconoSocial } from "./IconoSocial";
 import styles from "./juego.module.css";
 
 type Destino = PantallaJuego | "tutorial" | "diaria";
-type IconoItem = { ui: IdIcono } | { nav: IdIconoNav } | { social: "campana" };
+type IconoItem = { ui: IdIcono } | { nav: IdIconoNav } | { social: "campana" } | { base: "mas" };
 
 interface Item {
   destino: Destino;
@@ -22,42 +22,100 @@ interface Item {
 const FIJAS: { id: PantallaJuego; etiqueta: string; icono: IconoItem }[] = [
   { id: "cultivo", etiqueta: "Cultivo", icono: { ui: "cultivo" } },
   { id: "habitaciones", etiqueta: "Hogar", icono: { nav: "hogar" } },
-  { id: "encargos", etiqueta: "Encargos", icono: { nav: "encargos" } },
-  { id: "tienda", etiqueta: "Tienda", icono: { ui: "tienda" } },
 ];
 
-const CATEGORIAS: { titulo: string; items: Item[] }[] = [
+type IdGrupo = "negocio" | "progreso" | "mas";
+
+/** Pestañas que abren un menú con sus secciones. */
+const GRUPOS: { id: IdGrupo; etiqueta: string; icono: IconoItem; categorias: { titulo: string; items: Item[] }[] }[] = [
   {
-    titulo: "Cultivo y casa",
-    items: [
-      { destino: "armario", etiqueta: "Armario", icono: { nav: "armario" } },
-      { destino: "inventario", etiqueta: "Inventario", icono: { nav: "inventario" } },
-      { destino: "semillas", etiqueta: "Semillas", icono: { ui: "semillas" } },
+    id: "negocio",
+    etiqueta: "Negocio",
+    icono: { nav: "encargos" },
+    categorias: [
+      {
+        titulo: "Vender",
+        items: [
+          { destino: "encargos", etiqueta: "Encargos", icono: { nav: "encargos" } },
+          { destino: "clientes", etiqueta: "Clientes", icono: { nav: "personal" } },
+          { destino: "mercado", etiqueta: "Mercado", icono: { ui: "moneda" } },
+          { destino: "mercado_semanal", etiqueta: "Mercado semanal", icono: { nav: "calendario" } },
+        ],
+      },
+      {
+        titulo: "Producir y comprar",
+        items: [
+          { destino: "tienda", etiqueta: "Tienda", icono: { ui: "tienda" } },
+          { destino: "inventario", etiqueta: "Inventario", icono: { nav: "inventario" } },
+          { destino: "semillas", etiqueta: "Semillas", icono: { ui: "semillas" } },
+          { destino: "abonos", etiqueta: "Abonos", icono: { ui: "nutrientes" } },
+          { destino: "procesado", etiqueta: "Procesado", icono: { nav: "armario" } },
+        ],
+      },
     ],
   },
   {
-    titulo: "Progreso",
-    items: [
-      { destino: "misiones", etiqueta: "Misiones", icono: { nav: "misiones" }, contador: "misiones" },
-      { destino: "diaria", etiqueta: "Entrada diaria", icono: { nav: "calendario" }, contador: "diaria" },
-      { destino: "logros", etiqueta: "Logros", icono: { ui: "logros" } },
-      { destino: "ranking", etiqueta: "Ranking", icono: { ui: "ranking" } },
+    id: "progreso",
+    etiqueta: "Progreso",
+    icono: { ui: "logros" },
+    categorias: [
+      {
+        titulo: "Metas",
+        items: [
+          { destino: "misiones", etiqueta: "Misiones", icono: { nav: "misiones" }, contador: "misiones" },
+          { destino: "diaria", etiqueta: "Entrada diaria", icono: { nav: "calendario" }, contador: "diaria" },
+          { destino: "logros", etiqueta: "Logros", icono: { ui: "logros" } },
+          { destino: "titulos", etiqueta: "Títulos", icono: { ui: "nivel" } },
+          { destino: "prestigio", etiqueta: "Prestigio", icono: { ui: "nivel" } },
+        ],
+      },
+      {
+        titulo: "Archivo",
+        items: [
+          { destino: "coleccion", etiqueta: "Colección", icono: { nav: "coleccion" } },
+          { destino: "maestria", etiqueta: "Maestría", icono: { ui: "nivel" } },
+          { destino: "laboratorio", etiqueta: "Laboratorio", icono: { ui: "semillas" } },
+        ],
+      },
+      {
+        titulo: "Temporada y retos",
+        items: [
+          { destino: "pase", etiqueta: "Pase", icono: { nav: "regalo" } },
+          { destino: "eventos", etiqueta: "Eventos", icono: { nav: "calendario" } },
+          { destino: "desafios", etiqueta: "Desafíos", icono: { ui: "ranking" } },
+          { destino: "ranking", etiqueta: "Ranking", icono: { ui: "ranking" } },
+        ],
+      },
     ],
   },
   {
-    titulo: "Social",
-    items: [
-      { destino: "amigos", etiqueta: "Amigos", icono: { nav: "amigos" } },
-      { destino: "avisos", etiqueta: "Avisos", icono: { social: "campana" }, contador: "avisos" },
-    ],
-  },
-  {
-    titulo: "Cuenta",
-    items: [
-      { destino: "perfil", etiqueta: "Perfil", icono: { ui: "nivel" } },
-      { destino: "coleccion", etiqueta: "Colección", icono: { nav: "coleccion" } },
-      { destino: "ajustes", etiqueta: "Ajustes", icono: { ui: "ajustes" } },
-      { destino: "tutorial", etiqueta: "Ayuda y tutorial", icono: { nav: "ayuda" } },
+    id: "mas",
+    etiqueta: "Más",
+    icono: { base: "mas" },
+    categorias: [
+      {
+        titulo: "Cultivo y casa",
+        items: [
+          { destino: "armario", etiqueta: "Armario", icono: { nav: "armario" } },
+          { destino: "secado", etiqueta: "Secado", icono: { ui: "tiempo" } },
+        ],
+      },
+      {
+        titulo: "Social",
+        items: [
+          { destino: "amigos", etiqueta: "Amigos", icono: { nav: "amigos" } },
+          { destino: "avisos", etiqueta: "Avisos", icono: { social: "campana" }, contador: "avisos" },
+        ],
+      },
+      {
+        titulo: "Cuenta",
+        items: [
+          { destino: "perfil", etiqueta: "Perfil", icono: { ui: "nivel" } },
+          { destino: "estadisticas", etiqueta: "Estadísticas", icono: { ui: "salud" } },
+          { destino: "ajustes", etiqueta: "Ajustes", icono: { ui: "ajustes" } },
+          { destino: "tutorial", etiqueta: "Ayuda y tutorial", icono: { nav: "ayuda" } },
+        ],
+      },
     ],
   },
 ];
@@ -65,6 +123,7 @@ const CATEGORIAS: { titulo: string; items: Item[] }[] = [
 function Dibujo({ icono }: { icono: IconoItem }) {
   if ("ui" in icono) return <Icono id={icono.ui} />;
   if ("nav" in icono) return <IconoNav id={icono.nav} />;
+  if ("base" in icono) return <IconoBase id={icono.base} />;
   return <IconoSocial id={icono.social} k="calc(var(--ik) * 0.75)" />;
 }
 
@@ -84,22 +143,27 @@ export function Pestanas({
   alVerTutorial,
   alAbrirDiaria,
 }: Props) {
-  const [abierto, setAbierto] = useState(false);
+  const [abierto, setAbierto] = useState<IdGrupo | null>(null);
   const raiz = useRef<HTMLElement>(null);
   const normal = marco("pestana", "var(--u)");
   const seleccionada = marco("pestana_activa", "var(--u)");
   const tarjeta = marco("tarjeta", "var(--u)");
   const panel = marco("panel", "var(--u)");
 
-  const enMas = CATEGORIAS.some((c) => c.items.some((i) => i.destino === activa));
-  const totalMas = contadores.misiones + contadores.avisos + (contadores.diaria ? 1 : 0);
+  const grupoDe = (id: IdGrupo) => GRUPOS.find((g) => g.id === id)!;
+  const grupoActivo = GRUPOS.find((g) => g.categorias.some((c) => c.items.some((i) => i.destino === activa)))?.id;
+  const novedades: Record<IdGrupo, number> = {
+    negocio: 0,
+    progreso: contadores.misiones + (contadores.diaria ? 1 : 0),
+    mas: contadores.avisos,
+  };
 
   useEffect(() => {
     if (!abierto) return;
     const fuera = (e: PointerEvent) => {
-      if (raiz.current && !raiz.current.contains(e.target as Node)) setAbierto(false);
+      if (raiz.current && !raiz.current.contains(e.target as Node)) setAbierto(null);
     };
-    const tecla = (e: KeyboardEvent) => e.key === "Escape" && setAbierto(false);
+    const tecla = (e: KeyboardEvent) => e.key === "Escape" && setAbierto(null);
     document.addEventListener("pointerdown", fuera);
     document.addEventListener("keydown", tecla);
     return () => {
@@ -116,7 +180,7 @@ export function Pestanas({
   };
 
   const elegir = (d: Destino) => {
-    setAbierto(false);
+    setAbierto(null);
     if (d === "tutorial") alVerTutorial?.();
     else if (d === "diaria") alAbrirDiaria?.();
     else alElegir(d);
@@ -127,8 +191,8 @@ export function Pestanas({
       {abierto && (
         <>
           <div className={styles.masVelo} aria-hidden />
-          <div className={styles.mas} style={panel} role="dialog" aria-label="Más secciones">
-            {CATEGORIAS.map((c) => (
+          <div className={styles.mas} style={panel} role="dialog" aria-label={grupoDe(abierto).etiqueta}>
+            {grupoDe(abierto).categorias.map((c) => (
               <div key={c.titulo} className={styles.masCategoria}>
                 <span className={styles.masTitulo}>{c.titulo}</span>
                 <div className={styles.masItems}>
@@ -166,7 +230,7 @@ export function Pestanas({
             data-tut={`pestana-${p.id}`}
             aria-current={esActiva ? "page" : undefined}
             onClick={() => {
-              setAbierto(false);
+              setAbierto(null);
               alElegir(p.id);
             }}
             className={styles.pestana}
@@ -177,18 +241,24 @@ export function Pestanas({
           </button>
         );
       })}
-      <button
-        type="button"
-        data-tut="pestana-mas"
-        aria-expanded={abierto}
-        onClick={() => setAbierto((v) => !v)}
-        className={styles.pestana}
-        style={{ ...(abierto || enMas ? seleccionada : normal), color: abierto || enMas ? "#1c1626" : "#f6eed6" }}
-      >
-        <IconoBase id="mas" />
-        <span>Más</span>
-        {!abierto && totalMas > 0 && <span className={styles.punto} role="img" aria-label="novedades" />}
-      </button>
+      {GRUPOS.map((g) => {
+        const on = abierto === g.id || (!abierto && grupoActivo === g.id);
+        return (
+          <button
+            key={g.id}
+            type="button"
+            data-tut={`pestana-${g.id}`}
+            aria-expanded={abierto === g.id}
+            onClick={() => setAbierto((v) => (v === g.id ? null : g.id))}
+            className={styles.pestana}
+            style={{ ...(on ? seleccionada : normal), color: on ? "#1c1626" : "#f6eed6" }}
+          >
+            <Dibujo icono={g.icono} />
+            <span>{g.etiqueta}</span>
+            {!abierto && novedades[g.id] > 0 && <span className={styles.punto} role="img" aria-label="novedades" />}
+          </button>
+        );
+      })}
     </nav>
   );
 }
