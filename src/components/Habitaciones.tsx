@@ -100,7 +100,7 @@ export function Habitaciones({ perfil, ocupado, alComprar, alElegir, alMejorar }
                       ? "Estás aquí"
                       : mio
                         ? "Ya es tuya"
-                        : `${r.precio > 0 ? `${miles(r.precio)} monedas · ` : ""}Nv. ${r.nivel}`}
+                        : `${r.precio > 0 ? `${miles(r.precio)} monedas · ` : ""}Nv. ${r.nivel}${r.bloqueada ? " · Llave" : ""}`}
                   </span>
                 </span>
               </button>
