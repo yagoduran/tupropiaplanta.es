@@ -1,4 +1,5 @@
 import { HABITACIONES } from "./casa";
+import type { DatosCamino } from "./camino";
 import type { PantallaJuego, PerfilJuego } from "./juego";
 import { VARIEDADES } from "./variedades";
 
@@ -10,9 +11,13 @@ export interface Sugerencia {
 }
 
 /** La siguiente cosa útil que puede hacer el jugador, sin contar lo que ya avisa la planta. Null si no hay nada. */
-export function queHacer(perfil: PerfilJuego): Sugerencia | null {
+export function queHacer(perfil: PerfilJuego, camino: DatosCamino | null = null): Sugerencia | null {
   if (perfil.diaria.disponible) {
     return { texto: "Tienes tu entrada diaria sin recoger.", boton: "Recoger", destino: "diaria" };
+  }
+  const cap = camino?.capitulos.find((c) => c.n === camino.actual);
+  if (cap?.completo) {
+    return { texto: `Has completado el capítulo ${cap.n} del Camino. Reclama tu premio.`, boton: "Reclamar", destino: "camino" };
   }
   if (perfil.misiones_listas > 0) {
     const n = perfil.misiones_listas;
@@ -28,6 +33,10 @@ export function queHacer(perfil: PerfilJuego): Sugerencia | null {
       boton: "Ver avisos",
       destino: "avisos",
     };
+  }
+  const meta = cap?.metas.find((m) => m.valor < m.meta);
+  if (cap && meta) {
+    return { texto: `Siguiente meta del Camino: ${meta.texto}.`, boton: "Ver el Camino", destino: "camino" };
   }
   const hab = HABITACIONES.filter((h) => !perfil.casa.habitaciones.includes(h.id) && h.nivel > perfil.nivel).sort(
     (a, b) => a.nivel - b.nivel,

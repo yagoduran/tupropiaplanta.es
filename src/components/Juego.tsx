@@ -330,6 +330,16 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     return () => clearTimeout(id);
   }, []);
 
+  // Avance de El Camino para la barra de la pantalla principal: al abrir y tras cada cambio del perfil.
+  useEffect(() => {
+    const id = setTimeout(() => {
+      obtenerCamino()
+        .then(setCamino)
+        .catch(() => {});
+    }, 800);
+    return () => clearTimeout(id);
+  }, [estado.perfil]);
+
   // Reloj de la pantalla: cuenta atrás de esperas y tiempo de vida.
   useEffect(() => {
     const id = setInterval(() => {
@@ -1567,7 +1577,8 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       </Fragment>
       {!editandoDeco && !tutorial && (
         <QueHacer
-          sugerencia={queHacer(perfil)}
+          sugerencia={queHacer(perfil, camino)}
+          camino={camino}
           alIr={(d) => {
             if (d === "diaria") setDiariaAbierta(true);
             else elegirPantalla(d);

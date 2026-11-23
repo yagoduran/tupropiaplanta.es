@@ -1248,12 +1248,44 @@
   bottom: calc(var(--u) * 4);
   z-index: 3000;
   display: flex;
-  align-items: center;
-  gap: calc(var(--u) * 3);
+  flex-direction: column;
+  gap: calc(var(--u) * 2);
   max-width: min(420px, calc(100% - var(--u) * 8));
   padding: calc(var(--u) * 2.5) calc(var(--u) * 3);
   color: #1c1626;
   font-size: var(--f-stat);
+}
+
+.queHacerFila {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 3);
+}
+
+.caminoBarra {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 1);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #1c1626;
+  font-family: var(--fuente-pixel);
+  font-size: var(--f-stat);
+  text-align: left;
+  cursor: pointer;
+}
+
+.caminoPista {
+  display: block;
+  height: calc(var(--u) * 2);
+  background: rgba(28, 22, 38, 0.25);
+}
+
+.caminoRelleno {
+  display: block;
+  height: 100%;
+  background: #3f9d4d;
 }
 
 .queHacerTexto {
