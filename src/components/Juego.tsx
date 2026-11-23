@@ -62,6 +62,7 @@ import {
   saludarAmigo,
   regarVisita,
   reclamarMision,
+  reclamarCofre,
   obtenerNotificaciones,
   leerNotificaciones,
   obtenerCruces,
@@ -335,6 +336,9 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     const id = setTimeout(() => {
       obtenerCamino()
         .then(setCamino)
+        .catch(() => {});
+      obtenerMisiones()
+        .then(setMisiones)
         .catch(() => {});
     }, 800);
     return () => clearTimeout(id);
@@ -1109,6 +1113,15 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
     });
   };
 
+  const abrirElCofre = () => {
+    ejecutar(async () => {
+      const r = await reclamarCofre();
+      sonar(r.ok ? "cofre" : "error");
+      tratar(r, { texto: "¡Cofre del día abierto! +200 monedas y +50 XP.", icono: "logros" });
+      setMisiones(await obtenerMisiones());
+    });
+  };
+
   const reclamarElCapitulo = (n: number) => {
     ejecutar(async () => {
       const r = await reclamarCamino(n);
@@ -1577,7 +1590,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
       </Fragment>
       {!editandoDeco && !tutorial && (
         <QueHacer
-          sugerencia={queHacer(perfil, camino)}
+          sugerencia={queHacer(perfil, camino, misiones)}
           camino={camino}
           alIr={(d) => {
             if (d === "diaria") setDiariaAbierta(true);
@@ -1974,7 +1987,7 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
         ) : pantalla === "camino" ? (
           <Camino datos={camino} ocupado={enCurso} alReclamar={reclamarElCapitulo} />
         ) : pantalla === "misiones" ? (
-          <Misiones datos={misiones} ocupado={enCurso} alReclamar={reclamarLaMision} />
+          <Misiones datos={misiones} ocupado={enCurso} alReclamar={reclamarLaMision} alAbrirCofre={abrirElCofre} />
         ) : pantalla === "encargos" ? (
           <Encargos
             datos={encargos}

@@ -10,6 +10,7 @@ interface Props {
   datos: DatosMisiones | null;
   ocupado: boolean;
   alReclamar: (id: string) => void;
+  alAbrirCofre: () => void;
 }
 
 const miles = (n: number) => n.toLocaleString("es-ES", { useGrouping: "always" });
@@ -66,7 +67,7 @@ function Tarjeta({ m, ocupado, alReclamar }: { m: Mision; ocupado: boolean; alRe
 }
 
 /** Misiones diarias y semanales con su premio. */
-export function Misiones({ datos, ocupado, alReclamar }: Props) {
+export function Misiones({ datos, ocupado, alReclamar, alAbrirCofre }: Props) {
   if (!datos) {
     return (
       <div className={styles.contenedor}>
@@ -85,6 +86,43 @@ export function Misiones({ datos, ocupado, alReclamar }: Props) {
         <h1 className={styles.titulo}>Misiones</h1>
         <span className={styles.resumen}>Solo cuentan con tu planta normal, no con la de los desafíos.</span>
       </div>
+      <section
+        className={styles.mision}
+        aria-label="Cofre del día"
+        style={{ ...marco(datos.cofre.listo ? "dorado" : "tarjeta", "var(--u)"), opacity: datos.cofre.abierto ? 0.6 : 1 }}
+      >
+        <div className={styles.misionCabeza}>
+          <IconoSocial id="mision" k="var(--ik)" />
+          <span className={styles.misionTexto}>
+            <strong>Cofre del día</strong>
+            <span>
+              {datos.cofre.abierto
+                ? "Ya lo has abierto hoy. Mañana, otro."
+                : `Reclama las ${datos.cofre.total} misiones diarias: ${datos.cofre.hechas} de ${datos.cofre.total}.`}
+            </span>
+          </span>
+        </div>
+        <div className={styles.pista} aria-hidden>
+          <span
+            className={styles.rellenoVerde}
+            style={{ display: "block", width: `${datos.cofre.total ? Math.round((datos.cofre.hechas / datos.cofre.total) * 100) : 0}%` }}
+          />
+        </div>
+        <div className={styles.misionPie}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
+            <Icono id="moneda" />+{miles(datos.cofre.premio.monedas)} monedas · +{datos.cofre.premio.xp} XP
+          </span>
+        </div>
+        <button
+          type="button"
+          className={styles.accion}
+          style={marco(datos.cofre.listo ? "boton" : datos.cofre.abierto ? "boton_secundario" : "boton_desactivado", "var(--u)")}
+          disabled={ocupado || !datos.cofre.listo}
+          onClick={alAbrirCofre}
+        >
+          {datos.cofre.abierto ? "✓ Abierto" : datos.cofre.listo ? "Abrir cofre" : "Completa las diarias"}
+        </button>
+      </section>
       {grupos.map((g) => (
         <section key={g.titulo} className={styles.contenedor} aria-label={g.titulo}>
           <div className={styles.cabecera}>

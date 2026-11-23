@@ -321,6 +321,14 @@ export async function reclamarMision(id: string): Promise<Resultado> {
   return data as RespuestaAccion;
 }
 
+/** Abre el cofre del día (necesita las misiones diarias reclamadas). */
+export async function reclamarCofre(): Promise<Resultado> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase.rpc("tpp_reclamar_cofre");
+  if (error || !data) return fallo(error?.message);
+  return data as RespuestaAccion;
+}
+
 /** Encargos del móvil y gramos guardados. Devuelve null si falla. */
 export async function obtenerEncargos(): Promise<DatosEncargos | null> {
   const supabase = await crearClienteServidor();

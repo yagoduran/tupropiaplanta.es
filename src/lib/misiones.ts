@@ -17,6 +17,8 @@ export interface DatosMisiones {
   /** Segundos que faltan para que se renueven las diarias y las semanales. */
   renueva_dia: number;
   renueva_semana: number;
+  /** Cofre del día: se abre al reclamar las misiones diarias. */
+  cofre: { hechas: number; total: number; abierto: boolean | null; listo: boolean; premio: { monedas: number; xp: number } };
 }
 
 export interface Notificacion {

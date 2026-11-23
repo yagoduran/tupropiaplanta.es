@@ -1,5 +1,6 @@
 import { HABITACIONES } from "./casa";
 import type { DatosCamino } from "./camino";
+import type { DatosMisiones } from "./misiones";
 import type { PantallaJuego, PerfilJuego } from "./juego";
 import { VARIEDADES } from "./variedades";
 
@@ -11,7 +12,7 @@ export interface Sugerencia {
 }
 
 /** La siguiente cosa útil que puede hacer el jugador, sin contar lo que ya avisa la planta. Null si no hay nada. */
-export function queHacer(perfil: PerfilJuego, camino: DatosCamino | null = null): Sugerencia | null {
+export function queHacer(perfil: PerfilJuego, camino: DatosCamino | null = null, misiones: DatosMisiones | null = null): Sugerencia | null {
   if (perfil.diaria.disponible) {
     return { texto: "Tienes tu entrada diaria sin recoger.", boton: "Recoger", destino: "diaria" };
   }
@@ -26,6 +27,9 @@ export function queHacer(perfil: PerfilJuego, camino: DatosCamino | null = null)
       boton: "Reclamar",
       destino: "misiones",
     };
+  }
+  if (misiones?.cofre.listo) {
+    return { texto: "Has completado las misiones del día. ¡Abre el cofre!", boton: "Abrir cofre", destino: "misiones" };
   }
   if (perfil.avisos > 0) {
     return {
