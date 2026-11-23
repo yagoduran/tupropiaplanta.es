@@ -209,6 +209,8 @@ import { MisPlantas } from "./MisPlantas";
 import { Perfil } from "./Perfil";
 import { Ranking } from "./Ranking";
 import { Abonos } from "./Abonos";
+import { QueHacer } from "./QueHacer";
+import { queHacer } from "@/lib/queHacer";
 import { CAUSAS } from "@/lib/causas";
 import { Semillas } from "./Semillas";
 import { Tienda } from "./Tienda";
@@ -1544,6 +1546,15 @@ export function Juego({ inicial }: { inicial: EstadoJuego }) {
           )
         ) : null}
       </Fragment>
+      {!editandoDeco && !tutorial && (
+        <QueHacer
+          sugerencia={queHacer(perfil)}
+          alIr={(d) => {
+            if (d === "diaria") setDiariaAbierta(true);
+            else elegirPantalla(d);
+          }}
+        />
+      )}
       {plaga && producto && (
         <button
           type="button"

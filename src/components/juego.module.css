@@ -1240,3 +1240,33 @@
   white-space: nowrap;
   cursor: pointer;
 }
+
+/* Pista de «qué hacer ahora»: abajo a la izquierda de la escena. */
+.queHacer {
+  position: absolute;
+  left: calc(var(--u) * 4);
+  bottom: calc(var(--u) * 4);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 3);
+  max-width: min(420px, calc(100% - var(--u) * 8));
+  padding: calc(var(--u) * 2.5) calc(var(--u) * 3);
+  color: #1c1626;
+  font-size: var(--f-stat);
+}
+
+.queHacerTexto {
+  flex: 1;
+  min-width: 0;
+}
+
+.queHacerBoton {
+  flex: none;
+  padding: calc(var(--u) * 1.5) calc(var(--u) * 3);
+  color: #1c1626;
+  font-family: var(--fuente-pixel);
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+}
