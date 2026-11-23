@@ -93,7 +93,7 @@ export function Habitaciones({ perfil, ocupado, alComprar, alElegir, alMejorar }
                 <span className={styles.desafioTexto}>
                   <strong>{r.nombre}</strong>
                   <span>
-                    {r.piso} · {r.macetas} huecos
+                    {r.piso} · {r.macetas} {r.macetas === 1 ? "hueco" : "huecos"}
                   </span>
                   <span className={styles.desafioPie}>
                     {r.id === actual
